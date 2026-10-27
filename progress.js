@@ -88,8 +88,9 @@ function weakSkills(state) {
 /* Build a quiz: up to 3 comeback questions (4 on Challenge) on missed skills, the rest fresh. */
 function buildAdaptiveQuiz(child, level, count, all, weekStart, gen, build, shuffleFn, mode) {
   var state = skillState(all, child, weekStart), weak = weakSkills(state);
-  var PREFIX = { spelling: "spell:", english: "en:", french: "fr:", challenge: "ch:" };
-  if (PREFIX[mode]) weak = weak.filter(function (s) { return String(s.gen).indexOf(PREFIX[mode]) === 0; });
+  var PREFIX = { spelling: /^spell:/, english: /^e[num]:/, french: /^f[rq]:/, challenge: /^ch:/ };
+  var wordOf = function (g) { var k = typeof wbKey === "function" && wbKey(g); return k ? k.join("|") : String(g); };
+  if (PREFIX[mode]) weak = weak.filter(function (s) { return PREFIX[mode].test(String(s.gen)); });
   if (mode && mode.indexOf("revise:") === 0 && typeof revTopic === "function") {
     var rt = revTopic(child, mode.slice(7)); weak = rt ? weak.filter(function (s) { return rt.gens.indexOf(s.gen) >= 0; }) : [];
   }
@@ -112,8 +113,8 @@ function buildAdaptiveQuiz(child, level, count, all, weekStart, gen, build, shuf
     }
   }
   if (PREFIX[mode]) {
-    var usedWords = comebacks.map(function (c) { return c.gen; });
-    var fresh = build(child, level, count, seen, mode).filter(function (f) { return usedWords.indexOf(f.gen) < 0; }).slice(0, count - comebacks.length);
+    var usedWords = comebacks.map(function (c) { return wordOf(c.gen); });
+    var fresh = build(child, level, count, seen, mode).filter(function (f) { return usedWords.indexOf(wordOf(f.gen)) < 0; }).slice(0, count - comebacks.length);
     return shuffleFn(fresh.concat(comebacks));
   }
   var fresh = build(child, level, count - comebacks.length, seen, mode);
@@ -198,8 +199,8 @@ function topicSummary(all, child, weekStart) {
 var CARD_STATS = [["MAT", "Maths"], ["ENG", "English"], ["SCI", "Science"], ["FRA", "French"], ["VOC", "Vocab"], ["FRM", "Form"]];
 function cardKey(gen, map) {
   var g = String(gen || "");
-  if (g.indexOf("en:") === 0 || g.indexOf("ch:") === 0 || g.indexOf("spell:") === 0) return "VOC";
-  if (g.indexOf("fr:") === 0) return "FRA";
+  if (/^(e[num]|ch|spell):/.test(g)) return "VOC";
+  if (/^f[rq]:/.test(g)) return "FRA";
   return { Maths: "MAT", English: "ENG", Science: "SCI", French: "FRA" }[map[g]] || null;
 }
 function cardRating(right, total) { return Math.max(40, Math.min(99, Math.round(40 + 59 * (right + 0.45 * 8) / (total + 8)))); }

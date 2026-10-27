@@ -5,7 +5,9 @@ Practice quizzes, spelling tests, a revision library, characters, a shop and a p
 ## How it fits together
 - **Site**: plain static files, hosted on Vercel from this repo. Every push to `main` goes live.
   - `index.html` – the app (built from `src/page.html` by `python3 src/build.py`)
-  - `engine.js` – questions, spelling lists, revision library (updated weekly)
+  - `engine.js` – questions, Millie's weekly spelling list, revision library (updated weekly)
+  - `words.js` – word banks (built from `src/words/*.js`): challenge words for both, Kristan's English words and French bank, with spaced-repetition picking. Add words to `src/words/`, run `python3 src/build.py`, then `node tests/words.test.js` (fails on duplicates)
+  - `journey.js`, `league.js` – Millie's space journey and Kristan's league
   - `progress.js` – comebacks, points, ranks, badges
   - `avatar.js` – characters, shop items, bank rules
   - `supa-adapter.js` – Supabase sign-in and storage

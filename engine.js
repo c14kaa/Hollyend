@@ -634,6 +634,7 @@ function dayLevel(today) {
   return d <= 1 ? 1 : d <= 3 ? 2 : 3;
 }
 function genOne(child, gen, level) {
+  if (typeof wbGen === "function") { var wq = wbGen(child, gen, level); if (wq) return wq; }
   if (String(gen).indexOf("ch:") === 0) return klistQ("challenge_" + child, gen.slice(3), level);
   if (String(gen).indexOf("en:") === 0) return klistQ("english", gen.slice(3), level);
   if (String(gen).indexOf("fr:") === 0) return klistQ("french", gen.slice(3), level);
@@ -953,7 +954,7 @@ function klistQ(mode, id, level) {
     speak = s.replace("___", e.word);
     explain = "“" + e.word + "” means " + e.meaning + ".";
     steps = ["Say it slowly in chunks: " + e.chunks + ".", "Spot the tricky bit: " + e.tricky + ".", "Memory trick: " + e.hook,
-      "Use it: write your own sentence about one of the anthology poems using “" + e.word + "”."];
+      "Use it: write your own sentence using “" + e.word + "”."];
   } else {
     sentence = e.gap; clue = e.group === "Verbs" ? "Write the infinitive (the \u2018to\u2026\u2019 form) in French." : "In English: " + e.meaning; speak = e.say;
     explain = "“" + e.word + "”: " + e.gap.replace("_____", e.word) + " (" + e.meaning + ").";

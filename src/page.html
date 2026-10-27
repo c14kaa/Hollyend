@@ -426,6 +426,17 @@ body.k .prompt { letter-spacing: -.005em; }
 .need { display: flex; gap: 8px; flex-wrap: wrap; font-size: 14px; }
 .need span { background: var(--card2); border: 1px solid var(--line); border-radius: 6px; padding: 4px 9px; }
 .need b { color: var(--accent); }
+/* my words */
+.mw { display: flex; flex-direction: column; gap: 6px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.mw:last-child { border-bottom: none; }
+.mw-h { display: flex; justify-content: space-between; gap: 8px; font-size: 15px; flex-wrap: wrap; }
+.mw-h span { color: var(--muted); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.mw-bar { display: flex; height: 10px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.mw-bar i { display: block; height: 100%; }
+.mw-bar i.m, .mw-key i.m { background: var(--good); } .mw-bar i.l, .mw-key i.l { background: var(--gold); } .mw-bar i.w, .mw-key i.w { background: var(--bad); }
+.mw-key { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); }
+.mw-key i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 4px; background: var(--line); vertical-align: -1px; }
+.mw-wb { display: flex; gap: 6px; flex-wrap: wrap; }
 @media (max-width: 460px) { .hero, .shopTop { grid-template-columns: 110px minmax(0, 1fr); gap: 12px; } .vw { font-size: 13px; } .tabs { gap: 2px; } }
 @media (prefers-reduced-motion: no-preference) { .fb, .card { animation: rise .22s ease-out; } @keyframes rise { from { transform: translateY(6px); } to { transform: none; } } .bigav svg { animation: bob 3.2s ease-in-out infinite; } @keyframes bob { 50% { transform: translateY(-3px); } } }
 </style>
@@ -469,8 +480,8 @@ body.k .prompt { letter-spacing: -.005em; }
     <div class="modes" id="modes" role="group" aria-label="Quiz type">
       <button class="md" id="m-mix" data-m="mix" aria-pressed="true">Weekly mix<small id="m-mix-sub">Maths, English &amp; science</small></button>
       <button class="md" id="m-spell" data-m="spelling" aria-pressed="false">Spelling test<small>This week's words</small></button>
-      <button class="md" id="m-en" data-m="english" aria-pressed="false" hidden>English words<small>Spell &amp; use them</small></button>
-      <button class="md" id="m-fr" data-m="french" aria-pressed="false" hidden>French vocab<small>Quiz Mon 2 Nov</small></button>
+      <button class="md" id="m-en" data-m="english" aria-pressed="false" hidden>English words<small>Spell, use &amp; define</small></button>
+      <button class="md" id="m-fr" data-m="french" aria-pressed="false" hidden>French<small>Vocab, verbs &amp; listening</small></button>
       <button class="md" id="m-ch" data-m="challenge" aria-pressed="false">Challenge words<small>Extremely hard! Double points</small></button>
       <button class="md" id="m-rev" data-m="revise" aria-pressed="false">Revise a topic<small>Anything you've covered</small></button>
     </div>
@@ -559,7 +570,7 @@ body.k .prompt { letter-spacing: -.005em; }
 
   /* ---------- quiz flow ---------- */
   function newQuiz() {
-    var qm = qMode();
+    var qm = qMode(); setWordHistory(all);
     state.qs = qm ? buildAdaptiveQuiz(state.child, lvl(), 10, all, WEEK.start, genOne, buildQuiz, shuffle, qm) : [];
     state.i = 0; state.answers = []; state.started = false; state.saved = null; state.finishHtml = null;
     render();
@@ -660,10 +671,10 @@ body.k .prompt { letter-spacing: -.005em; }
           '<div class="row"><button class="linkbtn" id="backTopics">\u2190 All topics</button></div>'; })()
       : state.mode === "challenge" ? '<p class="prompt">Challenge words, ' + esc(name()) + '! 10 extremely hard spellings. Can you beat them?</p>' +
         '<p class="small">These are tough on purpose' + (state.child === "millie" ? ', so even grown-ups get them wrong' : ': many adults misspell them') + '. Read the meaning, type the missing word, and tap \u201CHear it\u201D to have the sentence read out. Every correct answer earns double points.</p>' +
-        '<details class="list-box"><summary>Practise the word list first</summary><div class="wordgrid">' + listFor("challenge").words.map(function (w) { return '<span><b>' + esc(w.word) + '</b><br>' + esc(w.meaning) + '</span>'; }).join("") + '</div></details>'
-      : state.mode === "english" || state.mode === "french" ? '<p class="prompt">' + (state.mode === "english" ? 'English words, ' + esc(name()) + '! Spell 10 words you can use in your writing.' : 'French vocab, ' + esc(name()) + '! 10 words and phrases from your list for Monday\u2019s quiz.') + '</p>' +
-        '<p class="small">' + (state.mode === "english" ? 'Read the meaning, then type the missing word. Tap \u201CHear it\u201D to have the sentence read out.' : 'Read the English, then type the French. Accents count, so use the accent buttons. Tap \u201CHear it\u201D to hear it in French.') + '</p>' +
-        '<details class="list-box"><summary>Practise the word list first</summary><div class="wordgrid">' + KLISTS[state.mode].words.map(function (w) { return '<span><b>' + esc(state.mode === "french" && w.group !== "Verbs" ? w.gap.replace("_____", w.word) : w.word) + '</b><br>' + esc(w.meaning) + '</span>'; }).join("") + '</div></details>'
+        '<details class="list-box"><summary>Practise this quiz\u2019s words first</summary><div class="wordgrid">' + quizWords().map(function (w) { return '<span><b>' + esc(w.word) + '</b><br>' + esc(w.meaning) + '</span>'; }).join("") + '</div></details>'
+      : state.mode === "english" || state.mode === "french" ? '<p class="prompt">' + (state.mode === "english" ? 'English words, ' + esc(name()) + '! 10 words to use in your writing: spell them, use them, know what they mean.' : 'French, ' + esc(name()) + '! 10 questions: this week\u2019s school list plus vocab, verbs, le/la and listening.') + '</p>' +
+        '<p class="small">' + (state.mode === "english" ? 'Mostly new words each time, plus any you missed recently. Words you get right three times in a row are mastered.' : 'Accents count, so use the accent buttons. Tap \u201CHear it\u201D to hear the French. Words you get right three times in a row are mastered.') + '</p>' +
+        '<details class="list-box"><summary>' + (state.mode === "english" ? 'Practise this quiz\u2019s words first' : 'Practise this week\u2019s school list first') + '</summary><div class="wordgrid">' + (state.mode === "english" ? quizWords() : KLISTS.french.words).map(function (w) { return '<span><b>' + esc(state.mode === "french" && w.group !== "Verbs" ? w.gap.replace("_____", w.word) : w.word) + '</b><br>' + esc(w.meaning) + '</span>'; }).join("") + '</div></details>'
       : state.mode === "spelling" ? '<p class="prompt">Spelling test, ' + esc(name()) + '! Spell all 10 of this week\u2019s words.</p>' +
         '<p class="small">Type each word into the gap. Tap \u201CHear it\u201D to have the sentence read out.</p>' +
         '<details class="list-box"><summary>Practise the word list first</summary><div class="wordgrid">' + SPELLING.words.map(function (w) { return '<span><b>' + esc(w.word) + '</b><br>' + esc(w.meaning) + '</span>'; }).join("") + '</div></details>'
@@ -680,6 +691,11 @@ body.k .prompt { letter-spacing: -.005em; }
     var bt = document.getElementById("backTopics"); if (bt) bt.addEventListener("click", function () { state.reviseTopic = null; showMode(); render(); });
   }
 
+  function quizWords() {
+    var L = state.mode === "english" ? KLISTS.english : KLISTS["challenge_" + state.child], out = [];
+    state.qs.forEach(function (q) { var k = wbKey(q.gen); if (!k) return; var e = klistEntry(state.mode === "english" ? "english" : "challenge_" + state.child, k[1]); if (e && out.indexOf(e) < 0) out.push(e); });
+    return out;
+  }
   function dots() {
     return '<div class="dots" aria-hidden="true">' + state.qs.map(function (q, n) {
       var a = state.answers[n];
@@ -693,6 +709,7 @@ body.k .prompt { letter-spacing: -.005em; }
       (state.mode === "match" ? matchBar() : dots()) +
       (q.comeback && !a ? '<p class="cbnote">You missed this ' + (q.type === "type" ? 'word' : 'skill') + ' earlier this week. Let’s see if it’s stuck now!</p>' : '') +
       (q.type === "type" ? typeBlock(q, a) : '<p class="prompt">' + esc(q.prompt).replace(/\n/g, "<br>") + '</p>' +
+      (q.listen ? (canSpeak() && !a ? '<div class="row"><button class="btn hear" type="button" id="hear">Hear it in French</button></div>' : '<p class="sentence">' + esc(q.fallback) + '</p>') : '') +
       (q.html ? '<div class="ftwrap">' + q.html + '</div>' : "") +
       '<div class="opts">' + q.options.map(function (o, n) {
         var cls = "";
@@ -736,7 +753,7 @@ body.k .prompt { letter-spacing: -.005em; }
       (a ? ' disabled value="' + esc(a.chosen) + '" class="' + (a.ok ? "right" : "wrong") + '"' : '') + '>' +
       (a ? '' : '<button class="btn" type="submit">Check</button>') +
       (canSpeak() ? '<button class="btn hear" type="button" id="hear">' + (q.lang === "fr-FR" ? 'Hear it in French' : 'Hear it') + '</button>' : '') + '</form>';
-    if (q.lang === "fr-FR" && !a) h += '<div class="accents" aria-label="Accent letters">' + ["é", "è", "ê", "à", "â", "ç", "î", "ô", "û", "ù", "ë"].map(function (c) { return '<button type="button" class="acc" data-c="' + c + '">' + c + '</button>'; }).join("") + '</div>';
+    if (q.lang === "fr-FR" && !a) h += '<div class="accents" aria-label="Accent letters">' + ["é", "è", "ê", "à", "â", "ç", "î", "ô", "û", "ù", "ë", "œ"].map(function (c) { return '<button type="button" class="acc" data-c="' + c + '">' + c + '</button>'; }).join("") + '</div>';
     return h;
   }
   function markWord(attempt, word) {
@@ -856,6 +873,14 @@ body.k .prompt { letter-spacing: -.005em; }
       var pct = Math.round(t.right / t.total * 100);
       return '<div class="tp"><span>' + esc(t.topic) + '</span><b style="text-align:right">' + t.right + '/' + t.total + '</b><div class="bar t"><i style="width:' + pct + '%"></i></div></div>';
     }).join("") : '<p class="small">Topic results build up as quizzes are finished.</p>') + '</section>';
+    setWordHistory(all);
+    h += '<section class="card sect"><h2>My words</h2><p class="small">Get a word right three times in a row to master it. Words you miss come back until you win them back.</p>' + wbProgress(state.child).map(function (b) {
+      var pct = function (n) { return Math.round(n / b.total * 1000) / 10; };
+      return '<div class="mw"><div class="mw-h"><b>' + esc(b.title) + '</b><span>' + b.mastered + ' of ' + b.total + ' mastered</span></div>' +
+        '<div class="mw-bar" role="img" aria-label="' + b.mastered + ' mastered, ' + b.learning + ' learning, ' + b.winback + ' to win back, ' + b.unseen + ' still to discover"><i class="m" style="width:' + pct(b.mastered) + '%"></i><i class="l" style="width:' + pct(b.learning) + '%"></i><i class="w" style="width:' + pct(b.winback) + '%"></i></div>' +
+        '<div class="mw-key"><span><i class="m"></i>Mastered ' + b.mastered + '</span><span><i class="l"></i>Learning ' + b.learning + '</span><span><i class="w"></i>To win back ' + b.winback + '</span><span><i></i>To discover ' + b.unseen + '</span></div>' +
+        (b.winbackWords.length ? '<div class="mw-wb">' + b.winbackWords.slice(0, 24).map(function (w) { return '<span class="chip wk">' + esc(w) + '</span>'; }).join("") + '</div>' : '') + '</div>';
+    }).join("") + '</section>';
     h += '<section class="card sect"><h2>Skills to win back</h2>' + (weak.length ? '<p class="small">Missed this week and not yet got right twice in a row. These come back as comeback questions.</p><div class="list">' + weak.map(function (s) {
       return '<div class="li"><span>' + esc(s.topic) + '</span><span>' + s.wrong + ' missed · ' + s.right + ' right</span></div>';
     }).join("") + '</div>' : '<p class="small">Nothing to win back right now.</p>') + '</section>';
@@ -1183,6 +1208,7 @@ body.k .prompt { letter-spacing: -.005em; }
   }
   function kickOff(L) {
     if (state.kicking || !db) return; state.kicking = true; state.lgMsg = "";
+    setWordHistory(all);
     var qs = buildAdaptiveQuiz("kristan", L.level, 5, all, WEEK.start, genOne, buildQuiz, shuffle, "mix").slice(0, 5);
     var clean = JSON.parse(JSON.stringify(qs));
     db.collection("match_starts").add({ child: "kristan", questions: clean }).then(function (res) {
