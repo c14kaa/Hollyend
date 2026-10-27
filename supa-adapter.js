@@ -10,7 +10,8 @@
   };
   var sb = window.supabase.createClient(URL, KEY, { auth: { persistSession: true, autoRefreshToken: true } });
   var COLS = {
-    attempts: { child: 1, mode: 1, topic: 1, week: 1, level: 1, at: 1, score: 1, total: 1, points: 1, bestRun: "best_run", comebackRight: "comeback_right", comebackTotal: "comeback_total", masteredAny: "mastered_any", results: 1, missed: 1 },
+    attempts: { child: 1, mode: 1, topic: 1, week: 1, level: 1, at: 1, score: 1, total: 1, points: 1, bestRun: "best_run", comebackRight: "comeback_right", comebackTotal: "comeback_total", masteredAny: "mastered_any", results: 1, missed: 1, playDay: "play_day" },
+    match_starts: { child: 1, playDay: "play_day", startedAt: "started_at", questions: 1, answers: 1 },
     purchases: { child: 1, item: 1, cost: 1, at: 1 },
     profiles: { child: 1, equipped: 1, updatedAt: "updated_at" },
     bank: { child: 1, pence: 1, points: 1, at: 1, week: 1, status: 1, paidAt: "paid_at", cancelledAt: "cancelled_at" }

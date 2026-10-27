@@ -25,8 +25,31 @@ var BADGES = [
   { id: "core", name: "Levelling up", desc: "Score 7+ on Core" },
   { id: "challenge", name: "Challenge accepted", desc: "Score 7+ on Challenge" },
   { id: "alllevels", name: "Full set", desc: "Finish Warm-up, Core and Challenge in one week" },
-  { id: "improver", name: "Most improved", desc: "Beat your first score of the week by 3 or more" }
+  { id: "improver", name: "Most improved", desc: "Beat your first score of the week by 3 or more" },
+  { id: "streak3", name: "Three in a row", desc: "Keep a 3-day streak" },
+  { id: "streak7", name: "Week-long streak", desc: "Keep a 7-day streak" },
+  { id: "streak14", name: "Fortnight streak", desc: "Keep a 14-day streak" },
+  { id: "streak30", name: "Unstoppable", desc: "Keep a 30-day streak" }
 ];
+
+/* ===== Daily streak =====
+   A day counts only when a quiz of at least 5 questions is finished with 70% or more (7/10, 4/5).
+   Days are Abu Dhabi days, and the server stamps every result with its own time, so they can't be backdated. */
+var STREAK_RULE = { minQuestions: 5, minPct: 70 };
+function dubaiDay(t) { var ms = typeof t === "number" ? t : Date.parse(t); return new Date(ms + 4 * 3600e3).toISOString().slice(0, 10); }
+function addDays(day, n) { var d = new Date(day + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+function qualifies(a) { return a && a.total >= STREAK_RULE.minQuestions && a.score * 100 >= a.total * STREAK_RULE.minPct; }
+function streakInfo(all, child, now) {
+  var days = {};
+  all.forEach(function (a) { if (a.child === child && qualifies(a)) days[a.playDay || dubaiDay(a.at)] = 1; });
+  var today = dubaiDay(now == null ? Date.now() : now), doneToday = !!days[today];
+  var cur = 0, d = doneToday ? today : addDays(today, -1);
+  while (days[d]) { cur++; d = addDays(d, -1); }
+  var best = 0, keys = Object.keys(days).sort(), run = 0, prev = null;
+  keys.forEach(function (k) { run = prev && addDays(prev, 1) === k ? run + 1 : 1; best = Math.max(best, run); prev = k; });
+  var week = []; for (var i = 6; i >= 0; i--) { var x = addDays(today, -i); week.push({ day: x, ok: !!days[x], today: i === 0 }); }
+  return { current: cur, best: best, doneToday: doneToday, atRisk: !doneToday && cur > 0, today: today, week: week };
+}
 
 function byTime(a, b) { return String(a.at).localeCompare(String(b.at)); }
 function childAttempts(all, child) { return all.filter(function (a) { return a.child === child; }).sort(byTime); }
@@ -126,6 +149,7 @@ function awards(all, child, weekStart) {
   var levelsDone = {}; week.forEach(function (a) { levelsDone[a.level] = 1; });
   var state = skillState(all, child, weekStart);
   var mastered = Object.keys(state).filter(function (k) { return state[k].streak >= 3; });
+  var sk = streakInfo(all, child);
   var earned = {
     first: mine.length >= 1,
     hattrick: week.length >= 3,
@@ -138,10 +162,11 @@ function awards(all, child, weekStart) {
     core: mine.some(function (a) { return a.level >= 2 && a.score >= 7; }),
     challenge: mine.some(function (a) { return a.level === 3 && a.score >= 7; }),
     alllevels: !!(levelsDone[1] && levelsDone[2] && levelsDone[3]),
-    improver: week.length >= 2 && week.slice(1).some(function (a) { return a.score - week[0].score >= 3; })
+    improver: week.length >= 2 && week.slice(1).some(function (a) { return a.score - week[0].score >= 3; }),
+    streak3: sk.best >= 3, streak7: sk.best >= 7, streak14: sk.best >= 14, streak30: sk.best >= 30
   };
   return {
-    points: points, rank: rankFor(child, points), weekCount: week.length, mastered: mastered,
+    streak: sk, points: points, rank: rankFor(child, points), weekCount: week.length, mastered: mastered,
     badges: BADGES.map(function (b) { return { id: b.id, name: b.name, desc: b.desc, earned: !!earned[b.id] }; })
   };
 }
@@ -171,5 +196,5 @@ function topicSummary(all, child, weekStart) {
 
 if (typeof module !== "undefined" && module.exports) module.exports = {
   skillState: skillState, weakSkills: weakSkills, buildAdaptiveQuiz: buildAdaptiveQuiz, scoreAttempt: scoreAttempt,
-  awards: awards, revisionStats: revisionStats, rankFor: rankFor, topicSummary: topicSummary, weekAttempts: weekAttempts, BADGES: BADGES
+  awards: awards, revisionStats: revisionStats, rankFor: rankFor, topicSummary: topicSummary, weekAttempts: weekAttempts, BADGES: BADGES, streakInfo: streakInfo, dubaiDay: dubaiDay, addDays: addDays, qualifies: qualifies, STREAK_RULE: STREAK_RULE
 };

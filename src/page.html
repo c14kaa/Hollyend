@@ -257,6 +257,102 @@ body.k .stepper .amt { font-size: 52px; }
 .parentbox h3 { margin: 0; font-size: 16px; }
 .req { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 15px; }
 .btn.sm { font-size: 14px; padding: 8px 12px; border-radius: 10px; }
+/* streak */
+.tabs { grid-template-columns: repeat(5, 1fr); }
+.hud { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.streak { display: inline-flex; align-items: center; gap: 6px; background: var(--card); border: 2px solid var(--line); border-radius: 999px; padding: 6px 12px 6px 8px; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.streak svg { width: 24px; height: 24px; flex: none; }
+.streak b { font-family: var(--display); font-size: 22px; line-height: 1; }
+body.k .streak b { font-size: 28px; }
+.streak small { color: var(--muted); font-weight: 400; font-size: 13px; }
+.streak.on { border-color: #ff8a3d; }
+.streak.off svg { filter: grayscale(1); opacity: .45; }
+.streak.risk svg { opacity: .7; }
+.sk { display: flex; flex-direction: column; gap: 10px; border: 1px solid var(--line); border-radius: 14px; padding: 12px; background: var(--card2); }
+.sk.risk { border-color: #ff8a3d; }
+.skt { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; }
+.skt svg { width: 28px; height: 28px; flex: none; }
+.skdays { display: flex; gap: 4px; }
+.skd { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 12px; color: var(--muted); }
+.skd i { width: 28px; height: 28px; border-radius: 50%; background: var(--line); display: grid; place-items: center; font-style: normal; font-weight: 700; color: #2a1200; }
+.skd.ok i { background: #ff8a3d; }
+.skd.today i { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* journey */
+.jhead { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.jt { margin: 0; font-family: var(--display); font-size: 26px; line-height: 1.1; }
+.jstars { display: flex; flex-direction: column; align-items: flex-end; }
+.jstars b { font-family: var(--display); font-size: 40px; line-height: 1; color: var(--gold); font-variant-numeric: tabular-nums; }
+.jstars span { font-size: 13px; color: var(--muted); }
+.jline { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; margin-bottom: 6px; flex-wrap: wrap; }
+.jmap { padding: 10px 8px 14px; background: #060823; }
+.jmap svg { width: 100%; height: auto; display: block; }
+.jmap .pn { font: 700 14px var(--body); fill: #f3f1ff; }
+.jmap .pn.lock { fill: #8b90c4; }
+.jmap .ps { font: 400 12px var(--body); fill: #b3b7e3; }
+.jmap .tap { cursor: pointer; }
+.jmap .tap:focus-visible { outline: none; }
+.jmap .tap:focus-visible circle:first-child { stroke: var(--accent); stroke-width: 2; }
+.postcard { background: linear-gradient(160deg, #1c2363, #2a1f5c); border-color: var(--accent2); }
+.facts { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+@media (prefers-reduced-motion: no-preference) { .rocket { animation: hover 2.4s ease-in-out infinite; } @keyframes hover { 50% { opacity: .85; } } }
+/* league: a clean pro-style look for Kristan */
+.lg-card { background: #0b130f; border: 1px solid #1f3328; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.3); }
+.lg-h { display: flex; justify-content: space-between; align-items: flex-end; gap: 8px; flex-wrap: wrap; }
+.lg-h h2, .lg-sub { font-family: var(--display); font-size: 36px; font-weight: 600; text-transform: uppercase; margin: 0; line-height: .9; letter-spacing: .02em; }
+.lg-sub { font-size: 26px; }
+.lg-kicker { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.fixture { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 10px; padding: 6px 0; }
+.fx-team { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; font-weight: 700; font-size: 15px; line-height: 1.2; min-width: 0; }
+.fx-team .crest svg { width: 52px; height: 62px; display: block; }
+.fx-mid { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.fx-ft { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.fx-score { font-family: var(--display); font-weight: 600; font-size: 54px; line-height: 1; font-variant-numeric: tabular-nums; padding: 6px 14px 0; background: #050a07; border: 1px solid #1f3328; border-radius: 10px; white-space: nowrap; }
+.fx-score i { font-style: normal; color: var(--muted); padding: 0 6px; }
+.fx-vs { font-family: var(--display); font-size: 34px; color: var(--muted); line-height: 1; }
+.lg-res { margin: 0; text-align: center; font-weight: 700; }
+.lg-res.W { color: #1fc77a; } .lg-res.D { color: #c3ccd6; } .lg-res.L { color: #ef6a6a; }
+.lg-rules { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; font-size: 15px; color: #d7e6dc; }
+.lt-wrap { overflow-x: auto; margin: 0 -16px; }
+table.lt { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 14px; }
+.lt th { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; text-align: center; padding: 8px 5px; border-bottom: 1px solid #1f3328; white-space: nowrap; }
+.lt td { padding: 8px 5px; text-align: center; border-bottom: 1px solid #16251d; white-space: nowrap; }
+.lt th.club, .lt td.club { text-align: left; }
+.lt th.pos, .lt td.pos { padding-left: 16px; text-align: left; width: 48px; font-weight: 700; }
+.lt tr.up td.pos { box-shadow: inset 3px 0 0 #1fc77a; }
+.lt tr.down td.pos { box-shadow: inset 3px 0 0 #ef4b4b; }
+.lt tr.me td { background: rgba(255,210,63,.11); }
+.lt tr.me .cn { color: var(--accent); font-weight: 700; }
+.lt td:last-child, .lt th:last-child { padding-right: 16px; }
+.cc { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.cn { overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+.mc { display: inline-flex; flex: none; }
+.mc svg { width: 18px; height: 22px; display: block; }
+.pts { font-weight: 700; color: #fff; }
+.mv { font-size: 9px; color: var(--muted); margin-left: 2px; }
+.mv.u { color: #1fc77a; } .mv.d { color: #ef4b4b; }
+.form { display: inline-flex; gap: 3px; }
+.form i { width: 18px; height: 18px; border-radius: 50%; font-style: normal; font-size: 10px; font-weight: 700; display: inline-grid; place-items: center; color: #04110a; }
+.form i.W { background: #1fc77a; } .form i.D { background: #8b98a5; } .form i.L { background: #ef4b4b; color: #fff; }
+.lg-key { display: flex; gap: 14px; font-size: 12.5px; color: var(--muted); }
+.lg-key i.k { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+.lg-key i.up { background: #1fc77a; } .lg-key i.down { background: #ef4b4b; }
+.rs { display: flex; flex-direction: column; }
+.rsr { display: grid; grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr); align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid #16251d; font-size: 14px; }
+.rsr:last-child { border-bottom: none; }
+.rsr.me { color: var(--accent); font-weight: 700; }
+.rh { display: flex; justify-content: flex-end; align-items: center; gap: 6px; text-align: right; min-width: 0; }
+.ra { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.rsc { text-align: center; font-family: var(--display); font-size: 22px; line-height: 1; background: #050a07; border-radius: 6px; padding: 4px 0 1px; font-variant-numeric: tabular-nums; }
+.fl { display: flex; flex-direction: column; }
+.flr { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 7px 0; border-bottom: 1px solid #16251d; font-size: 14px; }
+.flr:last-child { border-bottom: none; }
+.fd { color: var(--muted); font-size: 13px; }
+.fo { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.ha { font-size: 11px; color: var(--muted); border: 1px solid #2a4335; border-radius: 4px; padding: 0 4px; }
+.fr { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.mr { margin-bottom: 4px; }
+@media (max-width: 560px) { .lt .hs { display: none; } .cn { max-width: 120px; } .fx-score { font-size: 46px; } .lg-h h2 { font-size: 30px; } }
+@media (max-width: 400px) { .lt .hf { display: none; } }
 @media (max-width: 460px) { .hero, .shopTop { grid-template-columns: 110px minmax(0, 1fr); gap: 12px; } .vw { font-size: 13px; } .tabs { gap: 2px; } }
 @media (prefers-reduced-motion: no-preference) { .fb, .card { animation: rise .22s ease-out; } @keyframes rise { from { transform: translateY(6px); } to { transform: none; } } .bigav svg { animation: bob 3.2s ease-in-out infinite; } @keyframes bob { 50% { transform: translateY(-3px); } } }
 </style>
@@ -284,7 +380,7 @@ body.k .stepper .amt { font-size: 52px; }
   <header>
     <div class="top">
       <div><div class="week"><span id="week"></span> · <button class="signout" id="signout" type="button">Sign out</button></div><h1 id="title"><em id="who">Millie</em>'s Mission Control</h1></div>
-      <div class="wallet" id="wallet" aria-live="polite"></div>
+      <div class="hud"><div class="streak off" id="streak" aria-live="polite"></div><div class="wallet" id="wallet" aria-live="polite"></div></div>
     </div>
     <div class="kids" role="group" aria-label="Choose who's playing">
       <button class="kid m" id="pick-millie" aria-pressed="true"><span class="kav" id="kav-millie"></span><span class="t">Millie<small id="krank-millie">Year 5 · 5G</small></span></button>
@@ -292,6 +388,7 @@ body.k .stepper .amt { font-size: 52px; }
     </div>
     <nav class="tabs" aria-label="Sections">
       <button class="vw" id="v-quiz" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7 4 20 12 7 20 7 4"/></svg>Play</button>
+      <button class="vw" id="v-world" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6-5.3-6-11a6 6 0 0 1 12 0c0 5.7-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg><span id="v-world-l">Journey</span></button>
       <button class="vw" id="v-shop" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>Shop</button>
       <button class="vw" id="v-bank" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg>Bank</button>
       <button class="vw" id="v-prog" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg>Awards</button>
@@ -317,6 +414,8 @@ body.k .stepper .amt { font-size: 52px; }
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
 <script src="supa-adapter.js"></script>
+<script src="journey.js"></script>
+<script src="league.js"></script>
 <script>
 /*__ENGINE__*/
 /*__PROGRESS__*/
@@ -325,7 +424,7 @@ body.k .stepper .amt { font-size: 52px; }
 <script>
 (function () {
   var state = { child: "millie", mode: "mix", level: 1, view: "quiz", qs: [], i: 0, answers: [], started: false, saved: null,
-    shop: { cat: null, tryOn: null, confirm: null, msg: "" }, bankAmt: 50, bankConfirm: false, payConfirm: null, bankMsg: "" };
+    shop: { cat: null, tryOn: null, confirm: null, msg: "" }, bankAmt: 50, bankConfirm: false, payConfirm: null, bankMsg: "", matches: [], postcard: null, match: null };
   var purchases = [], bankRows = [], profiles = {};
   var LV = { 1: "Warm-up", 2: "Core", 3: "Challenge" };
   var app = document.getElementById("app");
@@ -349,10 +448,12 @@ body.k .stepper .amt { font-size: 52px; }
       }, function () { dbState = "off"; refresh(); });
       db.collection("purchases").onSnapshot(function (snap) { purchases = snap.docs.map(function (d) { return d.data(); }).filter(Boolean); refresh(); }, function () {});
       db.collection("bank").onSnapshot(function (snap) { bankRows = snap.docs.map(function (d) { var x = d.data() || {}; return Object.assign({ id: d.id }, x); }); refresh(); }, function () {});
+      db.collection("match_starts").onSnapshot(function (snap) { state.matches = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("profiles").onSnapshot(function (snap) { profiles = {}; snap.docs.forEach(function (d) { profiles[d.id] = d.data(); }); refresh(); }, function () {});
     }, function () { dbState = "off"; refresh(); });
   }
-  function refresh() { chrome(); if (state.view !== "quiz" || !state.started) render(); }
+  function busy() { return state.started && (state.view === "quiz" || state.mode === "match"); }
+  function refresh() { chrome(); if (!busy()) render(); }
   function equipped(c) { return (profiles[c || state.child] || {}).equipped || {}; }
   function myWallet(c) { return wallet(c || state.child, all, purchases, bankRows, new Date()); }
   var ICON = {
@@ -362,6 +463,7 @@ body.k .stepper .amt { font-size: 52px; }
   function chrome() {
     var w = myWallet();
     document.getElementById("wallet").innerHTML = ICON[state.child] + '<b>' + w.balance + '</b><small>points</small>';
+    var sc = streakChip(); var se = document.getElementById("streak"); se.className = "streak " + sc.cls; se.innerHTML = sc.html; se.title = "Daily streak: finish a quiz with 70% or more each day";
     ["millie", "kristan"].forEach(function (c) {
       document.getElementById("kav-" + c).innerHTML = avatarSVG(c, equipped(c), "av");
       var aw = awards(all, c, WEEK.start);
@@ -375,7 +477,7 @@ body.k .stepper .amt { font-size: 52px; }
     db.collection("attempts").add(att).then(function () { state.saved = "ok"; var s = document.getElementById("savestatus"); if (s) s.textContent = "Result saved."; })
       .catch(function (e) {
         state.saved = "fail"; var s = document.getElementById("savestatus");
-        state.failMsg = e && e.code === "invalid_argument" ? "This result couldn't be saved: this account can view the quiz but not save results. Ask Dad to give it edit access." : "This result couldn't be saved right now. The score above still counts on screen.";
+        state.failMsg = e && /Too fast/.test(e.message || "") ? "That result was saved too quickly after the last one, so it didn\u2019t count. Take your time over each question." : e && /already been played/.test(e.message || "") ? "Today\u2019s match has already been played." : e && e.code === "invalid_argument" ? "This result couldn't be saved: this account can view the quiz but not save results. Ask Dad to give it edit access." : "This result couldn't be saved right now. The score above still counts on screen.";
         if (s) s.textContent = state.failMsg;
       });
   }
@@ -398,6 +500,8 @@ body.k .stepper .amt { font-size: 52px; }
     document.getElementById("pick-millie").setAttribute("aria-pressed", c === "millie");
     document.getElementById("pick-kristan").setAttribute("aria-pressed", c === "kristan");
     chrome();
+    document.getElementById("v-world-l").textContent = c === "millie" ? "Journey" : "League";
+    state.postcard = null; state.lgMsg = ""; state.match = null;
     var ok = c === "millie" ? ["mix", "spelling", "challenge", "revise"] : ["mix", "english", "french", "challenge", "revise"];
     state.reviseTopic = null;
     if (ok.indexOf(state.mode) < 0) state.mode = "mix";
@@ -418,7 +522,7 @@ body.k .stepper .amt { font-size: 52px; }
     document.getElementById("focus").innerHTML = L ? "<b>" + esc(L.label) + ":</b> " + L.words.length + " words" : "<b>This week:</b> " + WEEK[state.child].focus.map(esc).join(" · ");
   }
   function listFor(m) { return m === "spelling" ? SPELLING : (m === "english" || m === "french") ? KLISTS[m] : m === "challenge" ? KLISTS["challenge_" + state.child] : null; }
-  function lvl() { return state.mode === "challenge" ? 3 : state.level; }
+  function lvl() { return state.mode === "match" ? state.matchLevel : state.mode === "challenge" ? 3 : state.level; }
   function setMode(m) { state.mode = m; state.reviseTopic = null; showMode(); newQuiz(); }
   function qMode() { return state.mode === "revise" ? (state.reviseTopic ? "revise:" + state.reviseTopic : null) : state.mode; }
   function showLevels() {
@@ -432,7 +536,10 @@ body.k .stepper .amt { font-size: 52px; }
     newQuiz();
   }
   function setView(v) {
+    var leaving = state.mode === "match" && v !== "world";
     state.view = v;
+    document.getElementById("v-world").setAttribute("aria-pressed", v === "world");
+    if (v === "world") state.postcard = null;
     document.getElementById("v-quiz").setAttribute("aria-pressed", v === "quiz");
     document.getElementById("v-shop").setAttribute("aria-pressed", v === "shop");
     document.getElementById("v-bank").setAttribute("aria-pressed", v === "bank");
@@ -440,12 +547,17 @@ body.k .stepper .amt { font-size: 52px; }
     document.getElementById("focus").hidden = v !== "quiz";
     showLevels();
     document.getElementById("modes").hidden = v !== "quiz";
+    if (leaving) return leaveMatch();
     render();
   }
   function render() {
     if (state.view === "progress") return progressView();
     if (state.view === "shop") return shopView();
     if (state.view === "bank") return bankView();
+    if (state.view === "world") {
+      if (state.mode === "match" && state.started) return state.i >= state.qs.length ? finish() : questionView();
+      return state.child === "millie" ? journeyView() : leagueView();
+    }
     if (state.mode === "revise" && !state.reviseTopic) return libraryView();
     if (!state.started) return startView();
     if (state.i >= state.qs.length) return finish();
@@ -479,6 +591,7 @@ body.k .stepper .amt { font-size: 52px; }
         '<p class="small">Type each word into the gap. Tap \u201CHear it\u201D to have the sentence read out.</p>' +
         '<details class="list-box"><summary>Practise the word list first</summary><div class="wordgrid">' + SPELLING.words.map(function (w) { return '<span><b>' + esc(w.word) + '</b><br>' + esc(w.meaning) + '</span>'; }).join("") + '</div></details>'
       : '<p class="prompt">Ready, ' + esc(name()) + '? 10 questions on ' + LV[state.level] + ' level.</p>') +
+      streakBlock() + teaser() +
       (cb ? '<p class="cbnote">' + cb + ' comeback question' + (cb > 1 ? 's' : '') + ' waiting: ' + (listFor(state.mode) ? 'words' : 'skills') + ' you missed earlier this week. Get them right for bonus points!</p>' : '') +
       '<p class="small">10 points per correct answer' + (lvl() > 1 ? ' × ' + (lvl() === 2 ? '1.5' : '2') + (state.mode === "challenge" ? ' for challenge words' : ' on ' + LV[lvl()]) : '') + ', +5 for each comeback, +20 for a perfect score.</p>' +
       '<div class="row"><button class="btn" id="go">Start the quiz</button></div>' +
@@ -486,6 +599,7 @@ body.k .stepper .amt { font-size: 52px; }
     app.innerHTML = h;
     document.getElementById("go").addEventListener("click", function () { state.started = true; render(); });
     document.getElementById("toShop").addEventListener("click", function () { setView("shop"); });
+    var tw = document.getElementById("toWorld"); if (tw) tw.addEventListener("click", function () { setView("world"); });
     var bt = document.getElementById("backTopics"); if (bt) bt.addEventListener("click", function () { state.reviseTopic = null; showMode(); render(); });
   }
 
@@ -498,7 +612,7 @@ body.k .stepper .amt { font-size: 52px; }
   function questionView() {
     var q = state.qs[state.i], a = state.answers[state.i];
     var h = '<section class="card" aria-live="polite">' +
-      '<div class="meta"><span class="row" style="gap:6px"><span class="pill">' + esc(q.topic) + '</span>' + (q.comeback ? '<span class="pill cb">Comeback</span>' : '') + '</span><span>Question ' + (state.i + 1) + ' of ' + state.qs.length + '</span></div>' +
+      '<div class="meta"><span class="row" style="gap:6px"><span class="pill">' + esc(q.topic) + '</span>' + (q.comeback ? '<span class="pill cb">Comeback</span>' : '') + '</span><span>' + (state.mode === "match" ? 'Matchday ' + state.match.matchday + ' · ' : '') + 'Question ' + (state.i + 1) + ' of ' + state.qs.length + '</span></div>' +
       dots() +
       (q.comeback && !a ? '<p class="cbnote">You missed this ' + (q.type === "type" ? 'word' : 'skill') + ' earlier this week. Let’s see if it’s stuck now!</p>' : '') +
       (q.type === "type" ? typeBlock(q, a) : '<p class="prompt">' + esc(q.prompt).replace(/\n/g, "<br>") + '</p>' +
@@ -580,15 +694,16 @@ body.k .stepper .amt { font-size: 52px; }
   function answer(o) {
     var q = state.qs[state.i];
     state.answers[state.i] = { chosen: o, ok: q.type === "type" ? norm(o) === norm(q.answer) : o === q.answer };
+    if (state.mode === "match") sendMatchAnswer();
     render();
   }
 
   function finish() {
     var level = lvl(), sc = scoreAttempt(state.qs, state.answers, level);
     if (state.finishHtml) { app.innerHTML = state.finishHtml; return bindFinish(); }
-    var before = awards(all, state.child, WEEK.start);
+    var before = awards(all, state.child, WEEK.start), jBefore = journeyState(all, "millie");
     var att = {
-      child: state.child, mode: state.mode, topic: state.mode === "revise" ? state.reviseTopic : null, week: WEEK.start, level: level, at: new Date().toISOString(),
+      child: state.child, mode: state.mode, topic: state.mode === "revise" ? state.reviseTopic : null, playDay: lgToday(Date.now()), week: WEEK.start, level: level, at: new Date().toISOString(),
       score: sc.score, total: sc.total, points: sc.points, bestRun: sc.bestRun, comebackRight: sc.comebackRight, comebackTotal: sc.comebackTotal,
       results: state.qs.map(function (q, i) { return { gen: q.gen, topic: q.topic, label: q.label || q.topic, prompt: q.type === "type" ? q.sentence : q.prompt, ok: state.answers[i].ok, chosen: state.answers[i].chosen, answer: q.answer, comeback: !!q.comeback }; }),
       missed: state.qs.filter(function (q, i) { return !state.answers[i].ok; }).map(function (q) {
@@ -599,6 +714,7 @@ body.k .stepper .amt { font-size: 52px; }
     att.masteredAny = awards(withThis, state.child, WEEK.start).mastered.length > 0;
     var after = awards(withThis, state.child, WEEK.start);
     if (state.saved === null) {
+      if (state.mode === "match") { state.saved = "saving"; state.matchChain.then(function () { state.saved = null; save(att); }); } else
       save(att);
       all = all.concat([att]); /* count it now; the saved copy replaces this when it syncs back */
       chrome();
@@ -608,15 +724,19 @@ body.k .stepper .amt { font-size: 52px; }
     var right = sc.score, n = sc.total;
     var missed = state.qs.map(function (q, i) { return { q: q, a: state.answers[i] }; }).filter(function (x) { return !x.a.ok; });
     var topics = {}; missed.forEach(function (x) { var t = x.q.label || x.q.topic; topics[t] = (topics[t] || 0) + 1; });
-    var msg = right === n ? "Perfect score! Try the next level up." : right >= 8 ? "Brilliant, " + name() + "! Have a look at the ones you missed." : right >= 5 ? "Good effort. Read through the ones you missed, then have another go." : "Keep going. Go through the explanations below with a grown-up, then try again.";
-    var h = '<section class="card"><div class="meta"><span class="pill">' + (state.mode === "revise" ? "Revision: " + revTopic(state.child, state.reviseTopic).title : state.mode === "challenge" ? "Challenge words" : listFor(state.mode) ? listFor(state.mode).label : LV[level]) + '</span><span id="savestatus" class="status">' + (state.saved === "off" ? "Results can't be saved in this view." : "Saving result…") + '</span></div>' +
+    var isMatch = state.mode === "match", skNow = streakInfo(all, state.child), jAfter = journeyState(all, "millie");
+    var extra = (qualifies(att) ? '<p class="cbnote">' + FLAME.replace('<svg', '<svg style="width:20px;height:20px;vertical-align:-4px"') + ' ' + (skNow.current > 1 ? skNow.current + '-day streak!' : 'Today counts towards your streak!') + '</p>' : '<p class="small">Score 70% or more (' + Math.ceil(n * 0.7) + ' out of ' + n + ') on a quiz today to count towards your streak.</p>') +
+      (state.child === "millie" && jAfter.reached > jBefore.reached ? '<p class="cbnote">Your rocket reached ' + esc(jAfter.at) + '! A new postcard is waiting on your Journey.</p>' : '') +
+      (state.child === "millie" && jAfter.next && jAfter.reached === jBefore.reached ? '<p class="small">+' + sc.score + ' stars of fuel. ' + jAfter.toNext + ' more to reach ' + esc(jAfter.next.name) + '.</p>' : '');
+    var msg = isMatch ? (right >= 4 ? "Great match, " + name() + "!" : right >= 2 ? "Battled hard. Check the ones you missed." : "Tough game. Read the explanations, and you\u2019ll be ready tomorrow.") : right === n ? "Perfect score! Try the next level up." : right >= 8 ? "Brilliant, " + name() + "! Have a look at the ones you missed." : right >= 5 ? "Good effort. Read through the ones you missed, then have another go." : "Keep going. Go through the explanations below with a grown-up, then try again.";
+    var h = (isMatch ? matchReport(sc) : '') + '<section class="card"><div class="meta"><span class="pill">' + (isMatch ? "Matchday " + state.match.matchday : state.mode === "revise" ? "Revision: " + revTopic(state.child, state.reviseTopic).title : state.mode === "challenge" ? "Challenge words" : listFor(state.mode) ? listFor(state.mode).label : LV[level]) + '</span><span id="savestatus" class="status">' + (state.saved === "off" ? "Results can't be saved in this view." : "Saving result…") + '</span></div>' +
       '<p class="score">' + right + '/' + n + '</p><p class="done-msg">' + esc(msg) + '</p>' +
       '<p class="earn">+' + sc.points + ' points' + (sc.comebackTotal ? ' · ' + sc.comebackRight + '/' + sc.comebackTotal + ' comebacks won' : '') + '</p>' +
       (rankUp ? '<p class="cbnote">New rank: ' + esc(after.rank.name) + '!</p>' : '') +
-      rankBlock(after) +
+      extra + rankBlock(after) +
       '<p class="small">You now have <b style="color:var(--gold)">' + (myWallet().balance) + ' points</b> to spend in the shop or save in the bank.</p>' +
       (newBadges.length ? '<div class="steps-h">New badge' + (newBadges.length > 1 ? 's' : '') + ' unlocked</div><div class="badges">' + newBadges.map(function (b) { return '<div class="bd on new"><b>' + esc(b.name) + '</b><span>' + esc(b.desc) + '</span></div>'; }).join("") + '</div>' : '') +
-      '<div class="row"><button class="btn" id="again">New quiz, new questions</button>' + (state.mode === "revise" ? '<button class="btn ghost" id="goTopics">All topics</button>' : '') + '<button class="btn ghost" id="goShop">Shop</button><button class="btn ghost" id="goBank">Bank</button>' + (!listFor(state.mode) && level < 3 && right >= 8 ? '<button class="btn ghost" id="up">Try ' + LV[level + 1] + '</button>' : "") + '</div>';
+      '<div class="row"><button class="btn" id="again">' + (isMatch ? 'Back to the league' : 'New quiz, new questions') + '</button>' + (state.mode === "revise" ? '<button class="btn ghost" id="goTopics">All topics</button>' : '') + '<button class="btn ghost" id="goShop">Shop</button><button class="btn ghost" id="goBank">Bank</button>' + (!isMatch && !listFor(state.mode) && level < 3 && right >= 8 ? '<button class="btn ghost" id="up">Try ' + LV[level + 1] + '</button>' : "") + '</div>';
     if (missed.length) {
       h += '<div class="steps-h">Questions to look at again</div><div class="review">' + missed.map(function (x) {
         var typed = x.q.type === "type";
@@ -638,7 +758,7 @@ body.k .stepper .amt { font-size: 52px; }
     var st = document.getElementById("savestatus");
     if (st && state.saved === "ok") st.textContent = "Result saved.";
     if (st && state.saved === "fail") st.textContent = state.failMsg;
-    document.getElementById("again").addEventListener("click", newQuiz);
+    document.getElementById("again").addEventListener("click", function () { if (state.mode === "match") { leaveMatch(); window.scrollTo({ top: 0 }); } else newQuiz(); });
     var gt = document.getElementById("goTopics"); if (gt) gt.addEventListener("click", function () { state.reviseTopic = null; state.started = false; state.finishHtml = null; showMode(); render(); });
     var gs = document.getElementById("goShop"); if (gs) gs.addEventListener("click", function () { setView("shop"); });
     var gb = document.getElementById("goBank"); if (gb) gb.addEventListener("click", function () { setView("bank"); });
@@ -793,9 +913,209 @@ body.k .stepper .amt { font-size: 52px; }
     });
   }
 
+  /* ---------- streak ---------- */
+  var FLAME = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 3.5-1.6 5.3-1.6 8 0 1.3.9 2.3 2 2.3 1.4 0 2.1-1.2 1.9-3 2.3 1.6 3.9 4.2 3.9 7A6.2 6.2 0 0 1 12 22.5 6.2 6.2 0 0 1 5.8 16.3c0-4.3 3.3-6.4 4.6-9.6C11 5 11.5 3.6 12 2z" fill="#ff8a3d"/><path d="M12 22.5a3.4 3.4 0 0 1-3.4-3.4c0-2.2 1.9-3.3 2.6-5 .9 1.3 2.6 1.9 3.3 3.6.2.5.3 1 .3 1.4a3.4 3.4 0 0 1-2.8 3.4z" fill="#ffd36b"/></svg>';
+  function streakChip(c) {
+    var sk = streakInfo(all, c || state.child);
+    return { cls: sk.doneToday ? "on" : sk.current ? "risk" : "off", html: FLAME + '<b>' + sk.current + '</b><small>day' + (sk.current === 1 ? '' : 's') + '</small>' };
+  }
+  function streakBlock() {
+    var sk = streakInfo(all, state.child), L = "SMTWTFS";
+    var msg = sk.doneToday ? (sk.current > 1 ? sk.current + '-day streak! Today counts. Come back tomorrow to make it ' + (sk.current + 1) + '.' : 'Streak started! Come back tomorrow to make it 2 days.')
+      : sk.current ? 'Your ' + sk.current + '-day streak is waiting. Finish a quiz today with 70% or more to keep it.'
+      : 'Start a streak: finish any quiz today with 70% or more (7 out of 10).';
+    return '<div class="sk' + (sk.atRisk ? ' risk' : '') + '"><div class="skt">' + FLAME + '<span><b>' + esc(msg) + '</b>' + (sk.best > sk.current ? '<br><span class="small">Best ever: ' + sk.best + ' days</span>' : '') + '</span></div>' +
+      '<div class="skdays" aria-label="Last 7 days">' + sk.week.map(function (d) {
+        return '<span class="skd' + (d.ok ? ' ok' : '') + (d.today ? ' today' : '') + '"><i>' + (d.ok ? '✓' : '') + '</i>' + L[new Date(d.day + "T00:00:00Z").getUTCDay()] + '</span>';
+      }).join("") + '</div></div>';
+  }
+
+  /* ---------- Millie: space journey ---------- */
+  function planetSVG(p, x, y, dim) {
+    var id = "pg-" + (p.id || "earth"), h = '<defs><radialGradient id="' + id + '" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="' + p.color[0] + '"/><stop offset="1" stop-color="' + p.color[1] + '"/></radialGradient></defs>';
+    h += '<circle cx="' + x + '" cy="' + y + '" r="' + (p.r + 1) + '" fill="#060823"/><g opacity="' + (dim ? 0.38 : 1) + '">';
+    if (p.id === "sun") h += '<circle cx="' + x + '" cy="' + y + '" r="' + (p.r + 12) + '" fill="#ffb84d" opacity=".18"/><circle cx="' + x + '" cy="' + y + '" r="' + (p.r + 6) + '" fill="#ffb84d" opacity=".25"/>';
+    if (p.edge) h += '<circle cx="' + x + '" cy="' + y + '" r="' + (p.r + 10) + '" fill="none" stroke="#c9b3ff" stroke-width="1.5" stroke-dasharray="3 4"/>';
+    if (p.rings) h += '<ellipse cx="' + x + '" cy="' + y + '" rx="' + (p.r * 1.9) + '" ry="' + (p.r * 0.5) + '" fill="none" stroke="#e8d39b" stroke-width="4" opacity=".55" transform="rotate(-14 ' + x + ' ' + y + ')"/>';
+    h += '<circle cx="' + x + '" cy="' + y + '" r="' + p.r + '" fill="url(#' + id + ')"/>';
+    if (p.bands) h += '<path d="M' + (x - p.r + 3) + ' ' + (y - 8) + 'h' + (2 * p.r - 6) + 'M' + (x - p.r + 1) + ' ' + (y + 4) + 'h' + (2 * p.r - 2) + 'M' + (x - p.r + 5) + ' ' + (y + 15) + 'h' + (2 * p.r - 10) + '" stroke="#a5683b" stroke-width="3" opacity=".55"/><ellipse cx="' + (x + 9) + '" cy="' + (y + 9) + '" rx="6" ry="3.5" fill="#c4553a" opacity=".8"/>';
+    if (p.rings) h += '<path d="M' + (x - p.r * 1.86) + ' ' + (y + 9) + ' A' + (p.r * 1.9) + ' ' + (p.r * 0.5) + ' -14 0 0 ' + (x + p.r * 1.84) + ' ' + (y - 9) + '" fill="none" stroke="#f5e2a8" stroke-width="4" opacity=".9" transform="rotate(0)"/>';
+    if (p.tilt) h += '<ellipse cx="' + x + '" cy="' + y + '" rx="' + (p.r * 0.35) + '" ry="' + (p.r * 1.5) + '" fill="none" stroke="#bdf3f7" stroke-width="1.5" opacity=".6"/>';
+    if (!p.id) h += '<path d="M' + (x - 12) + ' ' + (y - 6) + 'c5 -6 10 -2 13 -6c2 5 -4 7 -1 11c-5 2 -9 -2 -12 -5zM' + (x + 4) + ' ' + (y + 8) + 'c4 -3 8 -1 10 -4c1 4 -3 8 -7 9c-2 -1 -3 -3 -3 -5z" fill="#3fbf6e" opacity=".9"/>';
+    return h + '</g>';
+  }
+  function journeyView() {
+    var J = journeyState(all, "millie"), S = JOURNEY.stops, nodes = [JOURNEY.start].concat(S);
+    var W = 340, top = 70, dy = 104, H = top + (nodes.length - 1) * dy + 70;
+    var pt = function (i) { return { x: i % 2 === 0 ? 92 : 248, y: top + i * dy }; };
+    var pick = state.postcard == null ? J.reached : state.postcard;
+    var h = '<section class="card"><div class="jhead"><div><span class="small">Millie’s mission</span><h2 class="jt">Journey through the Solar System</h2></div><div class="jstars"><b>' + J.stars + '</b><span>stars of fuel</span></div></div>' +
+      '<p class="small" style="margin:0">Every correct answer is a star of rocket fuel. Collect stars to fly from Earth past every planet to the very edge of the Solar System. Each stop unlocks a postcard of real space facts.</p>' +
+      (J.done ? '<p class="cbnote">You made it to the edge of the Solar System! Every postcard is unlocked.</p>' :
+        '<div><div class="jline"><span>Now: <b>' + esc(J.at) + '</b></span><span>Next: <b>' + esc(J.next.name) + '</b></span></div><div class="bar"><i style="width:' + Math.round(J.frac * 100) + '%"></i></div>' +
+        '<p class="small" style="margin-top:6px">' + J.toNext + ' more correct answer' + (J.toNext === 1 ? '' : 's') + ' to reach ' + esc(J.next.name) + '.</p></div>') + '</section>';
+    if (pick >= 0) {
+      var st = S[pick];
+      h += '<section class="card postcard" id="postcard"><span class="small">Postcard from</span><h2 class="jt">' + esc(st.name) + '</h2><ul class="facts">' + st.facts.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join("") + '</ul></section>';
+    }
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Map of Millie’s journey: ' + (J.reached + 1) + ' of ' + S.length + ' stops reached">';
+    var rnd = lgRng("stars"); for (var s = 0; s < 120; s++) svg += '<circle cx="' + Math.round(rnd() * W) + '" cy="' + Math.round(rnd() * H) + '" r="' + (rnd() < 0.15 ? 1.4 : 0.8) + '" fill="#fff" opacity="' + (0.3 + rnd() * 0.6).toFixed(2) + '"/>';
+    for (var i = 0; i < nodes.length - 1; i++) {
+      var a = pt(i), b = pt(i + 1), done = i <= J.reached;
+      svg += '<line x1="' + a.x + '" y1="' + a.y + '" x2="' + b.x + '" y2="' + b.y + '" stroke="' + (done ? '#ffd36b' : '#5b62b8') + '" stroke-width="' + (done ? 3 : 2) + '" stroke-dasharray="' + (done ? '0' : '5 7') + '" stroke-linecap="round"/>';
+    }
+    nodes.forEach(function (p, i) {
+      var c = pt(i), reached = i === 0 || i - 1 <= J.reached, left = i % 2 === 0, tx = left ? c.x + p.r + 14 : c.x - p.r - 14, anchor = left ? "start" : "end";
+      if (p.rings) tx = left ? c.x + p.r * 1.9 + 8 : c.x - p.r * 1.9 - 8;
+      svg += '<g class="stop' + (i > 0 ? ' tap' : '') + '"' + (i > 0 ? ' data-stop="' + (i - 1) + '" tabindex="0" role="button" aria-label="' + esc(p.name) + (reached ? ', postcard unlocked' : ', ' + p.need + ' stars to unlock') + '"' : '') + '>' +
+        '<circle cx="' + c.x + '" cy="' + c.y + '" r="' + (p.r + 22) + '" fill="transparent"/>' + planetSVG(p, c.x, c.y, !reached) +
+        '<text x="' + tx + '" y="' + (c.y - 2) + '" text-anchor="' + anchor + '" class="pn' + (reached ? '' : ' lock') + '">' + esc(p.name) + '</text>' +
+        '<text x="' + tx + '" y="' + (c.y + 16) + '" text-anchor="' + anchor + '" class="ps">' + (i === 0 ? 'Home' : reached ? 'Postcard unlocked' : p.need + ' ★ to unlock') + '</text></g>';
+    });
+    var from = pt(J.done ? nodes.length - 1 : J.reached + 1), to = pt(J.done ? nodes.length - 1 : J.reached + 2);
+    var rx = from.x + (to.x - from.x) * (J.done ? 0 : J.frac), ry = from.y + (to.y - from.y) * (J.done ? 0 : J.frac);
+    var ang = J.done ? 180 : Math.atan2(to.y - from.y, to.x - from.x) * 180 / Math.PI + 90;
+    if (!J.done && J.frac === 0) { rx += (to.x - from.x) * 0.12; ry += (to.y - from.y) * 0.12; }
+    svg += '<g transform="translate(' + rx.toFixed(1) + ' ' + ry.toFixed(1) + ') rotate(' + ang.toFixed(1) + ')" class="rocket">' +
+      '<path d="M0 14 L-4 24 L4 24 Z" fill="#ffb84d"/><path d="M0 -18 C7 -10 8 0 6 14 H-6 C-8 0 -7 -10 0 -18 Z" fill="#f3f1ff" stroke="#ff6fb5" stroke-width="1.5"/>' +
+      '<circle cx="0" cy="-4" r="3.2" fill="#6fd3ff" stroke="#2a2f7a" stroke-width="1"/><path d="M-6 6 L-11 14 L-6 13 Z M6 6 L11 14 L6 13 Z" fill="#ff6fb5"/></g>';
+    svg += '</svg>';
+    h += '<section class="card jmap">' + svg + '<p class="small" style="margin:0">Tap a planet to read its postcard.</p></section>';
+    app.innerHTML = h;
+    [].forEach.call(app.querySelectorAll(".stop.tap"), function (g) {
+      var go = function () {
+        var i = +g.dataset.stop;
+        if (i > J.reached) { state.jMsg = i; return journeyView(); }
+        state.postcard = i; journeyView(); var pc = document.getElementById("postcard"); if (pc) pc.scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+      g.addEventListener("click", go); g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+    });
+    if (state.jMsg != null) {
+      var st2 = S[state.jMsg], msgEl = document.createElement("p"); msgEl.className = "cbnote"; msgEl.id = "jmsg";
+      msgEl.textContent = st2.name + " is still locked: you need " + st2.need + " stars and you have " + J.stars + ". Keep quizzing!";
+      app.querySelector(".jmap").insertBefore(msgEl, app.querySelector(".jmap").firstChild); state.jMsg = null;
+    }
+  }
+
+  /* ---------- Kristan: league ---------- */
+  var CREST = ["#c8102e", "#034694", "#6cabdd", "#fdb913", "#132257", "#7a263a", "#00a650", "#241f20", "#0057b8", "#95bfe5", "#670e36", "#f78f1e", "#1b458f", "#e03a3e", "#2b2b2b", "#ffffff"];
+  var crestN = 0;
+  function crest(code, big) {
+    var hsh = 0; for (var i = 0; i < code.length; i++) hsh = (hsh * 131 + code.charCodeAt(i) * 7) >>> 0;
+    var a = CREST[hsh % CREST.length], b = CREST[(hsh >>> 5) % CREST.length], sty = (hsh >>> 9) % 3;
+    if (code === LEAGUE.team.code) { a = "#0c4426"; b = "#ffd23f"; sty = 1; }
+    if (b === a) b = a === "#ffffff" ? "#241f20" : "#ffffff";
+    var id = "cr" + (++crestN), shield = "M20 2 L37 8 V24 C37 35 29 42 20 46 C11 42 3 35 3 24 V8 Z";
+    var over = sty === 0 ? '<rect x="20" y="0" width="20" height="48" fill="' + b + '"/>' : sty === 1 ? '<rect x="0" y="17" width="40" height="11" fill="' + b + '"/>' : '<path d="M0 10 L40 38 V48 H30 L0 22 Z" fill="' + b + '"/>';
+    return '<svg viewBox="0 0 40 48" aria-hidden="true"><defs><clipPath id="' + id + '"><path d="' + shield + '"/></clipPath></defs><g clip-path="url(#' + id + ')"><rect width="40" height="48" fill="' + a + '"/>' + over + '</g>' +
+      '<path d="' + shield + '" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.6"/>' +
+      (big ? '<text x="20" y="' + (sty === 1 ? 26 : 29) + '" text-anchor="middle" font-family="Teko, Arial Narrow, sans-serif" font-weight="700" font-size="13" fill="#fff" stroke="#000" stroke-width="2.4" paint-order="stroke">' + esc(code) + '</text>' : '') + '</svg>';
+  }
+  function ord(n) { var s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
+  function fmtDay(day, long) { return new Date(day + "T12:00:00Z").toLocaleDateString("en-GB", long ? { weekday: "long", day: "numeric", month: "long" } : { weekday: "short", day: "numeric", month: "short" }); }
+  function todaysStart() { var t = lgToday(Date.now()); return state.matches.filter(function (m) { return m.child === "kristan" && m.playDay === t; })[0] || null; }
+  function todaysAttempt() { var t = lgToday(Date.now()); return all.filter(function (a) { return a.child === "kristan" && a.mode === "match" && (a.playDay || lgToday(a.at)) === t; })[0] || null; }
+  function leagueView() {
+    var L = leagueState(all, state.matches, Date.now()), S = L.season, D = L.division, me = L.myRow, R = L.round;
+    var r = role() || {}, isKristan = r.role === "child" && r.child === "kristan";
+    var my = R.fixtures.filter(function (f) { return f.mine; })[0], home = L.home, opp = L.opponent;
+    var Hc = home ? S.clubs[0] : opp, Ac = home ? opp : S.clubs[0];
+    var played = L.status === "played", st = todaysStart(), att = todaysAttempt();
+    var h = '<section class="lg-card"><div class="lg-h"><div><div class="lg-kicker">Season ' + L.seasonNo + ' · Tier ' + D.tier + '</div><h2>' + esc(D.name) + '</h2></div>' +
+      '<div class="lg-kicker" style="text-align:right">Matchday ' + L.matchday + ' of ' + LEAGUE.length + '<br>' + esc(fmtDay(L.today)) + '</div></div>';
+    h += '<div class="fixture"><div class="fx-team"><span class="crest">' + crest(Hc.code, true) + '</span><span>' + esc(Hc.name) + '</span></div>' +
+      (played ? '<div class="fx-mid"><span class="fx-ft">Full time</span><span class="fx-score">' + my.hg + '<i>–</i>' + my.ag + '</span></div>' : '<div class="fx-mid"><span class="fx-ft">' + (L.status === "live" ? "In play" : "Today") + '</span><span class="fx-vs">v</span></div>') +
+      '<div class="fx-team"><span class="crest">' + crest(Ac.code, true) + '</span><span>' + esc(Ac.name) + '</span></div></div>';
+    if (played) {
+      var res = lgResultLetter(home ? my.hg : my.ag, home ? my.ag : my.hg);
+      h += '<p class="lg-res ' + res + '">' + (res === "W" ? "Win" : res === "D" ? "Draw" : "Defeat") + ' · ' + my.s + '/5 answers right · ' + ord(me.pos) + ' in the table</p>';
+      if (st && st.answers && st.answers.length >= 5 && !att && isKristan) h += '<div class="row"><button class="btn" id="collect">See the match report and collect your points</button></div>';
+      else h += '<p class="small">Next match: tomorrow. One match a day, so come back then.</p>';
+    } else if (L.status === "live") {
+      h += isKristan ? '<div class="row"><button class="btn" id="resume">Resume the match (' + L.answered + ' of 5 answered)</button></div>' : '<p class="small">Kristan is playing this match now: ' + L.answered + ' of 5 answered.</p>';
+    } else {
+      h += '<ul class="lg-rules"><li>Answer <b>5 questions</b>. The more you get right, the better Hollyend FC plays. 5 out of 5 never loses.</li><li>One match a day and <b>no replays</b>: each answer is locked in as you go.</li><li>Miss a day and the team plays without you (and usually loses).</li><li>Finish in the <b>top ' + (D.up || 1) + '</b> after 38 matchdays to ' + (D.up ? 'win promotion' : 'be champions') + '.' + (D.down ? ' Bottom 3 go down.' : '') + '</li></ul>';
+      h += isKristan ? '<div class="row"><button class="btn" id="kickoff"' + (dbState !== "live" ? ' disabled' : '') + '>Kick off</button></div>' : '<p class="small">Kristan kicks off from his own login.</p>';
+    }
+    if (state.lgMsg) h += '<p class="cbnote">' + esc(state.lgMsg) + '</p>';
+    h += '</section>';
+
+    var up = D.up, down = D.down;
+    h += '<section class="lg-card"><div class="lg-h"><h2 style="font-size:28px">Table</h2><span class="lg-kicker">After ' + S.played + ' of ' + LEAGUE.length + '</span></div><div class="lt-wrap"><table class="lt"><thead><tr><th class="pos">Pos</th><th class="club">Club</th><th>P</th><th class="hs">W</th><th class="hs">D</th><th class="hs">L</th><th class="hs">GF</th><th class="hs">GA</th><th>GD</th><th>Pts</th><th class="hf">Form</th></tr></thead><tbody>' +
+      S.table.map(function (x) {
+        var zone = up && x.pos <= up ? " up" : down && x.pos > 20 - down ? " down" : "";
+        var mv = S.played > 1 && x.move ? '<span class="mv ' + (x.move > 0 ? 'u' : 'd') + '">' + (x.move > 0 ? '▲' : '▼') + '</span>' : '<span class="mv">–</span>';
+        return '<tr class="' + (x.me ? 'me' : '') + zone + '"><td class="pos">' + x.pos + ' ' + mv + '</td><td class="club"><span class="cc"><span class="mc">' + crest(x.code, false) + '</span><span class="cn">' + esc(x.name) + '</span></span></td><td>' + x.p + '</td><td class="hs">' + x.w + '</td><td class="hs">' + x.d + '</td><td class="hs">' + x.l + '</td><td class="hs">' + x.gf + '</td><td class="hs">' + x.ga + '</td><td>' + (x.gd > 0 ? '+' : '') + x.gd + '</td><td><b class="pts">' + x.pts + '</b></td><td class="hf"><span class="form">' + x.form.map(function (f) { return '<i class="' + f + '">' + f + '</i>'; }).join("") + '</span></td></tr>';
+      }).join("") + '</tbody></table></div><div class="lg-key">' + (up ? '<span><i class="k up"></i>Promotion</span>' : '<span><i class="k up"></i>Champions</span>') + (down ? '<span><i class="k down"></i>Relegation</span>' : '') + '</div></section>';
+
+    var shown = S.rounds.filter(function (x) { return x.open; }).slice(-1)[0];
+    if (shown) {
+      h += '<section class="lg-card"><div class="lg-h"><h2 style="font-size:28px">Matchday ' + (shown.r + 1) + ' results</h2><span class="lg-kicker">' + esc(fmtDay(shown.day)) + '</span></div><div class="rs">' +
+        shown.fixtures.map(function (f) {
+          var hc = S.clubs[f.home], ac = S.clubs[f.away];
+          return '<div class="rsr' + (f.mine ? ' me' : '') + '"><span class="rh">' + esc(hc.name) + '<span class="mc">' + crest(hc.code, false) + '</span></span><span class="rsc">' + f.hg + ' – ' + f.ag + '</span><span class="ra"><span class="mc">' + crest(ac.code, false) + '</span>' + esc(ac.name) + '</span></div>';
+        }).join("") + '</div></section>';
+    }
+    var past = L.mine.filter(function (m) { return m.open; }).slice(-5).reverse(), next = L.mine.filter(function (m) { return !m.open; }).slice(0, 5);
+    h += '<section class="lg-card"><h2 class="lg-sub">Hollyend FC fixtures</h2><div class="fl">' +
+      next.map(function (m) { return '<div class="flr"><span class="fd">' + esc(fmtDay(m.day)) + '</span><span class="fo"><span class="mc">' + crest(m.opp.code, false) + '</span>' + esc(m.opp.name) + ' <span class="ha">' + (m.home ? "H" : "A") + '</span></span><span class="fr">MD' + m.matchday + '</span></div>'; }).join("") +
+      '</div>' + (past.length ? '<h2 class="lg-sub" style="margin-top:4px">Results</h2><div class="fl">' + past.map(function (m) {
+        var R2 = lgResultLetter(m.gf, m.ga);
+        return '<div class="flr"><span class="fd">' + esc(fmtDay(m.day)) + '</span><span class="fo"><span class="mc">' + crest(m.opp.code, false) + '</span>' + esc(m.opp.name) + ' <span class="ha">' + (m.home ? "H" : "A") + '</span></span><span class="fr"><span class="form"><i class="' + R2 + '">' + R2 + '</i></span> ' + m.gf + '–' + m.ga + (m.missed ? ' <span class="small">(missed)</span>' : '') + '</span></div>';
+      }).join("") + '</div>' : '') + '</section>';
+    if (L.honours.length) h += '<section class="lg-card"><h2 class="lg-sub">Honours and past seasons</h2><div class="fl">' + L.honours.map(function (x) { return '<div class="flr"><span class="fd">Season ' + x.season + '</span><span class="fo">' + esc(x.division) + ': ' + ord(x.pos) + ', ' + x.pts + ' pts</span><span class="fr">' + esc(x.outcome) + '</span></div>'; }).join("") + '</div></section>';
+    h += '<p class="small">The other 19 clubs are computer teams. Their results are worked out each day, so the table is the same on every device.</p>';
+    app.innerHTML = h;
+    var ko = document.getElementById("kickoff"); if (ko) ko.addEventListener("click", function () { kickOff(L); });
+    var rs = document.getElementById("resume"); if (rs) rs.addEventListener("click", function () { var m = todaysStart(); if (m) startMatch(m.id, m.questions, m.answers || [], L); });
+    var co = document.getElementById("collect"); if (co) co.addEventListener("click", function () { var m = todaysStart(); if (m) startMatch(m.id, m.questions, m.answers || [], L); });
+  }
+  function kickOff(L) {
+    if (state.kicking || !db) return; state.kicking = true; state.lgMsg = "";
+    var qs = buildAdaptiveQuiz("kristan", L.level, 5, all, WEEK.start, genOne, buildQuiz, shuffle, "mix").slice(0, 5);
+    var clean = JSON.parse(JSON.stringify(qs));
+    db.collection("match_starts").add({ child: "kristan", questions: clean }).then(function (res) {
+      state.kicking = false; state.matches = state.matches.concat([{ id: res.id, child: "kristan", playDay: L.today, questions: clean, answers: [] }]);
+      startMatch(res.id, clean, [], L);
+    }).catch(function (e) {
+      state.kicking = false;
+      state.lgMsg = /duplicate|unique/i.test((e && e.message) || "") ? "Today’s match has already kicked off on another device." : "Couldn’t kick off right now. Check the internet and try again.";
+      leagueView();
+    });
+  }
+  function startMatch(id, qs, answers, L) {
+    state.mode = "match"; state.match = { id: id, matchday: L.matchday, pos: L.myRow.pos, played: L.season.played };
+    state.matchLevel = L.level; state.qs = qs; state.answers = answers.map(function (a) { return { chosen: a.chosen, ok: !!a.ok }; });
+    state.i = Math.min(answers.length, qs.length); state.started = true; state.saved = null; state.finishHtml = null; state.matchChain = Promise.resolve();
+    render(); window.scrollTo({ top: 0 });
+  }
+  function sendMatchAnswer() {
+    if (!db || !state.match) return;
+    var id = state.match.id, payload = state.answers.slice(0, state.i + 1).map(function (a) { return { chosen: a.chosen }; });
+    state.matchChain = state.matchChain.then(function () { return db.collection("match_starts").doc(id).update({ answers: payload }); })
+      .then(function () { state.matches = state.matches.map(function (m) { return m.id === id ? Object.assign({}, m, { answers: state.answers.slice(0, payload.length) }) : m; }); }, function () {});
+  }
+  function leaveMatch() { state.mode = "mix"; state.match = null; state.started = false; state.qs = []; state.finishHtml = null; showMode(); newQuiz(); }
+  function matchReport(sc) {
+    var L = leagueState(all, state.matches, Date.now()), my = L.round.fixtures.filter(function (f) { return f.mine; })[0], S = L.season;
+    if (!my || my.hg == null) return "";
+    var hc = S.clubs[my.home], ac = S.clubs[my.away], gf = L.home ? my.hg : my.ag, ga = L.home ? my.ag : my.hg, res = lgResultLetter(gf, ga);
+    var line = res === "W" ? pick(["Three points!", "Big win for Hollyend FC!", "Victory!"]) : res === "D" ? "A point on the board." : "Defeat this time. Tomorrow is another match.";
+    var mv = state.match && state.match.played > 0 ? (L.myRow.pos < state.match.pos ? ' Up to ' + ord(L.myRow.pos) + '.' : L.myRow.pos > state.match.pos ? ' Down to ' + ord(L.myRow.pos) + '.' : ' Still ' + ord(L.myRow.pos) + '.') : ' You’re ' + ord(L.myRow.pos) + ' after Matchday ' + L.matchday + '.';
+    return '<div class="lg-card mr"><span class="lg-kicker">Full time · Matchday ' + L.matchday + ' · ' + esc(L.division.name) + '</span><div class="fixture"><div class="fx-team"><span class="crest">' + crest(hc.code, true) + '</span><span>' + esc(hc.name) + '</span></div>' +
+      '<div class="fx-mid"><span class="fx-score">' + my.hg + '<i>–</i>' + my.ag + '</span></div><div class="fx-team"><span class="crest">' + crest(ac.code, true) + '</span><span>' + esc(ac.name) + '</span></div></div>' +
+      '<p class="lg-res ' + res + '">' + esc(line + mv) + '</p></div>';
+  }
+  function teaser() {
+    if (state.mode !== "mix") return "";
+    if (state.child === "millie") { var J = journeyState(all, "millie"); return J.next ? '<p class="small">Journey: <b>' + J.toNext + ' stars</b> to reach ' + esc(J.next.name) + '. <button class="linkbtn" id="toWorld" style="padding:2px 10px">See the map</button></p>' : ''; }
+    var L = leagueState(all, state.matches, Date.now());
+    return L.status === "played" ? '' : '<p class="small">League: <b>Matchday ' + L.matchday + '</b>, ' + esc(L.home ? 'Hollyend FC v ' + L.opponent.name : L.opponent.name + ' v Hollyend FC') + ' is waiting. <button class="linkbtn" id="toWorld" style="padding:2px 10px">Go to the match</button></p>';
+  }
+
   /* ---------- wiring ---------- */
   document.addEventListener("keydown", function (e) {
-    if (state.view !== "quiz" || !state.started) return;
+    if (!busy()) return;
     if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
     var idx = "ABCD".indexOf(e.key.toUpperCase());
     if (idx < 0 && "1234".indexOf(e.key) >= 0) idx = +e.key - 1;
@@ -807,6 +1127,7 @@ body.k .stepper .amt { font-size: 52px; }
   [].forEach.call(document.querySelectorAll(".md"), function (b) { b.addEventListener("click", function () { setMode(b.dataset.m); }); });
   document.getElementById("v-quiz").addEventListener("click", function () { setView("quiz"); });
   document.getElementById("v-prog").addEventListener("click", function () { setView("progress"); });
+  document.getElementById("v-world").addEventListener("click", function () { setView("world"); });
   document.getElementById("v-shop").addEventListener("click", function () { setView("shop"); });
   document.getElementById("v-bank").addEventListener("click", function () { setView("bank"); });
   [].forEach.call(document.querySelectorAll(".lv"), function (b) { b.addEventListener("click", function () { setLevel(+b.dataset.l); }); });
@@ -817,8 +1138,11 @@ body.k .stepper .amt { font-size: 52px; }
   var hash = (location.hash || "").replace("#", "");
   if (hash === "spelling" || hash === "english" || hash === "french") state.mode = hash;
   if (hash === "millie-revise" || hash === "kristan-revise") { state.mode = "revise"; hash = hash.split("-")[0]; }
+  if (hash === "journey") { state.view = "world"; hash = "millie"; }
+  if (hash === "league") { state.view = "world"; hash = "kristan"; }
   if (hash === "millie-challenge" || hash === "kristan-challenge") { state.mode = "challenge"; hash = hash.split("-")[0]; }
   setChild(hash === "kristan" || hash === "millie" ? hash : hash === "spelling" ? "millie" : (hash === "english" || hash === "french") ? "kristan" : (store("quiz-child") || "millie"));
+  if (state.view === "world") setView("world");
   document.addEventListener("hollyend:member", function (e) {
     var m = e.detail;
     if (m.role === "child") {
