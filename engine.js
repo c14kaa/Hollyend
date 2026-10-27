@@ -1043,4 +1043,280 @@ function buildRevision(child, topicId, level, count, seenPrompts) {
   return shuffle(out);
 }
 
+/* ===== Millie: earlier this term (homework weeks 3–6, Sept–Oct 2026) — kept for revision and spaced review ===== */
+function nf(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+var PV_NAMES = ["ones", "tens", "hundreds", "thousands", "ten thousands", "hundred thousands"];
+function pvTable(n) {
+  var d = String(n).padStart(6, "0").split("");
+  return '<table class="ft"><tr><th>HTh</th><th>TTh</th><th>Th</th><th>H</th><th>T</th><th>O</th></tr><tr>' + d.map(function (x) { return "<td>" + x + "</td>"; }).join("") + "</tr></table>";
+}
+M.placeValue = function (L) {
+  var n = rnd(L === 1 ? 10000 : 100000, L === 1 ? 99999 : 999999), s = String(n), pos;
+  do { pos = rnd(0, s.length - 1); } while (s[pos] === "0");
+  var digit = +s[pos], place = s.length - 1 - pos, val = digit * Math.pow(10, place);
+  var wrong = [digit * Math.pow(10, place + 1), digit * Math.pow(10, Math.max(0, place - 1)), digit].filter(function (x) { return x !== val; });
+  if (wrong.length < 3) wrong.push(digit * Math.pow(10, place + 2));
+  var notes = {}; wrong.forEach(function (w) { notes[nf(w)] = "That would be the " + digit + " in a different column. Count the columns from the right: ones, tens, hundreds, thousands…"; });
+  return q("Place value", "What is the value of the " + digit + " in " + nf(n) + "?", nf(val), wrong.map(nf),
+    "The " + digit + " is in the " + PV_NAMES[place] + " column, so it's worth " + nf(val) + ".", pvTable(n),
+    { notes: notes, steps: ["Write the number in a place value chart (above).", "Find the " + digit + ": it's in the " + PV_NAMES[place] + " column.", digit + " × " + nf(Math.pow(10, place)) + " = " + nf(val) + "."],
+      tip: "Each column is worth 10 times the column to its right." });
+};
+M.compareOrder = function (L) {
+  var base = String(rnd(L === 1 ? 10000 : 100000, L === 1 ? 99999 : 999999)).split(""), set = {};
+  while (Object.keys(set).length < 3) { var d = shuffle(base); if (d[0] !== "0") set[d.join("")] = 1; }
+  var nums = Object.keys(set).map(Number), asc = nums.slice().sort(function (a, b) { return a - b; });
+  var fmt = function (a) { return a.map(nf).join(" < "); };
+  var perms = [[0, 2, 1], [1, 0, 2], [2, 1, 0], [1, 2, 0], [2, 0, 1]].map(function (p) { return p.map(function (i) { return asc[i]; }); });
+  var notes = {}; perms.forEach(function (p) { notes[fmt(p)] = "Compare digit by digit from the left: the first column where they differ decides which is bigger."; });
+  return q("Place value", "Put these in order, smallest first:\n" + shuffle(nums).map(nf).join("   "), fmt(asc), perms.map(fmt),
+    "Smallest to largest: " + fmt(asc) + ".", "", { notes: notes,
+      steps: ["Line the numbers up so the columns match.", "Compare the highest place value first.", "If those digits match, move one column to the right and compare again.", "Order: " + fmt(asc) + "."],
+      tip: "Same digits in a different order make very different numbers!" });
+};
+M.powersTen = function (L) {
+  var n = rnd(L === 1 ? 20000 : 120000, L === 1 ? 98000 : 980000), steps = L === 1 ? [10, 100, 1000] : [1000, 10000, 100000], s = pick(steps), more = Math.random() < 0.5;
+  var ans = more ? n + s : n - s, wrong = steps.filter(function (x) { return x !== s; }).map(function (x) { return more ? n + x : n - x; }).concat([more ? n - s : n + s]);
+  var notes = {}; wrong.forEach(function (w) { notes[nf(w)] = "That changes the wrong column (or goes the wrong way). " + nf(s) + " " + (more ? "more" : "less") + " only changes the " + PV_NAMES[String(s).length - 1] + " column, unless you need to exchange."; });
+  return q("Place value", "What is " + nf(s) + " " + (more ? "more" : "less") + " than " + nf(n) + "?", nf(ans), wrong.map(nf),
+    nf(n) + (more ? " + " : " − ") + nf(s) + " = " + nf(ans) + ".", "", { notes: notes,
+      steps: ["Find the " + PV_NAMES[String(s).length - 1] + " digit in " + nf(n) + ".", (more ? "Add 1 to" : "Take 1 from") + " that digit (exchanging if it goes past 9 or below 0).", "The other digits stay the same: " + nf(ans) + "."] });
+};
+M.missingToRound = function (L) {
+  var big = L === 1 ? 1000 : pick([1000, 10000]), target = rnd(3, 9) * big, ans = L === 1 ? rnd(1, 9) * 100 + pick([0, 50]) : rnd(2, big === 1000 ? 9 : 49) * 100 + pick([0, 50]);
+  if (ans >= big) ans = big - 300; var n = target - ans;
+  var wrong = [ans + 100, ans + 1000, Math.max(50, ans - 100)].filter(function (x, i, a) { return x !== ans && a.indexOf(x) === i; });
+  return q("Place value", nf(n) + " + ____ = " + nf(target), nf(ans), wrong.map(nf),
+    nf(n) + " + " + nf(ans) + " = " + nf(target) + ".", "", { steps: ["Count up from " + nf(n) + " to the next friendly hundred or thousand.", "Then count up to " + nf(target) + ".", "Add the jumps together: " + nf(ans) + "."], tip: "Counting on, like a shopkeeper giving change, is quicker than subtracting." });
+};
+function roundTo(n, p) { return Math.round(n / p) * p; }
+var RP = [10, 100, 1000, 10000, 100000];
+var RP_NAME = { 10: "10", 100: "100", 1000: "1,000", 10000: "10,000", 100000: "100,000" };
+M.roundPV = function (L) {
+  var n = rnd(L === 1 ? 1000 : 10000, L === 1 ? 99999 : 999999), places = L === 1 ? [10, 100, 1000] : L === 2 ? [100, 1000, 10000] : [1000, 10000, 100000];
+  var p = pick(places), ans = roundTo(n, p), down = Math.floor(n / p) * p, up = down + p, other = ans === down ? up : down;
+  var wrongPlace = roundTo(n, p === 100000 ? 10000 : p * 10);
+  var opts = [other, wrongPlace, p >= 100 ? roundTo(n, p / 10) : null, roundTo(n, Math.min(100000, p * 100)), ans + 2 * p, ans - 2 * p, ans + p, ans - p, ans + 3 * p].filter(function (x, i, a) { return x !== null && x > 0 && x !== ans && a.indexOf(x) === i; }).slice(0, 3);
+  var notes = {}; notes[nf(other)] = "Look at the digit to the right of the " + RP_NAME[p] + "s: " + (ans === up ? "it's 5 or more, so round UP." : "it's 4 or less, so round DOWN.");
+  opts.forEach(function (o) { if (!notes[nf(o)]) notes[nf(o)] = "That's rounded to a different place. This question asks for the nearest " + RP_NAME[p] + "."; });
+  var decider = String(n).padStart(6, "0")[6 - String(p).length];
+  return q("Rounding", "Round " + nf(n) + " to the nearest " + RP_NAME[p] + ".", nf(ans), opts.map(nf),
+    nf(n) + " is between " + nf(down) + " and " + nf(up) + ". The deciding digit is " + decider + ", so it rounds to " + nf(ans) + ".", "",
+    { notes: notes, steps: ["Find the two multiples of " + RP_NAME[p] + " either side: " + nf(down) + " and " + nf(up) + ".", "Look at the next digit to the right: " + decider + ".", "5 or more rounds up; 4 or less rounds down.", "Answer: " + nf(ans) + "."],
+      tip: "Draw a number line with the two multiples at each end, and mark the halfway point." });
+};
+M.roundReason = function (L) {
+  var n = rnd(100000, 999999), p = pick(L === 1 ? [1000, 10000] : [1000, 10000, 100000]), correct = roundTo(n, p);
+  var name = pick(["Jia", "Elias", "Joseph", "Emily", "Sami", "Aisha", "Omar", "Leah"]);
+  var claimRight = Math.random() < 0.45, claim = claimRight ? correct : pick([roundTo(n, p === 100000 ? 10000 : p * 10), Math.floor(n / p) * p === correct ? correct + p : correct - p]);
+  if (!claimRight && claim === correct) claim = correct + p;
+  var yes = "Yes, " + name + " is right", no = "No, it should be " + nf(correct);
+  var ans = claimRight ? yes : no, notes = {};
+  notes[claimRight ? no : yes] = claimRight ? "Check again: " + nf(n) + " rounds to " + nf(correct) + ", which is what " + name + " said." : nf(claim) + " isn't right: the nearest " + RP_NAME[p] + " is " + nf(correct) + ".";
+  var tv = [correct + p, correct - p, roundTo(n, p === 100000 ? 10000 : p * 10)].filter(function (x) { return x !== correct && x !== claim && x > 0; })[0];
+  var third = "No, it should be " + nf(tv);
+  notes[third] = "Look at the digit to the right of the " + RP_NAME[p] + "s to decide whether to round up or down.";
+  return q("Rounding", name + " says: “" + nf(n) + " is " + nf(claim) + " when rounded to the nearest " + RP_NAME[p] + ".” Is " + name + " correct?", ans, [claimRight ? no : yes, third],
+    nf(n) + " rounded to the nearest " + RP_NAME[p] + " is " + nf(correct) + ".", "", { notes: notes,
+      steps: ["Find the multiples of " + RP_NAME[p] + " either side of " + nf(n) + ".", "Check the digit to the right of the " + RP_NAME[p] + "s column.", "So the answer is " + nf(correct) + (claimRight ? ", and " + name + " is right." : ", not " + nf(claim) + ".")],
+      tip: "Prove it: say which two multiples it's between, and which one it's closer to." });
+};
+M.mentalAdd = function (L) {
+  var near = pick(L === 1 ? [99, 999, 1999] : [999, 4999, 9999, 19999, 29999]), friendly = near + 1, a = rnd(L === 1 ? 1000 : 5000, L === 1 ? 9000 : 90000);
+  var sub = Math.random() < 0.5, x = sub ? a + friendly * (L === 1 ? 1 : 2) : a, ans = sub ? x - near : x + near;
+  var wrong = sub ? [x - friendly, x - near + 2, x - friendly - 1] : [x + friendly, x + near - 1, x + friendly + 1];
+  return q("Mental maths", (sub ? nf(x) + " − " + nf(near) : nf(x) + " + " + nf(near)) + " = ?", nf(ans), wrong.map(nf),
+    nf(near) + " is just 1 less than " + nf(friendly) + ". So " + (sub ? "take away " + nf(friendly) + ", then add 1 back" : "add " + nf(friendly) + ", then take 1 away") + ": " + nf(ans) + ".", "",
+    { notes: (function () { var n = {}; n[nf(wrong[0])] = "You used " + nf(friendly) + " but forgot to adjust by 1 at the end."; n[nf(wrong[2])] = "You adjusted the wrong way. " + (sub ? "You took away 1 too many, so add 1 back." : "You added 1 too many, so take 1 away."); return n; })(),
+      steps: ["Spot the near-friendly number: " + nf(near) + " ≈ " + nf(friendly) + ".", (sub ? nf(x) + " − " + nf(friendly) + " = " + nf(x - friendly) : nf(x) + " + " + nf(friendly) + " = " + nf(x + friendly)) + ".", (sub ? "You took away 1 too many, so add 1: " : "You added 1 too many, so take 1 away: ") + nf(ans) + "."],
+      tip: "Round and adjust: use the friendly number, then fix the difference." });
+};
+function colSteps(a, b, sub) {
+  var A = String(a), B = String(b), len = Math.max(A.length, B.length), steps = [], carry = 0, names = ["ones", "tens", "hundreds", "thousands", "ten thousands", "hundred thousands", "millions"];
+  if (!sub) {
+    for (var i = 0; i < len; i++) { var x = +(A[A.length - 1 - i] || 0), y = +(B[B.length - 1 - i] || 0), t = x + y + carry;
+      steps.push(names[i][0].toUpperCase() + names[i].slice(1) + ": " + x + " + " + y + (carry ? " + 1 carried" : "") + " = " + t + (t > 9 ? " → write " + (t % 10) + ", carry 1." : "."));
+      carry = t > 9 ? 1 : 0; }
+    if (carry) steps.push("Carry the final 1 into the " + names[len] + " column.");
+  } else {
+    var top = A.split("").map(Number);
+    for (var j = 0; j < len; j++) { var ti = top.length - 1 - j, bd = +(B[B.length - 1 - j] || 0);
+      if (top[ti] < bd) { var k = ti - 1; while (top[k] === 0) { top[k] = 9; k--; } top[k]--; steps.push(names[j][0].toUpperCase() + names[j].slice(1) + ": " + top[ti] + " is smaller than " + bd + ", so exchange from the next column: " + (top[ti] + 10) + " − " + bd + " = " + (top[ti] + 10 - bd) + "."); top[ti] += 10; }
+      else steps.push(names[j][0].toUpperCase() + names[j].slice(1) + ": " + top[ti] + " − " + bd + " = " + (top[ti] - bd) + ".");
+      top[ti] -= bd; }
+  }
+  return steps.length > 6 ? steps.slice(0, 6) : steps;
+}
+function noCarrySum(a, b) { var A = String(a), B = String(b), len = Math.max(A.length, B.length), s = ""; for (var i = 0; i < len; i++) s = ((+(A[A.length - 1 - i] || 0) + +(B[B.length - 1 - i] || 0)) % 10) + s; return +s; }
+function smallFromBig(a, b) { var A = String(a), B = String(b).padStart(A.length, "0"), s = ""; for (var i = 0; i < A.length; i++) s += Math.abs(+A[i] - +B[i]); return +s; }
+function colHtml(a, b, op) { return '<table class="ft" style="text-align:right"><tr><td></td><td style="text-align:right">' + nf(a) + '</td></tr><tr><td>' + op + '</td><td style="text-align:right">' + nf(b) + '</td></tr><tr><td></td><td style="text-align:right">?</td></tr></table>'; }
+M.columnAdd = function (L) {
+  var lo = L === 1 ? 1000 : L === 2 ? 10000 : 100000, a = rnd(lo, lo * 10 - 1), b = rnd(lo, lo * 10 - 1), s = a + b, nc = noCarrySum(a, b);
+  var wrong = [nc !== s ? nc : s + 10, s - 1000, s + 100].filter(function (x, i, arr) { return x !== s && x > 0 && arr.indexOf(x) === i; });
+  var notes = {}; if (nc !== s) notes[nf(nc)] = "You forgot to carry: when a column adds up to 10 or more, write the ones digit and carry 1 into the next column.";
+  notes[nf(s - 1000)] = "Check the thousands column: did you add the carried 1?";
+  return q("Column addition", "Work it out with the column method:\n" + nf(a) + " + " + nf(b), nf(s), wrong.map(nf), nf(a) + " + " + nf(b) + " = " + nf(s) + ".", colHtml(a, b, "+"),
+    { notes: notes, steps: ["Line up the digits: ones under ones, tens under tens."].concat(colSteps(a, b, false)), tip: "Start with the ones and work left. Write carried digits small, under the line." });
+};
+M.columnSub = function (L) {
+  var lo = L === 1 ? 1000 : L === 2 ? 10000 : 100000, a = rnd(lo * 3, lo * 10 - 1), b = rnd(lo, a - lo), d = a - b;
+  if (L === 3 && Math.random() < 0.4) { a = pick([2, 3, 5, 6, 9]) * lo; b = rnd(lo / 2, a - 1); d = a - b; }
+  var sfb = smallFromBig(a, b), wrong = [sfb !== d ? sfb : d + 10, d + 1000, d - 100].filter(function (x, i, arr) { return x !== d && x > 0 && arr.indexOf(x) === i; });
+  var notes = {}; if (sfb !== d) notes[nf(sfb)] = "This happens when you take the smaller digit from the bigger one in each column. If the top digit is smaller, you need to exchange from the next column instead.";
+  notes[nf(d + 1000)] = "After exchanging, remember to make the digit you borrowed from 1 smaller.";
+  return q("Column subtraction", "Work it out with the column method:\n" + nf(a) + " − " + nf(b), nf(d), wrong.map(nf), nf(a) + " − " + nf(b) + " = " + nf(d) + ".", colHtml(a, b, "−"),
+    { notes: notes, steps: ["Put the bigger number on top and line up the columns."].concat(colSteps(a, b, true)).concat(["Check by adding: " + nf(d) + " + " + nf(b) + " = " + nf(a) + "."]),
+      tip: "Exchanging across zeros: 0s become 9s as you go along until you reach a digit you can take 1 from." });
+};
+M.findError = function (L) {
+  var a, b, s, cols;
+  do { a = rnd(10000, 89999); b = rnd(10000, 89999); s = a + b; cols = []; var A = String(a), B = String(b), c = 0;
+    for (var i = 0; i < 5; i++) { var t = +A[4 - i] + +B[4 - i] + c; if (t > 9) cols.push(i + 1); c = t > 9 ? 1 : 0; } } while (!cols.length || cols[0] > 4);
+  var k = pick(cols.filter(function (x) { return x <= 4; })), wrongSum = s - Math.pow(10, k), name = pick(["Sami", "Aisha", "Leo", "Mia", "Omar"]);
+  var places = ["ones", "tens", "hundreds", "thousands", "ten thousands"];
+  return q("Column addition", name + " says " + nf(a) + " + " + nf(b) + " = " + nf(wrongSum) + ". What is the correct answer?", nf(s), [nf(wrongSum), nf(s + Math.pow(10, k)), nf(noCarrySum(a, b) === s ? s - 10 : noCarrySum(a, b))].filter(function (x) { return x !== nf(s); }),
+    "The correct answer is " + nf(s) + ". " + name + " is " + nf(Math.pow(10, k)) + " short: they forgot to carry the 1 into the " + places[k] + " column.", colHtml(a, b, "+"),
+    { notes: (function () { var n = {}; n[nf(wrongSum)] = "That's " + name + "'s answer, which has a mistake: the carried 1 into the " + places[k] + " column was missed."; return n; })(),
+      steps: ["Redo the sum with the column method."].concat(colSteps(a, b, false)).concat(["Compare: " + nf(s) + " − " + nf(wrongSum) + " = " + nf(Math.pow(10, k)) + ", so a carried 1 in the " + places[k] + " was missed."]),
+      tip: "Estimate first: " + nf(roundTo(a, 1000)) + " + " + nf(roundTo(b, 1000)) + " ≈ " + nf(roundTo(a, 1000) + roundTo(b, 1000)) + ". If the answer is far off, check again." });
+};
+
+/* Science and grammar banks: [question, answer, [wrong answers], explanation, {wrong answer: why it's wrong}] */
+var STATES = [
+  ["A snowman turning into a puddle is called…", "melting", ["freezing", "evaporating", "condensing"], "Melting is when a solid turns into a liquid because it is heated.", { freezing: "Freezing is liquid → solid, the opposite.", evaporating: "Evaporating is liquid → gas.", condensing: "Condensing is gas → liquid." }],
+  ["Water in an ice cube tray turning into ice is called…", "freezing", ["melting", "condensing", "evaporating"], "Freezing is when a liquid turns into a solid because it is cooled.", { melting: "Melting is solid → liquid, the opposite." }],
+  ["A puddle disappearing on a sunny day is an example of…", "evaporating", ["melting", "condensing", "freezing"], "The Sun's heat turns the liquid water into water vapour, a gas. That's evaporating.", { condensing: "Condensing is gas → liquid, the opposite." }],
+  ["Water droplets forming on a cold window are an example of…", "condensing", ["evaporating", "freezing", "melting"], "Water vapour in the air cools on the glass and turns back into a liquid. That's condensing.", { evaporating: "Evaporating is liquid → gas, the opposite." }],
+  ["Clouds turning into rain is an example of…", "condensing", ["evaporating", "melting", "freezing"], "Water vapour cools high in the sky and condenses into tiny droplets that fall as rain.", {}],
+  ["At what temperature does pure water freeze?", "0°C", ["100°C", "10°C", "−10°C"], "Pure water freezes (and ice melts) at 0°C.", { "100°C": "100°C is when water boils." }],
+  ["At what temperature does pure water boil?", "100°C", ["0°C", "50°C", "212°C"], "Pure water boils at 100°C.", { "0°C": "0°C is when water freezes.", "212°C": "212 is the boiling point in Fahrenheit, not Celsius." }],
+  ["Which state of matter keeps its shape and can't be poured?", "solid", ["liquid", "gas", "water vapour"], "Solids have a fixed shape because their particles are held tightly together.", {}],
+  ["Which state of matter takes the shape of its container but keeps the same volume?", "liquid", ["solid", "gas", "ice"], "Liquids flow and take the shape of their container, but their volume stays the same.", { gas: "A gas spreads out to fill the whole container." }],
+  ["Which state of matter spreads out to fill any container?", "gas", ["liquid", "solid", "ice"], "Gas particles move quickly in all directions, so a gas fills whatever container it's in.", {}],
+  ["In which state are the particles rigid and in a fixed pattern?", "solid", ["liquid", "gas", "all three"], "In a solid, particles are packed tightly in a regular pattern and only vibrate.", {}],
+  ["Melting chocolate and letting it cool again is a…", "reversible change", ["irreversible change", "chemical reaction", "permanent change"], "The chocolate can go back to a solid when it cools, so the change can be reversed.", {}],
+  ["What is the gas form of water called?", "water vapour", ["steam cloud", "oxygen", "ice"], "When water evaporates it becomes water vapour, an invisible gas.", { oxygen: "Oxygen is a different gas in the air." }],
+  ["Which makes a puddle evaporate faster?", "a hot, windy day", ["a cold, still day", "a cloudy, cold night", "putting a lid on it"], "Heat and moving air both speed up evaporation.", {}]
+];
+var MATERIALS = [
+  ["A material that heat or electricity can travel through easily is called a…", "conductor", ["insulator", "solvent", "magnet"], "Conductors let heat or electricity pass through them easily. Most metals are good conductors.", { insulator: "An insulator does the opposite: it stops heat or electricity passing through." }],
+  ["Wood and plastic are examples of thermal and electrical…", "insulators", ["conductors", "magnets", "solutions"], "Wood and plastic don't let heat or electricity pass through easily, so they are insulators.", {}],
+  ["Why are saucepan handles often made of plastic?", "Plastic is a thermal insulator", ["Plastic is a thermal conductor", "Plastic is magnetic", "Plastic is transparent"], "Plastic doesn't let heat through easily, so the handle stays cool to hold.", {}],
+  ["Why are electrical wires made of copper?", "Copper is a good electrical conductor", ["Copper is an insulator", "Copper is transparent", "Copper is soluble"], "Copper lets electricity flow through it easily.", {}],
+  ["A material you can see clearly through is…", "transparent", ["translucent", "opaque", "insoluble"], "Transparent materials, like clear glass, let almost all light through.", { translucent: "Translucent lets some light through, but you can't see clearly (like frosted glass).", opaque: "Opaque lets no light through." }],
+  ["A material that lets some light through, but you can't see clearly through it, is…", "translucent", ["transparent", "opaque", "reflective"], "Translucent materials, like tissue paper or frosted glass, let some light through.", {}],
+  ["A material that lets no light through is…", "opaque", ["transparent", "translucent", "soluble"], "Opaque materials, like wood or metal, block all light, which is why they make shadows.", {}],
+  ["Which of these is magnetic?", "an iron nail", ["a copper coin", "an aluminium can", "a plastic spoon"], "Iron (and steel, nickel and cobalt) are magnetic. Most other metals, like copper and aluminium, are not.", { "an aluminium can": "Aluminium is a metal, but it isn't magnetic." }],
+  ["Which property makes rubber good for wellington boots?", "It's waterproof and flexible", ["It's transparent", "It's magnetic", "It's a good conductor"], "Rubber keeps water out and bends as you walk.", {}],
+  ["Which material would be best for a window?", "glass", ["wood", "cardboard", "steel"], "Glass is transparent and waterproof, so you can see out and stay dry.", {}],
+  ["What does 'soluble' mean?", "it dissolves in water", ["it doesn't dissolve in water", "it floats", "it conducts electricity"], "A soluble material, like sugar or salt, dissolves in water.", { "it doesn't dissolve in water": "That's insoluble." }],
+  ["Sand doesn't dissolve in water. This means it is…", "insoluble", ["soluble", "a solution", "transparent"], "Insoluble materials don't dissolve; sand just sinks to the bottom.", {}],
+  ["Which material is the hardest?", "diamond", ["wax", "chalk", "clay"], "Diamond is one of the hardest natural materials; it can scratch almost anything.", {}],
+  ["A spoon made of metal gets hot in a cup of tea because metal is a good…", "thermal conductor", ["thermal insulator", "electrical insulator", "solvent"], "Heat travels easily through metal, all the way up the spoon.", {}]
+];
+var MIXTURES = [
+  ["When sugar disappears into water, it has…", "dissolved", ["melted", "evaporated", "condensed"], "Dissolving is when a solid mixes so completely with a liquid that you can't see it. It hasn't melted: there was no heating.", { melted: "Melting needs heat and turns a solid into a liquid on its own. Dissolving needs a liquid." }],
+  ["In salty water, the salt is the…", "solute", ["solvent", "solution", "mixture"], "The solute is the substance that dissolves (the salt).", { solvent: "The solvent is the liquid it dissolves in (the water).", solution: "The solution is the salt and water mixed together." }],
+  ["In salty water, the water is the…", "solvent", ["solute", "solution", "sediment"], "The solvent is the liquid that the solute dissolves in.", {}],
+  ["A solute dissolved in a solvent makes a…", "solution", ["mixture of solids", "suspension", "conductor"], "Solute + solvent = solution, like salt + water = salty water.", {}],
+  ["Two or more materials mixed together but not joined chemically is a…", "mixture", ["solute", "conductor", "reaction"], "In a mixture, each material keeps its own properties and can be separated again.", {}],
+  ["How would you separate sand from water?", "filter it", ["use a magnet", "use a sieve with large holes", "freeze it"], "Filter paper lets the water through but traps the sand grains.", { "use a magnet": "Sand isn't magnetic." }],
+  ["How would you get salt back from salty water?", "evaporate the water", ["filter it", "use a sieve", "use a magnet"], "Heat the solution so the water evaporates; the salt crystals are left behind.", { "filter it": "Dissolved salt goes straight through filter paper." }],
+  ["How would you separate rice from flour?", "sieve it", ["filter it", "evaporate it", "use a magnet"], "The flour falls through the sieve's small holes, but the bigger rice grains stay behind.", {}],
+  ["How would you separate iron filings from sand?", "use a magnet", ["sieve it", "evaporate it", "add water and stir"], "Iron is magnetic, so a magnet pulls the filings out of the sand.", {}],
+  ["Which of these is an irreversible change?", "burning wood", ["melting ice", "dissolving sugar", "freezing water"], "Burning makes new materials (ash, smoke, gases); you can't get the wood back.", { "dissolving sugar": "Dissolving is reversible: evaporate the water and the sugar is left." }],
+  ["Which of these is a reversible change?", "dissolving salt in water", ["baking a cake", "burning paper", "rusting iron"], "You can get the salt back by evaporating the water.", { "baking a cake": "Baking makes new materials, so it can't be undone." }],
+  ["Mixing vinegar and bicarbonate of soda makes fizzing bubbles. This is…", "an irreversible change", ["a reversible change", "dissolving", "melting"], "A new gas (carbon dioxide) is made, so the change can't be reversed.", {}],
+  ["Which helps sugar dissolve faster?", "stirring it in warm water", ["using cold water", "using bigger lumps", "leaving it still"], "Warm water and stirring both speed up dissolving.", {}],
+  ["What happens to the mass when salt dissolves in water?", "the total mass stays the same", ["the salt disappears completely", "the mass goes down", "the mass doubles"], "The salt is still there, spread through the water, so the total mass doesn't change.", {}]
+];
+var GRAMMAR = [
+  ["Which sentence has a fronted adverbial?", "Before sunrise, the boy climbed the hill.", ["The boy climbed the hill before sunrise.", "The boy, who was tired, climbed.", "The boy climbed the steep hill."], "A fronted adverbial comes at the START of the sentence and tells us when, where or how. It's followed by a comma.", {}],
+  ["Where does the comma go?\n“As the waves crashed against the rocks the boat began to sink.”", "after “rocks”", ["after “waves”", "after “boat”", "no comma is needed"], "The fronted adverbial is “As the waves crashed against the rocks”, so the comma goes straight after it.", {}],
+  ["Which is an expanded noun phrase?", "the old, wooden boat with a torn sail", ["the boat", "it sailed quickly", "and then"], "An expanded noun phrase adds detail to a noun, using adjectives and/or a prepositional phrase.", {}],
+  ["Which words are the prepositional phrase?\n“The monkey hid behind the tall palm tree.”", "behind the tall palm tree", ["The monkey", "hid", "tall palm"], "A prepositional phrase starts with a preposition (behind) and tells us where, when or how.", {}],
+  ["Which word is a preposition?", "underneath", ["quickly", "beautiful", "because"], "Prepositions show position or time: underneath, above, during, beside.", { quickly: "Quickly is an adverb.", because: "Because is a conjunction." }],
+  ["Which word starts a relative clause?\n“The island, which was covered in jungle, looked deserted.”", "which", ["The", "covered", "looked"], "Relative clauses start with a relative pronoun: who, which, that, whose, where or when.", {}],
+  ["Choose the right relative pronoun:\n“The girl ___ found the shell was delighted.”", "who", ["which", "where", "whose"], "Use 'who' for people.", { which: "'Which' is for things and animals.", where: "'Where' is for places." }],
+  ["Choose the right relative pronoun:\n“That's the beach ___ we built a sandcastle.”", "where", ["who", "whose", "which"], "Use 'where' for places.", {}],
+  ["Which sentence is in the past progressive?", "I was swimming in the sea.", ["I swam in the sea.", "I am swimming in the sea.", "I swim in the sea."], "The past progressive uses was/were + a verb ending in -ing.", { "I am swimming in the sea.": "That's the present progressive (am/is/are + -ing)." }],
+  ["Which sentence is in the present progressive?", "They are building a raft.", ["They built a raft.", "They were building a raft.", "They build rafts."], "The present progressive uses am/is/are + a verb ending in -ing.", {}],
+  ["Which prefix makes the opposite of 'happy'?", "un", ["dis", "mis", "re"], "Unhappy means not happy.", { dis: "'Dis' goes with words like disagree and dislike." }],
+  ["Which prefix makes the opposite of 'agree'?", "dis", ["un", "in", "im"], "Disagree means not agree.", {}],
+  ["Which prefix makes the opposite of 'possible'?", "im", ["un", "dis", "in"], "Impossible. 'Im' is used before words beginning with p or m.", {}],
+  ["What does the prefix 're' mean in 'rebuild'?", "again", ["not", "before", "badly"], "Re means again, so rebuild means build again.", { badly: "'Mis' means badly or wrongly." }],
+  ["Which word is a conjunction?", "although", ["above", "slowly", "enormous"], "Conjunctions join clauses: although, because, when, if, but, so.", {}],
+  ["Choose the best conjunction:\n“We stayed inside ___ it was raining.”", "because", ["although", "but", "or"], "'Because' gives the reason.", { although: "'Although' would mean the opposite of what you'd expect." }],
+  ["Which pronoun could replace “Mum and I”?\n“Mum and I went to the beach.”", "We", ["They", "Us", "She"], "Mum and I = we (when it's the subject of the sentence).", { Us: "'Us' is used after the verb, e.g. 'Mum took us'." }],
+  ["Which is correct?", "Kensuke and I explored the island.", ["Me and Kensuke explored the island.", "Kensuke and me explored the island.", "Myself and Kensuke explored the island."], "Use 'I' when it's the subject doing the action. Take the other person away: 'I explored', not 'Me explored'.", {}],
+  ["Which word is an adverb?", "silently", ["silent", "silence", "silences"], "Adverbs often end in -ly and describe how something is done.", { silent: "Silent is an adjective." }],
+  ["Which sentence needs a question mark?", "Have you seen the map", ["I wonder where the map is", "Look at the map", "The map is on the table"], "It asks a direct question, so it needs a question mark.", { "I wonder where the map is": "That's a statement about wondering, so it ends with a full stop." }],
+  ["Which word is an adjective?", "mysterious", ["mystery", "mysteriously", "mysteries"], "Adjectives describe nouns: a mysterious island.", {}],
+  ["Which is the subordinate clause?\n“When the storm ended, we ran to the beach.”", "When the storm ended", ["we ran to the beach", "to the beach", "we ran"], "A subordinate clause doesn't make sense on its own; it depends on the main clause.", {}],
+  ["Which sentence uses commas correctly in a list?", "I packed a torch, a rope, some water and a map.", ["I packed, a torch a rope, some water and a map.", "I packed a torch a rope some water, and, a map.", "I, packed a torch, a rope, some water and a map."], "Commas separate items in a list; you don't usually need one before 'and'.", {}],
+  ["What is the best way to start a diary entry?", "Dear Diary, Today was the strangest day of my life.", ["Once upon a time there was a boy.", "In conclusion, it was fun.", "Step 1: Get a pen."], "Diaries are written in the first person (I, me, my) about your own day and feelings.", {}]
+];
+function bankQ(topic, bank) { var s = pick(bank); return q(topic, s[0], s[1], s[2], s[3], "", { notes: s[4] || {} }); }
+M.states = function () { return bankQ("Changes of state", STATES); };
+M.materials = function () { return bankQ("Properties of materials", MATERIALS); };
+M.mixtures = function () { return bankQ("Dissolving & separating", MIXTURES); };
+M.grammar = function () { return bankQ("Grammar", GRAMMAR); };
+
+/* Spelling lists from weeks 3–5 (homework sheets). */
+SPELL_ARCHIVE = SPELL_ARCHIVE.concat([
+  /* Week 3: short /i/ sound spelt y */
+  { word: "symbol", partner: "cymbal", meaning: "a sign or picture that stands for something", chunks: "sym · bol", tricky: "short i sound spelt y", hook: "SYMbol: the y sounds like the i in 'sit'.", sentences: ["The ___ for a church on a map is a cross.", "A heart is a ___ of love.", "Draw a ___ to show where the treasure is."], wrongs: ["simbol", "symbal", "simble"] },
+  { word: "mystery", partner: null, meaning: "something strange that nobody can explain", chunks: "mys · ter · y", tricky: "a y in the middle AND at the end", hook: "MYSTERY has two y's: one hiding in the middle, one at the end.", sentences: ["Who took the cookies? It's a ___!", "I love reading ___ stories.", "The missing key was a real ___."], wrongs: ["mistery", "mystry", "mysterey"] },
+  { word: "lyrics", partner: null, meaning: "the words of a song", chunks: "lyr · ics", tricky: "short i sound spelt y", hook: "LYrics: the y sings like an i.", sentences: ["I know all the ___ to that song.", "She wrote the ___ for the school song.", "Can you sing the ___ of the chorus?"], wrongs: ["lirics", "lyricks", "lyrcs"] },
+  { word: "oxygen", partner: null, meaning: "the gas in the air that we need to breathe", chunks: "ox · y · gen", tricky: "the y in the middle, and -gen at the end", hook: "OX + Y + GEN: an ox needs oxygen too.", sentences: ["We need ___ to breathe.", "Divers carry tanks of ___.", "Plants give out ___ in the daytime."], wrongs: ["oxigen", "oxygan", "oxegen"] },
+  { word: "symptom", partner: null, meaning: "a sign that you are ill", chunks: "symp · tom", tricky: "y, then a silent-sounding p", hook: "SYM + P + TOM: Tom's symptom.", sentences: ["A cough is a ___ of a cold.", "The doctor asked about every ___.", "A high temperature is a common ___."], wrongs: ["simptom", "symtom", "symptum"] },
+  { word: "physical", partner: null, meaning: "to do with the body", chunks: "phys · i · cal", tricky: "ph for f, then y", hook: "PH + YS + ICAL: physical education is PE.", sentences: ["Swimming is good ___ exercise.", "Our ___ education lesson is on Tuesday.", "A long hike is a real ___ challenge."], wrongs: ["fisical", "physicle", "phisical"] },
+  { word: "system", partner: null, meaning: "a set of parts that work together", chunks: "sys · tem", tricky: "y not i", hook: "S-Y-S-TEM: a y in the middle.", sentences: ["Our solar ___ has eight planets.", "The school has a new reward ___.", "Your heart is part of your blood ___."], wrongs: ["sistem", "systum", "sysstem"] },
+  { word: "typical", partner: null, meaning: "usual; what you would expect", chunks: "typ · i · cal", tricky: "short i sound spelt y", hook: "TYPE + ICAL: the typical type.", sentences: ["It was a ___ Monday morning.", "Rain is ___ in British summers!", "A ___ day starts with breakfast."], wrongs: ["tipical", "typicle", "typicall"] },
+  { word: "crystal", partner: null, meaning: "a clear, sparkly mineral, or very clear", chunks: "crys · tal", tricky: "short i sound spelt y", hook: "CRYS + TAL: crystals sparkle like a y-shaped star.", sentences: ["The cave was full of sparkling ___ shapes.", "The water in the lagoon was ___ clear.", "Salt forms tiny ___ shapes when water evaporates."], wrongs: ["cristal", "crystle", "crystel"] },
+  { word: "rhythm", partner: null, meaning: "a regular, repeated pattern of beats", chunks: "rh · y · thm", tricky: "no a, e, i, o or u: r-h-y-t-h-m", hook: "Rhythm Helps Your Two Hips Move.", sentences: ["We clapped to the ___ of the drum.", "The poem has a bouncy ___.", "Dancers move to the ___ of the music."], wrongs: ["rythm", "rhythem", "rhithm"] },
+  /* Week 4: long /i/ sound spelt y */
+  { word: "apply", partner: null, meaning: "to put on, or to ask for something formally", chunks: "ap · ply", tricky: "double p, long i sound spelt y", hook: "AP + PLY: two p's, and the y says 'eye'.", sentences: ["___ sun cream before you go outside.", "My sister will ___ for a new job.", "___ glue to the back of the card."], wrongs: ["aply", "applie", "appli"] },
+  { word: "hyphen", partner: null, meaning: "a short dash (-) that joins words", chunks: "hy · phen", tricky: "y for the long i sound, and ph for f", hook: "HY + PHEN: a hyphen holds hands between words.", sentences: ["You need a ___ in ‘well-known’.", "Put a ___ between the two words.", "‘Ice-cream’ can be written with a ___."], wrongs: ["hifen", "hyfen", "hyphon"] },
+  { word: "identify", partner: null, meaning: "to recognise or name something", chunks: "i · den · ti · fy", tricky: "ends -fy", hook: "IDENTI + FY: identify ends with a y that says 'eye'.", sentences: ["Can you ___ this leaf?", "The police tried to ___ the thief.", "___ the verbs in the sentence."], wrongs: ["identifi", "indentify", "identefy"] },
+  { word: "occupy", partner: null, meaning: "to fill time or space; to live in", chunks: "oc · cu · py", tricky: "double c, single p", hook: "OC + CU + PY: two c's, one p.", sentences: ["These puzzles will ___ you for hours.", "Six families ___ the flats.", "Books ___ every shelf in her room."], wrongs: ["ocupy", "occuppy", "occupie"] },
+  { word: "multiply", partner: null, meaning: "to times one number by another", chunks: "mul · ti · ply", tricky: "ends -ply", hook: "MULTI + PLY: many layers.", sentences: ["___ 6 by 7 to get 42.", "Rabbits ___ very quickly!", "To find the area, ___ the length by the width."], wrongs: ["multipy", "multiplie", "mutiply"] },
+  { word: "rhyme", partner: null, meaning: "words that end with the same sound", chunks: "rh · yme", tricky: "rh at the start, then y", hook: "RHyme starts like RHythm: r-h, then a y.", sentences: ["Cat and hat ___.", "Can you think of a word to ___ with moon?", "The poem has a ___ at the end of each line."], wrongs: ["ryme", "rhime", "rhym"] },
+  { word: "cycle", partner: null, meaning: "to ride a bike, or a repeating pattern", chunks: "cy · cle", tricky: "y for the long i, and -cle at the end", hook: "CY + CLE: a cycle has two wheels: two c's.", sentences: ["I ___ to school every day.", "The water ___ moves water around the Earth.", "A butterfly's life ___ has four stages."], wrongs: ["sycle", "cicle", "cycel"] },
+  { word: "python", partner: null, meaning: "a very large snake that squeezes its prey", chunks: "py · thon", tricky: "y for the long i sound", hook: "PY + THON: a python's long body is like the tail of the y.", sentences: ["The ___ wrapped itself around the branch.", "A ___ can be longer than a car.", "We saw a huge ___ at the zoo."], wrongs: ["pithon", "pyhton", "pythen"] },
+  { word: "hygiene", partner: null, meaning: "keeping clean to stay healthy", chunks: "hy · giene", tricky: "y, then 'ie' (i before e)", hook: "HY + GIENE: hands, you go in, wash, everything nice!", sentences: ["Washing your hands is good ___.", "Brushing your teeth is part of dental ___.", "Kitchens must have high standards of ___."], wrongs: ["hygeine", "higiene", "hygene"] },
+  { word: "supply", partner: null, meaning: "to give or provide; or a store of things", chunks: "sup · ply", tricky: "double p", hook: "SUP + PLY: two p's.", sentences: ["The farm will ___ the eggs.", "We have a ___ of pencils in the cupboard.", "Rivers ___ water to the town."], wrongs: ["suply", "supplie", "suppply"] },
+  /* Week 5: homophones and near homophones */
+  { word: "past", partner: "passed", meaning: "gone by in time, or going beyond", chunks: "past", tricky: "no 'ed': it's not a doing word", hook: "PAST is about time or place: walk PAST the shop, in the PAST.", sentences: ["We walked ___ the old castle.", "In the ___, people wrote with quills.", "It's ten minutes ___ three."], wrongs: ["parst", "passt", "pased"] },
+  { word: "passed", partner: "past", meaning: "went by, or handed over (the past tense of pass)", chunks: "pass · ed", tricky: "pass + ed: it's a verb", hook: "PASSED is something you DID: I passed the ball.", sentences: ["She ___ the ball to me.", "I ___ my swimming test!", "A car ___ us on the road."], wrongs: ["past", "pased", "parsed"] },
+  { word: "proceed", partner: "precede", meaning: "to go on or carry on", chunks: "pro · ceed", tricky: "ends -ceed", hook: "PRO + CEED: when you proceed, you sucCEED by carrying on.", sentences: ["Please ___ to the exit.", "After lunch, we will ___ with the lesson.", "The parade will ___ down the high street."], wrongs: ["procede", "proseed", "proceede"] },
+  { word: "precede", partner: "proceed", meaning: "to come before", chunks: "pre · cede", tricky: "ends -cede", hook: "PRE means before: precede = come before.", sentences: ["The thunder will ___ the rain.", "A short film will ___ the main movie.", "In the alphabet, A will always ___ B."], wrongs: ["preceed", "presede", "proceed"] },
+  { word: "aloud", partner: "allowed", meaning: "out loud, so others can hear", chunks: "a · loud", tricky: "a + loud", hook: "ALOUD has LOUD in it.", sentences: ["Please read the poem ___.", "She laughed ___ at the joke.", "Say the answer ___."], wrongs: ["alloud", "aloude", "allowd"] },
+  { word: "allowed", partner: "aloud", meaning: "given permission", chunks: "al · lowed", tricky: "double l, then 'owed'", hook: "ALLOW + ED: you are allowed.", sentences: ["We are not ___ to run in the corridor.", "Dogs are ___ on this beach.", "Are we ___ to have a sweet?"], wrongs: ["aloud", "alowed", "allowd"] },
+  { word: "aisle", partner: "isle", meaning: "a walkway between rows of seats or shelves", chunks: "aisle", tricky: "a-i-s-l-e: silent s", hook: "An AISLE has an A at the start, like an Aeroplane aisle.", sentences: ["The cereal is in the third ___.", "The bride walked down the ___.", "Please keep the ___ clear on the plane."], wrongs: ["isle", "aile", "aisel"] },
+  { word: "isle", partner: "aisle", meaning: "an island (often a small one)", chunks: "isle", tricky: "i-s-l-e: silent s", hook: "ISLE is short for ISLand: both have a silent s.", sentences: ["The Isle of Wight is an ___ off the south coast.", "They sailed to a tiny ___ in the sea.", "The pirates buried treasure on a lonely ___."], wrongs: ["aisle", "ile", "isel"] },
+  { word: "affect", partner: "effect", meaning: "to change or influence something (a verb)", chunks: "af · fect", tricky: "starts with a: it's the Action (verb)", hook: "A for Action: Affect is the verb. E for End result: Effect is the noun.", sentences: ["Will the rain ___ the match?", "Too little sleep can ___ your mood.", "The noise didn't ___ her reading."], wrongs: ["effect", "afect", "affeckt"] },
+  { word: "effect", partner: "affect", meaning: "a result or change caused by something (a noun)", chunks: "ef · fect", tricky: "starts with e: it's the End result (noun)", hook: "E for End result: the Effect. A for Action: Affect.", sentences: ["The medicine had a good ___.", "The film had amazing special ___s.", "What ___ does heat have on chocolate?"], wrongs: ["affect", "efect", "effeckt"] }
+]);
+
+/* Revision topics for weeks 3–6. */
+REVISION.millie = REVISION.millie.concat([
+  { id: "place-value", title: "Place value to 1,000,000", subject: "Maths", covered: "Weeks 3–5 homework · Sept–Oct", gens: ["placeValue", "compareOrder", "powersTen", "missingToRound"] },
+  { id: "rounding", title: "Rounding to the nearest 10 to 100,000", subject: "Maths", covered: "Week 4 homework · 28 Sept", gens: ["roundPV", "roundReason"] },
+  { id: "mental-add", title: "Mental addition & subtraction", subject: "Maths", covered: "Week 5 homework · 5 Oct", gens: ["mentalAdd"] },
+  { id: "column", title: "Column addition & subtraction", subject: "Maths", covered: "Week 5 homework · 5 Oct", gens: ["columnAdd", "columnSub", "findError"] },
+  { id: "states", title: "Changes of state", subject: "Science", covered: "Weeks 3–4 homework · Sept", gens: ["states"] },
+  { id: "materials", title: "Properties of materials", subject: "Science", covered: "Materials unit · this half term", gens: ["materials"] },
+  { id: "mixtures", title: "Dissolving & separating mixtures", subject: "Science", covered: "Week 5 homework · 5 Oct", gens: ["mixtures"] },
+  { id: "grammar", title: "Grammar: adverbials, phrases & clauses", subject: "English", covered: "Week 5 homework & this half term", gens: ["grammar"] },
+  { id: "spell-w3", title: "Week 3 spellings: short i spelt y", subject: "Spelling", covered: "Week 3 homework · 21 Sept",
+    gens: ["spell:symbol", "spell:mystery", "spell:lyrics", "spell:oxygen", "spell:symptom", "spell:physical", "spell:system", "spell:typical", "spell:crystal", "spell:rhythm"] },
+  { id: "spell-w4", title: "Week 4 spellings: long i spelt y", subject: "Spelling", covered: "Week 4 homework · 28 Sept",
+    gens: ["spell:apply", "spell:hyphen", "spell:identify", "spell:occupy", "spell:multiply", "spell:rhyme", "spell:cycle", "spell:python", "spell:hygiene", "spell:supply"] },
+  { id: "spell-w5", title: "Week 5 spellings: homophones", subject: "Spelling", covered: "Week 5 homework · 5 Oct",
+    gens: ["spell:past", "spell:passed", "spell:proceed", "spell:precede", "spell:aloud", "spell:allowed", "spell:aisle", "spell:isle", "spell:affect", "spell:effect"] }
+]);
+/* Spaced review: a few earlier topics come back in the weekly mix. */
+WEEK.millie.topics = WEEK.millie.topics.concat(["roundPV", "columnSub", "placeValue", "mixtures", "grammar"]);
+
 if (typeof module !== "undefined") module.exports = { buildQuiz: buildQuiz, genOne: genOne, REVISION: REVISION, buildRevision: buildRevision, KLISTS: KLISTS, typedNote: typedNote, buildSpelling: buildSpelling, spellDiff: spellDiff, SPELLING: SPELLING, M: M, K: K, WEEK: WEEK, dayLevel: dayLevel };

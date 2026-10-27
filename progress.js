@@ -1,5 +1,5 @@
 /* ===== Progress, awards and comeback questions (pure functions, no DOM) ===== */
-var STATIC_GENS = { poetry: 1, homophone: 1, space: 1, bestAverage: 1, science: 1 };
+var STATIC_GENS = { poetry: 1, homophone: 1, space: 1, bestAverage: 1, science: 1, states: 1, materials: 1, mixtures: 1, grammar: 1 };
 var LEVEL_MULT = { 1: 1, 2: 1.5, 3: 2 };
 
 var RANKS = {
