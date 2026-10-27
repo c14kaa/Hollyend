@@ -1,0 +1,15 @@
+# Hollyend Learning
+
+Practice quizzes, spelling tests, a revision library, characters, a shop and a pocket-money bank for Millie (Year 5) and Kristan (Year 8).
+
+## How it fits together
+- **Site**: plain static files, hosted on Vercel from this repo. Every push to `main` goes live.
+  - `index.html` – the app (built from `src/page.html` by `python3 src/build.py`)
+  - `engine.js` – questions, spelling lists, revision library (updated weekly)
+  - `progress.js` – comebacks, points, ranks, badges
+  - `avatar.js` – characters, shop items, bank rules
+  - `supa-adapter.js` – Supabase sign-in and storage
+- **Database**: Supabase project `hollyend` (tables `members`, `attempts`, `purchases`, `profiles`, `bank`). Row-level security: each child can only save their own results, nobody can overspend, the bank enforces 500 points = £1 and a £3 weekly cap, and only the parent login can mark cash-outs as paid.
+- **Logins**: `millie@hollyend.com`, `kristan@hollyend.com`, `dad@hollyend.com` (parent; `mum@hollyend.com` also works as a parent login if created) (created in Supabase → Authentication; they're linked to the right role automatically).
+
+The Supabase key in `supa-adapter.js` is the public "publishable" key and is safe to be here. Never commit the secret/service-role key.
