@@ -583,6 +583,7 @@ body.k .prompt { letter-spacing: -.005em; }
     document.body.classList.toggle("m", c === "millie");
     document.getElementById("title").innerHTML = c === "millie" ? '<em id="who">Millie</em>\u2019s Mission Control' : '<em id="who">Kristan</em>';
     document.getElementById("sub").hidden = c === "millie";
+    var tc = document.querySelector('meta[name="theme-color"]'); if (tc) tc.setAttribute("content", c === "millie" ? "#080b2b" : "#07090d");
     state.shop = { cat: null, tryOn: null, confirm: null, msg: "" }; state.bankConfirm = false; state.payConfirm = null; state.bankMsg = ""; state.bankAmt = 50;
     document.getElementById("pick-millie").setAttribute("aria-pressed", c === "millie");
     document.getElementById("pick-kristan").setAttribute("aria-pressed", c === "kristan");
