@@ -194,7 +194,29 @@ function topicSummary(all, child, weekStart) {
   return Object.keys(t).map(function (k) { return t[k]; }).sort(function (a, b) { return (a.right / a.total) - (b.right / b.total); });
 }
 
+/* ===== Kristan's player card: subject ratings from every answer he has given ===== */
+var CARD_STATS = [["MAT", "Maths"], ["ENG", "English"], ["SCI", "Science"], ["FRA", "French"], ["VOC", "Vocab"], ["FRM", "Form"]];
+function cardKey(gen, map) {
+  var g = String(gen || "");
+  if (g.indexOf("en:") === 0 || g.indexOf("ch:") === 0 || g.indexOf("spell:") === 0) return "VOC";
+  if (g.indexOf("fr:") === 0) return "FRA";
+  return { Maths: "MAT", English: "ENG", Science: "SCI", French: "FRA" }[map[g]] || null;
+}
+function cardRating(right, total) { return Math.max(40, Math.min(99, Math.round(40 + 59 * (right + 0.45 * 8) / (total + 8)))); }
+function playerCard(all, child) {
+  var map = {};
+  if (typeof REVISION !== "undefined" && REVISION[child]) REVISION[child].forEach(function (t) { t.gens.forEach(function (g) { map[g] = t.subject; }); });
+  var acc = {}; CARD_STATS.forEach(function (s) { acc[s[0]] = [0, 0]; });
+  var mine = childAttempts(all, child);
+  mine.forEach(function (a) { (a.results || []).forEach(function (r) { var k = cardKey(r.gen, map); if (k) { acc[k][1]++; if (r.ok) acc[k][0]++; } }); });
+  mine.slice(-5).forEach(function (a) { acc.FRM[0] += a.score || 0; acc.FRM[1] += a.total || 0; });
+  var stats = CARD_STATS.map(function (s) { return { key: s[0], name: s[1], value: cardRating(acc[s[0]][0], acc[s[0]][1]), answers: acc[s[0]][1] }; });
+  var ovr = Math.round(stats.reduce(function (t, s) { return t + s.value; }, 0) / stats.length);
+  return { ovr: ovr, stats: stats, tier: ovr >= 85 ? "elite" : ovr >= 75 ? "gold" : ovr >= 65 ? "silver" : "bronze",
+    tierName: ovr >= 85 ? "Elite" : ovr >= 75 ? "Gold" : ovr >= 65 ? "Silver" : "Bronze", next: ovr >= 85 ? null : ovr >= 75 ? 85 : ovr >= 65 ? 75 : 65 };
+}
+
 if (typeof module !== "undefined" && module.exports) module.exports = {
   skillState: skillState, weakSkills: weakSkills, buildAdaptiveQuiz: buildAdaptiveQuiz, scoreAttempt: scoreAttempt,
-  awards: awards, revisionStats: revisionStats, rankFor: rankFor, topicSummary: topicSummary, weekAttempts: weekAttempts, BADGES: BADGES, streakInfo: streakInfo, dubaiDay: dubaiDay, addDays: addDays, qualifies: qualifies, STREAK_RULE: STREAK_RULE
+  awards: awards, revisionStats: revisionStats, rankFor: rankFor, topicSummary: topicSummary, weekAttempts: weekAttempts, BADGES: BADGES, streakInfo: streakInfo, dubaiDay: dubaiDay, addDays: addDays, qualifies: qualifies, STREAK_RULE: STREAK_RULE, playerCard: playerCard
 };

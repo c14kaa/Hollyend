@@ -2,9 +2,11 @@
    A 20-club league with one matchday per Abu Dhabi day. Kristan's club (Hollyend FC) plays its match by
    answering 5 questions; every other fixture is simulated by computer clubs. Everything is worked out from the
    saved results with a seeded random generator, so the table is the same on every device and can't be replayed.
-   38 matchdays a season; top 3 go up, bottom 3 go down. */
+   19 matchdays a season (every club plays every other once); top 3 go up, bottom 3 go down.
+   Kristan's match: each question is an attack (right = Hollyend scores) or a defence (wrong = they score).
+   Stronger opponents mean more defence questions, so goal difference = answers right minus defence questions. No luck involved. */
 var LEAGUE = {
-  start: "2026-10-27", length: 38, missedScore: 1,
+  start: "2026-10-27", length: 19,
   team: { name: "Hollyend FC", code: "HOL" },
   divisions: [
     { id: "d2", name: "Division Two", tier: 3, level: 2, up: 3, down: 0, teams: [
@@ -59,34 +61,42 @@ function lgSchedule(season, div) {
     first.push(pairs);
     arr = [arr[0], arr[19]].concat(arr.slice(1, 19));
   }
-  return first.concat(first.map(function (pairs) { return pairs.map(function (x) { return [x[1], x[0]]; }); }));
+  return first;
 }
 function clampL(x) { return Math.max(0.15, Math.min(3.6, x)); }
 function lgSimOther(h, a, C, seed) {
   var rnd = lgRng(seed), rh = C.clubs[h].rating, ra = C.clubs[a].rating;
-  return [lgPoisson(clampL(1.4 * Math.exp((rh - ra) / 38)), rnd), lgPoisson(clampL(1.1 * Math.exp((ra - rh) / 38)), rnd)];
+  return [lgPoisson(clampL(1.4 * Math.exp((rh - ra) / 24)), rnd), lgPoisson(clampL(1.1 * Math.exp((ra - rh) / 24)), rnd)];
 }
-/* Kristan's match: his quiz score (0-5) decides how well Hollyend FC plays. */
-var LG_FOR = [0.2, 0.5, 0.9, 1.3, 1.85, 2.5], LG_AGAINST = [1.9, 1.6, 1.3, 1.05, 0.8, 0.5];
-function lgSimMine(opp, home, s, C, seed, div) {
-  div = div || 0;
-  var rnd = lgRng(seed + "|" + s), ro = C.clubs[opp].rating;
-  var gf = lgPoisson(clampL(LG_FOR[s] * (home ? 1.08 : 0.95) * (1 - 0.07 * div)), rnd);
-  var ga = lgPoisson(clampL((home ? 1.1 : 1.4) * Math.exp((ro - C.mid) / 38) * LG_AGAINST[s] * (1 + 0.12 * div)), rnd);
-  if (s === 5 && gf <= ga) gf = div ? Math.max(gf, ga) : ga + 1; /* a perfect 5 never loses (and always wins in Division Two) */
-  if (s === 0 && gf >= ga) ga = gf + 1;
+/* Kristan's match: how many defence questions (1-3) depends on how strong the opponent is this season. */
+var LG_DEFS = { d2: [3, 2, 1], d1: [3, 3, 2], pd: [4, 3, 2] }; /* top six, middle seven, bottom six */
+function lgDefs(C, opp, div) {
+  var D = LG_DEFS[LEAGUE.divisions[div || 0].id];
+  var others = C.clubs.slice(1).map(function (c) { return c.rating; }).sort(function (a, b) { return b - a; });
+  var rank = others.indexOf(C.clubs[opp].rating);
+  return rank < 6 ? D[0] : rank < 13 ? D[1] : D[2];
+}
+var LG_TEMPLATES = { 1: ["AADAA", "ADAAA", "AAADA"], 2: ["ADADA", "ADAAD", "DAADA"], 3: ["DADAD", "ADDAD", "DAADD"], 4: ["DDADD", "DADDD", "DDDAD"] };
+function lgPattern(season, div, r, defs) {
+  var rnd = lgRng("pat|" + season + "|" + div + "|" + r), t = LG_TEMPLATES[defs][Math.floor(rnd() * 3)], base = [5, 23, 41, 61, 79];
+  return t.split("").map(function (c, i) { return { type: c, min: base[i] + Math.floor(rnd() * 14) }; });
+}
+function lgMinute(m) { return m > 90 ? "90+" + (m - 90) + "\u2032" : m + "\u2032"; }
+function lgMyResult(oks, pattern) {
+  var gf = 0, ga = 0;
+  pattern.forEach(function (q, i) { var ok = !!oks[i]; if (q.type === "A" && ok) gf++; if (q.type === "D" && !ok) ga++; });
   return [gf, ga];
 }
 
-/* How Kristan's match on a given day went: played (attempt), started (server-marked answers) or missed. */
+/* How Kristan's match on a given day went: played (attempt or 5 server-marked answers), unfinished, or missed (0-3 forfeit). */
 function lgMyScore(day, today, attempts, matches) {
   var at = attempts.filter(function (a) { return a.child === "kristan" && a.mode === "match" && (a.playDay || lgToday(a.at)) === day; })[0];
-  if (at) return { status: "played", s: at.score };
+  if (at) return { status: "played", oks: (at.results || []).map(function (r) { return !!r.ok; }) };
   var m = matches.filter(function (x) { return x.child === "kristan" && x.playDay === day; })[0];
-  var ans = m && m.answers || [];
-  if (m && ans.length >= 5) return { status: "played", s: ans.filter(function (x) { return x.ok; }).length };
-  if (day < today) return m ? { status: "played", s: ans.filter(function (x) { return x.ok; }).length, unfinished: true } : { status: "missed", s: LEAGUE.missedScore };
-  if (m) return { status: "live", answered: ans.length };
+  var ans = m && m.answers || [], oks = ans.map(function (x) { return !!x.ok; });
+  if (m && ans.length >= 5) return { status: "played", oks: oks };
+  if (day < today) return m ? { status: "played", oks: oks, unfinished: true } : { status: "missed", forfeit: true };
+  if (m) return { status: "live", answered: ans.length, oks: oks };
   return { status: "todo" };
 }
 
@@ -99,10 +109,11 @@ function lgSeason(season, div, today, attempts, matches) {
     var open = day < today || (day === today && mine.status === "played");
     var fx = R[r].map(function (pr, k) {
       var f = { home: pr[0], away: pr[1], mine: pr[0] === 0 || pr[1] === 0 };
+      if (f.mine) { f.defs = lgDefs(C, pr[0] === 0 ? pr[1] : pr[0], div); f.pattern = lgPattern(season, div, r, f.defs); }
       if (!open) return f;
       if (f.mine) {
-        var home = pr[0] === 0, opp = home ? pr[1] : pr[0], g = lgSimMine(opp, home, mine.s, C, "mine|" + season + "|" + div + "|" + r, div);
-        f.hg = home ? g[0] : g[1]; f.ag = home ? g[1] : g[0]; f.s = mine.s; f.missed = mine.status === "missed"; f.unfinished = !!mine.unfinished;
+        var home = pr[0] === 0, g = mine.forfeit ? [0, 3] : lgMyResult(mine.oks, f.pattern);
+        f.hg = home ? g[0] : g[1]; f.ag = home ? g[1] : g[0]; f.oks = mine.oks || []; f.s = f.oks.filter(Boolean).length; f.missed = !!mine.forfeit; f.unfinished = !!mine.unfinished;
       } else { var g2 = lgSimOther(pr[0], pr[1], C, "o|" + season + "|" + div + "|" + r + "|" + k); f.hg = g2[0]; f.ag = g2[1]; }
       return f;
     });
@@ -141,10 +152,10 @@ function leagueState(attempts, matches, now) {
   var S = lgSeason(cur, div, today, attempts, matches), r = Math.min(LEAGUE.length - 1, since - cur * LEAGUE.length), round = S.rounds[r];
   var myFx = round.fixtures.filter(function (f) { return f.mine; })[0], home = myFx.home === 0;
   var mine = S.rounds.map(function (rd) { var f = rd.fixtures.filter(function (x) { return x.mine; })[0], h = f.home === 0;
-    return { matchday: rd.r + 1, day: rd.day, home: h, opp: S.clubs[h ? f.away : f.home], open: rd.open, gf: rd.open ? (h ? f.hg : f.ag) : null, ga: rd.open ? (h ? f.ag : f.hg) : null, s: f.s, missed: f.missed, unfinished: f.unfinished, status: rd.mine.status }; });
+    return { matchday: rd.r + 1, day: rd.day, home: h, opp: S.clubs[h ? f.away : f.home], open: rd.open, gf: rd.open ? (h ? f.hg : f.ag) : null, ga: rd.open ? (h ? f.ag : f.hg) : null, s: f.s, missed: f.missed, unfinished: f.unfinished, status: rd.mine.status, defs: f.defs }; });
   return { today: today, seasonNo: cur + 1, season: S, division: S.division, matchday: r + 1, round: round, home: home, opponent: S.clubs[home ? myFx.away : myFx.home],
-    status: round.mine.status, answered: round.mine.answered || 0, myRow: S.table.filter(function (x) { return x.me; })[0], mine: mine, honours: honours, level: S.division.level };
+    status: round.mine.status, answered: round.mine.answered || 0, pattern: myFx.pattern, defs: myFx.defs, liveOks: round.mine.oks || [], myRow: S.table.filter(function (x) { return x.me; })[0], mine: mine, honours: honours, level: S.division.level };
 }
 function lgResultLetter(gf, ga) { return gf > ga ? "W" : gf < ga ? "L" : "D"; }
 
-if (typeof module !== "undefined" && module.exports) module.exports = { LEAGUE: LEAGUE, leagueState: leagueState, lgSeason: lgSeason, lgSchedule: lgSchedule, lgSimMine: lgSimMine, lgClubs: lgClubs, lgToday: lgToday, lgDay: lgDay, lgResultLetter: lgResultLetter };
+if (typeof module !== "undefined" && module.exports) module.exports = { LEAGUE: LEAGUE, leagueState: leagueState, lgSeason: lgSeason, lgSchedule: lgSchedule, lgPattern: lgPattern, lgMyResult: lgMyResult, lgMinute: lgMinute, lgDefs: lgDefs, lgClubs: lgClubs, lgToday: lgToday, lgDay: lgDay, lgResultLetter: lgResultLetter };
