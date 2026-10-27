@@ -39,7 +39,7 @@ var SHOP = {
       { id: "buddy-robot", cat: "buddy", name: "Bolt the robot", cost: 250, v: {} },
       { id: "buddy-cat", cat: "buddy", name: "Comet the space cat", cost: 300, v: {} },
       { id: "buddy-rocket", cat: "buddy", name: "Mini rocket", cost: 400, v: {} },
-      { id: "buddy-monkey", cat: "buddy", name: "Coco the space monkey", cost: 300, v: {} },
+      { id: "buddy-monkey", cat: "buddy", name: "Ooh Ooh the space monkey", cost: 300, v: {} },
       { id: "mhair-bob", cat: "hairstyle", name: "Bob", cost: 0, v: {} },
       { id: "mhair-long", cat: "hairstyle", name: "Long and flowing", cost: 80, v: {} },
       { id: "mhair-ponytail", cat: "hairstyle", name: "Ponytail", cost: 100, v: {} },
