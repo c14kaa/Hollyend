@@ -14,8 +14,8 @@ function lookItems(prefixName) {
 var SHOP = {
   millie: {
     title: "Space Shop",
-    cats: [["suit", "Space suits"], ["visor", "Visors"], ["extra", "Gear"], ["buddy", "Space buddies"], ["scene", "Planets"], ["skin", "Look"], ["haircol", "Hair"]],
-    defaults: { suit: "suit-white", visor: "visor-blue", extra: "extra-none", buddy: "buddy-none", scene: "scene-moon", skin: "skin-1", haircol: "hair-0" },
+    cats: [["suit", "Space suits"], ["visor", "Visors"], ["extra", "Gear"], ["buddy", "Space buddies"], ["scene", "Planets"], ["hairstyle", "Hairstyles"], ["haircol", "Hair colour"], ["skin", "Look"]],
+    defaults: { suit: "suit-white", visor: "visor-blue", extra: "extra-none", buddy: "buddy-none", scene: "scene-moon", skin: "skin-1", haircol: "hair-0", hairstyle: "mhair-bob" },
     items: [
       { id: "suit-white", cat: "suit", name: "Classic white", cost: 0, v: { a: "#eef1ff", b: "#8b7bff" } },
       { id: "suit-pink", cat: "suit", name: "Bubblegum pink", cost: 150, v: { a: "#ff9cc9", b: "#c23a7a" } },
@@ -39,6 +39,15 @@ var SHOP = {
       { id: "buddy-robot", cat: "buddy", name: "Bolt the robot", cost: 250, v: {} },
       { id: "buddy-cat", cat: "buddy", name: "Comet the space cat", cost: 300, v: {} },
       { id: "buddy-rocket", cat: "buddy", name: "Mini rocket", cost: 400, v: {} },
+      { id: "buddy-monkey", cat: "buddy", name: "Coco the space monkey", cost: 300, v: {} },
+      { id: "mhair-bob", cat: "hairstyle", name: "Bob", cost: 0, v: {} },
+      { id: "mhair-long", cat: "hairstyle", name: "Long and flowing", cost: 80, v: {} },
+      { id: "mhair-ponytail", cat: "hairstyle", name: "Ponytail", cost: 100, v: {} },
+      { id: "mhair-pigtails", cat: "hairstyle", name: "Pigtails", cost: 100, v: {} },
+      { id: "mhair-plaits", cat: "hairstyle", name: "Plaits", cost: 150, v: {} },
+      { id: "mhair-buns", cat: "hairstyle", name: "Space buns", cost: 150, v: {} },
+      { id: "mhair-curls", cat: "hairstyle", name: "Big curls", cost: 150, v: {} },
+      { id: "mhair-fringe", cat: "hairstyle", name: "Fringe with star clip", cost: 200, v: {} },
       { id: "scene-moon", cat: "scene", name: "Moon base", cost: 0, v: {} },
       { id: "scene-mars", cat: "scene", name: "Mars", cost: 150, v: {} },
       { id: "scene-saturn", cat: "scene", name: "Saturn's rings", cost: 250, v: {} },
@@ -51,6 +60,7 @@ var SHOP = {
     defaults: { kit: "kit-blue", boots: "boots-black", hair: "hair-short", extra: "extra-none", ball: "ball-classic", scene: "scene-training", skin: "skin-1", haircol: "hair-0" },
     items: [
       { id: "kit-blue", cat: "kit", name: "Home blue", cost: 0, v: { n: "#ffffff", a: "#2f6fe0", b: "#ffffff", p: "plain", s: "#ffffff" } },
+      { id: "kit-redwhite", cat: "kit", name: "Classic red, white sleeves", cost: 250, v: { n: "#ffffff", a: "#db0007", b: "#ffffff", p: "sleeves", s: "#ffffff", collar: "#ffffff", sock: "#ffffff", sockBand: "#db0007" } },
       { id: "kit-stripes", cat: "kit", name: "Red & white stripes", cost: 150, v: { n: "#111111", a: "#d8282f", b: "#ffffff", p: "stripes", s: "#111111" } },
       { id: "kit-hoops", cat: "kit", name: "Sky blue hoops", cost: 150, v: { n: "#173a6b", a: "#7cc8ff", b: "#ffffff", p: "hoops", s: "#ffffff" } },
       { id: "kit-claret", cat: "kit", name: "Claret & blue", cost: 150, v: { n: "#ffffff", a: "#7a1f3d", b: "#8fd0ff", p: "sleeves", s: "#ffffff" } },
@@ -131,6 +141,19 @@ function sceneMillie(id) {
     '<circle cx="164" cy="38" r="14" fill="#7cc4ff" opacity=".85"/><circle cx="160" cy="34" r="4" fill="#5ea7e8"/><ellipse cx="100" cy="266" rx="170" ry="80" fill="#9a9ec4"/><ellipse cx="48" cy="216" rx="14" ry="4" fill="#7c80a8"/><ellipse cx="150" cy="224" rx="18" ry="5" fill="#7c80a8"/>';
 }
 
+function hairMillie(style, c) {
+  var top = '<path d="M70 74 Q68 42 100 42 Q132 42 130 74 Q124 58 108 56 Q100 64 86 60 Q76 62 70 74 Z" fill="' + c + '"/>';
+  var sides = '<path d="M71 70 Q66 92 74 102 Q78 92 78 78 Z M129 70 Q134 92 126 102 Q122 92 122 78 Z" fill="' + c + '"/>';
+  if (style === "mhair-long") return '<path d="M70 70 Q62 100 66 112 Q74 112 80 106 Q76 92 78 78 Z M130 70 Q138 100 134 112 Q126 112 120 106 Q124 92 122 78 Z" fill="' + c + '"/>' + top;
+  if (style === "mhair-ponytail") return '<path d="M126 58 Q146 62 144 86 Q142 104 132 112 Q136 92 128 76 Z" fill="' + c + '"/><circle cx="128" cy="60" r="4" fill="#ff6fb5"/>' + top;
+  if (style === "mhair-pigtails") return '<ellipse cx="66" cy="84" rx="9" ry="13" fill="' + c + '"/><ellipse cx="134" cy="84" rx="9" ry="13" fill="' + c + '"/><circle cx="71" cy="72" r="3.4" fill="#ff6fb5"/><circle cx="129" cy="72" r="3.4" fill="#ff6fb5"/>' + top;
+  if (style === "mhair-plaits") { var s = ""; [0, 1, 2, 3].forEach(function (i) { s += '<ellipse cx="72" cy="' + (82 + i * 8) + '" rx="5" ry="5" fill="' + c + '"/><ellipse cx="128" cy="' + (82 + i * 8) + '" rx="5" ry="5" fill="' + c + '"/>'; });
+    return s + '<circle cx="72" cy="113" r="3" fill="#8b7bff"/><circle cx="128" cy="113" r="3" fill="#8b7bff"/>' + top; }
+  if (style === "mhair-buns") return '<circle cx="76" cy="46" r="11" fill="' + c + '"/><circle cx="124" cy="46" r="11" fill="' + c + '"/>' + sides + top;
+  if (style === "mhair-curls") { var k = ""; [[72, 62], [74, 50], [82, 42], [92, 37], [104, 36], [116, 40], [125, 48], [128, 60], [70, 76], [130, 76], [72, 90], [128, 90]].forEach(function (p) { k += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="8.5" fill="' + c + '"/>'; }); return k; }
+  if (style === "mhair-fringe") return sides + '<path d="M70 72 Q68 42 100 42 Q132 42 130 72 L126 64 L122 66 L118 62 L112 65 L106 61 L100 64 L94 61 L88 65 L82 62 L78 66 L74 64 Z" fill="' + c + '"/>' + star(118, 52, 6, "#ffd36b");
+  return sides + top;
+}
 function avatarMillie(eq, u) {
   var suit = fx(eq.suit.v.a, u), trim = eq.suit.v.b, visor = fx(eq.visor.v.c, u), skin = eq.skin.v.c, hair = eq.haircol.v.c, x = eq.extra.id, b = eq.buddy.id;
   var h = '<g clip-path="url(#CLIP' + u + ')">' + sceneMillie(eq.scene.id);
@@ -146,8 +169,7 @@ function avatarMillie(eq, u) {
     '<rect x="84" y="126" width="32" height="22" rx="6" fill="#262b66"/><circle cx="93" cy="137" r="3.5" fill="#ff6fb5"/><circle cx="100" cy="137" r="3.5" fill="#5ef0a0"/><circle cx="107" cy="137" r="3.5" fill="#ffd36b"/>' +
     '<circle cx="100" cy="70" r="46" fill="#f4f6ff" stroke="#c9cdef" stroke-width="3"/>' +
     '<circle cx="100" cy="74" r="30" fill="' + skin + '"/>' +
-    '<path d="M71 70 Q66 92 74 102 Q78 92 78 78 Z M129 70 Q134 92 126 102 Q122 92 122 78 Z" fill="' + hair + '"/>' +
-    '<path d="M70 74 Q68 42 100 42 Q132 42 130 74 Q124 58 108 56 Q100 64 86 60 Q76 62 70 74 Z" fill="' + hair + '"/>' +
+    hairMillie(eq.hairstyle ? eq.hairstyle.id : "mhair-bob", hair) +
     '<circle cx="90" cy="78" r="3.6" fill="#1b1530"/><circle cx="110" cy="78" r="3.6" fill="#1b1530"/><circle cx="91" cy="77" r="1.1" fill="#fff"/><circle cx="111" cy="77" r="1.1" fill="#fff"/>' +
     '<circle cx="84" cy="86" r="4" fill="#ff8fb0" opacity=".45"/><circle cx="116" cy="86" r="4" fill="#ff8fb0" opacity=".45"/>' +
     '<path d="M92 88 Q100 96 108 88" stroke="#7a2e3a" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
@@ -158,6 +180,13 @@ function avatarMillie(eq, u) {
   if (b === "buddy-alien") h += '<path d="M162 200 L156 180 M178 200 L184 180" stroke="#5bd16c" stroke-width="3"/><circle cx="156" cy="179" r="4" fill="#fff"/><circle cx="184" cy="179" r="4" fill="#fff"/><circle cx="156" cy="179" r="2" fill="#222"/><circle cx="184" cy="179" r="2" fill="#222"/><ellipse cx="170" cy="210" rx="19" ry="17" fill="#7be38a"/><circle cx="170" cy="206" r="5" fill="#fff"/><circle cx="170" cy="206" r="2.4" fill="#222"/><path d="M163 216 Q170 221 177 216" stroke="#2c7a3a" stroke-width="2" fill="none"/>';
   if (b === "buddy-robot") h += '<path d="M170 186 L170 178" stroke="#8a93bd" stroke-width="3"/><circle cx="170" cy="176" r="3.5" fill="#ff6fb5"/><rect x="154" y="186" width="32" height="26" rx="6" fill="#b8c2e8"/><rect x="159" y="193" width="22" height="8" rx="3" fill="#1e2552"/><circle cx="165" cy="197" r="2.4" fill="#5ef0f0"/><circle cx="175" cy="197" r="2.4" fill="#5ef0f0"/><rect x="157" y="212" width="26" height="14" rx="4" fill="#9aa3d0"/>';
   if (b === "buddy-cat") h += '<polygon points="157,192 160,178 168,188" fill="#f4a259"/><polygon points="183,192 180,178 172,188" fill="#f4a259"/><circle cx="170" cy="200" r="15" fill="#f4a259"/><circle cx="164" cy="198" r="2.4" fill="#222"/><circle cx="176" cy="198" r="2.4" fill="#222"/><path d="M167 205 Q170 208 173 205" stroke="#7a3a12" stroke-width="1.6" fill="none"/><circle cx="170" cy="198" r="19" fill="#bfe3ff" opacity=".28" stroke="#fff" stroke-width="1.5"/><ellipse cx="170" cy="222" rx="12" ry="7" fill="#f4a259"/>';
+  if (b === "buddy-monkey") h += '<path d="M184 216 Q198 206 192 192 Q188 184 182 190" stroke="#7a4a26" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+    '<ellipse cx="170" cy="214" rx="14" ry="12" fill="#8b5a2b"/><ellipse cx="170" cy="216" rx="8" ry="7" fill="#e3b98a"/>' +
+    '<circle cx="155" cy="194" r="7" fill="#8b5a2b"/><circle cx="185" cy="194" r="7" fill="#8b5a2b"/><circle cx="155" cy="194" r="4" fill="#e3b98a"/><circle cx="185" cy="194" r="4" fill="#e3b98a"/>' +
+    '<circle cx="170" cy="194" r="14" fill="#8b5a2b"/><path d="M160 196 Q160 186 166 188 Q170 184 174 188 Q180 186 180 196 Q180 206 170 206 Q160 206 160 196 Z" fill="#e3b98a"/>' +
+    '<circle cx="165" cy="193" r="2.2" fill="#1b1530"/><circle cx="175" cy="193" r="2.2" fill="#1b1530"/><circle cx="165.6" cy="192.4" r=".7" fill="#fff"/><circle cx="175.6" cy="192.4" r=".7" fill="#fff"/>' +
+    '<ellipse cx="170" cy="199" rx="2.4" ry="1.4" fill="#5a3a1a"/><path d="M165 202 Q170 206 175 202" stroke="#5a3a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
+    '<circle cx="170" cy="196" r="21" fill="#bfe3ff" opacity=".22" stroke="#fff" stroke-width="1.5"/>';
   if (b === "buddy-rocket") h += '<g transform="rotate(20 172 200)"><path d="M172 172 Q184 188 182 214 L162 214 Q160 188 172 172 Z" fill="#f4f6ff"/><circle cx="172" cy="194" r="5" fill="#7cc4ff" stroke="#8b7bff" stroke-width="2"/><path d="M162 204 L154 218 L163 214 Z M182 204 L190 218 L181 214 Z" fill="#ff6fb5"/><path d="M165 214 Q172 234 179 214 Z" fill="#ffb347"/></g>';
   return h + '</g>';
 }
@@ -187,9 +216,10 @@ function hairKristan(style, c) {
 function avatarKristan(eq, u) {
   var k = eq.kit.v, a = fx(k.a, u), bcol = k.b, skin = eq.skin.v.c, hair = eq.haircol.v.c, boot = fx(eq.boots.v.c, u), ball = eq.ball.v, x = eq.extra.id, cid = "SH" + u;
   var shirt = "M70 92 Q100 84 130 92 L148 108 L138 124 L128 117 L128 152 L72 152 L72 117 L62 124 L52 108 Z";
-  var h = '<g clip-path="url(#CLIP' + u + ')">' + sceneKristan(eq.scene.id) + '<clipPath id="' + cid + '"><path d="' + shirt + '"/></clipPath>';
+  var h = '<g clip-path="url(#CLIP' + u + ')">' + (eq.bare ? '' : sceneKristan(eq.scene.id)) + '<clipPath id="' + cid + '"><path d="' + shirt + '"/></clipPath>';
   h += '<rect x="82" y="170" width="14" height="26" rx="6" fill="' + skin + '"/><rect x="104" y="170" width="14" height="26" rx="6" fill="' + skin + '"/>' +
-    '<rect x="81" y="188" width="16" height="26" rx="5" fill="' + (k.gold ? "#ffd23f" : bcol === "#ffffff" ? a : bcol) + '"/><rect x="103" y="188" width="16" height="26" rx="5" fill="' + (k.gold ? "#ffd23f" : bcol === "#ffffff" ? a : bcol) + '"/>' +
+    '<rect x="81" y="188" width="16" height="26" rx="5" fill="' + (k.sock || (k.gold ? "#ffd23f" : bcol === "#ffffff" ? a : bcol)) + '"/><rect x="103" y="188" width="16" height="26" rx="5" fill="' + (k.sock || (k.gold ? "#ffd23f" : bcol === "#ffffff" ? a : bcol)) + '"/>' +
+    (k.sockBand ? '<rect x="81" y="190" width="16" height="4" fill="' + k.sockBand + '"/><rect x="103" y="190" width="16" height="4" fill="' + k.sockBand + '"/>' : '') +
     '<path d="M74 212 h24 q4 0 4 5 v3 h-30 q-2 -8 2 -8 z" fill="' + boot + '"/><path d="M102 212 h22 q8 0 8 6 v2 h-30 z" fill="' + boot + '"/>' +
     '<path d="M74 148 h52 l2 26 h-24 l-4 -8 l-4 8 h-24 z" fill="' + k.s + '"/>' +
     '<rect x="50" y="114" width="13" height="36" rx="6" fill="' + skin + '"/><rect x="137" y="114" width="13" height="36" rx="6" fill="' + skin + '"/>' +
@@ -201,7 +231,7 @@ function avatarKristan(eq, u) {
   if (k.p === "sash") h += '<polygon points="70,86 86,86 132,152 116,152" fill="' + bcol + '"/>';
   if (k.p === "sleeves") h += '<polygon points="40,96 72,96 72,130 40,130" fill="' + bcol + '"/><polygon points="128,96 160,96 160,130 128,130" fill="' + bcol + '"/>';
   if (k.galaxy) h += dotsField(14, 12, 70, 88, 60, 62, "#fff", 1);
-  h += '</g><path d="M92 88 L100 100 L108 88" stroke="' + bcol + '" stroke-width="4" fill="none"/>' +
+  h += '</g>' + (k.collar ? '<path d="M84 89 Q100 84 116 89 L112 94 Q100 90 88 94 Z" fill="' + k.collar + '"/>' : '') + '<path d="M92 88 L100 100 L108 88" stroke="' + bcol + '" stroke-width="4" fill="none"/>' +
     '<text x="100" y="134" text-anchor="middle" font-family="Teko, Arial Narrow, sans-serif" font-weight="700" font-size="24" fill="' + k.n + '" stroke="rgba(0,0,0,.35)" stroke-width="1" paint-order="stroke">10</text>' +
     '<rect x="94" y="76" width="12" height="12" fill="' + skin + '"/><circle cx="76" cy="62" r="5" fill="' + skin + '"/><circle cx="124" cy="62" r="5" fill="' + skin + '"/>' +
     '<circle cx="100" cy="60" r="24" fill="' + skin + '"/>' + hairKristan(eq.hair.id, hair) +
@@ -221,8 +251,9 @@ function avatarKristan(eq, u) {
   return h + '</g>';
 }
 
-function avatarSVG(child, equipped, cls) {
+function avatarSVG(child, equipped, cls, opts) {
   var u = "a" + (++AV_UID), eq = resolveOutfit(child, equipped);
+  if (opts && opts.bare) eq.bare = true;
   return '<svg class="' + (cls || "av") + '" viewBox="0 0 200 240" role="img" aria-label="' + (child === "millie" ? "Millie's astronaut" : "Kristan's footballer") + '">' + defsCommon(u) +
     (child === "millie" ? avatarMillie(eq, u) : avatarKristan(eq, u)) + '</svg>';
 }
