@@ -1193,7 +1193,7 @@ body.k .prompt { letter-spacing: -.005em; }
   }
   function kHero(aw, w) {
     var pc = playerCard(all, "kristan"), r = aw.rank, pct = r.next ? Math.min(100, Math.round((aw.points - r.floor) / (r.next.at - r.floor) * 100)) : 100;
-    return '<div class="khero">' + kCard() + '<div class="side"><span class="tierline"><b>' + pc.tierName + '</b> card · OVR ' + pc.ovr + (pc.next ? ' · ' + pc.next + ' for ' + (pc.next === 85 ? 'Elite' : pc.next === 75 ? 'Gold' : 'Silver') : '') + '</span>' +
+    return '<div class="khero">' + kCard() + '<div class="side"><span class="tierline"><b>' + pc.tierName + '</b> card · OVR ' + pc.ovr + (pc.next ? ' · ' + pc.next + ' for ' + pc.nextName : '') + '</span>' +
       '<div class="statlist">' + pc.stats.map(function (s) { return '<span>' + s.name + '</span><span class="sb"><i style="width:' + Math.round((s.value - 40) / 59 * 100) + '%"></i></span><b>' + s.value + '</b>'; }).join("") + '</div>' +
       '<span class="tierline">Status: <b>' + esc(r.name) + '</b>' + (r.next ? ' · ' + (r.next.at - aw.points) + ' pts to ' + esc(r.next.name) : '') + '</span><div class="bar" role="img" aria-label="' + pct + '% to next status"><i style="width:' + pct + '%"></i></div>' +
       '<span class="small"><b style="color:var(--ink)">' + w.balance + ' pts</b> to spend' + (w.balance >= 250 ? ' · worth ' + fmtMoney(Math.floor(w.balance / 250) * 50) : '') + '</span>' +

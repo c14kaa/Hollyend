@@ -8,8 +8,8 @@ var RANKS = {
     [1000, "Galaxy Explorer"], [1600, "Solaris Legend"]
   ],
   kristan: [
-    [0, "Academy Prospect"], [100, "Squad Player"], [300, "First Team"], [600, "Vice-Captain"],
-    [1000, "Captain"], [1600, "Club Legend"]
+    [0, "Academy Prospect"], [1000, "Youth Team"], [2500, "Reserve Squad"], [5000, "First-Team Squad"], [8000, "Regular Starter"],
+    [12000, "Vice-Captain"], [17000, "Captain"], [23000, "Club Legend"], [30000, "World Class"]
   ]
 };
 
@@ -225,6 +225,7 @@ function topicSummary(all, child, weekStart) {
 }
 
 /* ===== Kristan's player card: subject ratings from every answer he has given ===== */
+var CARD_TIERS = { silver: 65, gold: 82, elite: 89 };
 var CARD_STATS = [["MAT", "Maths"], ["ENG", "English"], ["SCI", "Science"], ["FRA", "French"], ["VOC", "Vocab"], ["FRM", "Form"]];
 function cardKey(gen, map) {
   var g = String(gen || "");
@@ -232,18 +233,24 @@ function cardKey(gen, map) {
   if (/^f[rq]:/.test(g)) return "FRA";
   return { Maths: "MAT", English: "ENG", Science: "SCI", French: "FRA" }[map[g]] || null;
 }
-function cardRating(right, total) { return Math.max(40, Math.min(99, Math.round(40 + 59 * (right + 0.45 * 8) / (total + 8)))); }
+/* Tough on purpose: accuracy is pulled towards 40% until there are lots of answers, and up to 9 bonus points come only with volume (400 answers in a subject). */
+function cardRating(right, total, noVolume) {
+  var s = (right + 0.4 * 25) / (total + 25), bonus = noVolume ? 0 : 9 * Math.min(1, total / 400);
+  return Math.max(40, Math.min(99, Math.round(35 + 55 * s + bonus)));
+}
 function playerCard(all, child) {
   var map = {};
   if (typeof REVISION !== "undefined" && REVISION[child]) REVISION[child].forEach(function (t) { t.gens.forEach(function (g) { map[g] = t.subject; }); });
   var acc = {}; CARD_STATS.forEach(function (s) { acc[s[0]] = [0, 0]; });
   var mine = childAttempts(all, child);
   mine.forEach(function (a) { (a.results || []).forEach(function (r) { var k = cardKey(r.gen, map); if (k) { acc[k][1]++; if (r.ok) acc[k][0]++; } }); });
-  mine.slice(-5).forEach(function (a) { acc.FRM[0] += a.score || 0; acc.FRM[1] += a.total || 0; });
-  var stats = CARD_STATS.map(function (s) { return { key: s[0], name: s[1], value: cardRating(acc[s[0]][0], acc[s[0]][1]), answers: acc[s[0]][1] }; });
+  mine.slice(-10).forEach(function (a) { acc.FRM[0] += a.score || 0; acc.FRM[1] += a.total || 0; });
+  var stats = CARD_STATS.map(function (s) { return { key: s[0], name: s[1], value: cardRating(acc[s[0]][0], acc[s[0]][1], s[0] === "FRM"), answers: acc[s[0]][1] }; });
   var ovr = Math.round(stats.reduce(function (t, s) { return t + s.value; }, 0) / stats.length);
-  return { ovr: ovr, stats: stats, tier: ovr >= 85 ? "elite" : ovr >= 75 ? "gold" : ovr >= 65 ? "silver" : "bronze",
-    tierName: ovr >= 85 ? "Elite" : ovr >= 75 ? "Gold" : ovr >= 65 ? "Silver" : "Bronze", next: ovr >= 85 ? null : ovr >= 75 ? 85 : ovr >= 65 ? 75 : 65 };
+  return { ovr: ovr, stats: stats, tier: ovr >= CARD_TIERS.elite ? "elite" : ovr >= CARD_TIERS.gold ? "gold" : ovr >= CARD_TIERS.silver ? "silver" : "bronze",
+    tierName: ovr >= CARD_TIERS.elite ? "Elite" : ovr >= CARD_TIERS.gold ? "Gold" : ovr >= CARD_TIERS.silver ? "Silver" : "Bronze",
+    next: ovr >= CARD_TIERS.elite ? null : ovr >= CARD_TIERS.gold ? CARD_TIERS.elite : ovr >= CARD_TIERS.silver ? CARD_TIERS.gold : CARD_TIERS.silver,
+    nextName: ovr >= CARD_TIERS.elite ? null : ovr >= CARD_TIERS.gold ? "Elite" : ovr >= CARD_TIERS.silver ? "Gold" : "Silver" };
 }
 
 if (typeof module !== "undefined" && module.exports) module.exports = {
