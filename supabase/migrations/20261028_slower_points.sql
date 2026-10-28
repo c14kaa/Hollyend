@@ -1,0 +1,3 @@
+-- Points halved (5 per correct answer x level, +3 per comeback, +10 for a perfect score).
+-- Applied by rewriting private.guard_attempt's points line; matches POINTS in progress.js.
+-- new.points := least(500, round(new.score * 5 * mult + cb_ok * 3 + case when new.score = new.total then 10 else 0 end));

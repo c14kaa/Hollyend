@@ -697,7 +697,7 @@ body.k .prompt { letter-spacing: -.005em; }
       : '<p class="prompt">Ready, ' + esc(name()) + '? 10 questions on ' + LV[state.level] + ' level.</p>') +
       streakBlock() + teaser() +
       (cb ? '<p class="cbnote">' + cb + ' comeback question' + (cb > 1 ? 's' : '') + ' waiting: ' + (listFor(state.mode) ? 'words' : 'skills') + ' you missed earlier this week. Get them right for bonus points!</p>' : '') +
-      '<p class="small">10 points per correct answer' + (lvl() > 1 ? ' × ' + (lvl() === 2 ? '1.5' : '2') + (state.mode === "challenge" ? ' for challenge words' : ' on ' + LV[lvl()]) : '') + ', +5 for each comeback, +20 for a perfect score.</p>' +
+      '<p class="small">' + POINTS.perRight + ' points per correct answer' + (lvl() > 1 ? ' × ' + (lvl() === 2 ? '1.5' : '2') + (state.mode === "challenge" ? ' for challenge words' : ' on ' + LV[lvl()]) : '') + ', +' + POINTS.comeback + ' for each comeback, +' + POINTS.perfect + ' for a perfect score.</p>' +
       '<div class="row"><button class="btn" id="go">Start the quiz</button></div>' +
       '<span class="status">' + (dbState === "live" ? "Results are saved after each quiz." : dbState === "connecting" ? "Connecting to saved results…" : "Results can't be saved in this view, but the quiz still works.") + '</span></section>';
     app.innerHTML = h;

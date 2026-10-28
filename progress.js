@@ -1,11 +1,13 @@
 /* ===== Progress, awards and comeback questions (pure functions, no DOM) ===== */
 var STATIC_GENS = { poetry: 1, homophone: 1, space: 1, bestAverage: 1, science: 1, states: 1, materials: 1, mixtures: 1, grammar: 1 };
 var LEVEL_MULT = { 1: 1, 2: 1.5, 3: 2 };
+/* Points per quiz. The server (private.guard_attempt) uses the same numbers; change both together. */
+var POINTS = { perRight: 5, comeback: 3, perfect: 10 };
 
 var RANKS = {
   millie: [
-    [0, "Space Cadet"], [100, "Rocket Pilot"], [300, "Astronaut"], [600, "Mission Commander"],
-    [1000, "Galaxy Explorer"], [1600, "Solaris Legend"]
+    [0, "Space Cadet"], [250, "Rocket Pilot"], [700, "Astronaut"], [2000, "Mission Commander"],
+    [4000, "Galaxy Explorer"], [7500, "Solaris Legend"]
   ],
   kristan: [
     [0, "Academy Prospect"], [1000, "Youth Team"], [2500, "Reserve Squad"], [5000, "First-Team Squad"], [8000, "Regular Starter"],
@@ -158,11 +160,11 @@ function scoreAttempt(qs, answers, level) {
     if (q.comeback) comebackTotal++;
     if (ok) {
       score++; run++; bestRun = Math.max(bestRun, run);
-      points += 10 * (LEVEL_MULT[level] || 1);
-      if (q.comeback) { comebackRight++; points += 5; }
+      points += POINTS.perRight * (LEVEL_MULT[level] || 1);
+      if (q.comeback) { comebackRight++; points += POINTS.comeback; }
     } else run = 0;
   });
-  if (score === qs.length && qs.length) points += 20;
+  if (score === qs.length && qs.length) points += POINTS.perfect;
   return { score: score, total: qs.length, bestRun: bestRun, comebackRight: comebackRight, comebackTotal: comebackTotal, points: Math.round(points) };
 }
 
