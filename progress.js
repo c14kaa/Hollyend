@@ -39,16 +39,45 @@ var STREAK_RULE = { minQuestions: 5, minPct: 70 };
 function dubaiDay(t) { var ms = typeof t === "number" ? t : Date.parse(t); return new Date(ms + 4 * 3600e3).toISOString().slice(0, 10); }
 function addDays(day, n) { var d = new Date(day + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
 function qualifies(a) { return a && a.total >= STREAK_RULE.minQuestions && a.score * 100 >= a.total * STREAK_RULE.minPct; }
+/* Saving a streak:
+   - Catch-up repair: miss a day, then finish 2 qualifying quizzes the next day and the missed day counts.
+   - Freezes: earn one for every 7 days in a row (hold up to 2). If a missed day isn't repaired, a freeze covers it automatically.
+   - Rest days: set by Mum or Dad (holidays, illness, travel). They neither count nor break the streak.
+   Everything is worked out from saved results and rest days, so it can't be edited by hand. */
+var REST_DAYS = [], STREAK_FREEZE_EVERY = 7, STREAK_FREEZE_MAX = 2;
+function setRestDays(rows) { REST_DAYS = rows || []; }
 function streakInfo(all, child, now) {
-  var days = {};
-  all.forEach(function (a) { if (a.child === child && qualifies(a)) days[a.playDay || dubaiDay(a.at)] = 1; });
-  var today = dubaiDay(now == null ? Date.now() : now), doneToday = !!days[today];
-  var cur = 0, d = doneToday ? today : addDays(today, -1);
-  while (days[d]) { cur++; d = addDays(d, -1); }
-  var best = 0, keys = Object.keys(days).sort(), run = 0, prev = null;
-  keys.forEach(function (k) { run = prev && addDays(prev, 1) === k ? run + 1 : 1; best = Math.max(best, run); prev = k; });
-  var week = []; for (var i = 6; i >= 0; i--) { var x = addDays(today, -i); week.push({ day: x, ok: !!days[x], today: i === 0 }); }
-  return { current: cur, best: best, doneToday: doneToday, atRisk: !doneToday && cur > 0, today: today, week: week };
+  var cnt = {}, rest = {}, status = {};
+  all.forEach(function (a) { if (a.child === child && qualifies(a)) { var d = a.playDay || dubaiDay(a.at); cnt[d] = (cnt[d] || 0) + 1; } });
+  REST_DAYS.forEach(function (r) { if (r.child === child && r.day) rest[String(r.day).slice(0, 10)] = 1; });
+  var today = dubaiDay(now == null ? Date.now() : now), days = Object.keys(cnt).sort();
+  var streak = 0, best = 0, freezes = 0, pending = null, earnedToday = false;
+  function inc(isToday) { streak++; if (streak > best) best = streak; if (streak % STREAK_FREEZE_EVERY === 0 && freezes < STREAK_FREEZE_MAX) { freezes++; if (isToday) earnedToday = true; } }
+  function fail() { if (freezes > 0) { freezes--; status[pending] = "frozen"; } else { status[pending] = "missed"; streak = 0; } pending = null; }
+  if (days.length) for (var d = days[0]; d < today; d = addDays(d, 1)) {
+    var c = cnt[d] || 0;
+    if (rest[d]) { status[d] = "rest"; continue; }
+    if (c === 0) { if (pending) fail(); if (streak > 0) { pending = d; status[d] = "pending"; } else status[d] = "missed"; continue; }
+    if (pending) { if (c >= 2) { status[pending] = "repaired"; pending = null; inc(); } else fail(); }
+    status[d] = "ok"; inc();
+  }
+  var c0 = cnt[today] || 0, restToday = !!rest[today], before = streak, needToday, atRisk = false, repairedToday = false;
+  if (restToday) { status[today] = "rest"; needToday = 0; }
+  else if (pending) {
+    needToday = Math.max(0, 2 - c0);
+    if (c0 >= 2) { status[pending] = "repaired"; pending = null; inc(true); inc(true); status[today] = "ok"; repairedToday = true; }
+    else { atRisk = true; if (c0 === 1) status[today] = "ok"; }
+  } else {
+    needToday = c0 >= 1 ? 0 : 1;
+    if (c0 >= 1) { inc(true); status[today] = "ok"; }
+    else atRisk = streak > 0;
+  }
+  var current = atRisk ? before : streak;
+  if (current > best) best = current;
+  var week = []; for (var i = 6; i >= 0; i--) { var x = addDays(today, -i); week.push({ day: x, status: status[x] || (i === 0 ? "todo" : "none"), ok: status[x] === "ok" || status[x] === "repaired", today: i === 0 }); }
+  return { current: current, best: best, freezes: freezes, freezeMax: STREAK_FREEZE_MAX, doneToday: !atRisk && (c0 >= 1 || restToday), atRisk: atRisk,
+    needsRepair: !!pending, needToday: needToday, quizzesToday: c0, repairedToday: repairedToday, earnedFreezeToday: earnedToday, restToday: restToday,
+    freezeWillCover: !!pending && freezes > 0, today: today, week: week };
 }
 
 function byTime(a, b) { return String(a.at).localeCompare(String(b.at)); }
@@ -219,5 +248,5 @@ function playerCard(all, child) {
 
 if (typeof module !== "undefined" && module.exports) module.exports = {
   skillState: skillState, weakSkills: weakSkills, buildAdaptiveQuiz: buildAdaptiveQuiz, scoreAttempt: scoreAttempt,
-  awards: awards, revisionStats: revisionStats, rankFor: rankFor, topicSummary: topicSummary, weekAttempts: weekAttempts, BADGES: BADGES, streakInfo: streakInfo, dubaiDay: dubaiDay, addDays: addDays, qualifies: qualifies, STREAK_RULE: STREAK_RULE, playerCard: playerCard
+  awards: awards, revisionStats: revisionStats, rankFor: rankFor, topicSummary: topicSummary, weekAttempts: weekAttempts, BADGES: BADGES, streakInfo: streakInfo, dubaiDay: dubaiDay, addDays: addDays, qualifies: qualifies, STREAK_RULE: STREAK_RULE, playerCard: playerCard, setRestDays: setRestDays
 };
