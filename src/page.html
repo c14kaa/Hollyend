@@ -570,6 +570,19 @@ header { position: relative; }
 .fv-ic { width: 40px; height: 40px; color: var(--accent); flex: none; }
 .fv-sub { margin: 14px 0 8px; font-size: 15px; color: var(--muted); letter-spacing: .03em; text-transform: uppercase; }
 .fv-kids { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+body.fam .hud .streak, body.fam .hud .wallet { display: none; }
+.cols, .col { display: flex; flex-direction: column; gap: 14px; }
+.term-hi { margin: 0; padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); font-size: 15px; }
+@media (min-width: 900px) {
+  .wrap { max-width: 1200px; }
+  #app[data-view="quiz"], #app[data-view="shop"], #app[data-view="bank"], #app[data-view="world"], #app[data-view="progress"] { width: 100%; max-width: 880px; margin: 0 auto; }
+  .cols { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  .col.sticky { position: sticky; top: 12px; }
+  #app[data-view="homework"] .hw-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); }
+  #app[data-view="parents"] .fv-kids { grid-template-columns: 1fr; }
+  .cal-d { min-height: 64px; font-size: 15px; }
+}
+@media (min-width: 1280px) { #app[data-view="parents"] .fv-kids { grid-template-columns: 1fr 1fr; } #app[data-view="parents"] .cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); } }
 .fv-kid { border-top: 4px solid #e0688a; } .fv-kid.kristan { border-top-color: #22a7f0; }
 .fv-top { display: flex; gap: 12px; align-items: center; }
 .fv-top h2 { margin: 0; }
@@ -816,6 +829,7 @@ header { position: relative; }
     document.getElementById("v-hw").setAttribute("aria-pressed", v === "homework");
     document.getElementById("v-cal").setAttribute("aria-pressed", v === "calendar");
     document.getElementById("v-par").setAttribute("aria-pressed", v === "parents");
+    document.body.classList.toggle("fam", v === "parents");
     document.getElementById("title").innerHTML = v === "parents" ? '<em id="who">Hollyend</em> Family' : state.child === "millie" ? '<em id="who">Millie</em>\u2019s Mission Control' : '<em id="who">Kristan</em>';
     if (v === "parents") checkPush();
     if (v !== "quiz") state.flash = null;
@@ -831,6 +845,7 @@ header { position: relative; }
   }
   function render() {
     calcSync();
+    app.setAttribute("data-view", state.view === "quiz" && state.flash ? "quiz" : state.view);
     if (state.view === "homework") return homeworkView();
     if (state.view === "calendar") return calendarView();
     if (state.view === "parents") return isParentNow() ? familyView() : (state.view = "homework", homeworkView());
@@ -1738,9 +1753,10 @@ header { position: relative; }
       h += '<button class="cal-d' + (d.slice(0, 7) !== m ? ' out' : '') + (d === t ? ' today' : '') + (d === sel ? ' sel' : '') + (wd === 0 || wd === 6 ? ' we' : '') + (hol ? ' hol' : '') + '" data-calday="' + d + '" aria-label="' + fmtDay(d, true) + ', ' + its.length + ' items">' + (+d.slice(8)) + '<span class="cdots">' + dots + '</span></button>';
     }
     h += '</div><p class="small" style="margin:8px 0 0"><i class="cdot millie" style="display:inline-block"></i> Millie &nbsp; <i class="cdot kristan" style="display:inline-block"></i> Kristan &nbsp; <i class="cdot both" style="display:inline-block"></i> Both &nbsp; Square dots are homework.</p></section>';
+    var left = h; h = '';
     if (sel) {
       var si = onDay(items, sel);
-      h += '<section class="card sect"><h2>' + esc(fmtDay(sel, true)) + '</h2>' + (si.length ? si.map(evRow).join("") : '<p class="small">Nothing on this day.</p>') + '</section>';
+      left += '<section class="card sect"><h2>' + esc(fmtDay(sel, true)) + '</h2>' + (si.length ? si.map(evRow).join("") : '<p class="small">Nothing on this day.</p>') + '</section>';
     }
     if (parent) {
       var todo = state.events.filter(function (e) { return e.type === "action" && !e.done && e.active !== false && (state.calWho === "all" || e.child === state.calWho || e.child === "both"); })
@@ -1774,7 +1790,7 @@ header { position: relative; }
       '<div class="row"><select class="rd-in" id="evWho"><option value="both">Both</option><option value="millie">Millie</option><option value="kristan">Kristan</option></select><select class="rd-in" id="evType"><option value="event">Event</option><option value="deadline">Deadline</option><option value="sport">Sport</option><option value="trip">Trip</option><option value="holiday">Holiday</option><option value="news">School news</option><option value="action">To do (parents only)</option></select></div>' +
       '<input class="rd-in" id="evBring" maxlength="160" placeholder="Bring or wear (optional), e.g. PE kit">' +
       '<div class="row"><button class="btn sm" id="evAdd">Add</button></div></div></section>';
-    app.innerHTML = h;
+    app.innerHTML = '<div class="cols"><div class="col sticky">' + left + '</div><div class="col">' + h + '</div></div>';
     bindCalendar();
   }
   function bindCalendar() {
@@ -1968,6 +1984,20 @@ header { position: relative; }
   bellSetup();
 
   /* ---------- Family overview (parents only) ---------- */
+  function termCard(t) {
+    var rows = state.events.filter(function (e) { return (e.type === "term" || e.type === "holiday") && e.active !== false; })
+      .map(function (e) { return { title: e.title, type: e.type, d1: String(e.date).slice(0, 10), d2: e.endDate ? String(e.endDate).slice(0, 10) : String(e.date).slice(0, 10) }; })
+      .sort(function (a, b) { return a.d1.localeCompare(b.d1); });
+    if (!rows.length) return "";
+    var hols = rows.filter(function (r) { return r.type === "holiday"; }), now = hols.filter(function (r) { return r.d1 <= t && r.d2 >= t; })[0], next = hols.filter(function (r) { return r.d1 > t; })[0];
+    var days = function (d) { return lgDiff(d, t); };
+    var head = now ? '<p class="term-hi">🌴 <b>' + esc(now.title) + '</b> until ' + esc(fmtDay(now.d2)) + '. Back ' + esc(fmtDay(addDays(now.d2, 3).slice(0, 10))) + '.</p>'
+      : next ? '<p class="term-hi">Next break: <b>' + esc(next.title) + '</b> in <b>' + days(next.d1) + ' days</b> (' + esc(fmtDay(next.d1)) + ' – ' + esc(fmtDay(next.d2)) + ').</p>' : '';
+    var up = rows.filter(function (r) { return r.d2 >= t; }).slice(0, 5);
+    return '<section class="card sect"><h2>Term dates</h2>' + head + '<div class="terms">' + up.map(function (r) {
+      return '<div class="tr' + (r.type === "holiday" ? ' hl' : '') + '"><span>' + esc(r.title) + '</span><b>' + esc(fmtDay(r.d1)) + (r.d2 !== r.d1 ? ' – ' + esc(fmtDay(r.d2)) : '') + '</b></div>'; }).join("") + '</div>' +
+      '<div class="row"><button class="btn sm ghost" id="fvTerms">All term dates</button></div></section>';
+  }
   function familyView() {
     var t = todayD(), tm = addDays(t, 1), wk = addDays(t, 7);
     var waiting = state.hw.filter(function (h) { var m = hwMark(h); return h.active !== false && m && m.status === "ticked"; });
@@ -1975,7 +2005,9 @@ header { position: relative; }
     var cash = bankRows.filter(function (b) { return b.status === "requested"; });
     var h = '<section class="card"><div class="hw-head"><div><span class="small">' + esc(fmtDay(t, true)) + '</span><h2 class="hw-h">Family overview</h2></div>' + BELL.replace('<svg ', '<svg class="fv-ic" ') + '</div>' +
       (state.hwMsg ? '<p class="cbnote" style="margin:0">' + esc(state.hwMsg) + '</p>' : '') + pushBox() + '</section>';
+    var head = h; h = '';
     var needs = waiting.length + todos.length + cash.length;
+    var L = '', R = '';
     h += '<section class="card sect"><h2>Needs you' + (needs ? ' <span class="pill">' + needs + '</span>' : '') + '</h2>';
     if (!needs) h += '<p class="small">Nothing waiting for you. 🎉</p>';
     if (waiting.length) h += '<h3 class="fv-sub">Homework to check</h3><div class="hw-list">' + waiting.map(function (x) { return hwCard(x, true).replace('<b class="hw-title">', '<span class="small">' + cname(x.child) + '</span><b class="hw-title">'); }).join("") + '</div>';
@@ -1984,6 +2016,7 @@ header { position: relative; }
       return evRow({ kind: "action", type: "action", id: e.id, child: e.child, date: d, time: "", title: e.title, details: (d < t ? "Was due " : "Due ") + fmtDay(d) + " · " + cname(e.child) + (e.details ? " · " + e.details : ""), formUrl: e.formUrl, linkUrl: e.linkUrl, done: false }); }).join("");
     if (cash.length) h += '<h3 class="fv-sub">Cash-outs to pay</h3>' + cash.map(function (b) { return '<div class="ev ' + esc(b.child) + '"><span class="ev-time"></span><div class="ev-body"><b>' + cname(b.child) + ' · ' + fmtMoney(b.pence) + '</b><span class="small">Asked ' + esc(when(b.at)) + '</span><span class="ev-tags"><button class="linkbtn" data-gobank="' + esc(b.child) + '">Open ' + cname(b.child) + '’s bank</button></span></div></div>'; }).join("");
     h += '</section>';
+    L = h; h = '';
     h += '<div class="fv-kids">' + ["millie", "kristan"].map(function (c) {
       var open = hwFor(c).filter(hwPending), late = open.filter(function (x) { return x.due && String(x.due).slice(0, 10) < t; }), soon = open.filter(function (x) { var d = x.due && String(x.due).slice(0, 10); return d && d >= t && d <= tm; });
       var aw = awards(all, c, WEEK.start), sk = streakInfo(all, c, new Date()), w = myWallet(c);
@@ -1997,16 +2030,20 @@ header { position: relative; }
         (dt.length ? '<p class="small">Daily tasks today: ' + dtOn.length + ' of ' + dt.length + ' ticked</p>' : '') +
         '<p class="small">' + esc(place) + '</p><div class="row"><button class="btn sm ghost" data-fvkid="' + c + '">Open ' + cname(c) + '’s homework</button></div></section>';
     }).join("") + '</div>';
+    R = h; h = '';
     var tt = dueSoon().filter(function (x) { return x.kind === "event"; });
     h += '<section class="card sect"><h2>Today and tomorrow</h2>' + (tt.length ? tt.map(function (x) { return '<div class="ev ' + esc(x.child) + '"><span class="ev-time w">' + esc(x.when) + '</span><div class="ev-body"><b>' + esc(x.title) + '</b><span class="small">' + esc(x.sub) + ' · ' + cname(x.child) + '</span>' + (x.bring ? '<span class="bring">Bring: ' + esc(x.bring) + '</span>' : '') + '</div></div>'; }).join("") : '<p class="small">No school events today or tomorrow.</p>') +
       '<div class="row"><button class="btn sm ghost" id="fvCal">Open the calendar</button></div></section>';
+    L += h; h = '';
+    R += termCard(t);
     var nw = newsList(14).slice(0, 5);
-    if (nw.length) h += '<section class="card sect"><h2>Latest school news</h2><div class="news">' + nw.map(function (e) { return '<div class="nw ' + esc(e.child) + '"><div class="ev-tags"><span class="small">' + esc(fmtDay(String(e.date).slice(0, 10))) + ' · ' + (e.child === "both" ? "Whole school" : cname(e.child)) + '</span>' + (e.audience === "parents" ? '<span class="tag action">Parents</span>' : '') + '</div><b>' + esc(e.title) + '</b>' + (e.details ? '<span class="small">' + esc(e.details) + '</span>' : '') + '</div>'; }).join("") + '</div></section>';
-    app.innerHTML = h;
+    if (nw.length) R += '<section class="card sect"><h2>Latest school news</h2><div class="news">' + nw.map(function (e) { return '<div class="nw ' + esc(e.child) + '"><div class="ev-tags"><span class="small">' + esc(fmtDay(String(e.date).slice(0, 10))) + ' · ' + (e.child === "both" ? "Whole school" : cname(e.child)) + '</span>' + (e.audience === "parents" ? '<span class="tag action">Parents</span>' : '') + '</div><b>' + esc(e.title) + '</b>' + (e.details ? '<span class="small">' + esc(e.details) + '</span>' : '') + '</div>'; }).join("") + '</div></section>';
+    app.innerHTML = head + '<div class="cols"><div class="col">' + L + '</div><div class="col">' + R + '</div></div>';
     bindHomework(); bindCalendar();
     [].forEach.call(app.querySelectorAll("[data-fvkid]"), function (b) { b.addEventListener("click", function () { setChild(b.dataset.fvkid); setView("homework"); window.scrollTo({ top: 0 }); }); });
     [].forEach.call(app.querySelectorAll("[data-gobank]"), function (b) { b.addEventListener("click", function () { setChild(b.dataset.gobank); setView("bank"); window.scrollTo({ top: 0 }); }); });
     var fc = document.getElementById("fvCal"); if (fc) fc.addEventListener("click", function () { setView("calendar"); window.scrollTo({ top: 0 }); });
+    var ft = document.getElementById("fvTerms"); if (ft) ft.addEventListener("click", function () { setView("calendar"); setTimeout(function () { var x = [].filter.call(app.querySelectorAll("h2"), function (e) { return e.textContent === "Term dates"; })[0]; if (x) x.scrollIntoView({ behavior: "smooth", block: "start" }); }, 50); });
   }
 
   /* ---------- Flashcards (Millie's spellings, Kristan's French list) ---------- */
