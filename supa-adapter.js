@@ -22,11 +22,12 @@
     events: { ref: 1, child: 1, type: 1, title: 1, details: 1, date: 1, endDate: "end_date", time: 1, bring: 1, formUrl: "form_url", linkUrl: "link_url", audience: 1, done: 1, source: 1, active: 1, createdAt: "created_at" },
     purchases: { child: 1, item: 1, cost: 1, at: 1 },
     profiles: { child: 1, equipped: 1, updatedAt: "updated_at" },
-    bank: { child: 1, pence: 1, points: 1, at: 1, week: 1, status: 1, paidAt: "paid_at", cancelledAt: "cancelled_at" }
+    bank: { child: 1, pence: 1, points: 1, at: 1, week: 1, status: 1, paidAt: "paid_at", cancelledAt: "cancelled_at" },
+    wallet: { child: 1, kind: 1, pence: 1, note: 1, day: 1, at: 1 }
   };
   function toRow(t, d) { var m = COLS[t], r = {}; Object.keys(d || {}).forEach(function (k) { if (m[k]) r[m[k] === 1 ? k : m[k]] = d[k]; }); return r; }
   function fromRow(t, r) { var m = COLS[t], back = {}, o = {}; Object.keys(m).forEach(function (k) { back[m[k] === 1 ? k : m[k]] = k; }); Object.keys(r).forEach(function (k) { if (back[k]) o[back[k]] = r[k]; }); return o; }
-  function err(e) { var m = (e && e.message) || ""; return { code: /row-level security|permission|violates/i.test(m) ? "invalid_argument" : /Not enough points|Weekly limit/i.test(m) ? "invalid_argument" : "unavailable", message: m }; }
+  function err(e) { var m = (e && e.message) || ""; return { code: /row-level security|permission|violates/i.test(m) ? "invalid_argument" : /Not enough points|Weekly limit|Not enough in the wallet/i.test(m) ? "invalid_argument" : "unavailable", message: m }; }
 
   var subs = {}, timers = {};
   function fetchTable(t) {

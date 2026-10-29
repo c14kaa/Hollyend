@@ -221,6 +221,16 @@ body.k .earn { font-size: 30px; }
 .sect details > summary::-webkit-details-marker { display: none; }
 .sect details > summary h2::after { content: " ▸"; color: var(--muted); }
 .sect details[open] > summary h2::after { content: " ▾"; }
+.wal-bal { display: flex; flex-direction: column; align-items: flex-start; }
+.wal-bal b { font-family: var(--display); font-size: 44px; line-height: 1.05; color: var(--gold); }
+.wal-split { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.wal-split div { background: var(--card2); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; display: flex; flex-direction: column; }
+.wal-split b { font-size: 18px; } .wal-split span { font-size: 12px; color: var(--muted); }
+.wal-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; align-items: end; }
+.wal-form label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); }
+.wal-form input { font: inherit; color: var(--ink); background: var(--card2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; min-width: 0; }
+.wal-form .row { grid-column: 1 / -1; }
+.li.wal-out b { color: var(--bad); } .li.wal-in b, .li.wal-points b { color: var(--good); }
 .topic .tbar { height: 6px; border-radius: 999px; background: var(--line); overflow: hidden; }
 .topic .tbar i { display: block; height: 100%; background: var(--good); }
 .topic.ok .tbar i { background: var(--gold); }
@@ -775,6 +785,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       }, function () { dbState = "off"; refresh(); });
       db.collection("purchases").onSnapshot(function (snap) { purchases = snap.docs.map(function (d) { return d.data(); }).filter(Boolean); setShopBank(purchases, bankRows); refresh(); }, function () {});
       db.collection("bank").onSnapshot(function (snap) { bankRows = snap.docs.map(function (d) { var x = d.data() || {}; return Object.assign({ id: d.id }, x); }); setShopBank(purchases, bankRows); refresh(); }, function () {});
+      db.collection("wallet").onSnapshot(function (snap) { state.wallet = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("merits").onSnapshot(function (snap) { state.merits = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("homework").onSnapshot(function (snap) { state.hw = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); hwLoaded = true; maybeLandOnHomework(); refresh(); }, function () {});
       db.collection("homework_done").onSnapshot(function (snap) { state.hwDone = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); setHomeworkDone(state.hwDone); refresh(); }, function () {});
@@ -1199,7 +1210,8 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       state.dailyTicks.forEach(function (t) { var day = String(t.day).slice(0, 10); if (t.child !== c || day < fromDay) return; var task = state.daily.filter(function (x) { return x.id === t.task; })[0];
         out.push({ at: day + "T19:59:00+04:00", child: c, kind: "daily", icon: "✅", title: (task ? task.title.replace(/:.*/, "") : t.task), sub: "Daily task", noTime: true }); });
       purchases.forEach(function (x) { if (x.child === c && x.at && lgToday(x.at) >= fromDay) { var it = shopItem(c, x.item); out.push({ at: x.at, child: c, kind: "buy", icon: "🛍️", title: "Bought " + (it ? it.name : x.item), sub: "Shop", pts: -(x.cost || 0) }); } });
-      bankRows.forEach(function (b) { if (b.child === c && b.at && lgToday(b.at) >= fromDay && b.status !== "cancelled") out.push({ at: b.at, child: c, kind: "bank", icon: "🏦", title: "Cashed out " + fmtMoney(b.pence), sub: b.status === "paid" ? "Paid" : "Waiting for Mum or Dad to pay", pts: -(b.points || 0) }); });
+      bankRows.forEach(function (b) { if (b.child === c && b.at && lgToday(b.at) >= fromDay && b.status !== "cancelled") out.push({ at: b.at, child: c, kind: "bank", icon: "🏦", title: (b.status === "wallet" ? "Moved " + fmtMoney(b.pence) + " to her wallet" : "Cashed out " + fmtMoney(b.pence)), sub: b.status === "wallet" ? "Star Wallet" : b.status === "paid" ? "Paid" : "Waiting for Mum or Dad to pay", pts: -(b.points || 0) }); });
+      (state.wallet || []).forEach(function (x) { if (x.child === c && x.at && lgToday(x.at) >= fromDay) out.push({ at: x.at, child: c, kind: "bank", icon: x.kind === "in" ? "💷" : "🛍️", title: (x.kind === "in" ? "Money added: " : "Spent: ") + fmtMoney(x.pence), sub: (x.note || "") + " · Star Wallet" }); });
       state.merits.forEach(function (m) { if (m.child === c && !/^opening/.test(m.ref || "") && String(m.date).slice(0, 10) >= fromDay) out.push({ at: String(m.date).slice(0, 10) + "T12:00:00+04:00", child: c, kind: "merit", icon: "🏅", title: "Merit" + (m.count > 1 ? " ×" + m.count : "") + (m.subject ? ": " + m.subject : ""), sub: m.reason || "From school", noTime: true }); });
     });
     return out.sort(function (x, y) { return String(y.at).localeCompare(String(x.at)); });
@@ -1361,7 +1373,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     var max = w.maxCashPence; if (state.bankAmt > max) state.bankAmt = Math.max(BANK.stepPence, max); if (state.bankAmt < BANK.stepPence) state.bankAmt = BANK.stepPence;
     var pts = penceToPoints(state.bankAmt), pctWeek = Math.round(w.weekPence / BANK.weeklyCapPence * 100);
     var h = '<section class="card"><div class="hero"><div class="bigav">' + avatarSVG(c, equipped(c), "av") + '</div><div class="side"><h2 class="nm" style="margin:0;font-family:var(--display);font-size:' + (c === "kristan" ? "38px" : "28px") + ';line-height:1">' + (c === "millie" ? "Star Bank" : "Club Bank") + '</h2>' +
-      '<span class="small">Turn your quiz points into real pocket money. Mum or Dad pays you and ticks it off here.</span></div></div>' +
+      '<span class="small">' + (c === "millie" ? 'Turn your quiz points into real money in your Star Wallet. Mum and Dad can add birthday money too.' : 'Turn your quiz points into real pocket money. Mum or Dad pays you and ticks it off here.') + '</span></div></div>' +
       '<div class="vault"><div><span>Points to spend</span><b>' + w.balance + '</b><span>worth ' + fmtMoney(Math.floor(w.balance / penceToPoints(BANK.stepPence)) * BANK.stepPence) + '</span></div>' +
       '<div><span>Cashed out this week</span><b>' + fmtMoney(w.weekPence) + '</b><span>of ' + fmtMoney(BANK.weeklyCapPence) + ' max</span></div></div>' +
       '<div class="bar" role="img" aria-label="' + pctWeek + '% of this week\u2019s limit used"><i style="width:' + pctWeek + '%"></i></div>' +
@@ -1369,27 +1381,28 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     if (dbState !== "live") h += '<p class="small">The bank needs saved results, which aren\u2019t available in this view.</p>';
     else if (max >= BANK.stepPence) {
       h += '<div class="stepper"><button class="sq" id="minus" aria-label="Less"' + (state.bankAmt <= BANK.stepPence ? " disabled" : "") + '>\u2212</button><span class="amt" aria-live="polite">' + fmtMoney(state.bankAmt) + '</span><button class="sq" id="plus" aria-label="More"' + (state.bankAmt + BANK.stepPence > max ? " disabled" : "") + '>+</button><span class="small">uses ' + pts + ' points</span></div>' +
-        '<div class="row"><button class="btn" id="cash">' + (state.bankConfirm ? 'Tap again to swap ' + pts + ' points for ' + fmtMoney(state.bankAmt) : 'Cash out ' + fmtMoney(state.bankAmt)) + '</button></div>';
+        '<div class="row"><button class="btn" id="cash">' + (state.bankConfirm ? 'Tap again to swap ' + pts + ' points for ' + fmtMoney(state.bankAmt) : c === "millie" ? 'Move ' + fmtMoney(state.bankAmt) + ' to my wallet' : 'Cash out ' + fmtMoney(state.bankAmt)) + '</button></div>';
     } else if (w.capLeft < BANK.stepPence) h += '<p class="cbnote">You\u2019ve reached this week\u2019s ' + fmtMoney(BANK.weeklyCapPence) + ' limit. Great work! It resets on Monday.</p>';
     else h += '<p class="small">Earn <b>' + (penceToPoints(BANK.stepPence) - w.balance) + ' more points</b> to cash out your first 50p.</p>';
     if (state.bankMsg) h += '<p class="cbnote">' + esc(state.bankMsg) + '</p>';
     h += '</section>';
     var oc = owedCard(c, (role() || {}).role === "parent"); if (oc) h += '<section class="card sect"><h2>' + (c === "kristan" ? "Money to come (cash-outs + merits)" : "Money to come") + '</h2>' + oc + (c === "kristan" ? '<p class="small">Every school merit is worth £1. Tap the 🏅 at the top to see them.</p>' : '') + '</section>';
-    h += '<section class="card sect"><h2>Cash-out history</h2>' + (rows.length ? '<div class="list">' + rows.map(function (r) {
+    if (c === "millie") h += walletCard(c);
+    if (c !== "millie") h += '<section class="card sect"><h2>Cash-out history</h2>' + (rows.length ? '<div class="list">' + rows.map(function (r) {
       return '<div class="li"><span>' + esc(when(r.at)) + ' · ' + r.points + ' points</span><span><b>' + fmtMoney(r.pence) + '</b> <span class="chip ' + (r.status === "paid" ? "paid" : r.status === "cancelled" ? "cancel" : "wait") + '">' + (r.status === "paid" ? "Paid" : r.status === "cancelled" ? "Cancelled" : "Waiting for Mum or Dad") + '</span></span></div>';
     }).join("") + '</div>' : '<p class="small">No cash-outs yet. When you cash out, it shows here until Mum or Dad pays you.</p>') +
       '<span class="small">Paid to ' + esc(name()) + ' so far: <b>' + fmtMoney(w.paidPence) + '</b></span></section>';
     var waiting = rows.filter(function (r) { return r.status === "requested"; });
     var isParent = (role() || {}).role === "parent";
-    if (isParent) h += '<section class="card"><div class="parentbox"><h3>For Mum and Dad</h3>' + (waiting.length ? waiting.map(function (r) {
+    if (isParent && (c !== "millie" || waiting.length)) h += '<section class="card"><div class="parentbox"><h3>For Mum and Dad</h3>' + (waiting.length ? waiting.map(function (r) {
       var k = state.payConfirm;
       return '<div class="req"><span>' + esc(when(r.at)) + ': <b>' + fmtMoney(r.pence) + '</b></span><span class="row" style="gap:6px">' +
         '<button class="btn sm" data-pay="' + r.id + '">' + (k === "pay:" + r.id ? "Tap again: I\u2019ve paid" : "Mark as paid") + '</button>' +
         '<button class="btn ghost sm" data-cancel="' + r.id + '">' + (k === "cancel:" + r.id ? "Tap again to cancel" : "Cancel (returns points)") + '</button></span></div>';
     }).join("") : '<p class="small">Nothing waiting to be paid.</p>') + '<span class="small">This week ' + esc(name()) + ' has cashed out ' + fmtMoney(w.weekPence) + ' on top of pocket money.</span></div></section>';
-    else h += '<p class="small">When you cash out, Mum or Dad pays you and ticks it off on their login.</p>';
+    else if (c !== "millie") h += '<p class="small">When you cash out, Mum or Dad pays you and ticks it off on their login.</p>';
     app.innerHTML = h;
-    bindOwed(bankView);
+    bindOwed(bankView); bindWallet(c);
     var mi = document.getElementById("minus"), pl = document.getElementById("plus"), cb = document.getElementById("cash");
     if (mi) mi.addEventListener("click", function () { state.bankAmt -= BANK.stepPence; state.bankConfirm = false; bankView(); });
     if (pl) pl.addEventListener("click", function () { state.bankAmt += BANK.stepPence; state.bankConfirm = false; bankView(); });
@@ -1397,9 +1410,9 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       if (!state.bankConfirm) { state.bankConfirm = true; state.bankMsg = ""; return bankView(); }
       var ww = myWallet(); if (state.bankAmt > ww.maxCashPence) { state.bankConfirm = false; return bankView(); }
       var rec = { child: c, pence: state.bankAmt, points: penceToPoints(state.bankAmt), at: new Date().toISOString(), week: mondayKey(new Date()), status: "requested" };
-      var tmp = Object.assign({ id: "pending-" + Date.now() }, rec); bankRows = bankRows.concat([tmp]);
+      var tmp = Object.assign({ id: "pending-" + Date.now() }, rec, c === "millie" ? { status: "wallet" } : {}); bankRows = bankRows.concat([tmp]);
       db.collection("bank").add(rec).catch(function () { bankRows = bankRows.filter(function (b) { return b !== tmp; }); state.bankMsg = "That didn't go through. Please try again."; refresh(); });
-      state.bankConfirm = false; state.bankMsg = "Done! Ask Mum or Dad for " + fmtMoney(rec.pence) + ". It shows below until they pay you."; state.bankAmt = BANK.stepPence; chrome(); bankView();
+      state.bankConfirm = false; state.bankMsg = c === "millie" ? "Done! " + fmtMoney(rec.pence) + " is now in your Star Wallet." : "Done! Ask Mum or Dad for " + fmtMoney(rec.pence) + ". It shows below until they pay you."; state.bankAmt = BANK.stepPence; chrome(); bankView();
     });
     [].forEach.call(app.querySelectorAll("[data-pay],[data-cancel]"), function (b) {
       b.addEventListener("click", function () {
@@ -1411,6 +1424,62 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
         if (db && id.indexOf("pending-") !== 0) db.collection("bank").doc(id).update(upd).catch(function () { state.bankMsg = "That didn't save. Please try again."; refresh(); });
         chrome(); bankView();
       });
+    });
+  }
+
+  /* ---------- Millie's Star Wallet: points moved in, money added by parents, money spent ---------- */
+  function walletItems(c) {
+    var out = [];
+    bankRows.forEach(function (b) { if (b.child === c && b.status === "wallet") out.push({ id: null, at: b.at, day: b.at ? lgToday(b.at) : null, kind: "points", pence: b.pence, note: (b.points || 0) + " quiz points swapped" }); });
+    (state.wallet || []).forEach(function (x) { if (x.child === c) out.push({ id: x.id, at: x.at || x.day, day: x.day, kind: x.kind, pence: x.pence, note: x.note || "" }); });
+    return out.sort(function (a, b) { return String(b.day || "").localeCompare(String(a.day || "")) || String(b.at).localeCompare(String(a.at)); });
+  }
+  function walletTotals(c) {
+    var t = { points: 0, added: 0, spent: 0 };
+    walletItems(c).forEach(function (x) { if (x.kind === "points") t.points += x.pence; else if (x.kind === "in") t.added += x.pence; else t.spent += x.pence; });
+    t.balance = t.points + t.added - t.spent; return t;
+  }
+  function walletCard(c) {
+    var t = walletTotals(c), items = walletItems(c), isParent = (role() || {}).role === "parent", f = state.wForm, k = state.wDel;
+    var shown = state.wAll ? items : items.slice(0, 12);
+    var h = '<section class="card sect wallet-card"><h2>' + esc(cname(c)) + '\u2019s Star Wallet</h2>' +
+      '<div class="wal-bal"><span class="small">In the wallet</span><b>' + fmtMoney(t.balance) + '</b></div>' +
+      '<div class="wal-split"><div><b>' + fmtMoney(t.points) + '</b><span>from quiz points</span></div><div><b>' + fmtMoney(t.added) + '</b><span>added by Mum and Dad</span></div><div><b>' + fmtMoney(t.spent) + '</b><span>spent</span></div></div>';
+    if (isParent) {
+      h += '<div class="row"><button class="btn sm' + (f === "in" ? '' : ' ghost') + '" data-wform="in">+ Add money</button><button class="btn sm' + (f === "out" ? '' : ' ghost') + '" data-wform="out">\u2212 Record spending</button></div>';
+      if (f) h += '<form class="wal-form" id="walForm"><label>Amount (£)<input id="walAmt" type="number" inputmode="decimal" min="0.01" step="0.01" required placeholder="10.00"></label>' +
+        '<label>' + (f === "in" ? "Where it came from" : "What she bought") + '<input id="walNote" maxlength="120" placeholder="' + (f === "in" ? "Birthday money from Nani" : "Toy shop at the mall") + '"></label>' +
+        '<label>Date<input id="walDay" type="date" value="' + lgToday(Date.now()) + '" max="' + lgToday(Date.now()) + '"></label>' +
+        '<div class="row"><button class="btn sm" type="submit">' + (f === "in" ? "Add to wallet" : "Take from wallet") + '</button><button class="btn sm ghost" type="button" data-wform="">Cancel</button></div></form>';
+    }
+    if (state.walMsg) h += '<p class="cbnote">' + esc(state.walMsg) + '</p>';
+    h += items.length ? '<div class="list">' + shown.map(function (x) {
+      var sign = x.kind === "out" ? "\u2212" : "+", lbl = x.kind === "points" ? "Quiz points" : x.kind === "in" ? "Money added" : "Spent";
+      return '<div class="li wal-' + x.kind + '"><span>' + esc(x.day ? niceDay(x.day) : when(x.at)) + ' · ' + lbl + (x.note ? ': ' + esc(x.note) : '') + '</span><span><b>' + sign + fmtMoney(x.pence) + '</b>' +
+        (isParent && x.id ? ' <button class="linkbtn" data-wdel="' + x.id + '">' + (k === x.id ? "Tap again to remove" : "Remove") + '</button>' : '') + '</span></div>';
+    }).join("") + '</div>' + (items.length > 12 && !state.wAll ? '<button class="linkbtn" id="walAll">Show all ' + items.length + '</button>' : '')
+      : '<p class="small">Nothing in the wallet yet. Move some quiz points across' + (isParent ? ', or add birthday money above' : '') + '.</p>';
+    return h + '</section>';
+  }
+  function niceDay(d) { var x = new Date(String(d).slice(0, 10) + "T12:00:00"); return x.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }); }
+  function bindWallet(c) {
+    [].forEach.call(app.querySelectorAll("[data-wform]"), function (b) { b.addEventListener("click", function () { state.wForm = b.dataset.wform || null; state.walMsg = ""; bankView(); var a = document.getElementById("walAmt"); if (a) a.focus(); }); });
+    var all2 = document.getElementById("walAll"); if (all2) all2.addEventListener("click", function () { state.wAll = true; bankView(); });
+    [].forEach.call(app.querySelectorAll("[data-wdel]"), function (b) { b.addEventListener("click", function () {
+      var id = b.dataset.wdel; if (state.wDel !== id) { state.wDel = id; return bankView(); }
+      state.wDel = null; state.wallet = (state.wallet || []).filter(function (x) { return x.id !== id; });
+      db.collection("wallet").doc(id).remove().catch(function () { state.walMsg = "That didn't save. Please try again."; refresh(); }); bankView(); }); });
+    var form = document.getElementById("walForm");
+    if (form) form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var kind = state.wForm, pence = Math.round(parseFloat(document.getElementById("walAmt").value) * 100), note = document.getElementById("walNote").value.trim().slice(0, 120), day = document.getElementById("walDay").value || lgToday(Date.now());
+      if (!(pence > 0)) { state.walMsg = "Enter an amount, like 10 or 2.50."; return bankView(); }
+      if (kind === "out" && pence > walletTotals(c).balance) { state.walMsg = "That's more than the " + fmtMoney(walletTotals(c).balance) + " in the wallet."; return bankView(); }
+      var rec = { child: c, kind: kind, pence: pence, note: note, day: day }, tmp = Object.assign({ id: "pending-" + Date.now(), at: new Date().toISOString() }, rec);
+      state.wallet = (state.wallet || []).concat([tmp]); state.wForm = null;
+      state.walMsg = (kind === "in" ? "Added " : "Took ") + fmtMoney(pence) + (kind === "in" ? " to " : " from ") + cname(c) + "\u2019s wallet.";
+      db.collection("wallet").add(rec).catch(function (er) { state.wallet = state.wallet.filter(function (x) { return x !== tmp; }); state.walMsg = /Not enough/.test((er && er.message) || "") ? "There isn't enough in the wallet for that." : "That didn't save. Please try again."; refresh(); });
+      bankView();
     });
   }
 
@@ -2287,7 +2356,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
         '<div class="fv-stats"><div><b>' + open.length + '</b><span>homework to do</span></div><div' + (late.length ? ' class="bad"' : '') + '><b>' + late.length + '</b><span>overdue</span></div><div><b>' + sk.current + '</b><span>day streak' + (sk.atRisk ? ' · at risk' : '') + '</span></div><div><b>' + mine.length + '</b><span>quizzes, 7 days' + (avg != null ? ' · ' + avg + '%' : '') + '</span></div></div>' +
         (late.length || soon.length ? '<ul class="fv-list">' + late.concat(soon).map(function (x) { var d = String(x.due).slice(0, 10); return '<li><b class="' + (d < t ? 'lt' : '') + '">' + (d < t ? 'Overdue' : d === t ? 'Today' : 'Tomorrow') + '</b> ' + esc(x.title) + '</li>'; }).join("") + '</ul>' : '<p class="small">Nothing due today or tomorrow.</p>') +
         (dt.length ? '<p class="small">Daily tasks today: ' + dtOn.length + ' of ' + dt.length + ' ticked</p>' : '') +
-        '<p class="small">' + esc(place) + '</p>' + classNow(c) + '<div class="row"><button class="btn sm ghost" data-fvkid="' + c + '">Open ' + cname(c) + '’s homework</button></div></section>';
+        '<p class="small">' + esc(place) + (c === "millie" ? ' · 💷 Star Wallet: <b>' + fmtMoney(walletTotals("millie").balance) + '</b>' : '') + '</p>' + classNow(c) + '<div class="row"><button class="btn sm ghost" data-fvkid="' + c + '">Open ' + cname(c) + '’s homework</button></div></section>';
     }).join("") + '</div>';
     R = h; h = '';
     var tt = dueSoon().filter(function (x) { return x.kind === "event"; });
