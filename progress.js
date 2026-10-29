@@ -31,8 +31,37 @@ var BADGES = [
   { id: "streak3", name: "Three in a row", desc: "Keep a 3-day streak" },
   { id: "streak7", name: "Week-long streak", desc: "Keep a 7-day streak" },
   { id: "streak14", name: "Fortnight streak", desc: "Keep a 14-day streak" },
-  { id: "streak30", name: "Unstoppable", desc: "Keep a 30-day streak" }
+  { id: "streak30", name: "Unstoppable", desc: "Keep a 30-day streak" },
+  { id: "ten", name: "Double figures", desc: "Finish 10 quizzes" },
+  { id: "fifty", name: "Half-century", desc: "Finish 50 quizzes" },
+  { id: "century", name: "Century", desc: "Get 100 answers right altogether" },
+  { id: "thousand", name: "Brainbox", desc: "Get 1,000 answers right altogether" },
+  { id: "marathon", name: "Marathon", desc: "Finish 5 quizzes in one day" },
+  { id: "perfect3", name: "Triple perfect", desc: "Get full marks in 3 quizzes" },
+  { id: "testace", name: "Test ace", desc: "Get full marks in a spelling or vocab test" },
+  { id: "revise5", name: "Revision ninja", desc: "Finish 5 revision quizzes" },
+  { id: "allround", name: "All-rounder", desc: "Try every kind of quiz" },
+  { id: "hw1", name: "Homework hero", desc: "Have a piece of homework checked off" },
+  { id: "hw10", name: "Homework legend", desc: "Have 10 pieces of homework checked off" },
+  { id: "early3", name: "Ahead of time", desc: "Finish 3 pieces of homework before they're due" },
+  { id: "cleansheet", name: "Clean sheet", desc: "Get 5 out of 5 in a league match", only: "kristan" },
+  { id: "nightowl", name: "Night owl 🦉", desc: "Finish a quiz after 9pm", silly: 1 },
+  { id: "earlybird", name: "Early bird 🐦", desc: "Finish a quiz before 7am", silly: 1 },
+  { id: "pietime", name: "Pie time 🥧", desc: "Finish a quiz at exactly 3:14", silly: 1 },
+  { id: "weekend", name: "Weekend warrior", desc: "Do a quiz on both Saturday and Sunday of the same weekend", silly: 1 },
+  { id: "lucky7", name: "Lucky 7 🍀", desc: "Score exactly 7 in three different quizzes", silly: 1 },
+  { id: "copycat", name: "Copycat 🐱", desc: "Get the same score in two quizzes in a row", silly: 1 },
+  { id: "palindrome", name: "Palindrome points", desc: "Earn a palindrome of points in one quiz, like 55 or 121", silly: 1 },
+  { id: "rollercoaster", name: "Rollercoaster 🎢", desc: "Go from under half marks to full marks in your next quiz", silly: 1 },
+  { id: "bravetry", name: "Brave try 💪", desc: "Finish a quiz even when it went badly (under 30%)", silly: 1 },
+  { id: "shopaholic", name: "Shopaholic 🛍️", desc: "Buy 5 things in the shop", silly: 1 },
+  { id: "petpal", name: "Pet pal 🐾", desc: "Adopt a pet or space buddy from the shop", silly: 1 },
+  { id: "piggy", name: "Piggy bank 🐷", desc: "Cash out points at the bank for the first time", silly: 1 }
 ];
+/* Shop purchases and bank rows, set by the page so badges can see them. */
+var PURCHASES = [], BANKROWS = [];
+function setShopBank(p, b) { PURCHASES = p || []; BANKROWS = b || []; }
+function dubaiHM(t) { var d = new Date(Date.parse(t) + 4 * 3600e3); return { h: d.getUTCHours(), m: d.getUTCMinutes(), dow: d.getUTCDay(), day: d.toISOString().slice(0, 10) }; }
 
 /* ===== Daily streak =====
    A day counts only when a quiz of at least 5 questions is finished with 70% or more (7/10, 4/5).
@@ -202,9 +231,40 @@ function awards(all, child, weekStart) {
     improver: week.length >= 2 && week.slice(1).some(function (a) { return a.score - week[0].score >= 3; }),
     streak3: sk.best >= 3, streak7: sk.best >= 7, streak14: sk.best >= 14, streak30: sk.best >= 30
   };
+  var byTimeMine = mine.slice().sort(byTime), rightAll = mine.reduce(function (s, a) { return s + (a.score || 0); }, 0), perDay = {}, modes = {};
+  var hw = HW_DONE.filter(function (r) { return r.child === child && (r.status === "verified" || r.status === "confirmed"); });
+  byTimeMine.forEach(function (a) { var t = dubaiHM(a.at); perDay[t.day] = (perDay[t.day] || 0) + 1; modes[a.mode || "mix"] = 1; });
+  var full = function (a) { return a.total >= 5 && a.score === a.total; }, pct = function (a) { return a.total ? a.score / a.total : 0; };
+  var sat = {}, weekendBoth = false;
+  byTimeMine.forEach(function (a) { var t = dubaiHM(a.at); if (t.dow === 6) sat[t.day] = 1; if (t.dow === 0 && sat[addDays(t.day, -1)]) weekendBoth = true; });
+  var pal = function (n) { var s = String(n); return n >= 11 && s === s.split("").reverse().join(""); };
+  var allModes = child === "millie" ? ["mix", "spelling", "challenge", "revise"] : ["mix", "english", "french", "vocab", "challenge", "revise", "match"];
+  var myBuys = PURCHASES.filter(function (x) { return x.child === child; });
+  Object.assign(earned, {
+    ten: mine.length >= 10, fifty: mine.length >= 50, century: rightAll >= 100, thousand: rightAll >= 1000,
+    marathon: Object.keys(perDay).some(function (d) { return perDay[d] >= 5; }),
+    perfect3: mine.filter(full).length >= 3,
+    testace: mine.some(function (a) { return (a.mode === "spelling" || a.mode === "vocab") && full(a); }),
+    revise5: mine.filter(function (a) { return a.mode === "revise"; }).length >= 5,
+    allround: allModes.every(function (m) { return modes[m]; }),
+    hw1: hw.length >= 1, hw10: hw.length >= 10, early3: hw.filter(function (r) { return (r.points || 0) >= 30; }).length >= 3,
+    cleansheet: mine.some(function (a) { return a.mode === "match" && a.total === 5 && a.score === 5; }),
+    nightowl: mine.some(function (a) { return dubaiHM(a.at).h >= 21; }),
+    earlybird: mine.some(function (a) { return dubaiHM(a.at).h < 7; }),
+    pietime: mine.some(function (a) { var t = dubaiHM(a.at); return (t.h === 3 || t.h === 15) && t.m === 14; }),
+    weekend: weekendBoth,
+    lucky7: mine.filter(function (a) { return a.score === 7; }).length >= 3,
+    copycat: byTimeMine.some(function (a, i) { var b = byTimeMine[i - 1]; return b && a.score === b.score && a.total === b.total; }),
+    palindrome: mine.some(function (a) { return pal(a.points || 0); }),
+    rollercoaster: byTimeMine.some(function (a, i) { var b = byTimeMine[i - 1]; return b && pct(b) < 0.5 && full(a); }),
+    bravetry: mine.some(function (a) { return a.total >= 5 && pct(a) < 0.3; }),
+    shopaholic: myBuys.length >= 5,
+    petpal: myBuys.some(function (x) { return /^(buddy|pet)-/.test(x.item) && !/-none$/.test(x.item); }),
+    piggy: BANKROWS.some(function (b) { return b.child === child && b.status !== "cancelled"; })
+  });
   return {
     streak: sk, points: points, rank: rankFor(child, points), weekCount: week.length, mastered: mastered,
-    badges: BADGES.map(function (b) { return { id: b.id, name: b.name, desc: b.desc, earned: !!earned[b.id] }; })
+    badges: BADGES.filter(function (b) { return !b.only || b.only === child; }).map(function (b) { return { id: b.id, name: b.name, desc: b.desc, silly: !!b.silly, earned: !!earned[b.id] }; })
   };
 }
 
@@ -224,6 +284,7 @@ function topicSummary(all, child, weekStart) {
   var t = {};
   weekAttempts(all, child, weekStart).forEach(function (a) {
     (a.results || []).forEach(function (r) {
+      if (/^(spell|fr):/.test(r.gen || "")) return; // spelling and the school French list have their own sections
       var x = t[r.topic] || (t[r.topic] = { topic: r.topic, right: 0, total: 0 });
       x.total++; if (r.ok) x.right++;
     });
@@ -262,5 +323,5 @@ function playerCard(all, child) {
 
 if (typeof module !== "undefined" && module.exports) module.exports = {
   skillState: skillState, weakSkills: weakSkills, buildAdaptiveQuiz: buildAdaptiveQuiz, scoreAttempt: scoreAttempt,
-  awards: awards, revisionStats: revisionStats, rankFor: rankFor, topicSummary: topicSummary, weekAttempts: weekAttempts, BADGES: BADGES, streakInfo: streakInfo, dubaiDay: dubaiDay, addDays: addDays, qualifies: qualifies, STREAK_RULE: STREAK_RULE, playerCard: playerCard, setRestDays: setRestDays, setHomeworkDone: setHomeworkDone, homeworkPoints: homeworkPoints
+  awards: awards, revisionStats: revisionStats, rankFor: rankFor, topicSummary: topicSummary, weekAttempts: weekAttempts, BADGES: BADGES, streakInfo: streakInfo, dubaiDay: dubaiDay, addDays: addDays, qualifies: qualifies, STREAK_RULE: STREAK_RULE, playerCard: playerCard, setRestDays: setRestDays, setHomeworkDone: setHomeworkDone, setShopBank: setShopBank, homeworkPoints: homeworkPoints
 };

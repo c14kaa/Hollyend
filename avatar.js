@@ -1,5 +1,5 @@
 /* ===== Characters, shop and bank (pure functions, no DOM) ===== */
-var BANK = { pointsPerPound: 500, stepPence: 50, weeklyCapPence: 300 };
+var BANK = { pointsPerPound: 500, stepPence: 50, weeklyCapPence: 1200 };
 
 var LOOK_SKIN = [["Light", "#f2d3b8"], ["Warm", "#e2ad86"], ["Golden", "#c98d63"], ["Rich", "#9b6644"], ["Deep", "#6a4330"]];
 var LOOK_HAIR = [["Dark brown", "#3a2418"], ["Black", "#15100e"], ["Chestnut", "#6b3b1f"], ["Copper", "#a8552a"], ["Blonde", "#d9b25f"]];
@@ -40,6 +40,7 @@ var SHOP = {
       { id: "buddy-cat", cat: "buddy", name: "Comet the space cat", cost: 300, v: {} },
       { id: "buddy-rocket", cat: "buddy", name: "Mini rocket", cost: 400, v: {} },
       { id: "buddy-monkey", cat: "buddy", name: "Ooh Ooh the space monkey", cost: 300, v: {} },
+      { id: "buddy-monkey2", cat: "buddy", name: "Uuh Uuh the space monkey", cost: 300, v: {} },
       { id: "mhair-bob", cat: "hairstyle", name: "Bob", cost: 0, v: {} },
       { id: "mhair-long", cat: "hairstyle", name: "Long and flowing", cost: 80, v: {} },
       { id: "mhair-ponytail", cat: "hairstyle", name: "Ponytail", cost: 100, v: {} },
@@ -56,8 +57,8 @@ var SHOP = {
   },
   kristan: {
     title: "Club Shop",
-    cats: [["kit", "Kits"], ["boots", "Boots"], ["hair", "Hairstyles"], ["extra", "Extras"], ["ball", "Balls"], ["scene", "Stadiums"], ["skin", "Look"], ["haircol", "Hair colour"]],
-    defaults: { kit: "kit-blue", boots: "boots-black", hair: "hair-short", extra: "extra-none", ball: "ball-classic", scene: "scene-training", skin: "skin-1", haircol: "hair-0" },
+    cats: [["kit", "Kits"], ["boots", "Boots"], ["hair", "Hairstyles"], ["extra", "Extras"], ["ball", "Balls"], ["pet", "Pets"], ["scene", "Stadiums"], ["skin", "Look"], ["haircol", "Hair colour"]],
+    defaults: { kit: "kit-blue", boots: "boots-black", hair: "hair-short", extra: "extra-none", ball: "ball-classic", scene: "scene-training", skin: "skin-1", haircol: "hair-0", pet: "pet-none" },
     items: [
       { id: "kit-blue", cat: "kit", name: "Home blue", cost: 0, v: { n: "#ffffff", a: "#2f6fe0", b: "#ffffff", p: "plain", s: "#ffffff" } },
       { id: "kit-redwhite", cat: "kit", name: "Classic red, white sleeves", cost: 250, v: { n: "#ffffff", a: "#db0007", b: "#ffffff", p: "sleeves", s: "#ffffff", collar: "#ffffff", sock: "#ffffff", sockBand: "#db0007" } },
@@ -88,6 +89,8 @@ var SHOP = {
       { id: "extra-armband", cat: "extra", name: "Captain's armband", cost: 300, v: {} },
       { id: "extra-medal", cat: "extra", name: "Winner's medal", cost: 500, v: {} },
       { id: "extra-trophy", cat: "extra", name: "Golden cup", cost: 1200, v: {} },
+      { id: "pet-none", cat: "pet", name: "No pet", cost: 0, v: {} },
+      { id: "pet-cat", cat: "pet", name: "Meow Meow the cat", cost: 300, v: {} },
       { id: "ball-classic", cat: "ball", name: "Classic", cost: 0, v: { c: "#ffffff", d: "#1b1b1b" } },
       { id: "ball-neon", cat: "ball", name: "Neon", cost: 150, v: { c: "#d4ff3a", d: "#1b1b1b" } },
       { id: "ball-retro", cat: "ball", name: "Retro leather", cost: 200, v: { c: "#a0612f", d: "#5a3216", retro: 1 } },
@@ -180,13 +183,13 @@ function avatarMillie(eq, u) {
   if (b === "buddy-alien") h += '<path d="M162 200 L156 180 M178 200 L184 180" stroke="#5bd16c" stroke-width="3"/><circle cx="156" cy="179" r="4" fill="#fff"/><circle cx="184" cy="179" r="4" fill="#fff"/><circle cx="156" cy="179" r="2" fill="#222"/><circle cx="184" cy="179" r="2" fill="#222"/><ellipse cx="170" cy="210" rx="19" ry="17" fill="#7be38a"/><circle cx="170" cy="206" r="5" fill="#fff"/><circle cx="170" cy="206" r="2.4" fill="#222"/><path d="M163 216 Q170 221 177 216" stroke="#2c7a3a" stroke-width="2" fill="none"/>';
   if (b === "buddy-robot") h += '<path d="M170 186 L170 178" stroke="#8a93bd" stroke-width="3"/><circle cx="170" cy="176" r="3.5" fill="#ff6fb5"/><rect x="154" y="186" width="32" height="26" rx="6" fill="#b8c2e8"/><rect x="159" y="193" width="22" height="8" rx="3" fill="#1e2552"/><circle cx="165" cy="197" r="2.4" fill="#5ef0f0"/><circle cx="175" cy="197" r="2.4" fill="#5ef0f0"/><rect x="157" y="212" width="26" height="14" rx="4" fill="#9aa3d0"/>';
   if (b === "buddy-cat") h += '<polygon points="157,192 160,178 168,188" fill="#f4a259"/><polygon points="183,192 180,178 172,188" fill="#f4a259"/><circle cx="170" cy="200" r="15" fill="#f4a259"/><circle cx="164" cy="198" r="2.4" fill="#222"/><circle cx="176" cy="198" r="2.4" fill="#222"/><path d="M167 205 Q170 208 173 205" stroke="#7a3a12" stroke-width="1.6" fill="none"/><circle cx="170" cy="198" r="19" fill="#bfe3ff" opacity=".28" stroke="#fff" stroke-width="1.5"/><ellipse cx="170" cy="222" rx="12" ry="7" fill="#f4a259"/>';
-  if (b === "buddy-monkey") h += '<path d="M184 216 Q198 206 192 192 Q188 184 182 190" stroke="#7a4a26" stroke-width="4" fill="none" stroke-linecap="round"/>' +
-    '<ellipse cx="170" cy="214" rx="14" ry="12" fill="#8b5a2b"/><ellipse cx="170" cy="216" rx="8" ry="7" fill="#e3b98a"/>' +
-    '<circle cx="155" cy="194" r="7" fill="#8b5a2b"/><circle cx="185" cy="194" r="7" fill="#8b5a2b"/><circle cx="155" cy="194" r="4" fill="#e3b98a"/><circle cx="185" cy="194" r="4" fill="#e3b98a"/>' +
-    '<circle cx="170" cy="194" r="14" fill="#8b5a2b"/><path d="M160 196 Q160 186 166 188 Q170 184 174 188 Q180 186 180 196 Q180 206 170 206 Q160 206 160 196 Z" fill="#e3b98a"/>' +
+  if (b === "buddy-monkey" || b === "buddy-monkey2") { var mk = b === "buddy-monkey" ? ["#7a4a26", "#8b5a2b", "#e3b98a"] : ["#24130a", "#3a2112", "#9c6a40"]; h += '<path d="M184 216 Q198 206 192 192 Q188 184 182 190" stroke="' + mk[0] + '" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+    '<ellipse cx="170" cy="214" rx="14" ry="12" fill="' + mk[1] + '"/><ellipse cx="170" cy="216" rx="8" ry="7" fill="' + mk[2] + '"/>' +
+    '<circle cx="155" cy="194" r="7" fill="' + mk[1] + '"/><circle cx="185" cy="194" r="7" fill="' + mk[1] + '"/><circle cx="155" cy="194" r="4" fill="' + mk[2] + '"/><circle cx="185" cy="194" r="4" fill="' + mk[2] + '"/>' +
+    '<circle cx="170" cy="194" r="14" fill="' + mk[1] + '"/><path d="M160 196 Q160 186 166 188 Q170 184 174 188 Q180 186 180 196 Q180 206 170 206 Q160 206 160 196 Z" fill="' + mk[2] + '"/>' + (b === "buddy-monkey2" ? '<path d="M163 184 Q166 178 170 184 Q174 178 177 184" stroke="' + mk[0] + '" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M150 214 Q146 200 156 192 Q152 204 160 214 Z" fill="#ffd84a" stroke="#c9a400" stroke-width="1"/><path d="M155 192 l2 -3" stroke="#6b4a10" stroke-width="1.6"/>' : '') +
     '<circle cx="165" cy="193" r="2.2" fill="#1b1530"/><circle cx="175" cy="193" r="2.2" fill="#1b1530"/><circle cx="165.6" cy="192.4" r=".7" fill="#fff"/><circle cx="175.6" cy="192.4" r=".7" fill="#fff"/>' +
     '<ellipse cx="170" cy="199" rx="2.4" ry="1.4" fill="#5a3a1a"/><path d="M165 202 Q170 206 175 202" stroke="#5a3a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
-    '<circle cx="170" cy="196" r="21" fill="#bfe3ff" opacity=".22" stroke="#fff" stroke-width="1.5"/>';
+    '<circle cx="170" cy="196" r="21" fill="#bfe3ff" opacity=".22" stroke="#fff" stroke-width="1.5"/>'; }
   if (b === "buddy-rocket") h += '<g transform="rotate(20 172 200)"><path d="M172 172 Q184 188 182 214 L162 214 Q160 188 172 172 Z" fill="#f4f6ff"/><circle cx="172" cy="194" r="5" fill="#7cc4ff" stroke="#8b7bff" stroke-width="2"/><path d="M162 204 L154 218 L163 214 Z M182 204 L190 218 L181 214 Z" fill="#ff6fb5"/><path d="M165 214 Q172 234 179 214 Z" fill="#ffb347"/></g>';
   return h + '</g>';
 }
@@ -244,6 +247,12 @@ function avatarKristan(eq, u) {
   if (x === "extra-armband") h += '<rect x="49" y="120" width="15" height="9" rx="2" fill="#ffd23f"/><text x="56.5" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="8" fill="#1b1b1b">C</text>';
   if (x === "extra-medal") h += '<path d="M90 88 L100 112 L110 88" stroke="#d8282f" stroke-width="5" fill="none"/><circle cx="100" cy="116" r="8" fill="url(#GOLD' + u + ')" stroke="#a67400" stroke-width="1.5"/>';
   if (x === "extra-trophy") h += '<g transform="translate(130 108)"><path d="M6 8 h24 v8 q0 16 -12 18 q-12 -2 -12 -18 z" fill="url(#GOLD' + u + ')"/><path d="M6 12 q-8 0 -6 8 q2 6 8 6 M30 12 q8 0 6 8 q-2 6 -8 6" stroke="#d9a10a" stroke-width="2.4" fill="none"/><rect x="14" y="34" width="8" height="8" fill="#d9a10a"/><rect x="9" y="42" width="18" height="5" rx="1" fill="#8a5a00"/></g>';
+  if (eq.pet && eq.pet.id === "pet-cat") h += '<path d="M28 222 Q12 214 18 196 Q22 188 26 194" stroke="#2b2b33" stroke-width="5" fill="none" stroke-linecap="round"/>' +
+    '<ellipse cx="40" cy="214" rx="15" ry="11" fill="#3a3a44"/><ellipse cx="44" cy="218" rx="7" ry="6" fill="#55555f"/>' +
+    '<polygon points="31,191 33,177 41,187" fill="#3a3a44"/><polygon points="55,191 53,177 45,187" fill="#3a3a44"/><polygon points="33.5,188 34.5,181 39,186" fill="#e7a3b0"/><polygon points="52.5,188 51.5,181 47,186" fill="#e7a3b0"/>' +
+    '<circle cx="43" cy="196" r="12" fill="#3a3a44"/><ellipse cx="38.5" cy="195" rx="2.6" ry="3.2" fill="#b6f25a"/><ellipse cx="47.5" cy="195" rx="2.6" ry="3.2" fill="#b6f25a"/><ellipse cx="38.5" cy="195" rx=".9" ry="2.6" fill="#111"/><ellipse cx="47.5" cy="195" rx=".9" ry="2.6" fill="#111"/>' +
+    '<path d="M41.5 200 h3 l-1.5 1.8 z" fill="#e7a3b0"/><path d="M43 201.8 Q41 204 39 202.6 M43 201.8 Q45 204 47 202.6" stroke="#bbb" stroke-width=".9" fill="none"/>' +
+    '<path d="M30 199 h7 M30 202 h7 M49 199 h7 M49 202 h7" stroke="#cfcfd6" stroke-width=".7"/><rect x="34" y="207" width="18" height="3" rx="1.5" fill="#d8282f"/><circle cx="43" cy="211" r="1.8" fill="#ffd23f"/>';
   var bc = fx(ball.c, u);
   h += '<circle cx="152" cy="212" r="12" fill="' + bc + '" stroke="' + ball.d + '" stroke-width="1.5"/>';
   h += ball.retro ? '<path d="M146 206 q6 6 12 0 M146 212 h12 M146 218 q6 -6 12 0" stroke="' + ball.d + '" stroke-width="1.6" fill="none"/>'

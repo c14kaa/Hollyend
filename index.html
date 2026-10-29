@@ -611,6 +611,56 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
 .fv-stats .bad b { color: var(--bad); }
 .fv-list { margin: 0 0 8px; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 15px; }
 .fv-list b { color: var(--gold); } .fv-list b.lt { color: var(--bad); }
+.qlog { display: flex; flex-direction: column; gap: 14px; }
+.ql-day h3 { margin: 0 0 6px; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.ql-day h3 .small { text-transform: none; letter-spacing: 0; }
+.ql-day .ok { color: var(--good); font-weight: 700; }
+.ql-row { border: 1px solid var(--line); border-radius: 10px; background: var(--card2); margin-bottom: 6px; }
+.ql-row > summary, div.ql-row { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto auto; gap: 10px; align-items: center; padding: 9px 12px; cursor: pointer; list-style: none; }
+.ql-row > summary::-webkit-details-marker { display: none; }
+div.ql-row { cursor: default; }
+.ql-time { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ql-name { display: flex; flex-direction: column; min-width: 0; }
+.ql-name b { font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ql-score { font-weight: 800; font-variant-numeric: tabular-nums; text-align: right; display: flex; flex-direction: column; line-height: 1.1; }
+.ql-score small { font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.ql-score.hi { color: var(--good); } .ql-score.mid { color: var(--gold); } .ql-score.lo { color: var(--bad); }
+.ql-pts { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 40px; text-align: right; }
+.ql-qs { margin: 0; padding: 4px 12px 12px; list-style: none; display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); }
+.ql-qs li { display: flex; gap: 8px; font-size: 14px; padding-top: 6px; }
+.ql-qs li > span { flex: none; width: 18px; font-weight: 800; }
+.ql-qs li.r > span { color: var(--good); } .ql-qs li.w > span { color: var(--bad); }
+.ql-qs li > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ql-qs s, .sp-w s { color: var(--bad); }
+.sp-sum { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 8px; }
+.sp-sum div { background: var(--card2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; }
+.sp-sum b { font-size: 22px; font-family: var(--display); } .sp-sum span { font-size: 12.5px; color: var(--muted); } .sp-sum .bad b { color: var(--bad); }
+.sp-words { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
+.sp-w { border: 1px solid var(--line); border-left: 4px solid var(--line); border-radius: 10px; padding: 9px 11px; background: var(--card2); display: flex; flex-direction: column; gap: 4px; }
+.sp-w.mastered { border-left-color: var(--good); } .sp-w.learning { border-left-color: var(--gold); } .sp-w.practise { border-left-color: var(--bad); }
+.sp-top { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.sp-top b { font-size: 17px; }
+.sp-st { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.sp-w.mastered .sp-st { color: var(--good); } .sp-w.practise .sp-st { color: var(--bad); } .sp-w.learning .sp-st { color: var(--gold); }
+.sp-marks { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+.sp-marks i { font-style: normal; font-weight: 800; width: 20px; height: 20px; border-radius: 6px; display: grid; place-items: center; font-size: 12px; }
+.sp-marks i.r { background: rgba(60, 200, 120, .18); color: var(--good); } .sp-marks i.w { background: rgba(255, 80, 100, .18); color: var(--bad); }
+.merit-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--card); border: 2px solid #22a7f0; color: var(--ink); border-radius: 999px; padding: 6px 12px 6px 8px; font: 700 15px var(--body); cursor: pointer; white-space: nowrap; font-variant-numeric: tabular-nums; }
+body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--line); }
+.merit-chip small { font-weight: 600; color: var(--muted); font-size: 12px; }
+.owed { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 14px; border-radius: 12px; background: var(--card2); border: 1px solid var(--line); border-left: 4px solid #e0688a; }
+.owed.kristan { border-left-color: #22a7f0; }
+.owed > div { display: flex; flex-direction: column; gap: 2px; }
+.owed b { font-family: var(--display); font-size: 28px; font-variant-numeric: tabular-nums; }
+.who-tag { font-weight: 700; margin-right: 6px; } .who-tag.millie { color: #e0688a; } .who-tag.kristan { color: #22a7f0; }
+.ql-row.other { cursor: default; }
+.mw-rl { font-size: 13px; font-weight: 700; color: var(--bad); }
+.lvpick { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; border: 2px solid var(--accent); background: var(--accent-soft); }
+.lvp-h { font-weight: 800; font-size: 15px; }
+.lvp-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.lvp { font: inherit; color: var(--ink); background: var(--card); border: 2px solid var(--line); border-radius: 12px; padding: 10px 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; }
+.lvp b { font-size: 17px; } .lvp small { font-size: 12px; color: var(--muted); }
+.lvp.on { border-color: var(--accent); background: var(--accent); color: var(--on-accent); } .lvp.on small { color: inherit; opacity: .85; }
 /* flashcards */
 .flash { font: inherit; color: var(--ink); width: 100%; min-height: 220px; border-radius: 16px; border: 2px solid var(--line); background: var(--card2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 24px 18px; text-align: center; cursor: pointer; }
 .flash.flipped { border-color: var(--accent); background: var(--accent-soft); cursor: default; }
@@ -707,7 +757,7 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
 (function () {
   var state = { child: "millie", mode: "mix", level: 1, view: "quiz", qs: [], i: 0, answers: [], started: false, saved: null,
     shop: { cat: null, tryOn: null, confirm: null, msg: "" }, bankAmt: 50, bankConfirm: false, payConfirm: null, bankMsg: "", matches: [], postcard: null, match: null, restDays: [],
-    hw: [], hwDone: [], daily: [], dailyTicks: [], hwBusy: {}, hwMsg: "", pushStatus: null, flash: null, events: [], calWho: "all", calMonth: null, calDay: null, calMsg: "" };
+    hw: [], hwDone: [], daily: [], dailyTicks: [], hwBusy: {}, hwMsg: "", pushStatus: null, flash: null, events: [], merits: [], calWho: "all", calMonth: null, calDay: null, calMsg: "" };
   var purchases = [], bankRows = [], profiles = {};
   var LV = { 1: "Warm-up", 2: "Core", 3: "Challenge" };
   var app = document.getElementById("app");
@@ -729,8 +779,9 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
         if (firstLoad) { firstLoad = false; if (!state.started) newQuiz(); }
         refresh();
       }, function () { dbState = "off"; refresh(); });
-      db.collection("purchases").onSnapshot(function (snap) { purchases = snap.docs.map(function (d) { return d.data(); }).filter(Boolean); refresh(); }, function () {});
-      db.collection("bank").onSnapshot(function (snap) { bankRows = snap.docs.map(function (d) { var x = d.data() || {}; return Object.assign({ id: d.id }, x); }); refresh(); }, function () {});
+      db.collection("purchases").onSnapshot(function (snap) { purchases = snap.docs.map(function (d) { return d.data(); }).filter(Boolean); setShopBank(purchases, bankRows); refresh(); }, function () {});
+      db.collection("bank").onSnapshot(function (snap) { bankRows = snap.docs.map(function (d) { var x = d.data() || {}; return Object.assign({ id: d.id }, x); }); setShopBank(purchases, bankRows); refresh(); }, function () {});
+      db.collection("merits").onSnapshot(function (snap) { state.merits = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("homework").onSnapshot(function (snap) { state.hw = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); hwLoaded = true; maybeLandOnHomework(); refresh(); }, function () {});
       db.collection("homework_done").onSnapshot(function (snap) { state.hwDone = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); setHomeworkDone(state.hwDone); refresh(); }, function () {});
       db.collection("events").onSnapshot(function (snap) { state.events = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
@@ -742,7 +793,7 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
     }, function () { dbState = "off"; refresh(); });
   }
   function busy() { return (state.started && (state.view === "quiz" || state.mode === "match")) || (state.view === "quiz" && !!state.flash) || (state.view === "homework" && !!state.hwFeel); }
-  function refresh() { autoVerify(); chrome(); hwBadge(); bellSync(); if (!busy()) render(); }
+  function refresh() { autoVerify(); chrome(); hwBadge(); bellSync(); meritSync(); if (!busy()) render(); }
   var hwLoaded = false, landed = false, landHash = (location.hash || "").replace("#", "");
   function maybeLandOnHomework() {
     if (landed || !hwLoaded || !role()) return; landed = true;
@@ -830,7 +881,7 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
   function showLevels() {
     var t = state.mode === "revise" && state.reviseTopic ? revTopic(state.child, state.reviseTopic) : null;
     var wordsOnly = t && t.gens.every(function (g) { return g.indexOf(":") > 0; });
-    document.getElementById("levels").hidden = state.view !== "quiz" || !!listFor(state.mode) || (state.mode === "revise" && (!t || wordsOnly));
+    document.getElementById("levels").hidden = true;
   }
   function setLevel(l) {
     state.level = l;
@@ -861,7 +912,7 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
     render();
   }
   function render() {
-    calcSync();
+    calcSync(); if (typeof meritSync === "function") meritSync();
     app.setAttribute("data-view", state.view === "quiz" && state.flash ? "quiz" : state.view);
     if (state.view === "homework") return homeworkView();
     if (state.view === "calendar") return calendarView();
@@ -913,6 +964,7 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
       hwBanner() + streakBlock() + teaser() +
       (cb ? '<p class="cbnote">' + cb + ' comeback question' + (cb > 1 ? 's' : '') + ' waiting: ' + (listFor(state.mode) ? 'words' : 'skills') + ' you missed earlier this week. Get them right for bonus points!</p>' : '') +
       '<p class="small">' + POINTS.perRight + ' points per correct answer' + (lvl() > 1 ? ' × ' + (lvl() === 2 ? '1.5' : '2') + (state.mode === "challenge" ? ' for challenge words' : ' on ' + LV[lvl()]) : '') + ', +' + POINTS.comeback + ' for each comeback, +' + POINTS.perfect + ' for a perfect score.</p>' +
+      lvPicker() +
       '<div class="row">' + (state.mode === "vocab" || state.mode === "spelling" ? '<button class="btn ghost" id="flash">Flashcards</button><button class="btn" id="go">' + (state.mode === "vocab" ? 'Take the practice test' : 'Start the test') + '</button>' : '<button class="btn" id="go">Start the quiz</button>') + '</div>' +
       '<span class="status">' + (dbState === "live" ? "Results are saved after each quiz." : dbState === "connecting" ? "Connecting to saved results…" : "Results can't be saved in this view, but the quiz still works.") + '</span></section>';
     app.innerHTML = h;
@@ -922,6 +974,18 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
     var th = document.getElementById("toHw"); if (th) th.addEventListener("click", function () { setView("homework"); });
     var fl = document.getElementById("flash"); if (fl) fl.addEventListener("click", startFlash);
     var bt = document.getElementById("backTopics"); if (bt) bt.addEventListener("click", function () { state.reviseTopic = null; showMode(); render(); });
+    [].forEach.call(app.querySelectorAll("[data-lvp]"), function (b) { b.addEventListener("click", function () { setLevel(+b.dataset.lvp); }); });
+  }
+  function levelsApply() {
+    var t = state.mode === "revise" && state.reviseTopic ? revTopic(state.child, state.reviseTopic) : null;
+    var wordsOnly = t && t.gens.every(function (g) { return g.indexOf(":") > 0; });
+    return !listFor(state.mode) && !(state.mode === "revise" && (!t || wordsOnly));
+  }
+  function lvPicker() {
+    if (!levelsApply()) return "";
+    var D = { 1: "Easier questions", 2: "Year-group level", 3: "Hardest · double points" };
+    return '<div class="lvpick" role="group" aria-label="Choose your level"><span class="lvp-h">Choose your level</span><div class="lvp-row">' + [1, 2, 3].map(function (l) {
+      return '<button class="lvp' + (state.level === l ? ' on' : '') + '" data-lvp="' + l + '" aria-pressed="' + (state.level === l) + '"><b>' + LV[l] + '</b><small>' + D[l] + '</small></button>'; }).join("") + '</div></div>';
   }
 
   function quizWords() {
@@ -1097,12 +1161,11 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
     var aw = awards(all, state.child, WEEK.start), week = weekAttempts(all, state.child, WEEK.start).slice().reverse();
     var topics = topicSummary(all, state.child, WEEK.start), weak = weakSkills(skillState(all, state.child, WEEK.start));
     var h = '<section class="card">' + rankBlock(aw) + streakBlock() + '</section>';
-    h += '<section class="card sect"><h2>Badges</h2><p class="small">' + aw.badges.filter(function (b) { return b.earned; }).length + ' of ' + aw.badges.length + ' earned</p><div class="badges">' +
-      aw.badges.map(function (b) { return '<div class="bd' + (b.earned ? ' on' : '') + '"><b>' + esc(b.name) + '</b><span>' + esc(b.desc) + '</span></div>'; }).join("") + '</div></section>';
-    h += '<section class="card sect"><h2>This week’s quizzes</h2>' + (week.length ? '<div class="list">' + week.map(function (a) {
-      return '<div class="li"><span>' + esc(when(a.at)) + ' · ' + LV[a.level] + '</span><b>' + a.score + '/' + a.total + ' · +' + a.points + '</b></div>';
-    }).join("") + '</div>' : '<p class="small">No quizzes yet this week. Finished quizzes appear here with the score and points.</p>') + '</section>';
-    h += '<section class="card sect"><h2>How each topic is going</h2>' + (topics.length ? topics.map(function (t) {
+    var ld = state.logDays || 14;
+    h += '<section class="card sect"><h2>Everything ' + esc(name()) + ' has done</h2><p class="small">Every quiz, spelling test, ' + (state.child === "kristan" ? 'league match, ' : '') + 'homework, daily task, shop buy and cash-out from the last ' + ld + ' days, newest first. Tap a quiz to see each question and answer.</p>' + activityLog([state.child], ld) +
+      '<div class="row"><button class="btn sm ghost" id="logMore">Show ' + (ld < 60 ? 'older quizzes' : 'all quizzes') + '</button></div></section>';
+    h += listReport(state.child);
+    h += '<section class="card sect"><h2>How each topic is going</h2><p class="small" style="margin:0">This quiz week, weakest first. ' + (state.child === "millie" ? 'Spelling is shown in its own section above.' : 'The school French list is shown in its own section above.') + '</p>' + (topics.length ? topics.map(function (t) {
       var pct = Math.round(t.right / t.total * 100);
       return '<div class="tp"><span>' + esc(t.topic) + '</span><b style="text-align:right">' + t.right + '/' + t.total + '</b><div class="bar t"><i style="width:' + pct + '%"></i></div></div>';
     }).join("") : '<p class="small">Topic results build up as quizzes are finished.</p>') + '</section>';
@@ -1112,14 +1175,89 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
       return '<div class="mw"><div class="mw-h"><b>' + esc(b.title) + '</b><span>' + b.mastered + ' of ' + b.total + ' mastered</span></div>' +
         '<div class="mw-bar" role="img" aria-label="' + b.mastered + ' mastered, ' + b.learning + ' learning, ' + b.winback + ' to win back, ' + b.unseen + ' still to discover"><i class="m" style="width:' + pct(b.mastered) + '%"></i><i class="l" style="width:' + pct(b.learning) + '%"></i><i class="w" style="width:' + pct(b.winback) + '%"></i></div>' +
         '<div class="mw-key"><span><i class="m"></i>Mastered ' + b.mastered + '</span><span><i class="l"></i>Learning ' + b.learning + '</span><span><i class="w"></i>To win back ' + b.winback + '</span><span><i></i>To discover ' + b.unseen + '</span></div>' +
-        (b.winbackWords.length ? '<div class="mw-wb">' + b.winbackWords.slice(0, 24).map(function (w) { return '<span class="chip wk">' + esc(w) + '</span>'; }).join("") + '</div>' : '') + '</div>';
+        (b.winbackWords.length ? '<span class="mw-rl">Words to relearn (' + b.winbackWords.length + ')</span><div class="mw-wb">' + b.winbackWords.slice(0, 40).map(function (w) { return '<span class="chip wk">' + esc(w) + '</span>'; }).join("") + '</div>' : (b.mastered + b.learning ? '<span class="small">Nothing to relearn in this bank. 👏</span>' : '')) + '</div>';
     }).join("") + '</section>';
     h += '<section class="card sect"><h2>Skills to win back</h2>' + (weak.length ? '<p class="small">Missed this week and not yet got right twice in a row. These come back as comeback questions.</p><div class="list">' + weak.map(function (s) {
       return '<div class="li"><span>' + esc(s.topic) + '</span><span>' + s.wrong + ' missed · ' + s.right + ' right</span></div>';
     }).join("") + '</div>' : '<p class="small">Nothing to win back right now.</p>') + '</section>';
+    var bd = function (b) { return '<div class="bd' + (b.earned ? ' on' : '') + '"><b>' + esc(b.name) + '</b><span>' + esc(b.desc) + '</span></div>'; };
+    h += '<section class="card sect"><h2>Badges</h2><p class="small">' + aw.badges.filter(function (b) { return b.earned; }).length + ' of ' + aw.badges.length + ' earned</p><div class="badges">' +
+      aw.badges.filter(function (b) { return !b.silly; }).map(bd).join("") + '</div><h3 class="fv-sub">Silly badges</h3><div class="badges">' + aw.badges.filter(function (b) { return b.silly; }).map(bd).join("") + '</div></section>';
     if ((role() || {}).role === "parent") h += restDaysCard();
     if (dbState !== "live") h += '<p class="status">' + (dbState === "connecting" ? "Loading saved results…" : "Saved results aren't available in this view.") + '</p>';
     app.innerHTML = h; bindRestDays();
+    var lm = document.getElementById("logMore"); if (lm) lm.addEventListener("click", function () { state.logDays = (state.logDays || 14) < 60 ? 60 : 3650; progressView(); });
+  }
+
+  /* ---------- Quiz log + spelling / vocab list report ---------- */
+  var MODE_NAME = { mix: "Weekly mix", spelling: "Spelling test", challenge: "Challenge words", english: "English words", french: "French", vocab: "French vocab test", match: "League match", revise: "Revision" };
+  function quizName(a) {
+    if (a.mode === "revise") { var t = a.topic && revTopic(a.child, a.topic); return "Revision: " + (t ? t.title : (a.results && a.results[0] ? a.results[0].topic : "topic")); }
+    return MODE_NAME[a.mode] || "Quiz";
+  }
+  function activityItems(kids, fromDay) {
+    var out = [], hwById = {};
+    state.hw.forEach(function (h) { hwById[h.id] = h; });
+    kids.forEach(function (c) {
+      all.forEach(function (a) { if (a.child === c && lgToday(a.at) >= fromDay) out.push({ at: a.at, child: c, kind: "quiz", a: a }); });
+      state.hwDone.forEach(function (d) { var h = hwById[d.homeworkId]; if (d.child === c && h && d.doneAt && lgToday(d.doneAt) >= fromDay && d.status !== "rejected")
+        out.push({ at: d.doneAt, child: c, kind: "hw", icon: "📚", title: "Homework: " + h.title, sub: d.status === "ticked" ? "Ticked off · waiting for Mum or Dad to check" : d.status === "verified" ? "Checked by Hollyend" : "Checked by Mum or Dad", pts: d.points }); });
+      state.dailyTicks.forEach(function (t) { var day = String(t.day).slice(0, 10); if (t.child !== c || day < fromDay) return; var task = state.daily.filter(function (x) { return x.id === t.task; })[0];
+        out.push({ at: day + "T19:59:00+04:00", child: c, kind: "daily", icon: "✅", title: (task ? task.title.replace(/:.*/, "") : t.task), sub: "Daily task", noTime: true }); });
+      purchases.forEach(function (x) { if (x.child === c && x.at && lgToday(x.at) >= fromDay) { var it = shopItem(c, x.item); out.push({ at: x.at, child: c, kind: "buy", icon: "🛍️", title: "Bought " + (it ? it.name : x.item), sub: "Shop", pts: -(x.cost || 0) }); } });
+      bankRows.forEach(function (b) { if (b.child === c && b.at && lgToday(b.at) >= fromDay && b.status !== "cancelled") out.push({ at: b.at, child: c, kind: "bank", icon: "🏦", title: "Cashed out " + fmtMoney(b.pence), sub: b.status === "paid" ? "Paid" : "Waiting for Mum or Dad to pay", pts: -(b.points || 0) }); });
+      state.merits.forEach(function (m) { if (m.child === c && !/^opening/.test(m.ref || "") && String(m.date).slice(0, 10) >= fromDay) out.push({ at: String(m.date).slice(0, 10) + "T12:00:00+04:00", child: c, kind: "merit", icon: "🏅", title: "Merit" + (m.count > 1 ? " ×" + m.count : "") + (m.subject ? ": " + m.subject : ""), sub: m.reason || "From school", noTime: true }); });
+    });
+    return out.sort(function (x, y) { return String(y.at).localeCompare(String(x.at)); });
+  }
+  function actRow(it, compact, showChild) {
+    var tm = it.noTime ? "" : new Date(it.at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Dubai" });
+    var who = showChild ? '<span class="who-tag ' + it.child + '">' + cname(it.child) + '</span>' : '';
+    if (it.kind !== "quiz") return '<div class="ql-row other ' + it.kind + '"><span class="ql-time">' + tm + '</span><span class="ql-name"><b>' + it.icon + ' ' + esc(it.title) + '</b><span class="small">' + who + esc(it.sub || "") + '</span></span><span></span><span class="ql-pts">' + (it.pts ? (it.pts > 0 ? '+' : '') + it.pts : '') + '</span></div>';
+    var a = it.a, pct = a.total ? Math.round(a.score / a.total * 100) : 0, q = qualifies(a);
+    var icon = a.mode === "spelling" ? "✏️" : a.mode === "match" ? "⚽" : a.mode === "vocab" || a.mode === "french" ? "🇫🇷" : a.mode === "challenge" ? "🔥" : a.mode === "revise" ? "🔁" : a.mode === "english" ? "📖" : "🧠";
+    var head = '<span class="ql-time">' + tm + '</span><span class="ql-name"><b>' + icon + ' ' + esc(quizName(a)) + '</b><span class="small">' + who + (a.mode === "spelling" || a.mode === "vocab" ? "Full test" : a.mode === "match" ? "Daily match" : (LV[a.level] || "")) + (q ? " · counts for streak ✓" : a.total < STREAK_RULE.minQuestions ? " · too short for streak" : " · under 70%") + '</span></span>' +
+      '<span class="ql-score ' + (pct >= 80 ? 'hi' : pct >= 50 ? 'mid' : 'lo') + '">' + a.score + '/' + a.total + '<small>' + pct + '%</small></span><span class="ql-pts">+' + (a.points || 0) + '</span>';
+    if (compact) return '<div class="ql-row">' + head + '</div>';
+    var det = (a.results || []).map(function (r) {
+      if (!r.prompt && r.answer == null) return '<li class="' + (r.ok ? 'r' : 'w') + '"><span>' + (r.ok ? '✓' : '✗') + '</span><div><b>' + esc(r.label || r.topic || "") + '</b><span class="small">' + (r.ok ? 'Right' : 'Wrong') + ' (older quiz: answers weren’t saved)</span></div></li>';
+      return '<li class="' + (r.ok ? 'r' : 'w') + '"><span>' + (r.ok ? '✓' : '✗') + '</span><div><span class="small">' + esc(r.label || r.topic || "") + '</span><b>' + esc(String(r.prompt || "").replace(/<[^>]+>/g, "").slice(0, 140)) + '</b>' +
+        (r.ok ? '<span class="small">Answer: ' + esc(r.answer) + '</span>' : '<span class="small">Answered <s>' + esc(r.chosen == null || r.chosen === "" ? "(blank)" : r.chosen) + '</s> · correct: <b>' + esc(r.answer) + '</b></span>') + '</div></li>'; }).join("");
+    return '<details class="ql-row"><summary>' + head + '</summary><ol class="ql-qs">' + det + '</ol></details>';
+  }
+  function activityLog(kids, days, compact) {
+    var t = todayD(), items = activityItems(kids, addDays(t, -(days - 1)));
+    if (!items.length) return '<p class="small">Nothing done in the last ' + days + ' days yet.</p>';
+    var byDay = {}, order = [];
+    items.forEach(function (it) { var d = lgToday(it.at); if (!byDay[d]) { byDay[d] = []; order.push(d); } byDay[d].push(it); });
+    return '<div class="qlog">' + order.map(function (d) {
+      var qz = byDay[d].filter(function (x) { return x.kind === "quiz"; }), ok = qz.some(function (x) { return qualifies(x.a); });
+      return '<div class="ql-day"><h3>' + esc(d === t ? "Today" : d === addDays(t, -1) ? "Yesterday" : fmtDay(d, true)) + '<span class="small">' + byDay[d].length + ' thing' + (byDay[d].length > 1 ? 's' : '') + ' done' + (qz.length ? ' · ' + qz.length + ' quiz' + (qz.length > 1 ? 'zes' : '') : '') + (ok && kids.length === 1 ? ' · <span class="ok">streak day ✓</span>' : '') + '</span></h3>' +
+        byDay[d].map(function (it) { return actRow(it, compact, kids.length > 1); }).join("") + '</div>';
+    }).join("") + '</div>';
+  }
+  function listReport(c) {
+    var isM = c === "millie", L = isM ? SPELLING : KLISTS.french, words = L.words, prefix = isM ? "spell:" : "fr:";
+    var mineSorted = all.filter(function (a) { return a.child === c; }).sort(function (a, b) { return String(a.at).localeCompare(String(b.at)); });
+    var hist = {};
+    mineSorted.forEach(function (a) { (a.results || []).forEach(function (r) { if (String(r.gen || "").indexOf(prefix) === 0) (hist[r.gen.slice(prefix.length)] = hist[r.gen.slice(prefix.length)] || []).push({ ok: r.ok, chosen: r.chosen, at: a.at }); }); });
+    var tests = mineSorted.filter(function (a) { return a.mode === (isM ? "spelling" : "vocab"); }).reverse();
+    var stat = function (w) { var hs = hist[isM ? w.word : w.id] || []; var run = 0; for (var i = hs.length - 1; i >= 0 && hs[i].ok; i--) run++;
+      var st = !hs.length ? "new" : run >= 3 ? "mastered" : !hs[hs.length - 1].ok ? "practise" : "learning"; return { hs: hs, st: st, right: hs.filter(function (h) { return h.ok; }).length }; };
+    var rows = words.map(function (w) { return { w: w, s: stat(w) }; });
+    var count = function (k) { return rows.filter(function (r) { return r.s.st === k; }).length; };
+    var best = tests.reduce(function (m, a) { return Math.max(m, a.total ? Math.round(a.score / a.total * 100) : 0); }, 0);
+    var stLabel = { mastered: "Mastered", learning: "Learning", practise: "Practise", "new": "Not tried" };
+    var h = '<section class="card sect"><h2>' + (isM ? "Spelling" : "French vocab list") + '</h2><p class="small">' + esc(L.label) + ' · ' + words.length + ' words. A word is mastered after 3 right in a row, in any quiz.</p>' +
+      '<div class="sp-sum"><div><b>' + count("mastered") + '</b><span>mastered</span></div><div><b>' + count("learning") + '</b><span>learning</span></div><div class="bad"><b>' + count("practise") + '</b><span>to practise</span></div><div><b>' + count("new") + '</b><span>not tried</span></div><div><b>' + tests.length + '</b><span>tests taken' + (tests.length ? ' · best ' + best + '%' : '') + '</span></div></div>' +
+      '<div class="sp-words">' + rows.sort(function (a, b) { var o = { practise: 0, learning: 1, "new": 2, mastered: 3 }; return o[a.s.st] - o[b.s.st]; }).map(function (r) {
+        var w = r.w, last = r.s.hs.slice(-5);
+        var wrongs = r.s.hs.filter(function (h) { return !h.ok && h.chosen; }).slice(-2).map(function (h) { return h.chosen; });
+        return '<div class="sp-w ' + r.s.st + '"><div class="sp-top"><b>' + esc(w.word) + '</b><span class="sp-st">' + stLabel[r.s.st] + '</span></div><span class="small">' + esc(w.meaning) + '</span>' +
+          '<span class="sp-marks">' + (last.length ? last.map(function (h) { return '<i class="' + (h.ok ? 'r' : 'w') + '">' + (h.ok ? '✓' : '✗') + '</i>'; }).join("") + '<span class="small">' + r.s.right + '/' + r.s.hs.length + ' right</span>' : '<span class="small">Not asked yet</span>') + '</span>' +
+          (wrongs.length ? '<span class="small">Wrote: ' + wrongs.map(function (x) { return '<s>' + esc(x) + '</s>'; }).join(", ") + '</span>' : '') + '</div>'; }).join("") + '</div>' +
+      (tests.length ? '<h3 class="fv-sub">' + (isM ? "Spelling tests" : "Vocab tests") + '</h3><div class="list">' + tests.slice(0, 8).map(function (a) { return '<div class="li"><span>' + esc(when(a.at)) + '</span><b>' + a.score + '/' + a.total + ' · ' + Math.round(a.score / a.total * 100) + '%</b></div>'; }).join("") + '</div>' : '<p class="small">No full ' + (isM ? "spelling" : "vocab") + ' test taken yet for this list.</p>') + '</section>';
+    return h;
   }
 
   /* ---------- revision library ---------- */
@@ -1211,6 +1349,7 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
     else h += '<p class="small">Earn <b>' + (penceToPoints(BANK.stepPence) - w.balance) + ' more points</b> to cash out your first 50p.</p>';
     if (state.bankMsg) h += '<p class="cbnote">' + esc(state.bankMsg) + '</p>';
     h += '</section>';
+    var oc = owedCard(c, (role() || {}).role === "parent"); if (oc) h += '<section class="card sect"><h2>' + (c === "kristan" ? "Money to come (cash-outs + merits)" : "Money to come") + '</h2>' + oc + (c === "kristan" ? '<p class="small">Every school merit is worth £1. Tap the 🏅 at the top to see them.</p>' : '') + '</section>';
     h += '<section class="card sect"><h2>Cash-out history</h2>' + (rows.length ? '<div class="list">' + rows.map(function (r) {
       return '<div class="li"><span>' + esc(when(r.at)) + ' · ' + r.points + ' points</span><span><b>' + fmtMoney(r.pence) + '</b> <span class="chip ' + (r.status === "paid" ? "paid" : r.status === "cancelled" ? "cancel" : "wait") + '">' + (r.status === "paid" ? "Paid" : r.status === "cancelled" ? "Cancelled" : "Waiting for Mum or Dad") + '</span></span></div>';
     }).join("") + '</div>' : '<p class="small">No cash-outs yet. When you cash out, it shows here until Mum or Dad pays you.</p>') +
@@ -1222,9 +1361,10 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
       return '<div class="req"><span>' + esc(when(r.at)) + ': <b>' + fmtMoney(r.pence) + '</b></span><span class="row" style="gap:6px">' +
         '<button class="btn sm" data-pay="' + r.id + '">' + (k === "pay:" + r.id ? "Tap again: I\u2019ve paid" : "Mark as paid") + '</button>' +
         '<button class="btn ghost sm" data-cancel="' + r.id + '">' + (k === "cancel:" + r.id ? "Tap again to cancel" : "Cancel (returns points)") + '</button></span></div>';
-    }).join("") : '<p class="small">Nothing waiting to be paid.</p>') + '<span class="small">This week ' + esc(name()) + ' has cashed out ' + fmtMoney(w.weekPence) + ' on top of \u00a37 pocket money.</span></div></section>';
+    }).join("") : '<p class="small">Nothing waiting to be paid.</p>') + '<span class="small">This week ' + esc(name()) + ' has cashed out ' + fmtMoney(w.weekPence) + ' on top of pocket money.</span></div></section>';
     else h += '<p class="small">When you cash out, Mum or Dad pays you and ticks it off on their login.</p>';
     app.innerHTML = h;
+    bindOwed(bankView);
     var mi = document.getElementById("minus"), pl = document.getElementById("plus"), cb = document.getElementById("cash");
     if (mi) mi.addEventListener("click", function () { state.bankAmt -= BANK.stepPence; state.bankConfirm = false; bankView(); });
     if (pl) pl.addEventListener("click", function () { state.bankAmt += BANK.stepPence; state.bankConfirm = false; bankView(); });
@@ -1755,10 +1895,11 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
       (x.bring ? '<span class="bring">Bring: ' + esc(x.bring) + '</span>' : '') + (x.details ? '<span class="small">' + esc(x.details) + '</span>' : '') + (links ? '<span>' + links + '</span>' : '') + acts + '</div></div>';
   }
   function calendarView() {
+    var rr = role() || {}; if (rr.role === "child") state.calWho = rr.child;
     var t = todayD(), items = calItems(), parent = isParentNow();
     var m = state.calMonth || t.slice(0, 7), first = m + "-01", sel = state.calDay;
     var start = addDays(first, -((new Date(first + "T12:00:00Z").getUTCDay() + 6) % 7));
-    var who = '<div class="seg" role="group" aria-label="Whose calendar">' + [["all", "Everyone"], ["millie", "Millie"], ["kristan", "Kristan"]].map(function (w) { return '<button data-calwho="' + w[0] + '" aria-pressed="' + (state.calWho === w[0]) + '">' + w[1] + '</button>'; }).join("") + '</div>';
+    var who = rr.role === "child" ? '<span class="small">Your activities and whole-school events</span>' : '<div class="seg" role="group" aria-label="Whose calendar">' + [["all", "Everyone"], ["millie", "Millie"], ["kristan", "Kristan"]].map(function (w) { return '<button data-calwho="' + w[0] + '" aria-pressed="' + (state.calWho === w[0]) + '">' + w[1] + '</button>'; }).join("") + '</div>';
     var h = '<section class="card"><div class="cal-top"><div><span class="small">Family calendar</span><h2 class="hw-h">What’s coming up</h2></div>' + who + '</div>' +
       (state.calMsg ? '<p class="cbnote" style="margin:8px 0 0">' + esc(state.calMsg) + '</p>' : '') +
       '<div class="cal-nav"><button id="calPrev" aria-label="Previous month">‹</button><b>' + new Date(first + "T12:00:00Z").toLocaleDateString("en-GB", { month: "long", year: "numeric" }) + '</b><button id="calNext" aria-label="Next month">›</button></div><div class="cal-grid">' +
@@ -1991,7 +2132,7 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
     var p = document.createElement("div"); p.id = "bellPanel"; p.className = "bell-panel"; p.hidden = true; p.setAttribute("role", "dialog"); p.setAttribute("aria-label", "Notifications");
     document.querySelector("header").appendChild(p);
     b.addEventListener("click", function () {
-      bellOpen = !bellOpen;
+      bellOpen = !bellOpen; if (typeof meritOpen !== "undefined" && meritOpen) { meritOpen = false; meritDraw(); }
       if (bellOpen) { bellDraw(); var latest = newsList().reduce(function (m, e) { var k = String(e.createdAt || e.date); return k > m ? k : m; }, newsSeenAt()); store("news-seen-" + ((role() || {}).role === "child" ? role().child : "parent"), latest); }
       else bellDraw();
       setTimeout(bellSync, 0);
@@ -1999,6 +2140,76 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && bellOpen) { bellOpen = false; bellDraw(); } });
   }
   bellSetup();
+
+  /* ---------- Merits and money owed ---------- */
+  function meritsFor(c) { return state.merits.filter(function (m) { return m.child === c; }).sort(function (a, b) { return String(b.date).localeCompare(String(a.date)) || String(b.createdAt).localeCompare(String(a.createdAt)); }); }
+  function meritTotals(c) {
+    var ms = meritsFor(c), n = 0, owed = 0, paid = 0;
+    ms.forEach(function (m) { var k = m.count || 1, v = k * (m.penceEach || 100); n += k; if (m.paidAt) paid += v; else owed += v; });
+    return { count: n, owedPence: owed, paidPence: paid, list: ms };
+  }
+  function owedFor(c) {
+    var cash = bankRows.filter(function (b) { return b.child === c && b.status === "requested" && String(b.id).indexOf("pending-") !== 0; });
+    var cashP = cash.reduce(function (s, b) { return s + (b.pence || 0); }, 0), mt = meritTotals(c);
+    return { cash: cash, cashPence: cashP, meritPence: mt.owedPence, meritsUnpaid: mt.list.filter(function (m) { return !m.paidAt; }), total: cashP + mt.owedPence };
+  }
+  function owedCard(c, parent) {
+    var o = owedFor(c), mt = meritTotals(c), k = state.payAllConfirm === c;
+    if (!o.total && !mt.count) return "";
+    var parts = [];
+    if (o.cashPence) parts.push(fmtMoney(o.cashPence) + ' in cash-outs (' + o.cash.length + ')');
+    if (o.meritPence) parts.push(fmtMoney(o.meritPence) + ' merit money (' + (o.meritPence / 100) + ' merit' + (o.meritPence === 100 ? '' : 's') + ')');
+    return '<div class="owed ' + c + '"><div><span class="small">' + (parent ? 'Owed to ' + cname(c) : 'Mum and Dad owe you') + '</span><b>' + fmtMoney(o.total) + '</b><span class="small">' + (parts.join(' + ') || 'All paid up 👍') + '</span>' +
+      (mt.count ? '<span class="small">🏅 ' + mt.count + ' merits so far · £1 each · ' + fmtMoney(mt.paidPence) + ' paid</span>' : '') + '</div>' +
+      (parent && o.total ? '<button class="btn sm" data-payall="' + c + '">' + (k ? 'Tap again: I’ve paid ' + fmtMoney(o.total) : 'Mark ' + fmtMoney(o.total) + ' as paid') + '</button>' : '') + '</div>';
+  }
+  function bindOwed(rerender) {
+    [].forEach.call(app.querySelectorAll("[data-payall]"), function (b) {
+      b.addEventListener("click", function () {
+        var c = b.dataset.payall;
+        if (state.payAllConfirm !== c) { state.payAllConfirm = c; return rerender(); }
+        state.payAllConfirm = null;
+        var o = owedFor(c), now = new Date().toISOString(), jobs = [];
+        o.cash.forEach(function (r) { jobs.push(db.collection("bank").doc(r.id).update({ status: "paid" })); });
+        o.meritsUnpaid.forEach(function (m) { jobs.push(db.collection("merits").doc(m.id).update({ paidAt: now })); });
+        Promise.all(jobs).then(function () { state.hwMsg = state.bankMsg = "Marked " + fmtMoney(o.total) + " as paid to " + cname(c) + "."; refresh(); }, function () { state.hwMsg = state.bankMsg = "Some of that didn't save. Please try again."; refresh(); });
+      });
+    });
+  }
+  var meritOpen = false;
+  function meritSync() {
+    var b = document.getElementById("meritChip"); if (!b) return;
+    var show = state.child === "kristan" && state.view !== "parents" && !!role() && state.merits.some(function (m) { return m.child === "kristan"; });
+    b.hidden = !show; if (!show) { meritOpen = false; }
+    if (show) b.innerHTML = '<span aria-hidden="true">🏅</span><b>' + meritTotals("kristan").count + '</b><small>merits</small>';
+    meritDraw();
+  }
+  function meritDraw() {
+    var p = document.getElementById("meritPanel"); if (!p) return;
+    p.hidden = !meritOpen; if (!meritOpen) return;
+    var mt = meritTotals("kristan"), o = owedFor("kristan"), parent = isParentNow();
+    var h = '<div class="bp-h"><b>Merits</b><button class="linkbtn" id="meritClose">Close ✕</button></div>' +
+      '<p class="term-hi"><b>' + mt.count + ' merits</b> · £1 each = ' + fmtMoney(mt.count * 100) + ' earned · ' + fmtMoney(mt.paidPence) + ' paid · <b>' + fmtMoney(o.meritPence) + ' to come</b></p>' +
+      '<h4>Recent merits</h4>' + mt.list.slice(0, 30).map(function (m) {
+        return '<div class="bp-i kristan"><span class="bp-w">' + esc(fmtDay(String(m.date).slice(0, 10)).replace(/^\w+ /, "")) + '</span><div><b>' + (m.count > 1 ? '×' + m.count + ' ' : '') + esc(m.subject || (m.count > 1 ? "Merits" : "Merit")) + '</b>' + (m.reason ? '<span class="small">' + esc(m.reason) + '</span>' : '') + '<span class="small">' + (m.paidAt ? 'Paid ✓' : 'Not paid yet') + (m.teacher ? ' · ' + esc(m.teacher) : '') + '</span></div></div>'; }).join("");
+    if (parent) h += '<h4>Add a merit</h4><div class="parentbox" style="margin:0"><input class="rd-in" id="mSubj" placeholder="Subject, e.g. Maths"><input class="rd-in" id="mWhy" maxlength="300" placeholder="What for (optional)"><div class="row"><input class="rd-in" type="date" id="mDate" value="' + todayD() + '"><button class="btn sm" id="mAdd">Add merit</button></div></div>';
+    p.innerHTML = h;
+    document.getElementById("meritClose").addEventListener("click", function () { meritOpen = false; meritDraw(); });
+    var ma = document.getElementById("mAdd");
+    if (ma) ma.addEventListener("click", function () {
+      var s = document.getElementById("mSubj").value.trim(), why = document.getElementById("mWhy").value.trim(), d = document.getElementById("mDate").value || todayD();
+      db.collection("merits").add({ child: "kristan", date: d, subject: s || null, reason: why || null, count: 1, source: "parent" }).then(function () { refresh(); }, function () {});
+    });
+  }
+  function meritSetup() {
+    var hud = document.querySelector(".hud"); if (!hud) return;
+    var b = document.createElement("button"); b.id = "meritChip"; b.className = "merit-chip"; b.type = "button"; b.hidden = true; b.setAttribute("aria-label", "Kristan's merits");
+    hud.insertBefore(b, hud.querySelector(".streak"));
+    var p = document.createElement("div"); p.id = "meritPanel"; p.className = "bell-panel"; p.hidden = true; p.setAttribute("role", "dialog"); p.setAttribute("aria-label", "Merits");
+    document.querySelector("header").appendChild(p);
+    b.addEventListener("click", function () { meritOpen = !meritOpen; bellOpen = false; bellDraw(); meritDraw(); });
+  }
+  meritSetup();
 
   /* ---------- Family overview (parents only) ---------- */
   function termCard(t) {
@@ -2019,7 +2230,7 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
     var t = todayD(), tm = addDays(t, 1), wk = addDays(t, 7);
     var waiting = state.hw.filter(function (h) { var m = hwMark(h); return h.active !== false && m && m.status === "ticked"; });
     var todos = state.events.filter(function (e) { return e.type === "action" && !e.done && e.active !== false && String(e.date).slice(0, 10) <= wk; }).sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); });
-    var cash = bankRows.filter(function (b) { return b.status === "requested"; });
+    var owing = ["millie", "kristan"].filter(function (c) { return owedFor(c).total > 0; }), cash = owing;
     var h = '<section class="card"><div class="hw-head"><div><span class="small">' + esc(fmtDay(t, true)) + '</span><h2 class="hw-h">Family overview</h2></div>' + BELL.replace('<svg ', '<svg class="fv-ic" ') + '</div>' +
       (state.hwMsg ? '<p class="cbnote" style="margin:0">' + esc(state.hwMsg) + '</p>' : '') + pushBox() + '</section>';
     var head = h; h = '';
@@ -2031,7 +2242,7 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
     if (todos.length) h += '<h3 class="fv-sub">To do this week</h3>' + todos.map(function (e) {
       var d = String(e.date).slice(0, 10);
       return evRow({ kind: "action", type: "action", id: e.id, child: e.child, date: d, time: "", title: e.title, details: (d < t ? "Was due " : "Due ") + fmtDay(d) + " · " + cname(e.child) + (e.details ? " · " + e.details : ""), formUrl: e.formUrl, linkUrl: e.linkUrl, done: false }); }).join("");
-    if (cash.length) h += '<h3 class="fv-sub">Cash-outs to pay</h3>' + cash.map(function (b) { return '<div class="ev ' + esc(b.child) + '"><span class="ev-time"></span><div class="ev-body"><b>' + cname(b.child) + ' · ' + fmtMoney(b.pence) + '</b><span class="small">Asked ' + esc(when(b.at)) + '</span><span class="ev-tags"><button class="linkbtn" data-gobank="' + esc(b.child) + '">Open ' + cname(b.child) + '’s bank</button></span></div></div>'; }).join("");
+    if (owing.length) h += '<h3 class="fv-sub">Money to pay</h3><p class="small" style="margin:0">Cash-outs and merit money add up here until you mark them paid, so nothing is missed.</p>' + owing.map(function (c) { return owedCard(c, true) + '<div class="row"><button class="linkbtn" data-gobank="' + c + '">Open ' + cname(c) + '’s bank</button></div>'; }).join("");
     h += '</section>';
     L = h; h = '';
     h += '<div class="fv-kids">' + ["millie", "kristan"].map(function (c) {
@@ -2053,11 +2264,14 @@ body.fam .hud .streak, body.fam .hud .wallet { display: none; }
       '<div class="row"><button class="btn sm ghost" id="fvCal">Open the calendar</button></div></section>';
     L += h; h = '';
     R += termCard(t);
+    L += '<section class="card sect"><h2>Activity: last 3 days</h2><p class="small">Everything both children have done on Hollyend. Tap a quiz to see the questions.</p>' + activityLog(["millie", "kristan"], 3) +
+      '<div class="row"><button class="btn sm ghost" data-fvlog="millie">Millie’s full log</button><button class="btn sm ghost" data-fvlog="kristan">Kristan’s full log</button></div></section>';
     var nw = newsList(14).slice(0, 5);
     if (nw.length) R += '<section class="card sect"><h2>Latest school news</h2><div class="news">' + nw.map(function (e) { return '<div class="nw ' + esc(e.child) + '"><div class="ev-tags"><span class="small">' + esc(fmtDay(String(e.date).slice(0, 10))) + ' · ' + (e.child === "both" ? "Whole school" : cname(e.child)) + '</span>' + (e.audience === "parents" ? '<span class="tag action">Parents</span>' : '') + '</div><b>' + esc(e.title) + '</b>' + (e.details ? '<span class="small">' + esc(e.details) + '</span>' : '') + '</div>'; }).join("") + '</div></section>';
     app.innerHTML = head + '<div class="cols"><div class="col">' + L + '</div><div class="col">' + R + '</div></div>';
-    bindHomework(); bindCalendar();
+    bindHomework(); bindCalendar(); bindOwed(familyView);
     [].forEach.call(app.querySelectorAll("[data-fvkid]"), function (b) { b.addEventListener("click", function () { setChild(b.dataset.fvkid); setView("homework"); window.scrollTo({ top: 0 }); }); });
+    [].forEach.call(app.querySelectorAll("[data-fvlog]"), function (b) { b.addEventListener("click", function () { setChild(b.dataset.fvlog); setView("progress"); window.scrollTo({ top: 0 }); }); });
     [].forEach.call(app.querySelectorAll("[data-gobank]"), function (b) { b.addEventListener("click", function () { setChild(b.dataset.gobank); setView("bank"); window.scrollTo({ top: 0 }); }); });
     var fc = document.getElementById("fvCal"); if (fc) fc.addEventListener("click", function () { setView("calendar"); window.scrollTo({ top: 0 }); });
     var ft = document.getElementById("fvTerms"); if (ft) ft.addEventListener("click", function () { setView("calendar"); setTimeout(function () { var x = [].filter.call(app.querySelectorAll("h2"), function (e) { return e.textContent === "Term dates"; })[0]; if (x) x.scrollIntoView({ behavior: "smooth", block: "start" }); }, 50); });
