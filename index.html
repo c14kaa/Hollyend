@@ -226,6 +226,17 @@ body.k .earn { font-size: 30px; }
 .topic:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .topic .tt { font-weight: 700; font-size: 16px; line-height: 1.25; }
 .topic .tc { font-size: 13px; color: var(--muted); }
+.topic.star { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset; }
+.topic .tstar { align-self: flex-start; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; background: var(--accent); color: var(--bg, #fff); border-radius: 999px; padding: 2px 8px; }
+.pu { display: flex; flex-direction: column; gap: 8px; padding: 10px 0; border-top: 1px dashed var(--line); }
+.pu:first-of-type { border-top: 0; }
+.pu-h { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.pu-s { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.plan-now { border-color: var(--accent); }
+.sect details > summary { list-style: none; cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
+.sect details > summary::-webkit-details-marker { display: none; }
+.sect details > summary h2::after { content: " ▸"; color: var(--muted); }
+.sect details[open] > summary h2::after { content: " ▾"; }
 .topic .tbar { height: 6px; border-radius: 999px; background: var(--line); overflow: hidden; }
 .topic .tbar i { display: block; height: 100%; background: var(--good); }
 .topic.ok .tbar i { background: var(--gold); }
@@ -732,7 +743,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       <button class="md" id="m-fr" data-m="french" aria-pressed="false" hidden>French<small>Vocab, verbs &amp; listening</small></button>
       <button class="md" id="m-voc" data-m="vocab" aria-pressed="false" hidden>Vocab test prep<small>Flashcards &amp; practice test</small></button>
       <button class="md" id="m-ch" data-m="challenge" aria-pressed="false">Challenge words<small>Extremely hard! Double points</small></button>
-      <button class="md" id="m-rev" data-m="revise" aria-pressed="false">Revise a topic<small>Anything you've covered</small></button>
+      <button class="md" id="m-rev" data-m="revise" aria-pressed="false">Revise a topic<small>This week's class topics first</small></button>
     </div>
     <div class="levels" id="levels" role="group" aria-label="Difficulty">
       <span>Level:</span>
@@ -751,6 +762,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
 <script src="league.js"></script>
 <script src="engine.js"></script>
 <script src="words.js"></script>
+<script src="curriculum.js"></script>
 <script src="progress.js"></script>
 <script src="avatar.js"></script>
 <script>
@@ -871,7 +883,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     showLevels();
     var L = listFor(state.mode);
     if (state.mode === "revise") { var rt = state.reviseTopic && revTopic(state.child, state.reviseTopic);
-      document.getElementById("focus").innerHTML = rt ? "<b>Revising:</b> " + esc(rt.title) + " · " + esc(rt.covered) : "<b>Revision library:</b> " + REVISION[state.child].length + " topics covered so far"; return; }
+      document.getElementById("focus").innerHTML = rt ? "<b>Revising:</b> " + esc(rt.title) + " · " + esc(rt.covered) : (typeof CURRICULUM !== "undefined" && CURRICULUM[state.child] ? "<b>This week in class:</b> " + esc(CURRICULUM[state.child].focus) : "<b>Revision:</b> pick a topic"); return; }
     document.getElementById("focus").innerHTML = L ? "<b>" + esc(L.label) + ":</b> " + L.words.length + " words" : "<b>This week:</b> " + WEEK[state.child].focus.map(esc).join(" · ");
   }
   function listFor(m) { return m === "spelling" ? SPELLING : (m === "english" || m === "french") ? KLISTS[m] : m === "vocab" ? KLISTS.french : m === "challenge" ? KLISTS["challenge_" + state.child] : null; }
@@ -1260,22 +1272,53 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     return h;
   }
 
-  /* ---------- revision library ---------- */
+  /* ---------- revision plan (guided by the curriculum map) ---------- */
+  function topicBtn(c, t, star) {
+    var st = revisionStats(all, c, t), cls = st.pct == null ? "" : st.pct >= 80 ? "strong" : st.pct >= 50 ? "ok" : "weak";
+    var tag = st.pct == null ? "Not tried yet" : st.pct >= 80 ? "Strong" : st.pct >= 50 ? "Getting there" : "Needs practice";
+    return '<button class="topic ' + cls + (star ? ' star' : '') + '" data-t="' + t.id + '">' + (star ? '<span class="tstar">Start here</span>' : '') + '<span class="tt">' + esc(t.title) + '</span><span class="tc">' + esc(t.subject) + ' · ' + esc(t.covered) + '</span>' +
+      '<span class="tbar"><i style="width:' + (st.pct || 0) + '%"></i></span><span class="ts"><span class="chip ' + (cls === "strong" ? "paid" : cls === "weak" ? "cancel wk" : "wait") + '">' + tag + '</span>' + (st.total ? '<span>' + st.right + '/' + st.total + ' right</span>' : '') + '</span></button>';
+  }
+  function planPick(c, ids) {
+    /* the topic to start with: never tried first, then the lowest score */
+    var best = null, bestScore = 999;
+    ids.forEach(function (id) { var t = revTopic(c, id); if (!t) return; var st = revisionStats(all, c, t), sc = st.pct == null ? -1 : st.pct; if (sc < bestScore) { bestScore = sc; best = id; } });
+    return best;
+  }
   function libraryView() {
-    var c = state.child, topics = REVISION[c], groups = {}, order = [];
-    topics.forEach(function (t) { if (!groups[t.subject]) { groups[t.subject] = []; order.push(t.subject); } groups[t.subject].push(t); });
-    var h = '<section class="card"><div class="side" style="display:flex;flex-direction:column;gap:6px"><h2 style="margin:0;font-family:var(--display);font-size:' + (c === "kristan" ? "36px" : "26px") + ';line-height:1">Revision library</h2>' +
-      '<span class="small">Every topic ' + esc(name()) + ' has covered stays here for good. Pick one to practise just that topic, any time.</span></div></section>';
-    order.forEach(function (sub) {
-      h += '<section class="card sect"><h2>' + esc(sub) + '</h2><div class="topics">' + groups[sub].map(function (t) {
-        var st = revisionStats(all, c, t), cls = st.pct == null ? "" : st.pct >= 80 ? "strong" : st.pct >= 50 ? "ok" : "weak";
-        var tag = st.pct == null ? "Not tried yet" : st.pct >= 80 ? "Strong" : st.pct >= 50 ? "Getting there" : "Needs practice";
-        return '<button class="topic ' + cls + '" data-t="' + t.id + '"><span class="tt">' + esc(t.title) + '</span><span class="tc">' + esc(t.covered) + '</span>' +
-          '<span class="tbar"><i style="width:' + (st.pct || 0) + '%"></i></span><span class="ts"><span class="chip ' + (cls === "strong" ? "paid" : cls === "weak" ? "cancel wk" : "wait") + '">' + tag + '</span>' + (st.total ? '<span>' + st.right + '/' + st.total + ' right</span>' : '') + '</span></button>';
-      }).join("") + '</div></section>';
+    var c = state.child, plan = typeof CURRICULUM !== "undefined" && CURRICULUM[c];
+    var placed = {}, byStatus = { now: [], next: [], done: [], later: [] };
+    if (plan) plan.units.forEach(function (u) {
+      var ids = u.topics.filter(function (id) { var ts = topicStatus(c, id); return revTopic(c, id) && ts && ts.unit === u && !placed[id]; });
+      ids.forEach(function (id) { placed[id] = 1; });
+      if (ids.length) byStatus[u.status].push({ u: u, ids: ids });
     });
+    var nowIds = [].concat.apply([], byStatus.now.map(function (x) { return x.ids; })), star = planPick(c, nowIds);
+    var weakDone = [].concat.apply([], byStatus.done.map(function (x) { return x.ids; })).filter(function (id) { var st = revisionStats(all, c, revTopic(c, id)); return st.pct != null && st.pct < 60; });
+    var unitCard = function (x) {
+      return '<div class="pu"><div class="pu-h"><span class="pu-s">' + esc(x.u.subject) + '</span><b>' + esc(x.u.title) + '</b></div>' + (x.u.why ? '<span class="small">' + esc(x.u.why) + '</span>' : '') +
+        '<div class="topics">' + x.ids.map(function (id) { return topicBtn(c, revTopic(c, id), id === star); }).join("") + '</div></div>';
+    };
+    var block = function (key, title, sub, open) {
+      if (!byStatus[key].length) return "";
+      var inner = byStatus[key].map(unitCard).join("");
+      if (open) return '<section class="card sect plan-' + key + '"><h2>' + title + '</h2><p class="small">' + sub + '</p>' + inner + '</section>';
+      return '<section class="card sect plan-' + key + '"><details><summary><h2>' + title + '</h2><span class="small">' + sub + '</span></summary>' + inner + '</details></section>';
+    };
+    var big = c === "kristan" ? "36px" : "26px";
+    var h = '<section class="card plan-head"><div class="side" style="display:flex;flex-direction:column;gap:6px"><h2 style="margin:0;font-family:var(--display);font-size:' + big + ';line-height:1">Revision plan</h2>' +
+      (plan ? '<span class="small"><b>' + esc(plan.year) + ' · ' + esc(plan.week) + '</b></span>' : '<span class="small">Pick a topic to practise.</span>') +
+      '<span class="small">Start with this week\u2019s topics so lessons feel easy, then get ahead on what\u2019s coming next.' + (weakDone.length ? ' ' + weakDone.length + ' earlier topic' + (weakDone.length > 1 ? 's need' : ' needs') + ' a bit more practice.' : '') + '</span>' +
+      (star ? '<div class="row"><button class="btn" id="planGo">Start here: ' + esc(revTopic(c, star).title) + '</button></div>' : '') + '</div></section>';
+    h += block("now", "This week in class", "What " + esc(name()) + " is learning right now. Practise these first.", true);
+    h += block("next", "Coming next: get ahead", "Up next in class. A quick go now makes the first lesson easier.", true);
+    h += block("done", "Already covered: keep it fresh", "Taught earlier this year." + (weakDone.length ? " " + weakDone.length + " need" + (weakDone.length > 1 ? "" : "s") + " more practice: look for the red ones." : " Red and yellow ones are worth another go."), [].concat.apply([], byStatus.done.map(function (x) { return x.ids; })).length <= 8);
+    h += block("later", "Later this year", "Not taught yet. Have a peek if you\u2019re curious.", false);
+    var rest = REVISION[c].filter(function (t) { return !placed[t.id]; });
+    if (rest.length) h += '<section class="card sect plan-rest"><details><summary><h2>' + (plan ? "Everything else" : "All topics") + '</h2><span class="small">' + (c === "millie" ? "Spelling lists and challenge words." : "Extra word banks and challenge words.") + '</span></summary><div class="topics">' + rest.map(function (t) { return topicBtn(c, t, false); }).join("") + '</div></details></section>';
     app.innerHTML = h;
     [].forEach.call(app.querySelectorAll(".topic"), function (b) { b.addEventListener("click", function () { state.reviseTopic = b.dataset.t; showMode(); newQuiz(); window.scrollTo({ top: 0 }); }); });
+    var go = document.getElementById("planGo"); if (go) go.addEventListener("click", function () { state.reviseTopic = star; showMode(); newQuiz(); window.scrollTo({ top: 0 }); });
   }
 
   /* ---------- shop ---------- */
@@ -2226,6 +2269,12 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       return '<div class="tr' + (r.type === "holiday" ? ' hl' : '') + '"><span>' + esc(r.title) + '</span><b>' + esc(fmtDay(r.d1)) + (r.d2 !== r.d1 ? ' – ' + esc(fmtDay(r.d2)) : '') + '</b></div>'; }).join("") + '</div>' +
       '<div class="row"><button class="btn sm ghost" id="fvTerms">All term dates</button></div></section>';
   }
+  function classNow(c) {
+    var plan = typeof CURRICULUM !== "undefined" && CURRICULUM[c]; if (!plan) return "";
+    var ids = []; plan.units.forEach(function (u) { if (u.status === "now") u.topics.forEach(function (id) { var ts = topicStatus(c, id); if (revTopic(c, id) && ts && ts.unit === u && ids.indexOf(id) < 0) ids.push(id); }); });
+    var tried = ids.filter(function (id) { return revisionStats(all, c, revTopic(c, id)).total > 0; }).length;
+    return '<p class="small fv-class"><b>In class now:</b> ' + esc(plan.focus) + (ids.length ? ' <span class="chip ' + (tried === ids.length ? 'paid' : 'wait') + '">' + tried + ' of ' + ids.length + ' revision topics tried</span>' : '') + '</p>';
+  }
   function familyView() {
     var t = todayD(), tm = addDays(t, 1), wk = addDays(t, 7);
     var waiting = state.hw.filter(function (h) { var m = hwMark(h); return h.active !== false && m && m.status === "ticked"; });
@@ -2256,7 +2305,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
         '<div class="fv-stats"><div><b>' + open.length + '</b><span>homework to do</span></div><div' + (late.length ? ' class="bad"' : '') + '><b>' + late.length + '</b><span>overdue</span></div><div><b>' + sk.current + '</b><span>day streak' + (sk.atRisk ? ' · at risk' : '') + '</span></div><div><b>' + mine.length + '</b><span>quizzes, 7 days' + (avg != null ? ' · ' + avg + '%' : '') + '</span></div></div>' +
         (late.length || soon.length ? '<ul class="fv-list">' + late.concat(soon).map(function (x) { var d = String(x.due).slice(0, 10); return '<li><b class="' + (d < t ? 'lt' : '') + '">' + (d < t ? 'Overdue' : d === t ? 'Today' : 'Tomorrow') + '</b> ' + esc(x.title) + '</li>'; }).join("") + '</ul>' : '<p class="small">Nothing due today or tomorrow.</p>') +
         (dt.length ? '<p class="small">Daily tasks today: ' + dtOn.length + ' of ' + dt.length + ' ticked</p>' : '') +
-        '<p class="small">' + esc(place) + '</p><div class="row"><button class="btn sm ghost" data-fvkid="' + c + '">Open ' + cname(c) + '’s homework</button></div></section>';
+        '<p class="small">' + esc(place) + '</p>' + classNow(c) + '<div class="row"><button class="btn sm ghost" data-fvkid="' + c + '">Open ' + cname(c) + '’s homework</button></div></section>';
     }).join("") + '</div>';
     R = h; h = '';
     var tt = dueSoon().filter(function (x) { return x.kind === "event"; });
