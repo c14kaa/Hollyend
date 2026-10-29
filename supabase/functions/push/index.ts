@@ -51,8 +51,8 @@ async function run(cfg: any, kind: string) {
   for (const child of ["millie", "kristan"]) {
     let payload: any = null;
     if (kind === "homework") {
-      const today = dubaiDay(0), tomorrow = dubaiDay(1), weekAgo = dubaiDay(-7);
-      const list = (await pendingHomework(child)).filter((h: any) => h.due && h.due >= weekAgo && h.due <= tomorrow);
+      const today = dubaiDay(0), tomorrow = dubaiDay(1);
+      const list = (await pendingHomework(child)).filter((h: any) => h.due && h.due <= tomorrow);
       if (list.length) {
         const late = list.filter((h: any) => h.due < today), now = list.filter((h: any) => h.due === today), next = list.filter((h: any) => h.due === tomorrow);
         const parts = [];
@@ -66,7 +66,12 @@ async function run(cfg: any, kind: string) {
       const { data: ticks } = await db.from("daily_ticks").select("task").eq("child", child).eq("day", dubaiDay(0));
       const ticked = new Set((ticks || []).map((t: any) => t.task));
       const left = (tasks || []).filter((t: any) => !ticked.has(t.id));
-      if (left.length) payload = { title: "Before bed", body: "Don't forget: " + left.map((t: any) => t.title.replace(/:.*/, "")).join(", ") + ".", url: "/#homework", tag: "daily" };
+      const tomorrow = dubaiDay(1);
+      const { data: evs } = await db.from("events").select("*").in("child", [child, "both"]).eq("audience", "family").eq("active", true).eq("done", false).lte("date", tomorrow).or("end_date.gte." + tomorrow + ",date.eq." + tomorrow);
+      const parts: string[] = [];
+      if (left.length) parts.push("Don't forget: " + left.map((t: any) => t.title.replace(/:.*/, "")).join(", ") + ".");
+      if (evs && evs.length) parts.push("Tomorrow: " + evs.map((e: any) => e.title + (e.time ? " (" + e.time + ")" : "") + (e.bring ? ". Bring: " + e.bring : "")).join("; ") + ".");
+      if (parts.length) payload = { title: left.length ? "Before bed" : "Tomorrow", body: parts.join(" ").slice(0, 230), url: evs && evs.length && !left.length ? "/#calendar" : "/#homework", tag: "daily" };
     } else if (kind === "new") {
       const since = new Date(Date.now() - 2 * 3600e3).toISOString();
       const { data: fresh } = await db.from("homework").select("*").eq("child", child).eq("active", true).gte("created_at", since);
