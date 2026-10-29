@@ -193,7 +193,7 @@ body.k .earn { font-size: 30px; }
 .who { font: 700 18px "Atkinson Hyperlegible", system-ui, sans-serif; color: #f3f1ff; background: #141a4d; border: 2px solid #2f3786; border-radius: 16px; padding: 10px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; }
 .who .wav { width: 84px; height: 101px; border-radius: 12px; overflow: hidden; }
 .who .wav svg { width: 100%; height: 100%; display: block; }
-.who.parent { grid-column: 1 / -1; flex-direction: row; justify-content: center; font-size: 16px; padding: 12px; }
+.who.parent { flex-direction: row; justify-content: center; font-size: 16px; padding: 12px; }
 .who[aria-pressed="true"] { border-color: #ff6fb5; box-shadow: 0 0 0 3px rgba(255,111,181,.3); }
 .who[data-who="kristan"][aria-pressed="true"] { border-color: #ffd23f; box-shadow: 0 0 0 3px rgba(255,210,63,.3); }
 .who:focus-visible, #login input:focus-visible, #login button:focus-visible { outline: 3px solid #ff6fb5; outline-offset: 2px; }
@@ -440,6 +440,44 @@ body.k .prompt { letter-spacing: -.005em; }
 .ices { display: inline-flex; gap: 4px; flex: none; }
 .icebox { width: 26px; height: 26px; opacity: .25; filter: grayscale(1); } .icebox.on { opacity: 1; filter: none; } .icebox svg { width: 100%; height: 100%; }
 .rd-in { font: 600 15px var(--body); padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--card2); color: var(--ink); min-width: 0; }
+/* homework */
+.tabs { grid-template-columns: repeat(6, 1fr); }
+.vwi { position: relative; display: inline-flex; }
+.hw-badge { position: absolute; top: -6px; right: -12px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--bad); color: #fff; font: 700 11px var(--body); display: grid; place-items: center; padding: 0 4px; }
+.vw[aria-pressed="true"] .hw-badge { background: #fff; color: #c02040; }
+@media (max-width: 520px) { .vw { font-size: 11px; letter-spacing: 0 !important; } .vw svg { width: 20px; height: 20px; } }
+.hw-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.hw-head svg { width: 40px; height: 40px; color: var(--accent); flex: none; }
+.hw-h { margin: 0; font-family: var(--display); font-size: 30px; line-height: 1.05; }
+.hw-list { display: flex; flex-direction: column; gap: 10px; }
+.hw-card { border: 1px solid var(--line); border-left: 4px solid var(--accent2); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; background: var(--card2); }
+.hw-card.soon { border-left-color: var(--gold); }
+.hw-card.late { border-left-color: var(--bad); }
+.hw-card.done { border-left-color: var(--good); opacity: .85; }
+.hw-top { display: flex; justify-content: space-between; gap: 8px; align-items: center; flex-wrap: wrap; }
+.hw-due { font-size: 13px; font-weight: 700; color: var(--muted); }
+.hw-card.soon .hw-due { color: var(--gold); } .hw-card.late .hw-due { color: var(--bad); }
+.hw-title { font-size: 17px; line-height: 1.3; }
+.hw-card .row { align-items: center; gap: 8px; }
+a.btn { text-decoration: none; display: inline-block; }
+.hw-banner { display: flex; align-items: center; gap: 10px; border: 1px solid var(--accent); background: var(--accent-soft); border-radius: 12px; padding: 10px 12px; font-size: 15px; flex-wrap: wrap; }
+.hw-banner svg { width: 24px; height: 24px; color: var(--accent); flex: none; }
+.hw-banner span { flex: 1 1 180px; }
+.hw-banner.late { border-color: var(--bad); }
+.push-box { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border: 1px dashed var(--line); border-radius: 10px; padding: 10px 12px; font-size: 14px; }
+.push-box span { flex: 1 1 200px; }
+.daily { display: flex; flex-direction: column; gap: 8px; }
+.dt { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--card2); cursor: pointer; }
+.dt input { width: 22px; height: 22px; accent-color: var(--good); flex: none; }
+.dt span { flex: 1; font-weight: 700; }
+.dt.on span { text-decoration: line-through; color: var(--muted); }
+/* flashcards */
+.flash { font: inherit; color: var(--ink); width: 100%; min-height: 220px; border-radius: 16px; border: 2px solid var(--line); background: var(--card2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 24px 18px; text-align: center; cursor: pointer; }
+.flash.flipped { border-color: var(--accent); background: var(--accent-soft); cursor: default; }
+.fl-k { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.fl-big { font-family: var(--display); font-size: clamp(30px, 8vw, 44px); line-height: 1.1; font-weight: 700; }
+.fl-big.sm { font-size: clamp(22px, 5.5vw, 30px); }
+.fl-tap { font-size: 12px; color: var(--muted); }
 /* my words */
 .mw { display: flex; flex-direction: column; gap: 6px; padding: 10px 0; border-bottom: 1px solid var(--line); }
 .mw:last-child { border-bottom: none; }
@@ -463,6 +501,7 @@ body.k .prompt { letter-spacing: -.005em; }
       <button class="who" type="button" data-who="millie" aria-pressed="false"><span class="wav" id="wav-millie"></span>Millie</button>
       <button class="who" type="button" data-who="kristan" aria-pressed="false"><span class="wav" id="wav-kristan"></span>Kristan</button>
       <button class="who parent" type="button" data-who="parent" aria-pressed="false">Dad</button>
+      <button class="who parent" type="button" data-who="mum" aria-pressed="false">Mum</button>
     </div>
     <form id="loginForm" autocomplete="on">
       <div id="pwWrap" hidden style="display:flex;flex-direction:column;gap:8px">
@@ -485,6 +524,7 @@ body.k .prompt { letter-spacing: -.005em; }
       <button class="kid kr" id="pick-kristan" aria-pressed="false"><span class="kav" id="kav-kristan"></span><span class="t">Kristan<small id="krank-kristan">Year 8 · 8E</small></span></button>
     </div>
     <nav class="tabs" aria-label="Sections">
+      <button class="vw" id="v-hw" aria-pressed="false"><span class="vwi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/><path d="M9 7h6"/></svg><b class="hw-badge" id="hw-badge" hidden>0</b></span>Homework</button>
       <button class="vw" id="v-quiz" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7 4 20 12 7 20 7 4"/></svg>Play</button>
       <button class="vw" id="v-world" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" id="v-world-i"><path d="M12 21s-6-5.3-6-11a6 6 0 0 1 12 0c0 5.7-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg><span id="v-world-l">Journey</span></button>
       <button class="vw" id="v-shop" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>Shop</button>
@@ -496,6 +536,7 @@ body.k .prompt { letter-spacing: -.005em; }
       <button class="md" id="m-spell" data-m="spelling" aria-pressed="false">Spelling test<small>This week's words</small></button>
       <button class="md" id="m-en" data-m="english" aria-pressed="false" hidden>English words<small>Spell, use &amp; define</small></button>
       <button class="md" id="m-fr" data-m="french" aria-pressed="false" hidden>French<small>Vocab, verbs &amp; listening</small></button>
+      <button class="md" id="m-voc" data-m="vocab" aria-pressed="false" hidden>Vocab test prep<small>Flashcards &amp; practice test</small></button>
       <button class="md" id="m-ch" data-m="challenge" aria-pressed="false">Challenge words<small>Extremely hard! Double points</small></button>
       <button class="md" id="m-rev" data-m="revise" aria-pressed="false">Revise a topic<small>Anything you've covered</small></button>
     </div>
@@ -522,7 +563,8 @@ body.k .prompt { letter-spacing: -.005em; }
 <script>
 (function () {
   var state = { child: "millie", mode: "mix", level: 1, view: "quiz", qs: [], i: 0, answers: [], started: false, saved: null,
-    shop: { cat: null, tryOn: null, confirm: null, msg: "" }, bankAmt: 50, bankConfirm: false, payConfirm: null, bankMsg: "", matches: [], postcard: null, match: null, restDays: [] };
+    shop: { cat: null, tryOn: null, confirm: null, msg: "" }, bankAmt: 50, bankConfirm: false, payConfirm: null, bankMsg: "", matches: [], postcard: null, match: null, restDays: [],
+    hw: [], hwDone: [], daily: [], dailyTicks: [], hwBusy: {}, hwMsg: "", pushStatus: null, flash: null };
   var purchases = [], bankRows = [], profiles = {};
   var LV = { 1: "Warm-up", 2: "Core", 3: "Challenge" };
   var app = document.getElementById("app");
@@ -546,13 +588,22 @@ body.k .prompt { letter-spacing: -.005em; }
       }, function () { dbState = "off"; refresh(); });
       db.collection("purchases").onSnapshot(function (snap) { purchases = snap.docs.map(function (d) { return d.data(); }).filter(Boolean); refresh(); }, function () {});
       db.collection("bank").onSnapshot(function (snap) { bankRows = snap.docs.map(function (d) { var x = d.data() || {}; return Object.assign({ id: d.id }, x); }); refresh(); }, function () {});
+      db.collection("homework").onSnapshot(function (snap) { state.hw = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); hwLoaded = true; maybeLandOnHomework(); refresh(); }, function () {});
+      db.collection("homework_done").onSnapshot(function (snap) { state.hwDone = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); setHomeworkDone(state.hwDone); refresh(); }, function () {});
+      db.collection("daily_tasks").onSnapshot(function (snap) { state.daily = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
+      db.collection("daily_ticks").onSnapshot(function (snap) { state.dailyTicks = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("rest_days").onSnapshot(function (snap) { state.restDays = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); setRestDays(state.restDays); refresh(); }, function () {});
       db.collection("match_starts").onSnapshot(function (snap) { state.matches = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("profiles").onSnapshot(function (snap) { profiles = {}; snap.docs.forEach(function (d) { profiles[d.id] = d.data(); }); refresh(); }, function () {});
     }, function () { dbState = "off"; refresh(); });
   }
-  function busy() { return state.started && (state.view === "quiz" || state.mode === "match"); }
-  function refresh() { chrome(); if (!busy()) render(); }
+  function busy() { return (state.started && (state.view === "quiz" || state.mode === "match")) || (state.view === "quiz" && !!state.flash) || (state.view === "homework" && !!state.hwFeel); }
+  function refresh() { autoVerify(); chrome(); hwBadge(); if (!busy()) render(); }
+  var hwLoaded = false, landed = false, landHash = (location.hash || "").replace("#", "");
+  function maybeLandOnHomework() {
+    if (landed || !hwLoaded || !role()) return; landed = true;
+    if (landHash === "homework" || (!landHash && state.view === "quiz" && !state.started && hwOpen(state.child).length)) setView("homework");
+  }
   function equipped(c) { return (profiles[c || state.child] || {}).equipped || {}; }
   function myWallet(c) { return wallet(c || state.child, all, purchases, bankRows, new Date()); }
   var ICON = {
@@ -586,7 +637,8 @@ body.k .prompt { letter-spacing: -.005em; }
   /* ---------- quiz flow ---------- */
   function newQuiz() {
     var qm = qMode(); setWordHistory(all);
-    state.qs = qm ? buildAdaptiveQuiz(state.child, lvl(), 10, all, WEEK.start, genOne, buildQuiz, shuffle, qm) : [];
+    state.flash = null;
+    state.qs = qm ? buildAdaptiveQuiz(state.child, lvl(), qm === "vocab" ? KLISTS.french.words.length : qm === "spelling" ? SPELLING.words.length : 10, all, WEEK.start, genOne, buildQuiz, shuffle, qm) : [];
     state.i = 0; state.answers = []; state.started = false; state.saved = null; state.finishHtml = null;
     render();
   }
@@ -606,7 +658,8 @@ body.k .prompt { letter-spacing: -.005em; }
     document.getElementById("v-world-l").textContent = c === "millie" ? "Journey" : "League";
     document.getElementById("v-world-i").innerHTML = c === "millie" ? '<path d="M12 21s-6-5.3-6-11a6 6 0 0 1 12 0c0 5.7-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/>' : '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M8 4v16"/>';
     state.postcard = null; state.lgMsg = ""; state.match = null;
-    var ok = c === "millie" ? ["mix", "spelling", "challenge", "revise"] : ["mix", "english", "french", "challenge", "revise"];
+    var ok = c === "millie" ? ["mix", "spelling", "challenge", "revise"] : ["mix", "english", "french", "vocab", "challenge", "revise"];
+    document.getElementById("m-voc").hidden = c === "millie";
     state.reviseTopic = null;
     if (ok.indexOf(state.mode) < 0) state.mode = "mix";
     document.getElementById("m-spell").hidden = c !== "millie";
@@ -625,8 +678,8 @@ body.k .prompt { letter-spacing: -.005em; }
       document.getElementById("focus").innerHTML = rt ? "<b>Revising:</b> " + esc(rt.title) + " · " + esc(rt.covered) : "<b>Revision library:</b> " + REVISION[state.child].length + " topics covered so far"; return; }
     document.getElementById("focus").innerHTML = L ? "<b>" + esc(L.label) + ":</b> " + L.words.length + " words" : "<b>This week:</b> " + WEEK[state.child].focus.map(esc).join(" · ");
   }
-  function listFor(m) { return m === "spelling" ? SPELLING : (m === "english" || m === "french") ? KLISTS[m] : m === "challenge" ? KLISTS["challenge_" + state.child] : null; }
-  function lvl() { return state.mode === "match" ? state.matchLevel : state.mode === "challenge" ? 3 : state.level; }
+  function listFor(m) { return m === "spelling" ? SPELLING : (m === "english" || m === "french") ? KLISTS[m] : m === "vocab" ? KLISTS.french : m === "challenge" ? KLISTS["challenge_" + state.child] : null; }
+  function lvl() { return state.mode === "match" ? state.matchLevel : state.mode === "challenge" ? 3 : state.mode === "vocab" ? 2 : state.level; }
   function setMode(m) { state.mode = m; state.reviseTopic = null; showMode(); newQuiz(); }
   function qMode() { return state.mode === "revise" ? (state.reviseTopic ? "revise:" + state.reviseTopic : null) : state.mode; }
   function showLevels() {
@@ -645,6 +698,9 @@ body.k .prompt { letter-spacing: -.005em; }
     document.getElementById("v-world").setAttribute("aria-pressed", v === "world");
     if (v === "world") state.postcard = null;
     document.getElementById("v-quiz").setAttribute("aria-pressed", v === "quiz");
+    document.getElementById("v-hw").setAttribute("aria-pressed", v === "homework");
+    if (v !== "quiz") state.flash = null;
+    if (v === "homework") { state.hwMsg = state.hwMsg || ""; checkPush(); }
     document.getElementById("v-shop").setAttribute("aria-pressed", v === "shop");
     document.getElementById("v-bank").setAttribute("aria-pressed", v === "bank");
     document.getElementById("v-prog").setAttribute("aria-pressed", v === "progress");
@@ -655,6 +711,8 @@ body.k .prompt { letter-spacing: -.005em; }
     render();
   }
   function render() {
+    if (state.view === "homework") return homeworkView();
+    if (state.view === "quiz" && state.flash && !state.started) return flashView();
     if (state.view === "progress") return progressView();
     if (state.view === "shop") return shopView();
     if (state.view === "bank") return bankView();
@@ -691,19 +749,24 @@ body.k .prompt { letter-spacing: -.005em; }
       : state.mode === "english" || state.mode === "french" ? '<p class="prompt">' + (state.mode === "english" ? 'English words, ' + esc(name()) + '! 10 words to use in your writing: spell them, use them, know what they mean.' : 'French, ' + esc(name()) + '! 10 questions: this week\u2019s school list plus vocab, verbs, le/la and listening.') + '</p>' +
         '<p class="small">' + (state.mode === "english" ? 'Mostly new words each time, plus any you missed recently. Words you get right three times in a row are mastered.' : 'Accents count, so use the accent buttons. Tap \u201CHear it\u201D to hear the French. Words you get right three times in a row are mastered.') + '</p>' +
         '<details class="list-box"><summary>' + (state.mode === "english" ? 'Practise this quiz\u2019s words first' : 'Practise this week\u2019s school list first') + '</summary><div class="wordgrid">' + (state.mode === "english" ? quizWords() : KLISTS.french.words).map(function (w) { return '<span><b>' + esc(state.mode === "french" && w.group !== "Verbs" ? w.gap.replace("_____", w.word) : w.word) + '</b><br>' + esc(w.meaning) + '</span>'; }).join("") + '</div></details>'
-      : state.mode === "spelling" ? '<p class="prompt">Spelling test, ' + esc(name()) + '! Spell all 10 of this week\u2019s words.</p>' +
+      : state.mode === "vocab" ? '<p class="prompt">French vocab test prep, ' + esc(name()) + '! All ' + KLISTS.french.words.length + ' words from ' + esc(KLISTS.french.label) + '.</p>' +
+        '<p class="small">Start with flashcards until you know every card, then take the practice test: every word once, typed in French with accents. Score 80% or more to tick off your vocab homework.</p>' +
+        '<details class="list-box"><summary>See the whole list</summary><div class="wordgrid">' + KLISTS.french.words.map(function (w) { return '<span><b>' + esc(w.group !== "Verbs" ? w.gap.replace("_____", w.word) : w.word) + '</b><br>' + esc(w.meaning) + '</span>'; }).join("") + '</div></details>'
+      : state.mode === "spelling" ? '<p class="prompt">Spelling test, ' + esc(name()) + '! Spell all ' + SPELLING.words.length + ' of this week\u2019s words.</p>' +
         '<p class="small">Type each word into the gap. Tap \u201CHear it\u201D to have the sentence read out.</p>' +
         '<details class="list-box"><summary>Practise the word list first</summary><div class="wordgrid">' + SPELLING.words.map(function (w) { return '<span><b>' + esc(w.word) + '</b><br>' + esc(w.meaning) + '</span>'; }).join("") + '</div></details>'
       : '<p class="prompt">Ready, ' + esc(name()) + '? 10 questions on ' + LV[state.level] + ' level.</p>') +
-      streakBlock() + teaser() +
+      hwBanner() + streakBlock() + teaser() +
       (cb ? '<p class="cbnote">' + cb + ' comeback question' + (cb > 1 ? 's' : '') + ' waiting: ' + (listFor(state.mode) ? 'words' : 'skills') + ' you missed earlier this week. Get them right for bonus points!</p>' : '') +
       '<p class="small">' + POINTS.perRight + ' points per correct answer' + (lvl() > 1 ? ' × ' + (lvl() === 2 ? '1.5' : '2') + (state.mode === "challenge" ? ' for challenge words' : ' on ' + LV[lvl()]) : '') + ', +' + POINTS.comeback + ' for each comeback, +' + POINTS.perfect + ' for a perfect score.</p>' +
-      '<div class="row"><button class="btn" id="go">Start the quiz</button></div>' +
+      '<div class="row">' + (state.mode === "vocab" || state.mode === "spelling" ? '<button class="btn ghost" id="flash">Flashcards</button><button class="btn" id="go">' + (state.mode === "vocab" ? 'Take the practice test' : 'Start the test') + '</button>' : '<button class="btn" id="go">Start the quiz</button>') + '</div>' +
       '<span class="status">' + (dbState === "live" ? "Results are saved after each quiz." : dbState === "connecting" ? "Connecting to saved results…" : "Results can't be saved in this view, but the quiz still works.") + '</span></section>';
     app.innerHTML = h;
     document.getElementById("go").addEventListener("click", function () { state.started = true; render(); });
     document.getElementById("toShop").addEventListener("click", function () { setView("shop"); });
     var tw = document.getElementById("toWorld"); if (tw) tw.addEventListener("click", function () { setView("world"); });
+    var th = document.getElementById("toHw"); if (th) th.addEventListener("click", function () { setView("homework"); });
+    var fl = document.getElementById("flash"); if (fl) fl.addEventListener("click", startFlash);
     var bt = document.getElementById("backTopics"); if (bt) bt.addEventListener("click", function () { state.reviseTopic = null; showMode(); render(); });
   }
 
@@ -1342,6 +1405,200 @@ body.k .prompt { letter-spacing: -.005em; }
     return L.status === "played" ? '' : '<p class="small">League: <b>Matchday ' + L.matchday + '</b>, ' + esc(L.home ? 'Hollyend FC v ' + L.opponent.name : L.opponent.name + ' v Hollyend FC') + ' is waiting. <button class="linkbtn" id="toWorld" style="padding:2px 10px">Go to the match</button></p>';
   }
 
+  /* ---------- Homework ---------- */
+  var BOOK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/><path d="M9 7h6"/></svg>';
+  function todayD() { return lgToday(Date.now()); }
+  function hwFor(c) {
+    return state.hw.filter(function (h) { return h.child === c && h.active !== false; })
+      .sort(function (a, b) { return String(a.due || "9999").localeCompare(String(b.due || "9999")) || String(a.createdAt).localeCompare(String(b.createdAt)); });
+  }
+  function hwMark(h) { return state.hwDone.filter(function (d) { return d.homeworkId === h.id; })[0] || null; }
+  function hwPending(h) { var m = hwMark(h); return !m || m.status === "rejected"; }
+  function hwOpen(c) { var cut = addDays(todayD(), -14); return hwFor(c).filter(function (h) { return hwPending(h) && (!h.due || h.due >= cut); }); }
+  function dueText(h) {
+    if (!h.due) return { t: "No due date", cls: "" };
+    var t = todayD(), d = String(h.due).slice(0, 10), diff = lgDiff(d, t);
+    if (diff < 0) return { t: "Overdue (" + fmtDay(d) + ")", cls: "late" };
+    if (diff === 0) return { t: "Due today" + (h.dueTime ? " · " + h.dueTime : ""), cls: "soon" };
+    if (diff === 1) return { t: "Due tomorrow" + (h.dueTime ? " · " + h.dueTime : ""), cls: "soon" };
+    return { t: "Due " + fmtDay(d), cls: "" };
+  }
+  function targetText(t) {
+    if (!t) return "";
+    var what = t.mode === "vocab" ? "the French vocab practice test" : t.mode === "spelling" ? "the spelling test" : t.mode === "revise" ? "the revision topic" : t.mode === "challenge" ? "Challenge words" : t.mode === "english" ? "English words" : t.mode === "french" ? "a French quiz" : "a quiz";
+    return "Score " + (t.minPct || 80) + "% or more on " + what + " and this ticks itself.";
+  }
+  function siteDone(h) {
+    var t = h.target || {}, from = h.createdAt || "";
+    return all.some(function (a) {
+      return a.child === h.child && String(a.at) >= String(from) && (!t.mode || a.mode === t.mode) && (!t.topic || a.topic === t.topic) &&
+        a.total >= (t.minQuestions || 5) && a.score * 100 >= a.total * (t.minPct || 80);
+    });
+  }
+  function autoVerify() {
+    if (!db) return;
+    var r = role() || {};
+    state.hw.forEach(function (h) {
+      if (h.kind !== "site" || h.active === false || state.hwBusy[h.id]) return;
+      var m = hwMark(h); if (m && m.status !== "rejected") return;
+      if (r.role === "child" && r.child !== h.child) return;
+      if (!siteDone(h)) return;
+      state.hwBusy[h.id] = 1;
+      var p = m ? db.collection("homework_done").doc(m.id).update({ status: "verified" }) : db.collection("homework_done").add({ homeworkId: h.id, child: h.child, status: "verified" });
+      p.then(function () { state.hwMsg = "Homework ticked off: " + h.title + " (+25 points)"; }, function () {}).then(function () { delete state.hwBusy[h.id]; });
+    });
+  }
+  function hwBadge() {
+    var n = hwOpen(state.child).length, b = document.getElementById("hw-badge");
+    if (b) { b.textContent = n; b.hidden = !n; }
+  }
+  function hwBanner() {
+    var open = hwOpen(state.child); if (!open.length) return "";
+    var next = open[0], d = dueText(next);
+    return '<div class="hw-banner ' + d.cls + '">' + BOOK + '<span><b>' + open.length + ' homework task' + (open.length > 1 ? 's' : '') + ' to do.</b> Next: ' + esc(next.title) + ' · ' + esc(d.t) + '</span><button class="linkbtn" id="toHw">Open homework</button></div>';
+  }
+  function pushBox() {
+    var s = state.pushStatus, P = window.HOLLYEND && window.HOLLYEND.push;
+    if (!P) return "";
+    var h = '<div class="push-box">';
+    if (s === "on") h += '<span>✓ Reminders are on for this device.</span><button class="linkbtn" id="pushTest">Send a test</button>';
+    else if (s === "denied") h += '<span>Notifications are blocked. Turn them on in Settings › Notifications › Hollyend.</span>';
+    else if (s === "unsupported") h += '<span>To get homework reminders, open Hollyend from your Home Screen, then come back here.</span>';
+    else if (s === "off") h += '<span>Get a reminder when homework is due.</span><button class="btn sm" id="pushOn">Turn on reminders</button>';
+    else h += '<span class="small">Checking reminders…</span>';
+    if (state.pushMsg) h += '<span class="small" style="flex-basis:100%">' + esc(state.pushMsg) + '</span>';
+    return h + '</div>';
+  }
+  function hwCard(h, isParent) {
+    var m = hwMark(h), d = dueText(h), st = m ? m.status : "todo", fb = state.hwFeel === h.id;
+    var link = h.linkUrl ? '<a class="btn ghost sm" href="' + esc(h.linkUrl) + '" target="_blank" rel="noopener">' + esc(h.linkLabel || "Open") + ' ↗</a>' : '';
+    var act = "";
+    if (h.kind === "site") {
+      act = (st === "verified" || st === "confirmed") ? '' : '<button class="btn sm" data-hwgo="' + h.id + '">Start on Hollyend</button>';
+    } else if (!isParent && (st === "todo" || st === "rejected")) {
+      act = fb ? '<span class="small">How did it go?</span>' + ["easy", "ok", "hard"].map(function (f) { return '<button class="btn sm ghost" data-hwfeel="' + f + '" data-hw="' + h.id + '">' + (f === "ok" ? "OK" : f[0].toUpperCase() + f.slice(1)) + '</button>'; }).join("")
+        : '<button class="btn sm" data-hwdone="' + h.id + '">I’ve done it</button>';
+    }
+    var status = st === "verified" ? '<span class="chip paid">✓ Checked by Hollyend' + (m.points ? ' · +' + m.points : '') + '</span>'
+      : st === "confirmed" ? '<span class="chip paid">✓ Checked by Mum or Dad' + (m.points ? ' · +' + m.points : '') + '</span>'
+      : st === "ticked" ? '<span class="chip wait">Done · waiting for Mum or Dad to check' + (m.points ? ' · +' + m.points : '') + '</span>'
+      : st === "rejected" ? '<span class="chip cancel wk">Not finished yet: have another go</span>' : '';
+    var parentAct = isParent ? (st === "ticked" ? '<button class="btn sm" data-hwok="' + m.id + '">Confirm</button><button class="btn sm ghost" data-hwno="' + m.id + '">Not done</button>'
+      : st === "todo" ? '<button class="btn sm ghost" data-hwpdone="' + h.id + '">Mark done</button>' : '') + '<button class="linkbtn" data-hwdel="' + h.id + '">Remove</button>' : '';
+    return '<div class="hw-card ' + d.cls + (st === "verified" || st === "confirmed" ? ' done' : '') + '"><div class="hw-top"><span class="pill">' + esc(h.subject || "Homework") + '</span><span class="hw-due">' + esc(d.t) + '</span></div>' +
+      '<b class="hw-title">' + esc(h.title) + '</b>' + (h.details ? '<p class="small">' + esc(h.details) + '</p>' : '') +
+      (h.kind === "site" && st !== "verified" && st !== "confirmed" ? '<p class="small">' + esc(targetText(h.target)) + '</p>' : '') +
+      (status ? '<div>' + status + (m && m.feel ? ' <span class="small">· felt ' + esc(m.feel) + '</span>' : '') + '</div>' : '') +
+      '<div class="row">' + link + act + parentAct + '</div></div>';
+  }
+  function homeworkView() {
+    var c = state.child, isParent = (role() || {}).role === "parent", open = hwOpen(c), list = hwFor(c);
+    var cut = addDays(todayD(), -14), done = list.filter(function (h) { return !hwPending(h) && (!h.due || h.due >= cut); });
+    var h = '<section class="card"><div class="hw-head"><div><span class="small">' + esc(name()) + '’s homework</span><h2 class="hw-h">' + (open.length ? open.length + ' to do' : 'All done!') + '</h2></div>' + BOOK + '</div>' +
+      '<p class="small" style="margin:0">Tick off homework you do away from Hollyend and Mum or Dad will check it. Tasks on Hollyend tick themselves when you hit the score. Checked homework earns 25 points (+5 if early) and counts towards your streak.</p>' +
+      (state.hwMsg ? '<p class="cbnote" style="margin:0">' + esc(state.hwMsg) + '</p>' : '') + pushBox() + '</section>';
+    var dt = state.daily.filter(function (t) { return t.child === c && t.active !== false; }).sort(function (a, b) { return (a.sort || 0) - (b.sort || 0); });
+    if (dt.length) {
+      var t0 = todayD();
+      h += '<section class="card sect"><h2>Every day</h2><p class="small">Daily reminders: tick them off when you’ve done them. They don’t count towards your streak.</p><div class="daily">' +
+        dt.map(function (t) { var on = state.dailyTicks.some(function (x) { return x.child === c && x.task === t.id && String(x.day).slice(0, 10) === t0; });
+          return '<label class="dt' + (on ? ' on' : '') + '"><input type="checkbox" data-daily="' + esc(t.id) + '"' + (on ? ' checked' : '') + (isParent ? ' disabled' : '') + '><span>' + esc(t.title) + '</span>' + (t.linkUrl ? '<a href="' + esc(t.linkUrl) + '" target="_blank" rel="noopener" class="linkbtn">Open ↗</a>' : '') + '</label>'; }).join("") + '</div></section>';
+    }
+    h += '<section class="card sect"><h2>To do</h2>' + (open.length ? '<div class="hw-list">' + open.map(function (x) { return hwCard(x, isParent); }).join("") + '</div>' : '<p class="small">Nothing to do right now. New homework appears here after each homework check.</p>') + '</section>';
+    if (isParent) {
+      var waiting = list.filter(function (x) { var m = hwMark(x); return m && m.status === "ticked"; });
+      if (waiting.length) h += '<section class="card sect"><h2>Waiting for your check</h2><div class="hw-list">' + waiting.map(function (x) { return hwCard(x, true); }).join("") + '</div></section>';
+      h += '<section class="card"><div class="parentbox"><h3>Add a task for ' + esc(name()) + ' (Mum and Dad only)</h3>' +
+        '<input class="rd-in" id="hwTitle" maxlength="160" placeholder="What to do, e.g. CENTURY: Fractions nugget">' +
+        '<div class="row"><input class="rd-in" id="hwSubject" placeholder="Subject" style="flex:1 1 120px"><input class="rd-in" type="date" id="hwDue" value="' + addDays(todayD(), 1) + '"></div>' +
+        '<input class="rd-in" id="hwLink" placeholder="Link (optional), e.g. https://app.century.tech">' +
+        '<div class="row"><button class="btn sm" id="hwAdd">Add task</button></div></div></section>';
+    }
+    if (done.length) h += '<section class="card sect"><h2>Done</h2><div class="hw-list">' + done.map(function (x) { return hwCard(x, isParent); }).join("") + '</div></section>';
+    app.innerHTML = h;
+    bindHomework();
+  }
+  function bindHomework() {
+    var on = document.getElementById("pushOn"), te = document.getElementById("pushTest");
+    if (on) on.addEventListener("click", function () { state.pushMsg = "Allow notifications when your iPad asks…"; homeworkView();
+      window.HOLLYEND.push.enable().then(function () { state.pushStatus = "on"; state.pushMsg = "Reminders are on. Try “Send a test”."; }, function (e) { state.pushMsg = e.message || "That didn't work."; checkPush(); }).then(function () { if (state.view === "homework") homeworkView(); }); });
+    if (te) te.addEventListener("click", function () { state.pushMsg = "Sending…"; homeworkView();
+      window.HOLLYEND.push.test().then(function (r) { state.pushMsg = r && r.sent ? "Test sent! It should pop up in a few seconds." : "No device received it. Try turning reminders off and on again."; }, function (e) { state.pushMsg = e.message; }).then(function () { if (state.view === "homework") homeworkView(); }); });
+    [].forEach.call(app.querySelectorAll("[data-hwdone]"), function (b) { b.addEventListener("click", function () { state.hwFeel = b.dataset.hwdone; homeworkView(); }); });
+    [].forEach.call(app.querySelectorAll("[data-hwfeel]"), function (b) {
+      b.addEventListener("click", function () {
+        var h = state.hw.filter(function (x) { return x.id === b.dataset.hw; })[0], m = hwMark(h); state.hwFeel = null;
+        var p = m ? db.collection("homework_done").doc(m.id).update({ status: "ticked", feel: b.dataset.hwfeel }) : db.collection("homework_done").add({ homeworkId: h.id, child: h.child, status: "ticked", feel: b.dataset.hwfeel });
+        p.then(function () { state.hwMsg = "Nice work! Ticked off: " + h.title; refresh(); }, function () { state.hwMsg = "That didn't save. Please try again."; refresh(); });
+      });
+    });
+    [].forEach.call(app.querySelectorAll("[data-hwok],[data-hwno]"), function (b) {
+      b.addEventListener("click", function () { var ok = !!b.dataset.hwok, id = b.dataset.hwok || b.dataset.hwno;
+        db.collection("homework_done").doc(id).update({ status: ok ? "confirmed" : "rejected" }).then(function () { state.hwMsg = ok ? "Confirmed." : "Sent back to do again."; refresh(); }, function () { state.hwMsg = "That didn't save."; refresh(); }); });
+    });
+    [].forEach.call(app.querySelectorAll("[data-hwpdone]"), function (b) {
+      b.addEventListener("click", function () { var h = state.hw.filter(function (x) { return x.id === b.dataset.hwpdone; })[0];
+        db.collection("homework_done").add({ homeworkId: h.id, child: h.child, status: "confirmed" }).then(function () { state.hwMsg = "Marked as done and checked."; refresh(); }, function () { state.hwMsg = "That didn't save."; refresh(); }); });
+    });
+    [].forEach.call(app.querySelectorAll("[data-hwdel]"), function (b) {
+      b.addEventListener("click", function () { if (state.hwDel !== b.dataset.hwdel) { state.hwDel = b.dataset.hwdel; b.textContent = "Tap again to remove"; return; }
+        db.collection("homework").doc(b.dataset.hwdel).update({ active: false }).then(function () { state.hwMsg = "Task removed."; refresh(); }); });
+    });
+    [].forEach.call(app.querySelectorAll("[data-hwgo]"), function (b) {
+      b.addEventListener("click", function () { var h = state.hw.filter(function (x) { return x.id === b.dataset.hwgo; })[0], t = h.target || {};
+        setView("quiz"); if (t.mode === "revise" && t.topic) { state.mode = "revise"; state.reviseTopic = t.topic; showMode(); newQuiz(); } else if (t.mode && t.mode !== "mix") setMode(t.mode); window.scrollTo({ top: 0 }); });
+    });
+    [].forEach.call(app.querySelectorAll("[data-daily]"), function (cb) {
+      cb.addEventListener("change", function () { var id = cb.dataset.daily, c = state.child, t0 = todayD();
+        var ex = state.dailyTicks.filter(function (x) { return x.child === c && x.task === id && String(x.day).slice(0, 10) === t0; })[0];
+        var p = cb.checked ? db.collection("daily_ticks").add({ child: c, task: id }) : ex ? db.collection("daily_ticks").doc(ex.id).remove() : Promise.resolve();
+        p.then(function () { refresh(); }, function () { refresh(); }); });
+    });
+    var add = document.getElementById("hwAdd");
+    if (add) add.addEventListener("click", function () {
+      var t = document.getElementById("hwTitle").value.trim(); if (!t) return;
+      var link = document.getElementById("hwLink").value.trim(); if (link && !/^https?:\/\//.test(link)) link = "https://" + link;
+      db.collection("homework").add({ child: state.child, title: t, subject: document.getElementById("hwSubject").value.trim() || null, due: document.getElementById("hwDue").value || null, linkUrl: link || null, linkLabel: link ? "Open" : null, kind: "tick", source: "parent" })
+        .then(function () { state.hwMsg = "Task added."; refresh(); }, function () { state.hwMsg = "That didn't save."; refresh(); });
+    });
+  }
+  function checkPush() {
+    var P = window.HOLLYEND && window.HOLLYEND.push; if (!P) return;
+    P.status().then(function (s) { state.pushStatus = s; if (state.view === "homework") homeworkView(); }, function () { state.pushStatus = "unsupported"; });
+  }
+
+  /* ---------- Flashcards (Millie's spellings, Kristan's French list) ---------- */
+  function flashCards() {
+    if (state.child === "millie") return SPELLING.words.map(function (w) { return { front: w.meaning, ctx: w.sentences[0].replace("___", "_____"), speakFront: w.sentences[0].replace("___", w.word), back: w.word, extra: w.chunks + " · " + w.hook, speak: w.word, lang: "en-GB" }; });
+    return KLISTS.french.words.map(function (w) { return { front: w.meaning, ctx: w.group === "Verbs" ? "(the ‘to…’ form)" : w.gap, back: w.group === "Verbs" ? w.word : w.gap.replace("_____", w.word), extra: w.hook, speak: w.say, lang: "fr-FR" }; });
+  }
+  function startFlash() { var cards = flashCards(); state.flash = { cards: cards, queue: shuffle(cards.map(function (_, i) { return i; })), known: 0, flipped: false, rounds: 0 }; render(); window.scrollTo({ top: 0 }); }
+  function flashView() {
+    var F = state.flash, total = F.cards.length;
+    if (!F.queue.length) {
+      app.innerHTML = '<section class="card"><p class="score">' + total + '/' + total + '</p><p class="done-msg">You know every card! Now try the ' + (state.child === "millie" ? "spelling test" : "practice test") + '.</p><div class="row"><button class="btn" id="flTest">Take the test</button><button class="btn ghost" id="flAgain">Flashcards again</button></div></section>';
+      document.getElementById("flTest").addEventListener("click", function () { state.flash = null; state.started = true; render(); });
+      document.getElementById("flAgain").addEventListener("click", startFlash);
+      return;
+    }
+    var c = F.cards[F.queue[0]];
+    app.innerHTML = '<section class="card"><div class="meta"><span class="pill">Flashcards</span><span>' + F.known + ' of ' + total + ' known</span></div>' +
+      '<div class="bar"><i style="width:' + Math.round(F.known / total * 100) + '%"></i></div>' +
+      '<button class="flash' + (F.flipped ? ' flipped' : '') + '" id="flCard" aria-live="polite">' +
+      (F.flipped ? '<span class="fl-k">' + (state.child === "millie" ? "Spelling" : "In French") + '</span><span class="fl-big">' + esc(c.back) + '</span><span class="small">' + esc(c.extra) + '</span>'
+        : '<span class="fl-k">' + (state.child === "millie" ? "It means" : "In English") + '</span><span class="fl-big sm">' + esc(c.front) + '</span><span class="small">' + esc(c.ctx) + '</span><span class="fl-tap">Tap to flip</span>') + '</button>' +
+      '<div class="row">' + (canSpeak() ? '<button class="btn hear" id="flHear">Hear it</button>' : '') +
+      (F.flipped ? '<button class="btn ghost" id="flAgainCard">Again</button><button class="btn" id="flGot">Got it</button>' : '<button class="btn" id="flFlip">Flip</button>') +
+      '<button class="linkbtn" id="flStop">Stop</button></div><p class="small">Say the answer in your head (or out loud) before you flip. “Again” cards come back until you know them all.</p></section>';
+    var flip = function () { F.flipped = true; flashView(); };
+    document.getElementById("flCard").addEventListener("click", function () { if (!F.flipped) flip(); });
+    var fb = document.getElementById("flFlip"); if (fb) fb.addEventListener("click", flip);
+    var hr = document.getElementById("flHear"); if (hr) hr.addEventListener("click", function () { say(F.flipped ? c.speak : (c.speakFront || c.front), F.flipped ? c.lang : (state.child === "millie" ? "en-GB" : "en-GB")); });
+    var g = document.getElementById("flGot"); if (g) g.addEventListener("click", function () { F.queue.shift(); F.known++; F.flipped = false; flashView(); });
+    var a = document.getElementById("flAgainCard"); if (a) a.addEventListener("click", function () { var x = F.queue.shift(); F.queue.splice(Math.min(F.queue.length, 3), 0, x); F.flipped = false; flashView(); });
+    document.getElementById("flStop").addEventListener("click", function () { state.flash = null; render(); });
+  }
+
   /* ---------- wiring ---------- */
   document.addEventListener("keydown", function (e) {
     if (!busy()) return;
@@ -1357,6 +1614,7 @@ body.k .prompt { letter-spacing: -.005em; }
   document.getElementById("v-quiz").addEventListener("click", function () { setView("quiz"); });
   document.getElementById("v-prog").addEventListener("click", function () { setView("progress"); });
   document.getElementById("v-world").addEventListener("click", function () { setView("world"); });
+  document.getElementById("v-hw").addEventListener("click", function () { state.hwMsg = ""; setView("homework"); });
   document.getElementById("v-shop").addEventListener("click", function () { setView("shop"); });
   document.getElementById("v-bank").addEventListener("click", function () { setView("bank"); });
   [].forEach.call(document.querySelectorAll(".lv"), function (b) { b.addEventListener("click", function () { setLevel(+b.dataset.l); }); });
@@ -1368,6 +1626,7 @@ body.k .prompt { letter-spacing: -.005em; }
   if (hash === "spelling" || hash === "english" || hash === "french") state.mode = hash;
   if (hash === "millie-revise" || hash === "kristan-revise") { state.mode = "revise"; hash = hash.split("-")[0]; }
   if (hash === "journey") { state.view = "world"; hash = "millie"; }
+  if (hash === "vocab") { state.mode = "vocab"; hash = "kristan"; }
   if (hash === "league") { state.view = "world"; hash = "kristan"; }
   if (hash === "millie-challenge" || hash === "kristan-challenge") { state.mode = "challenge"; hash = hash.split("-")[0]; }
   setChild(hash === "kristan" || hash === "millie" ? hash : hash === "spelling" ? "millie" : (hash === "english" || hash === "french") ? "kristan" : (store("quiz-child") || "millie"));
@@ -1380,6 +1639,7 @@ body.k .prompt { letter-spacing: -.005em; }
       if (m.child === "kristan") document.querySelector(".kids").hidden = true;
       state.child = null; setChild(m.child);
     }
+    maybeLandOnHomework();
   });
   document.getElementById("signout").addEventListener("click", function () { window.HOLLYEND.signOut(); });
   ["millie", "kristan"].forEach(function (c) { var w = document.getElementById("wav-" + c); if (w) w.innerHTML = avatarSVG(c, {}, "av"); });

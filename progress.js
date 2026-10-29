@@ -47,10 +47,15 @@ function qualifies(a) { return a && a.total >= STREAK_RULE.minQuestions && a.sco
    - Rest days: set by Mum or Dad (holidays, illness, travel). They neither count nor break the streak.
    Everything is worked out from saved results and rest days, so it can't be edited by hand. */
 var REST_DAYS = [], STREAK_FREEZE_EVERY = 7, STREAK_FREEZE_MAX = 2;
+/* Homework marks (homework_done rows): their points count towards totals, and verified or confirmed homework counts as a streak day. */
+var HW_DONE = [];
+function setHomeworkDone(rows) { HW_DONE = rows || []; }
+function homeworkPoints(child) { return HW_DONE.reduce(function (s, r) { return s + (r.child === child ? (r.points || 0) : 0); }, 0); }
 function setRestDays(rows) { REST_DAYS = rows || []; }
 function streakInfo(all, child, now) {
   var cnt = {}, rest = {}, status = {};
   all.forEach(function (a) { if (a.child === child && qualifies(a)) { var d = a.playDay || dubaiDay(a.at); cnt[d] = (cnt[d] || 0) + 1; } });
+  HW_DONE.forEach(function (r) { if (r.child === child && (r.status === "verified" || r.status === "confirmed") && r.doneAt) { var d = dubaiDay(r.doneAt); cnt[d] = (cnt[d] || 0) + 1; } });
   REST_DAYS.forEach(function (r) { if (r.child === child && r.day) rest[String(r.day).slice(0, 10)] = 1; });
   var today = dubaiDay(now == null ? Date.now() : now), days = Object.keys(cnt).sort();
   var streak = 0, best = 0, freezes = 0, pending = null, earnedToday = false;
@@ -119,7 +124,7 @@ function weakSkills(state) {
 /* Build a quiz: up to 3 comeback questions (4 on Challenge) on missed skills, the rest fresh. */
 function buildAdaptiveQuiz(child, level, count, all, weekStart, gen, build, shuffleFn, mode) {
   var state = skillState(all, child, weekStart), weak = weakSkills(state);
-  var PREFIX = { spelling: /^spell:/, english: /^e[num]:/, french: /^f[rq]:/, challenge: /^ch:/ };
+  var PREFIX = { spelling: /^spell:/, english: /^e[num]:/, french: /^f[rq]:/, challenge: /^ch:/, vocab: /^fr:/ };
   var wordOf = function (g) { var k = typeof wbKey === "function" && wbKey(g); return k ? k.join("|") : String(g); };
   if (PREFIX[mode]) weak = weak.filter(function (s) { return PREFIX[mode].test(String(s.gen)); });
   if (mode && mode.indexOf("revise:") === 0 && typeof revTopic === "function") {
@@ -176,7 +181,7 @@ function rankFor(child, points) {
 
 function awards(all, child, weekStart) {
   var mine = childAttempts(all, child), week = mine.filter(function (a) { return a.week === weekStart; });
-  var points = mine.reduce(function (s, a) { return s + (a.points || 0); }, 0);
+  var points = mine.reduce(function (s, a) { return s + (a.points || 0); }, 0) + homeworkPoints(child);
   var cbAll = mine.reduce(function (s, a) { return s + (a.comebackRight || 0); }, 0);
   var levelsDone = {}; week.forEach(function (a) { levelsDone[a.level] = 1; });
   var state = skillState(all, child, weekStart);
@@ -257,5 +262,5 @@ function playerCard(all, child) {
 
 if (typeof module !== "undefined" && module.exports) module.exports = {
   skillState: skillState, weakSkills: weakSkills, buildAdaptiveQuiz: buildAdaptiveQuiz, scoreAttempt: scoreAttempt,
-  awards: awards, revisionStats: revisionStats, rankFor: rankFor, topicSummary: topicSummary, weekAttempts: weekAttempts, BADGES: BADGES, streakInfo: streakInfo, dubaiDay: dubaiDay, addDays: addDays, qualifies: qualifies, STREAK_RULE: STREAK_RULE, playerCard: playerCard, setRestDays: setRestDays
+  awards: awards, revisionStats: revisionStats, rankFor: rankFor, topicSummary: topicSummary, weekAttempts: weekAttempts, BADGES: BADGES, streakInfo: streakInfo, dubaiDay: dubaiDay, addDays: addDays, qualifies: qualifies, STREAK_RULE: STREAK_RULE, playerCard: playerCard, setRestDays: setRestDays, setHomeworkDone: setHomeworkDone, homeworkPoints: homeworkPoints
 };

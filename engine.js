@@ -649,6 +649,7 @@ function genOne(child, gen, level) {
 function buildQuiz(child, level, count, seenPrompts, mode) {
   if (mode && mode.indexOf("revise:") === 0) return buildRevision(child, mode.slice(7), level, count, seenPrompts);
   if (mode === "spelling") return buildSpelling(level, count, seenPrompts);
+  if (mode === "vocab") return shuffle(KLISTS.french.words).map(function (w) { return klistQ("french", w.id || w.word, level); }).filter(Boolean);
   if (mode === "english" || mode === "french") return buildKList(mode, level, count, seenPrompts);
   if (mode === "challenge") return buildKList("challenge_" + child, level, count, seenPrompts);
   var topics = WEEK[child].topics, out = [], seen = {};
