@@ -288,6 +288,8 @@ function wallet(child, attempts, purchases, bank, now) {
 }
 function penceToPoints(p) { return Math.round(p * BANK.pointsPerPound / 100); }
 function fmtMoney(p) { return "£" + (p / 100).toFixed(2); }
+var AED_PER_GBP = 4.90; /* fixed rate for Millie's dirham equivalents */
+function fmtAed(p) { return "AED " + (Math.round(p * AED_PER_GBP) / 100).toFixed(2); }
 function owned(child, purchases) {
   var o = {}; SHOP[child].items.forEach(function (it) { if (!it.cost) o[it.id] = 1; });
   purchases.forEach(function (p) { if (p.child === child) o[p.item] = 1; });

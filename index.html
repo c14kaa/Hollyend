@@ -241,6 +241,9 @@ body.k .earn { font-size: 30px; }
 .wal-bal b { font-family: var(--display); font-size: 44px; line-height: 1.05; color: var(--gold); }
 .wal-split { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .wal-split div { background: var(--card2); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; display: flex; flex-direction: column; }
+.aed { font-size: 12px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+.aed.big { font-size: 16px; }
+.amt small.aed { display: block; font-size: 13px; }
 .wal-split b { font-size: 18px; } .wal-split span { font-size: 12px; color: var(--muted); }
 .wal-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; align-items: end; }
 .wal-form label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); }
@@ -1392,13 +1395,13 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     var pts = penceToPoints(state.bankAmt), pctWeek = Math.round(w.weekPence / BANK.weeklyCapPence * 100);
     var h = '<section class="card"><div class="hero"><div class="bigav">' + avatarSVG(c, equipped(c), "av") + '</div><div class="side"><h2 class="nm" style="margin:0;font-family:var(--display);font-size:' + (c === "kristan" ? "38px" : "28px") + ';line-height:1">' + (c === "millie" ? "Star Bank" : "Club Bank") + '</h2>' +
       '<span class="small">' + (c === "millie" ? 'Turn your quiz points into real money in your Star Wallet. Mum and Dad can add birthday money too.' : 'Turn your quiz points into real pocket money. Mum or Dad pays you and ticks it off here.') + '</span></div></div>' +
-      '<div class="vault"><div><span>Points to spend</span><b>' + w.balance + '</b><span>worth ' + fmtMoney(Math.floor(w.balance / penceToPoints(BANK.stepPence)) * BANK.stepPence) + '</span></div>' +
+      '<div class="vault"><div><span>Points to spend</span><b>' + w.balance + '</b><span>worth ' + fmtMoney(Math.floor(w.balance / penceToPoints(BANK.stepPence)) * BANK.stepPence) + (c === "millie" ? ' · ' + fmtAed(Math.floor(w.balance / penceToPoints(BANK.stepPence)) * BANK.stepPence) : '') + '</span></div>' +
       '<div><span>Cashed out this week</span><b>' + fmtMoney(w.weekPence) + '</b><span>of ' + fmtMoney(BANK.weeklyCapPence) + ' max</span></div></div>' +
       '<div class="bar" role="img" aria-label="' + pctWeek + '% of this week\u2019s limit used"><i style="width:' + pctWeek + '%"></i></div>' +
       '<div class="rate"><b>' + BANK.pointsPerPound + ' points = \u00a31.</b> Cash out in 50p steps (' + penceToPoints(BANK.stepPence) + ' points each), up to ' + fmtMoney(BANK.weeklyCapPence) + ' a week. The limit resets every Monday.</div>';
     if (dbState !== "live") h += '<p class="small">The bank needs saved results, which aren\u2019t available in this view.</p>';
     else if (max >= BANK.stepPence) {
-      h += '<div class="stepper"><button class="sq" id="minus" aria-label="Less"' + (state.bankAmt <= BANK.stepPence ? " disabled" : "") + '>\u2212</button><span class="amt" aria-live="polite">' + fmtMoney(state.bankAmt) + '</span><button class="sq" id="plus" aria-label="More"' + (state.bankAmt + BANK.stepPence > max ? " disabled" : "") + '>+</button><span class="small">uses ' + pts + ' points</span></div>' +
+      h += '<div class="stepper"><button class="sq" id="minus" aria-label="Less"' + (state.bankAmt <= BANK.stepPence ? " disabled" : "") + '>\u2212</button><span class="amt" aria-live="polite">' + fmtMoney(state.bankAmt) + (c === "millie" ? '<small class="aed">' + fmtAed(state.bankAmt) + '</small>' : '') + '</span><button class="sq" id="plus" aria-label="More"' + (state.bankAmt + BANK.stepPence > max ? " disabled" : "") + '>+</button><span class="small">uses ' + pts + ' points</span></div>' +
         '<div class="row"><button class="btn" id="cash">' + (state.bankConfirm ? 'Tap again to swap ' + pts + ' points for ' + fmtMoney(state.bankAmt) : c === "millie" ? 'Move ' + fmtMoney(state.bankAmt) + ' to my wallet' : 'Cash out ' + fmtMoney(state.bankAmt)) + '</button></div>';
     } else if (w.capLeft < BANK.stepPence) h += '<p class="cbnote">You\u2019ve reached this week\u2019s ' + fmtMoney(BANK.weeklyCapPence) + ' limit. Great work! It resets on Monday.</p>';
     else h += '<p class="small">Earn <b>' + (penceToPoints(BANK.stepPence) - w.balance) + ' more points</b> to cash out your first 50p.</p>';
@@ -1461,8 +1464,9 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     var t = walletTotals(c), items = walletItems(c), isParent = (role() || {}).role === "parent", f = state.wForm, k = state.wDel;
     var shown = state.wAll ? items : items.slice(0, 12);
     var h = '<section class="card sect wallet-card"><h2>' + esc(cname(c)) + '\u2019s Star Wallet</h2>' +
-      '<div class="wal-bal"><span class="small">In the wallet</span><b>' + fmtMoney(t.balance) + '</b></div>' +
-      '<div class="wal-split"><div><b>' + fmtMoney(t.points) + '</b><span>from quiz points</span></div><div><b>' + fmtMoney(t.added) + '</b><span>added by Mum and Dad</span></div><div><b>' + fmtMoney(t.spent) + '</b><span>spent</span></div></div>';
+      '<div class="wal-bal"><span class="small">In the wallet</span><b>' + fmtMoney(t.balance) + '</b><span class="aed big">' + fmtAed(t.balance) + '</span></div>' +
+      '<div class="wal-split"><div><b>' + fmtMoney(t.points) + '</b><span class="aed">' + fmtAed(t.points) + '</span><span>from quiz points</span></div><div><b>' + fmtMoney(t.added) + '</b><span class="aed">' + fmtAed(t.added) + '</span><span>added by Mum and Dad</span></div><div><b>' + fmtMoney(t.spent) + '</b><span class="aed">' + fmtAed(t.spent) + '</span><span>spent</span></div></div>' +
+      '<p class="small" style="margin:0">Dirham amounts use a fixed rate: £1 = AED ' + AED_PER_GBP.toFixed(2) + '.</p>';
     if (isParent) {
       h += '<div class="row"><button class="btn sm' + (f === "in" ? '' : ' ghost') + '" data-wform="in">+ Add money</button><button class="btn sm' + (f === "out" ? '' : ' ghost') + '" data-wform="out">\u2212 Record spending</button></div>';
       if (f) h += '<form class="wal-form" id="walForm"><label>Amount (£)<input id="walAmt" type="number" inputmode="decimal" min="0.01" step="0.01" required placeholder="10.00"></label>' +
@@ -1473,7 +1477,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     if (state.walMsg) h += '<p class="cbnote">' + esc(state.walMsg) + '</p>';
     h += items.length ? '<div class="list">' + shown.map(function (x) {
       var sign = x.kind === "out" ? "\u2212" : "+", lbl = x.kind === "points" ? "Quiz points" : x.kind === "in" ? "Money added" : "Spent";
-      return '<div class="li wal-' + x.kind + '"><span>' + esc(x.day ? niceDay(x.day) : when(x.at)) + ' · ' + lbl + (x.note ? ': ' + esc(x.note) : '') + '</span><span><b>' + sign + fmtMoney(x.pence) + '</b>' +
+      return '<div class="li wal-' + x.kind + '"><span>' + esc(x.day ? niceDay(x.day) : when(x.at)) + ' · ' + lbl + (x.note ? ': ' + esc(x.note) : '') + '</span><span><b>' + sign + fmtMoney(x.pence) + '</b> <span class="aed">' + fmtAed(x.pence) + '</span>' +
         (isParent && x.id ? ' <button class="linkbtn" data-wdel="' + x.id + '">' + (k === x.id ? "Tap again to remove" : "Remove") + '</button>' : '') + '</span></div>';
     }).join("") + '</div>' + (items.length > 12 && !state.wAll ? '<button class="linkbtn" id="walAll">Show all ' + items.length + '</button>' : '')
       : '<p class="small">Nothing in the wallet yet. Move some quiz points across' + (isParent ? ', or add birthday money above' : '') + '.</p>';
@@ -2374,7 +2378,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
         '<div class="fv-stats"><div><b>' + open.length + '</b><span>homework to do</span></div><div' + (late.length ? ' class="bad"' : '') + '><b>' + late.length + '</b><span>overdue</span></div><div><b>' + sk.current + '</b><span>day streak' + (sk.atRisk ? ' · at risk' : '') + '</span></div><div><b>' + mine.length + '</b><span>quizzes, 7 days' + (avg != null ? ' · ' + avg + '%' : '') + '</span></div></div>' +
         (late.length || soon.length ? '<ul class="fv-list">' + late.concat(soon).map(function (x) { var d = String(x.due).slice(0, 10); return '<li><b class="' + (d < t ? 'lt' : '') + '">' + (d < t ? 'Overdue' : d === t ? 'Today' : 'Tomorrow') + '</b> ' + esc(x.title) + '</li>'; }).join("") + '</ul>' : '<p class="small">Nothing due today or tomorrow.</p>') +
         (dt.length ? '<p class="small">Daily tasks today: ' + dtOn.length + ' of ' + dt.length + ' ticked</p>' : '') +
-        '<p class="small">' + esc(place) + (c === "millie" ? ' · 💷 Star Wallet: <b>' + fmtMoney(walletTotals("millie").balance) + '</b>' : '') + '</p>' + classNow(c) + '<div class="row"><button class="btn sm ghost" data-fvkid="' + c + '">Open ' + cname(c) + '’s homework</button></div></section>';
+        '<p class="small">' + esc(place) + (c === "millie" ? ' · 💷 Star Wallet: <b>' + fmtMoney(walletTotals("millie").balance) + '</b> (' + fmtAed(walletTotals("millie").balance) + ')' : '') + '</p>' + classNow(c) + '<div class="row"><button class="btn sm ghost" data-fvkid="' + c + '">Open ' + cname(c) + '’s homework</button></div></section>';
     }).join("") + '</div>';
     R = h; h = '';
     var tt = dueSoon().filter(function (x) { return x.kind === "event"; });
