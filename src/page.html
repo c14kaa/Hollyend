@@ -512,6 +512,18 @@ body.k .seg button[aria-pressed="true"] { color: #07090d; }
 .ev-tags { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .tag { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--line); color: var(--ink); }
 .tag.deadline, .tag.action { background: #ffe1e6; color: #a3122f; } .tag.homework { background: #e4ecff; color: #1d3f9e; } .tag.sport { background: #dff6e6; color: #146c34; } .tag.trip, .tag.holiday { background: #fff1d6; color: #8a5300; }
+.cal-d.hol { background: repeating-linear-gradient(135deg, var(--card2), var(--card2) 5px, var(--accent-soft) 5px, var(--accent-soft) 10px); }
+.tag.term { background: #fff1d6; color: #8a5300; }
+.news { display: flex; flex-direction: column; gap: 8px; }
+.nw { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border: 1px solid var(--line); border-left: 4px solid #9b8cff; border-radius: 10px; background: var(--card2); }
+.nw.millie { border-left-color: #e0688a; } .nw.kristan { border-left-color: #22a7f0; }
+.nw b { font-size: 15.5px; line-height: 1.3; }
+.terms { display: flex; flex-direction: column; }
+.tr { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 15px; flex-wrap: wrap; }
+.tr:last-child { border-bottom: 0; }
+.tr b { font-variant-numeric: tabular-nums; }
+.tr.hl span { color: var(--gold); font-weight: 700; }
+.tr.past { opacity: .45; }
 .bring { font-size: 13.5px; font-weight: 700; color: var(--gold); }
 .ev a.linkbtn { padding: 0; }
 /* calculator */
@@ -1643,7 +1655,7 @@ body.k .calc-keys button.eq { color: #07090d; }
   }
 
   /* ---------- Calendar (shared: school events from the school run, homework due dates, parent to-dos) ---------- */
-  var TYPE_LABEL = { event: "Event", deadline: "Deadline", action: "To do", trip: "Trip", sport: "Sport", holiday: "Holiday", news: "News", homework: "Homework" };
+  var TYPE_LABEL = { event: "Event", deadline: "Deadline", action: "To do", trip: "Trip", sport: "Sport", holiday: "Holiday", term: "Term", news: "News", homework: "Homework" };
   function isParentNow() { return (role() || {}).role === "parent"; }
   function calItems() {
     var who = state.calWho, out = [];
@@ -1682,8 +1694,8 @@ body.k .calc-keys button.eq { color: #07090d; }
     for (var i = 0; i < 42; i++) {
       var d = addDays(start, i); if (i === 35 && d.slice(0, 7) !== m) break;
       var its = onDay(items, d), dots = its.slice(0, 6).map(function (x) { return '<i class="cdot ' + esc(x.child) + (x.kind === "homework" ? ' hw' : '') + '"></i>'; }).join("");
-      var wd = new Date(d + "T12:00:00Z").getUTCDay();
-      h += '<button class="cal-d' + (d.slice(0, 7) !== m ? ' out' : '') + (d === t ? ' today' : '') + (d === sel ? ' sel' : '') + (wd === 0 || wd === 6 ? ' we' : '') + '" data-calday="' + d + '" aria-label="' + fmtDay(d, true) + ', ' + its.length + ' items">' + (+d.slice(8)) + '<span class="cdots">' + dots + '</span></button>';
+      var wd = new Date(d + "T12:00:00Z").getUTCDay(), hol = its.some(function (x) { return x.type === "holiday"; });
+      h += '<button class="cal-d' + (d.slice(0, 7) !== m ? ' out' : '') + (d === t ? ' today' : '') + (d === sel ? ' sel' : '') + (wd === 0 || wd === 6 ? ' we' : '') + (hol ? ' hol' : '') + '" data-calday="' + d + '" aria-label="' + fmtDay(d, true) + ', ' + its.length + ' items">' + (+d.slice(8)) + '<span class="cdots">' + dots + '</span></button>';
     }
     h += '</div><p class="small" style="margin:8px 0 0"><i class="cdot millie" style="display:inline-block"></i> Millie &nbsp; <i class="cdot kristan" style="display:inline-block"></i> Kristan &nbsp; <i class="cdot both" style="display:inline-block"></i> Both &nbsp; Square dots are homework.</p></section>';
     if (sel) {
@@ -1703,10 +1715,23 @@ body.k .calc-keys button.eq { color: #07090d; }
     h += '<section class="card sect"><h2>Next four weeks</h2>' + (keys.length ? '<div class="cal-list">' + keys.map(function (d) {
       var lbl = d === t ? "Today" : d === addDays(t, 1) ? "Tomorrow" : fmtDay(d, true);
       return '<div class="cal-day"><h3' + (d === t ? ' class="tod"' : '') + '>' + esc(lbl) + '</h3>' + days[d].map(evRow).join("") + '</div>'; }).join("") + '</div>' : '<p class="small">Nothing in the next four weeks yet. School events and homework appear here after each school run.</p>') + '</section>';
+    var news = state.events.filter(function (e) { return e.type === "news" && e.active !== false && (e.audience !== "parents" || parent) && (state.calWho === "all" || e.child === state.calWho || e.child === "both") && String(e.date).slice(0, 10) >= addDays(t, -21); })
+      .sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); }).slice(0, 10);
+    if (news.length) h += '<section class="card sect"><h2>School news</h2><div class="news">' + news.map(function (e) {
+      var nm = e.child === "both" ? "Whole school" : e.child === "millie" ? "Millie" : "Kristan";
+      return '<div class="nw ' + esc(e.child) + '"><div class="ev-tags"><span class="small">' + esc(fmtDay(String(e.date).slice(0, 10))) + ' · ' + nm + '</span>' + (e.audience === "parents" ? '<span class="tag action">Parents</span>' : '') + '</div><b>' + esc(e.title) + '</b>' + (e.details ? '<span class="small">' + esc(e.details) + '</span>' : '') +
+        (e.linkUrl ? '<a class="linkbtn" href="' + esc(e.linkUrl) + '" target="_blank" rel="noopener">Read more ↗</a>' : '') + (parent ? '<span class="ev-tags"><button class="linkbtn" data-evdel="' + e.id + '">Remove</button></span>' : '') + '</div>'; }).join("") + '</div></section>';
+    if (parent) {
+      var terms = state.events.filter(function (e) { return (e.type === "term" || e.type === "holiday") && e.active !== false && (e.endDate || e.date) >= addDays(t, -60); })
+        .sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); });
+      if (terms.length) h += '<section class="card sect"><h2>Term dates</h2><p class="small">Only parents can see these. Holidays are shaded on the calendar.</p><div class="terms">' + terms.map(function (e) {
+        var d1 = String(e.date).slice(0, 10), d2 = e.endDate ? String(e.endDate).slice(0, 10) : null, past = (d2 || d1) < t;
+        return '<div class="tr' + (e.type === "holiday" ? ' hl' : '') + (past ? ' past' : '') + '"><span>' + esc(e.title) + '</span><b>' + esc(fmtDay(d1)) + (d2 ? ' – ' + esc(fmtDay(d2)) : '') + '</b></div>'; }).join("") + '</div></section>';
+    }
     if (parent) h += '<section class="card"><div class="parentbox"><h3>Add to the calendar (Mum and Dad only)</h3>' +
       '<input class="rd-in" id="evTitle" maxlength="160" placeholder="What, e.g. Sports day">' +
       '<div class="row"><input class="rd-in" type="date" id="evDate" value="' + (sel || addDays(t, 1)) + '"><input class="rd-in" id="evTime" placeholder="Time (optional)" style="flex:1 1 110px"></div>' +
-      '<div class="row"><select class="rd-in" id="evWho"><option value="both">Both</option><option value="millie">Millie</option><option value="kristan">Kristan</option></select><select class="rd-in" id="evType"><option value="event">Event</option><option value="deadline">Deadline</option><option value="sport">Sport</option><option value="trip">Trip</option><option value="holiday">Holiday</option><option value="action">To do (parents only)</option></select></div>' +
+      '<div class="row"><select class="rd-in" id="evWho"><option value="both">Both</option><option value="millie">Millie</option><option value="kristan">Kristan</option></select><select class="rd-in" id="evType"><option value="event">Event</option><option value="deadline">Deadline</option><option value="sport">Sport</option><option value="trip">Trip</option><option value="holiday">Holiday</option><option value="news">School news</option><option value="action">To do (parents only)</option></select></div>' +
       '<input class="rd-in" id="evBring" maxlength="160" placeholder="Bring or wear (optional), e.g. PE kit">' +
       '<div class="row"><button class="btn sm" id="evAdd">Add</button></div></div></section>';
     app.innerHTML = h;

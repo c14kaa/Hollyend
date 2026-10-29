@@ -34,3 +34,7 @@ revoke all on private.run_state from public, anon, authenticated;
 do $$ begin
   if not exists (select 1 from pg_publication_tables where pubname = 'supabase_realtime' and tablename = 'events') then alter publication supabase_realtime add table public.events; end if;
 end $$;
+
+-- Term dates (parents only) and school news.
+alter table public.events drop constraint if exists events_type_check;
+alter table public.events add constraint events_type_check check (type in ('event','deadline','action','trip','sport','holiday','term','news'));
