@@ -2,7 +2,8 @@
 // Actions (POST JSON):
 //   {action:"key"}                     -> {publicKey}  (creates the VAPID keys the first time; the private key never leaves the database)
 //   {action:"test"}  + user's JWT      -> sends a test notification to that user's devices
-//   {action:"run", kind}  + x-cron-secret -> kind "homework" (due today/tomorrow), "daily" (Millie's daily tasks), "new" (homework added in the last 2 hours)
+//   {action:"run", kind}  + x-cron-secret -> to the children: "homework" (due by tomorrow or overdue), "daily" (daily tasks + tomorrow's events), "new" (homework added in the last 2 hours);
+//                                            to parents: "done" + homework_id (a child finished homework), "parents" (evening round-up)
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { generateVapidKeys, sendPush } from "./webpush.js";
 
@@ -46,6 +47,40 @@ async function pendingHomework(child: string) {
   return (hw || []).filter((h: any) => !doneIds.has(h.id));
 }
 
+const NAME: Record<string, string> = { millie: "Millie", kristan: "Kristan", both: "Both" };
+async function parentSubs() { const { data } = await db.from("push_subs").select("*").is("child", null); return data || []; }
+
+async function homeworkDone(cfg: any, id: string) {
+  const { data: h } = await db.from("homework").select("*").eq("id", id).single();
+  const { data: d } = await db.from("homework_done").select("*").eq("homework_id", id).single();
+  if (!h || !d) return { parents: "nothing to send" };
+  const who = NAME[h.child] || h.child;
+  const payload = d.status === "verified"
+    ? { title: who + " finished homework", body: h.title + ": checked by Hollyend. +" + d.points + " points.", url: "/#family", tag: "done-" + id }
+    : { title: who + " ticked off homework", body: h.title + (d.feel ? " (felt " + (d.feel === "ok" ? "OK" : d.feel) + ")" : "") + ". Tap to confirm or send back.", url: "/#family", tag: "done-" + id };
+  return { parents: await deliver(cfg, await parentSubs(), payload) };
+}
+
+async function parentsRoundup(cfg: any) {
+  const today = dubaiDay(0), tomorrow = dubaiDay(1), soon = dubaiDay(2), parts: string[] = [];
+  const { data: hw } = await db.from("homework").select("*").eq("active", true);
+  const { data: done } = await db.from("homework_done").select("homework_id,status");
+  const mark = new Map((done || []).map((d: any) => [d.homework_id, d.status]));
+  const waiting = (hw || []).filter((h: any) => mark.get(h.id) === "ticked");
+  if (waiting.length) parts.push(waiting.length + " homework to check");
+  for (const c of ["millie", "kristan"]) {
+    const open = (hw || []).filter((h: any) => h.child === c && h.due && (!mark.has(h.id) || mark.get(h.id) === "rejected"));
+    const late = open.filter((h: any) => h.due < today).length, due = open.filter((h: any) => h.due === today || h.due === tomorrow).length;
+    if (late || due) parts.push(NAME[c] + ": " + [due ? due + " due by tomorrow" : "", late ? late + " overdue" : ""].filter(Boolean).join(", "));
+  }
+  const { data: todos } = await db.from("events").select("*").eq("type", "action").eq("done", false).eq("active", true).lte("date", soon);
+  if (todos && todos.length) parts.push("To do: " + todos.slice(0, 2).map((e: any) => e.title).join("; ") + (todos.length > 2 ? " +" + (todos.length - 2) + " more" : ""));
+  const { data: evs } = await db.from("events").select("*").eq("active", true).neq("type", "news").neq("type", "action").lte("date", tomorrow).or("end_date.gte." + tomorrow + ",date.eq." + tomorrow);
+  if (evs && evs.length) parts.push("Tomorrow: " + evs.map((e: any) => (e.child === "both" ? "" : NAME[e.child] + " – ") + e.title + (e.bring ? " (bring " + e.bring + ")" : "")).join("; "));
+  if (!parts.length) return { parents: "nothing to send" };
+  return { parents: await deliver(cfg, await parentSubs(), { title: "Tonight's round-up", body: parts.join(". ").slice(0, 240) + ".", url: "/#family", tag: "roundup" }) };
+}
+
 async function run(cfg: any, kind: string) {
   const out: Record<string, unknown> = {};
   for (const child of ["millie", "kristan"]) {
@@ -67,7 +102,7 @@ async function run(cfg: any, kind: string) {
       const ticked = new Set((ticks || []).map((t: any) => t.task));
       const left = (tasks || []).filter((t: any) => !ticked.has(t.id));
       const tomorrow = dubaiDay(1);
-      const { data: evs } = await db.from("events").select("*").in("child", [child, "both"]).eq("audience", "family").eq("active", true).eq("done", false).lte("date", tomorrow).or("end_date.gte." + tomorrow + ",date.eq." + tomorrow);
+      const { data: evs } = await db.from("events").select("*").in("child", [child, "both"]).eq("audience", "family").neq("type", "news").eq("active", true).eq("done", false).lte("date", tomorrow).or("end_date.gte." + tomorrow + ",date.eq." + tomorrow);
       const parts: string[] = [];
       if (left.length) parts.push("Don't forget: " + left.map((t: any) => t.title.replace(/:.*/, "")).join(", ") + ".");
       if (evs && evs.length) parts.push("Tomorrow: " + evs.map((e: any) => e.title + (e.time ? " (" + e.time + ")" : "") + (e.bring ? ". Bring: " + e.bring : "")).join("; ") + ".");
@@ -101,7 +136,10 @@ Deno.serve(async (req) => {
     }
     if (body.action === "run") {
       if (req.headers.get("x-cron-secret") !== cfg.cron_secret) return json({ error: "Not allowed" }, 403);
-      return json(await run(cfg, String(body.kind || "homework")));
+      const kind = String(body.kind || "homework");
+      if (kind === "done") return json(await homeworkDone(cfg, String(body.homework_id || "")));
+      if (kind === "parents") return json(await parentsRoundup(cfg));
+      return json(await run(cfg, kind));
     }
     return json({ error: "Unknown action" }, 400);
   } catch (e) {

@@ -548,6 +548,40 @@ body.k .calc-keys button.eq { color: #07090d; }
 .calc-hist { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 8px; scrollbar-width: none; }
 .calc-hist button { flex: none; font: 600 12.5px var(--body); border: 1px solid var(--line); background: none; color: var(--muted); border-radius: 999px; padding: 4px 10px; cursor: pointer; }
 .wrap { padding-bottom: 90px; }
+.tabs.p8 { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+.bell { position: relative; width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--line); background: var(--card); color: var(--ink); display: grid; place-items: center; cursor: pointer; flex: none; }
+body.k .bell { border-radius: 8px; border-width: 1px; }
+.bell svg { width: 22px; height: 22px; }
+.bell .hw-badge { top: -5px; right: -6px; }
+.bell.ring { border-color: var(--accent); }
+@media (prefers-reduced-motion: no-preference) { .bell.ring svg { animation: ring 3s ease-in-out 1s 2; transform-origin: 50% 10%; } @keyframes ring { 0%, 20%, 100% { transform: none; } 5% { transform: rotate(14deg); } 10% { transform: rotate(-12deg); } 15% { transform: rotate(6deg); } } }
+header { position: relative; }
+.bell-panel { position: absolute; right: 0; top: 64px; z-index: 45; width: min(380px, 100%); max-height: 70vh; overflow: auto; background: var(--card); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 16px 40px rgba(0,0,0,.35); padding: 12px 14px 14px; }
+.bp-h { display: flex; justify-content: space-between; align-items: center; }
+.bp-h b { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.bell-panel h4 { margin: 12px 0 6px; font-size: 15px; }
+.bp-i { display: flex; gap: 10px; padding: 8px 10px; border-left: 3px solid var(--muted); background: var(--card2); border-radius: 8px; margin-bottom: 6px; }
+.bp-i.millie { border-left-color: #e0688a; } .bp-i.kristan { border-left-color: #22a7f0; } .bp-i.both { border-left-color: #9b8cff; }
+.bp-i > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.bp-w { flex: none; width: 70px; font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; display: flex; gap: 5px; align-items: flex-start; }
+.bp-i.late .bp-w { color: var(--bad); }
+.newdot { width: 8px; height: 8px; border-radius: 50%; background: var(--bad); margin-top: 3px; flex: none; }
+.ev-time.w { width: 76px; }
+.fv-ic { width: 40px; height: 40px; color: var(--accent); flex: none; }
+.fv-sub { margin: 14px 0 8px; font-size: 15px; color: var(--muted); letter-spacing: .03em; text-transform: uppercase; }
+.fv-kids { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+.fv-kid { border-top: 4px solid #e0688a; } .fv-kid.kristan { border-top-color: #22a7f0; }
+.fv-top { display: flex; gap: 12px; align-items: center; }
+.fv-top h2 { margin: 0; }
+.fv-top .kav { width: 52px; height: 52px; flex: none; }
+.fv-top .kav svg { width: 100%; height: 100%; }
+.fv-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0; }
+.fv-stats div { background: var(--card2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; }
+.fv-stats b { font-size: 24px; font-family: var(--display); font-variant-numeric: tabular-nums; }
+.fv-stats span { font-size: 12.5px; color: var(--muted); }
+.fv-stats .bad b { color: var(--bad); }
+.fv-list { margin: 0 0 8px; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 15px; }
+.fv-list b { color: var(--gold); } .fv-list b.lt { color: var(--bad); }
 /* flashcards */
 .flash { font: inherit; color: var(--ink); width: 100%; min-height: 220px; border-radius: 16px; border: 2px solid var(--line); background: var(--card2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 24px 18px; text-align: center; cursor: pointer; }
 .flash.flipped { border-color: var(--accent); background: var(--accent-soft); cursor: default; }
@@ -601,6 +635,7 @@ body.k .calc-keys button.eq { color: #07090d; }
       <button class="kid kr" id="pick-kristan" aria-pressed="false"><span class="kav" id="kav-kristan"></span><span class="t">Kristan<small id="krank-kristan">Year 8 · 8E</small></span></button>
     </div>
     <nav class="tabs" aria-label="Sections">
+      <button class="vw" id="v-par" aria-pressed="false" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg>Family</button>
       <button class="vw" id="v-hw" aria-pressed="false"><span class="vwi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/><path d="M9 7h6"/></svg><b class="hw-badge" id="hw-badge" hidden>0</b></span>Homework</button>
       <button class="vw" id="v-quiz" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7 4 20 12 7 20 7 4"/></svg>Play</button>
       <button class="vw" id="v-world" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" id="v-world-i"><path d="M12 21s-6-5.3-6-11a6 6 0 0 1 12 0c0 5.7-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg><span id="v-world-l">Journey</span></button>
@@ -677,10 +712,11 @@ body.k .calc-keys button.eq { color: #07090d; }
     }, function () { dbState = "off"; refresh(); });
   }
   function busy() { return (state.started && (state.view === "quiz" || state.mode === "match")) || (state.view === "quiz" && !!state.flash) || (state.view === "homework" && !!state.hwFeel); }
-  function refresh() { autoVerify(); chrome(); hwBadge(); if (!busy()) render(); }
+  function refresh() { autoVerify(); chrome(); hwBadge(); bellSync(); if (!busy()) render(); }
   var hwLoaded = false, landed = false, landHash = (location.hash || "").replace("#", "");
   function maybeLandOnHomework() {
     if (landed || !hwLoaded || !role()) return; landed = true;
+    if (role().role === "parent") { if (!landHash || landHash === "family") setView("parents"); return; }
     if (landHash === "homework" || (!landHash && state.view === "quiz" && !state.started && hwOpen(state.child).length)) setView("homework");
   }
   function equipped(c) { return (profiles[c || state.child] || {}).equipped || {}; }
@@ -779,6 +815,9 @@ body.k .calc-keys button.eq { color: #07090d; }
     document.getElementById("v-quiz").setAttribute("aria-pressed", v === "quiz");
     document.getElementById("v-hw").setAttribute("aria-pressed", v === "homework");
     document.getElementById("v-cal").setAttribute("aria-pressed", v === "calendar");
+    document.getElementById("v-par").setAttribute("aria-pressed", v === "parents");
+    document.getElementById("title").innerHTML = v === "parents" ? '<em id="who">Hollyend</em> Family' : state.child === "millie" ? '<em id="who">Millie</em>\u2019s Mission Control' : '<em id="who">Kristan</em>';
+    if (v === "parents") checkPush();
     if (v !== "quiz") state.flash = null;
     if (v === "homework") { state.hwMsg = state.hwMsg || ""; checkPush(); }
     document.getElementById("v-shop").setAttribute("aria-pressed", v === "shop");
@@ -794,6 +833,7 @@ body.k .calc-keys button.eq { color: #07090d; }
     calcSync();
     if (state.view === "homework") return homeworkView();
     if (state.view === "calendar") return calendarView();
+    if (state.view === "parents") return isParentNow() ? familyView() : (state.view = "homework", homeworkView());
     if (state.view === "quiz" && state.flash && !state.started) return flashView();
     if (state.view === "progress") return progressView();
     if (state.view === "shop") return shopView();
@@ -1546,7 +1586,7 @@ body.k .calc-keys button.eq { color: #07090d; }
     if (s === "on") h += '<span>✓ Reminders are on for this device.</span><button class="linkbtn" id="pushTest">Send a test</button>';
     else if (s === "denied") h += '<span>Notifications are blocked. Turn them on in Settings › Notifications › Hollyend.</span>';
     else if (s === "unsupported") h += '<span>To get homework reminders, open Hollyend from your Home Screen, then come back here.</span>';
-    else if (s === "off") h += '<span>Get a reminder when homework is due.</span><button class="btn sm" id="pushOn">Turn on reminders</button>';
+    else if (s === "off") h += '<span>' + (isParentNow() ? 'Get a notification when the children finish homework, and an evening round-up of what’s due and what’s on tomorrow.' : 'Get a reminder when homework is due.') + '</span><button class="btn sm" id="pushOn">Turn on notifications</button>';
     else h += '<span class="small">Checking reminders…</span>';
     if (state.pushMsg) h += '<span class="small" style="flex-basis:100%">' + esc(state.pushMsg) + '</span>';
     return h + '</div>';
@@ -1607,11 +1647,11 @@ body.k .calc-keys button.eq { color: #07090d; }
   }
   function bindHomework() {
     var on = document.getElementById("pushOn"), te = document.getElementById("pushTest");
-    if (on) on.addEventListener("click", function () { state.pushMsg = "Allow notifications when your iPad asks…"; homeworkView();
-      window.HOLLYEND.push.enable().then(function () { state.pushStatus = "on"; state.pushMsg = "Reminders are on. Try “Send a test”."; }, function (e) { state.pushMsg = e.message || "That didn't work."; checkPush(); }).then(function () { if (state.view === "homework") homeworkView(); }); });
-    if (te) te.addEventListener("click", function () { state.pushMsg = "Sending…"; homeworkView();
-      window.HOLLYEND.push.test().then(function (r) { state.pushMsg = r && r.sent ? "Test sent! It should pop up in a few seconds." : "No device received it. Try turning reminders off and on again."; }, function (e) { state.pushMsg = e.message; }).then(function () { if (state.view === "homework") homeworkView(); }); });
-    [].forEach.call(app.querySelectorAll("[data-hwdone]"), function (b) { b.addEventListener("click", function () { state.hwFeel = b.dataset.hwdone; homeworkView(); }); });
+    if (on) on.addEventListener("click", function () { state.pushMsg = "Allow notifications when your iPad asks…"; render();
+      window.HOLLYEND.push.enable().then(function () { state.pushStatus = "on"; state.pushMsg = "Reminders are on. Try “Send a test”."; }, function (e) { state.pushMsg = e.message || "That didn't work."; checkPush(); }).then(function () { if (state.view === "homework" || state.view === "parents") render(); }); });
+    if (te) te.addEventListener("click", function () { state.pushMsg = "Sending…"; render();
+      window.HOLLYEND.push.test().then(function (r) { state.pushMsg = r && r.sent ? "Test sent! It should pop up in a few seconds." : "No device received it. Try turning reminders off and on again."; }, function (e) { state.pushMsg = e.message; }).then(function () { if (state.view === "homework" || state.view === "parents") render(); }); });
+    [].forEach.call(app.querySelectorAll("[data-hwdone]"), function (b) { b.addEventListener("click", function () { state.hwFeel = b.dataset.hwdone; render(); }); });
     [].forEach.call(app.querySelectorAll("[data-hwfeel]"), function (b) {
       b.addEventListener("click", function () {
         var h = state.hw.filter(function (x) { return x.id === b.dataset.hw; })[0], m = hwMark(h); state.hwFeel = null;
@@ -1651,7 +1691,7 @@ body.k .calc-keys button.eq { color: #07090d; }
   }
   function checkPush() {
     var P = window.HOLLYEND && window.HOLLYEND.push; if (!P) return;
-    P.status().then(function (s) { state.pushStatus = s; if (state.view === "homework") homeworkView(); }, function () { state.pushStatus = "unsupported"; });
+    P.status().then(function (s) { state.pushStatus = s; if (state.view === "homework" || state.view === "parents") render(); }, function () { state.pushStatus = "unsupported"; });
   }
 
   /* ---------- Calendar (shared: school events from the school run, homework due dates, parent to-dos) ---------- */
@@ -1741,8 +1781,9 @@ body.k .calc-keys button.eq { color: #07090d; }
     [].forEach.call(app.querySelectorAll("[data-calwho]"), function (b) { b.addEventListener("click", function () { state.calWho = b.dataset.calwho; calendarView(); }); });
     [].forEach.call(app.querySelectorAll("[data-calday]"), function (b) { b.addEventListener("click", function () { state.calDay = state.calDay === b.dataset.calday ? null : b.dataset.calday; if (state.calDay && state.calDay.slice(0, 7) !== (state.calMonth || todayD().slice(0, 7))) state.calMonth = state.calDay.slice(0, 7); calendarView(); }); });
     var mv = function (n) { var m = state.calMonth || todayD().slice(0, 7), d = new Date(m + "-01T12:00:00Z"); d.setUTCMonth(d.getUTCMonth() + n); state.calMonth = d.toISOString().slice(0, 7); state.calDay = null; calendarView(); };
-    document.getElementById("calPrev").addEventListener("click", function () { mv(-1); });
-    document.getElementById("calNext").addEventListener("click", function () { mv(1); });
+    var cp = document.getElementById("calPrev"), cn = document.getElementById("calNext");
+    if (cp) cp.addEventListener("click", function () { mv(-1); });
+    if (cn) cn.addEventListener("click", function () { mv(1); });
     [].forEach.call(app.querySelectorAll("[data-evhw]"), function (b) { b.addEventListener("click", function () { if (b.dataset.evhw !== state.child) { var r = role(); if (r && r.role === "child") return; setChild(b.dataset.evhw); } setView("homework"); window.scrollTo({ top: 0 }); }); });
     [].forEach.call(app.querySelectorAll("[data-evdone]"), function (b) { b.addEventListener("click", function () { var e = state.events.filter(function (x) { return x.id === b.dataset.evdone; })[0]; if (!e) return;
       db.collection("events").doc(e.id).update({ done: !e.done }).then(function () { state.calMsg = e.done ? "Moved back to the to-do list." : "Done: " + e.title; refresh(); }, function () { state.calMsg = "That didn't save."; refresh(); }); }); });
@@ -1859,6 +1900,115 @@ body.k .calc-keys button.eq { color: #07090d; }
   calcSetup();
   document.addEventListener("hollyend:member", calcSync);
 
+  /* ---------- Bell: due today/tomorrow + school news ---------- */
+  var BELL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>';
+  function kidsInView() { var r = role() || {}; return r.role === "child" ? [r.child] : ["millie", "kristan"]; }
+  function cname(c) { return c === "millie" ? "Millie" : c === "kristan" ? "Kristan" : "Both"; }
+  function dueSoon() {
+    var t = todayD(), tm = addDays(t, 1), kids = kidsInView(), parent = isParentNow(), out = [];
+    kids.forEach(function (c) { hwFor(c).filter(hwPending).forEach(function (h) { var d = h.due ? String(h.due).slice(0, 10) : null; if (d && d <= tm) out.push({ kind: "homework", child: c, when: d < t ? "Overdue" : d === t ? "Today" : "Tomorrow", late: d < t, title: h.title, sub: "Homework" + (h.dueTime ? " · " + h.dueTime : "") }); }); });
+    state.events.forEach(function (e) {
+      if (e.active === false || e.done || e.type === "news" || (e.audience === "parents" && !parent)) return;
+      if (e.child !== "both" && kids.indexOf(e.child) < 0) return;
+      var d1 = String(e.date).slice(0, 10), d2 = e.endDate ? String(e.endDate).slice(0, 10) : d1;
+      if (e.type === "action") { if (d1 <= tm) out.push({ kind: "action", child: e.child, when: d1 < t ? "Overdue" : d1 === t ? "Today" : "Tomorrow", late: d1 < t, title: e.title, sub: "For Mum and Dad", formUrl: e.formUrl }); return; }
+      var on = function (d) { return d1 <= d && d2 >= d; };
+      if (on(t) || on(tm)) out.push({ kind: "event", child: e.child, when: on(t) ? "Today" : "Tomorrow", title: e.title, sub: (TYPE_LABEL[e.type] || "Event") + (e.time ? " · " + e.time : ""), bring: e.bring });
+    });
+    var rank = { Overdue: 0, Today: 1, Tomorrow: 2 };
+    return out.sort(function (a, b) { return rank[a.when] - rank[b.when]; });
+  }
+  function newsList(days) {
+    var t = todayD(), parent = isParentNow(), kids = kidsInView();
+    return state.events.filter(function (e) { return e.type === "news" && e.active !== false && (e.audience !== "parents" || parent) && (e.child === "both" || kids.indexOf(e.child) >= 0) && String(e.date).slice(0, 10) >= addDays(t, -(days || 21)); })
+      .sort(function (a, b) { return String(b.date).localeCompare(String(a.date)) || String(b.createdAt).localeCompare(String(a.createdAt)); });
+  }
+  function newsSeenAt() { return store("news-seen-" + ((role() || {}).role === "child" ? role().child : "parent")) || ""; }
+  function unseenNews() { var s = newsSeenAt(); return newsList().filter(function (e) { return String(e.createdAt || e.date) > s; }); }
+  var bellOpen = false;
+  function bellSync() {
+    var b = document.getElementById("bell"); if (!b) return;
+    b.hidden = !role();
+    var n = dueSoon().length + unseenNews().length, badge = document.getElementById("bell-n");
+    badge.textContent = n > 9 ? "9+" : n; badge.hidden = !n;
+    b.classList.toggle("ring", n > 0);
+    if (bellOpen) bellDraw();
+  }
+  function bellDraw() {
+    var p = document.getElementById("bellPanel"); if (!p) return;
+    p.hidden = !bellOpen; if (!bellOpen) return;
+    var due = dueSoon(), seen = newsSeenAt(), news = newsList().slice(0, 8), multi = kidsInView().length > 1;
+    var h = '<div class="bp-h"><b>Notifications</b><button class="linkbtn" id="bellClose">Close ✕</button></div>';
+    h += '<h4>Due soon</h4>' + (due.length ? due.map(function (x) {
+      return '<div class="bp-i ' + esc(x.child) + (x.late ? ' late' : '') + '"><span class="bp-w">' + esc(x.when) + '</span><div><b>' + esc(x.title) + '</b><span class="small">' + esc(x.sub) + (multi ? ' · ' + cname(x.child) : '') + '</span>' +
+        (x.bring ? '<span class="bring">Bring: ' + esc(x.bring) + '</span>' : '') + (x.formUrl ? '<a class="linkbtn" href="' + esc(x.formUrl) + '" target="_blank" rel="noopener">Open form ↗</a>' : '') + '</div></div>'; }).join("") : '<p class="small">Nothing due today or tomorrow.</p>');
+    h += '<h4>School news</h4>' + (news.length ? news.map(function (e) {
+      var isNew = String(e.createdAt || e.date) > seen;
+      return '<div class="bp-i news ' + esc(e.child) + '"><span class="bp-w">' + (isNew ? '<i class="newdot"></i>' : '') + esc(fmtDay(String(e.date).slice(0, 10)).replace(/^\w+ /, "")) + '</span><div><b>' + esc(e.title) + '</b>' + (e.details ? '<span class="small">' + esc(e.details) + '</span>' : '') + (multi ? '<span class="small">' + (e.child === "both" ? "Whole school" : cname(e.child)) + '</span>' : '') + '</div></div>'; }).join("") : '<p class="small">No school news in the last three weeks.</p>');
+    h += '<div class="row"><button class="btn sm ghost" id="bellCal">Open the calendar</button></div>';
+    p.innerHTML = h;
+    document.getElementById("bellClose").addEventListener("click", function () { bellOpen = false; bellDraw(); });
+    document.getElementById("bellCal").addEventListener("click", function () { bellOpen = false; bellDraw(); setView("calendar"); window.scrollTo({ top: 0 }); });
+  }
+  function bellSetup() {
+    var hud = document.querySelector(".hud"); if (!hud) return;
+    var b = document.createElement("button"); b.id = "bell"; b.className = "bell"; b.type = "button"; b.hidden = true; b.setAttribute("aria-label", "Notifications");
+    b.innerHTML = BELL + '<b class="hw-badge" id="bell-n" hidden>0</b>';
+    hud.insertBefore(b, hud.firstChild);
+    var p = document.createElement("div"); p.id = "bellPanel"; p.className = "bell-panel"; p.hidden = true; p.setAttribute("role", "dialog"); p.setAttribute("aria-label", "Notifications");
+    document.querySelector("header").appendChild(p);
+    b.addEventListener("click", function () {
+      bellOpen = !bellOpen;
+      if (bellOpen) { bellDraw(); var latest = newsList().reduce(function (m, e) { var k = String(e.createdAt || e.date); return k > m ? k : m; }, newsSeenAt()); store("news-seen-" + ((role() || {}).role === "child" ? role().child : "parent"), latest); }
+      else bellDraw();
+      setTimeout(bellSync, 0);
+    });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && bellOpen) { bellOpen = false; bellDraw(); } });
+  }
+  bellSetup();
+
+  /* ---------- Family overview (parents only) ---------- */
+  function familyView() {
+    var t = todayD(), tm = addDays(t, 1), wk = addDays(t, 7);
+    var waiting = state.hw.filter(function (h) { var m = hwMark(h); return h.active !== false && m && m.status === "ticked"; });
+    var todos = state.events.filter(function (e) { return e.type === "action" && !e.done && e.active !== false && String(e.date).slice(0, 10) <= wk; }).sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); });
+    var cash = bankRows.filter(function (b) { return b.status === "requested"; });
+    var h = '<section class="card"><div class="hw-head"><div><span class="small">' + esc(fmtDay(t, true)) + '</span><h2 class="hw-h">Family overview</h2></div>' + BELL.replace('<svg ', '<svg class="fv-ic" ') + '</div>' +
+      (state.hwMsg ? '<p class="cbnote" style="margin:0">' + esc(state.hwMsg) + '</p>' : '') + pushBox() + '</section>';
+    var needs = waiting.length + todos.length + cash.length;
+    h += '<section class="card sect"><h2>Needs you' + (needs ? ' <span class="pill">' + needs + '</span>' : '') + '</h2>';
+    if (!needs) h += '<p class="small">Nothing waiting for you. 🎉</p>';
+    if (waiting.length) h += '<h3 class="fv-sub">Homework to check</h3><div class="hw-list">' + waiting.map(function (x) { return hwCard(x, true).replace('<b class="hw-title">', '<span class="small">' + cname(x.child) + '</span><b class="hw-title">'); }).join("") + '</div>';
+    if (todos.length) h += '<h3 class="fv-sub">To do this week</h3>' + todos.map(function (e) {
+      var d = String(e.date).slice(0, 10);
+      return evRow({ kind: "action", type: "action", id: e.id, child: e.child, date: d, time: "", title: e.title, details: (d < t ? "Was due " : "Due ") + fmtDay(d) + " · " + cname(e.child) + (e.details ? " · " + e.details : ""), formUrl: e.formUrl, linkUrl: e.linkUrl, done: false }); }).join("");
+    if (cash.length) h += '<h3 class="fv-sub">Cash-outs to pay</h3>' + cash.map(function (b) { return '<div class="ev ' + esc(b.child) + '"><span class="ev-time"></span><div class="ev-body"><b>' + cname(b.child) + ' · ' + fmtMoney(b.pence) + '</b><span class="small">Asked ' + esc(when(b.at)) + '</span><span class="ev-tags"><button class="linkbtn" data-gobank="' + esc(b.child) + '">Open ' + cname(b.child) + '’s bank</button></span></div></div>'; }).join("");
+    h += '</section>';
+    h += '<div class="fv-kids">' + ["millie", "kristan"].map(function (c) {
+      var open = hwFor(c).filter(hwPending), late = open.filter(function (x) { return x.due && String(x.due).slice(0, 10) < t; }), soon = open.filter(function (x) { var d = x.due && String(x.due).slice(0, 10); return d && d >= t && d <= tm; });
+      var aw = awards(all, c, WEEK.start), sk = streakInfo(all, c, new Date()), w = myWallet(c);
+      var mine = all.filter(function (a) { return a.child === c && lgToday(a.at) >= addDays(t, -6); });
+      var avg = mine.length ? Math.round(mine.reduce(function (s, a) { return s + (a.total ? a.score / a.total : 0); }, 0) / mine.length * 100) : null;
+      var place = c === "millie" ? (function () { var J = journeyState(all, "millie"); return "Journey: " + J.at; })() : (function () { var L = leagueState(all, state.matches, Date.now()); return "League: " + (L.season.played ? ord(L.myRow.pos) : "not started") + " in " + L.division.name; })();
+      var dt = state.daily.filter(function (x) { return x.child === c && x.active !== false; }), dtOn = dt.filter(function (x) { return state.dailyTicks.some(function (k) { return k.child === c && k.task === x.id && String(k.day).slice(0, 10) === t; }); });
+      return '<section class="card fv-kid ' + c + '"><div class="fv-top"><span class="kav">' + avatarSVG(c, equipped(c), "av") + '</span><div><h2>' + cname(c) + '</h2><span class="small">' + esc(aw.rank.name) + ' · ' + w.balance + ' points</span></div></div>' +
+        '<div class="fv-stats"><div><b>' + open.length + '</b><span>homework to do</span></div><div' + (late.length ? ' class="bad"' : '') + '><b>' + late.length + '</b><span>overdue</span></div><div><b>' + sk.current + '</b><span>day streak' + (sk.atRisk ? ' · at risk' : '') + '</span></div><div><b>' + mine.length + '</b><span>quizzes, 7 days' + (avg != null ? ' · ' + avg + '%' : '') + '</span></div></div>' +
+        (late.length || soon.length ? '<ul class="fv-list">' + late.concat(soon).map(function (x) { var d = String(x.due).slice(0, 10); return '<li><b class="' + (d < t ? 'lt' : '') + '">' + (d < t ? 'Overdue' : d === t ? 'Today' : 'Tomorrow') + '</b> ' + esc(x.title) + '</li>'; }).join("") + '</ul>' : '<p class="small">Nothing due today or tomorrow.</p>') +
+        (dt.length ? '<p class="small">Daily tasks today: ' + dtOn.length + ' of ' + dt.length + ' ticked</p>' : '') +
+        '<p class="small">' + esc(place) + '</p><div class="row"><button class="btn sm ghost" data-fvkid="' + c + '">Open ' + cname(c) + '’s homework</button></div></section>';
+    }).join("") + '</div>';
+    var tt = dueSoon().filter(function (x) { return x.kind === "event"; });
+    h += '<section class="card sect"><h2>Today and tomorrow</h2>' + (tt.length ? tt.map(function (x) { return '<div class="ev ' + esc(x.child) + '"><span class="ev-time w">' + esc(x.when) + '</span><div class="ev-body"><b>' + esc(x.title) + '</b><span class="small">' + esc(x.sub) + ' · ' + cname(x.child) + '</span>' + (x.bring ? '<span class="bring">Bring: ' + esc(x.bring) + '</span>' : '') + '</div></div>'; }).join("") : '<p class="small">No school events today or tomorrow.</p>') +
+      '<div class="row"><button class="btn sm ghost" id="fvCal">Open the calendar</button></div></section>';
+    var nw = newsList(14).slice(0, 5);
+    if (nw.length) h += '<section class="card sect"><h2>Latest school news</h2><div class="news">' + nw.map(function (e) { return '<div class="nw ' + esc(e.child) + '"><div class="ev-tags"><span class="small">' + esc(fmtDay(String(e.date).slice(0, 10))) + ' · ' + (e.child === "both" ? "Whole school" : cname(e.child)) + '</span>' + (e.audience === "parents" ? '<span class="tag action">Parents</span>' : '') + '</div><b>' + esc(e.title) + '</b>' + (e.details ? '<span class="small">' + esc(e.details) + '</span>' : '') + '</div>'; }).join("") + '</div></section>';
+    app.innerHTML = h;
+    bindHomework(); bindCalendar();
+    [].forEach.call(app.querySelectorAll("[data-fvkid]"), function (b) { b.addEventListener("click", function () { setChild(b.dataset.fvkid); setView("homework"); window.scrollTo({ top: 0 }); }); });
+    [].forEach.call(app.querySelectorAll("[data-gobank]"), function (b) { b.addEventListener("click", function () { setChild(b.dataset.gobank); setView("bank"); window.scrollTo({ top: 0 }); }); });
+    var fc = document.getElementById("fvCal"); if (fc) fc.addEventListener("click", function () { setView("calendar"); window.scrollTo({ top: 0 }); });
+  }
+
   /* ---------- Flashcards (Millie's spellings, Kristan's French list) ---------- */
   function flashCards() {
     if (state.child === "millie") return SPELLING.words.map(function (w) { return { front: w.meaning, ctx: w.sentences[0].replace("___", "_____"), speakFront: w.sentences[0].replace("___", w.word), back: w.word, extra: w.chunks + " · " + w.hook, speak: w.word, lang: "en-GB" }; });
@@ -1909,6 +2059,7 @@ body.k .calc-keys button.eq { color: #07090d; }
   document.getElementById("v-hw").addEventListener("click", function () { state.hwMsg = ""; setView("homework"); });
   document.getElementById("v-shop").addEventListener("click", function () { setView("shop"); });
   document.getElementById("v-cal").addEventListener("click", function () { state.calMsg = ""; setView("calendar"); });
+  document.getElementById("v-par").addEventListener("click", function () { state.hwMsg = ""; setView("parents"); });
   document.getElementById("v-bank").addEventListener("click", function () { setView("bank"); });
   [].forEach.call(document.querySelectorAll(".lv"), function (b) { b.addEventListener("click", function () { setLevel(+b.dataset.l); }); });
 
@@ -1922,9 +2073,10 @@ body.k .calc-keys button.eq { color: #07090d; }
   if (hash === "vocab") { state.mode = "vocab"; hash = "kristan"; }
   if (hash === "league") { state.view = "world"; hash = "kristan"; }
   if (hash === "calendar") { state.view = "calendar"; hash = ""; }
+  if (hash === "family") { state.view = "parents"; hash = ""; }
   if (hash === "millie-challenge" || hash === "kristan-challenge") { state.mode = "challenge"; hash = hash.split("-")[0]; }
   setChild(hash === "kristan" || hash === "millie" ? hash : hash === "spelling" ? "millie" : (hash === "english" || hash === "french") ? "kristan" : (store("quiz-child") || "millie"));
-  if (state.view === "world" || state.view === "calendar") setView(state.view);
+  if (state.view === "world" || state.view === "calendar" || state.view === "parents") setView(state.view);
   document.addEventListener("hollyend:member", function (e) {
     var m = e.detail;
     if (m.role === "child") {
@@ -1933,7 +2085,10 @@ body.k .calc-keys button.eq { color: #07090d; }
       if (m.child === "kristan") document.querySelector(".kids").hidden = true;
       state.child = null; setChild(m.child);
     }
-    maybeLandOnHomework();
+    var isP = m.role === "parent";
+    document.getElementById("v-par").hidden = !isP;
+    document.querySelector(".tabs").classList.toggle("p8", isP);
+    maybeLandOnHomework(); bellSync();
   });
   document.getElementById("signout").addEventListener("click", function () { window.HOLLYEND.signOut(); });
   ["millie", "kristan"].forEach(function (c) { var w = document.getElementById("wav-" + c); if (w) w.innerHTML = avatarSVG(c, {}, "av"); });
