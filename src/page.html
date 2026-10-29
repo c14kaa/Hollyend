@@ -926,7 +926,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     var aw = awards(all, state.child, WEEK.start);
     var w = myWallet();
     var h = '<section class="card big-start">' + (state.child === "kristan" ? kHero(aw, w) : '<div class="hero"><div class="bigav">' + avatarSVG(state.child, equipped(), "av") + '</div><div class="side">' + rankBlock(aw) +
-      '<span class="small"><b style="color:var(--gold)">' + w.balance + ' points</b> to spend' + (w.balance >= 250 ? ' (worth ' + fmtMoney(Math.floor(w.balance / 250) * 50) + ' at the bank)' : '') + '</span>' +
+      '<span class="small"><b style="color:var(--gold)">' + w.balance + ' points</b> to spend' + (w.balance >= penceToPoints(BANK.stepPence) ? ' (worth ' + fmtMoney(Math.floor(w.balance / penceToPoints(BANK.stepPence)) * BANK.stepPence) + ' at the bank)' : '') + '</span>' +
       '<button class="linkbtn" id="toShop">' + (state.child === "millie" ? 'Dress your astronaut' : 'Kit out your player') + '</button></div></div>') +
       (state.mode === "revise" ? (function () { var t = revTopic(state.child, state.reviseTopic), st = revisionStats(all, state.child, t);
         return '<p class="prompt">Revise: ' + esc(t.title) + '</p><p class="small">' + esc(t.subject) + ' · first covered: ' + esc(t.covered) + '. 10 questions on this topic only' + (st.total ? '. So far you\u2019ve got <b>' + st.right + ' of ' + st.total + '</b> right (' + st.pct + '%)' : '') + '.</p>' +
@@ -1536,7 +1536,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     return '<div class="khero">' + kCard() + '<div class="side"><span class="tierline"><b>' + pc.tierName + '</b> card · OVR ' + pc.ovr + (pc.next ? ' · ' + pc.next + ' for ' + pc.nextName : '') + '</span>' +
       '<div class="statlist">' + pc.stats.map(function (s) { return '<span>' + s.name + '</span><span class="sb"><i style="width:' + Math.round((s.value - 40) / 59 * 100) + '%"></i></span><b>' + s.value + '</b>'; }).join("") + '</div>' +
       '<span class="tierline">Status: <b>' + esc(r.name) + '</b>' + (r.next ? ' · ' + (r.next.at - aw.points) + ' pts to ' + esc(r.next.name) : '') + '</span><div class="bar" role="img" aria-label="' + pct + '% to next status"><i style="width:' + pct + '%"></i></div>' +
-      '<span class="small"><b style="color:var(--ink)">' + w.balance + ' pts</b> to spend' + (w.balance >= 250 ? ' · worth ' + fmtMoney(Math.floor(w.balance / 250) * 50) : '') + '</span>' +
+      '<span class="small"><b style="color:var(--ink)">' + w.balance + ' pts</b> to spend' + (w.balance >= penceToPoints(BANK.stepPence) ? ' · worth ' + fmtMoney(Math.floor(w.balance / penceToPoints(BANK.stepPence)) * BANK.stepPence) : '') + '</span>' +
       '<button class="linkbtn" id="toShop">Kit and boots</button></div></div>';
   }
   /* ---------- live match bar ---------- */

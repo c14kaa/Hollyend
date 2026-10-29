@@ -1,4 +1,4 @@
--- Bank weekly limit raised to £12 (see private.guard_bank: used + new.pence > 1200).
+-- Bank weekly limit raised to £12 (guard_bank: used + new.pence > 1200). Rate: 150 points = £1, points set by the server.
 -- Kristan's school merits: £1 each, paid when a parent marks them paid.
 create table if not exists public.merits (
   id uuid primary key default gen_random_uuid(),

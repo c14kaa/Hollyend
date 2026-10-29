@@ -1,5 +1,5 @@
 /* ===== Characters, shop and bank (pure functions, no DOM) ===== */
-var BANK = { pointsPerPound: 500, stepPence: 50, weeklyCapPence: 1200 };
+var BANK = { pointsPerPound: 150, stepPence: 50, weeklyCapPence: 1200 };
 
 var LOOK_SKIN = [["Light", "#f2d3b8"], ["Warm", "#e2ad86"], ["Golden", "#c98d63"], ["Rich", "#9b6644"], ["Deep", "#6a4330"]];
 var LOOK_HAIR = [["Dark brown", "#3a2418"], ["Black", "#15100e"], ["Chestnut", "#6b3b1f"], ["Copper", "#a8552a"], ["Blonde", "#d9b25f"]];
