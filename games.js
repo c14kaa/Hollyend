@@ -3,27 +3,43 @@
    Games never count towards streaks; the server gives a small points bonus (private.guard_game). */
 
 var MONKEYS = {
-  ooh: { id: "ooh", name: "Ooh Ooh", fur: "#7a4a26", body: "#8b5a2b", face: "#e3b98a", tag: "the clever one (he thinks)" },
-  uuh: { id: "uuh", name: "Uuh Uuh", fur: "#24130a", body: "#3a2112", face: "#9c6a40", tag: "the silly, hungry one" }
+  /* Both are the same Toys "R" Us chimp plush. Ooh Ooh came first: much loved, washed lots, faded and a bit fluffed-up.
+     Uuh Uuh is the newer one: rich dark brown, plump, and always holding a banana. */
+  ooh: { id: "ooh", name: "Ooh Ooh", fur: "#6f5845", furHi: "#8a735f", face: "#cfae86", faceLo: "#bf9c74", stitch: "#5a3e2a", tag: "the first monkey: wise, cuddly and a bit fluffy from all the washes" },
+  uuh: { id: "uuh", name: "Uuh Uuh", fur: "#4a2c16", furHi: "#5e3a1f", face: "#d9a464", faceLo: "#c98f4f", stitch: "#3a1f0c", tag: "the newer monkey: plump, silly and always hungry" }
 };
 
 function monkeySVG(id, mood, cls) {
-  var m = MONKEYS[id] || MONKEYS.ooh, happy = mood !== "sad" && mood !== "shock";
-  var mouth = mood === "shock" ? '<ellipse cx="50" cy="66" rx="5" ry="6" fill="#3a1a0a"/>' :
-    mood === "sad" ? '<path d="M41 69 Q50 62 59 69" stroke="#3a1a0a" stroke-width="3" fill="none" stroke-linecap="round"/>' :
-    mood === "silly" ? '<path d="M40 62 Q50 74 60 62 Z" fill="#3a1a0a"/><path d="M47 66 Q50 74 55 67 Z" fill="#ff7a9a"/>' :
-    '<path d="M40 62 Q50 72 60 62" stroke="#3a1a0a" stroke-width="3" fill="none" stroke-linecap="round"/>';
-  var eyes = mood === "silly" ? '<circle cx="41" cy="48" r="5" fill="#fff"/><circle cx="59" cy="48" r="5" fill="#fff"/><circle cx="43" cy="50" r="2.6" fill="#1a0d05"/><circle cx="57" cy="46" r="2.6" fill="#1a0d05"/>' :
-    mood === "wink" ? '<circle cx="41" cy="48" r="4" fill="#1a0d05"/><path d="M54 48 Q59 44 64 48" stroke="#1a0d05" stroke-width="3" fill="none" stroke-linecap="round"/>' :
-    '<circle cx="41" cy="48" r="4" fill="#1a0d05"/><circle cx="59" cy="48" r="4" fill="#1a0d05"/><circle cx="42.5" cy="46.5" r="1.3" fill="#fff"/><circle cx="60.5" cy="46.5" r="1.3" fill="#fff"/>';
-  var extra = id === "uuh" ? '<path d="M42 20 Q46 10 50 20 Q54 10 58 20" stroke="' + m.fur + '" stroke-width="4" fill="none" stroke-linecap="round"/>' +
-    '<g transform="translate(76 70) rotate(25)"><path d="M0 0 Q-4 -16 6 -24 Q2 -12 10 0 Z" fill="#ffd84a" stroke="#c9a400" stroke-width="1.2"/></g>' : '<path d="M30 30 Q34 22 40 28" stroke="' + m.fur + '" stroke-width="3" fill="none" stroke-linecap="round"/>';
+  var m = MONKEYS[id] || MONKEYS.ooh, old = id === "ooh";
+  /* stitched mouth, like the plush */
+  var mouth = mood === "shock" ? '<ellipse cx="50" cy="69" rx="4.5" ry="5.5" fill="' + m.stitch + '"/>' :
+    mood === "sad" ? '<path d="M40 72 Q50 65 60 72" stroke="' + m.stitch + '" stroke-width="1.8" fill="none" stroke-linecap="round"/>' :
+    mood === "silly" ? '<path d="M37 64 Q50 78 63 64" stroke="' + m.stitch + '" stroke-width="1.8" fill="#7a3a2a"/><path d="M46 70 Q50 76 55 70 Z" fill="#ff8fa3"/>' :
+    '<path d="M35 64 Q50 76 65 64" stroke="' + m.stitch + '" stroke-width="1.8" fill="none" stroke-linecap="round"/>';
+  var eyes = mood === "wink" ? '<circle cx="41" cy="45" r="3.4" fill="#120804"/><path d="M55 45 Q59 42 63 45" stroke="#120804" stroke-width="2.4" fill="none" stroke-linecap="round"/>' :
+    mood === "silly" ? '<circle cx="41" cy="45" r="3.6" fill="#120804"/><circle cx="59" cy="44" r="3.6" fill="#120804"/><circle cx="42.2" cy="43.6" r="1.1" fill="#fff"/><circle cx="60.2" cy="42.6" r="1.1" fill="#fff"/>' :
+    '<circle cx="41" cy="45" r="3.4" fill="#120804"/><circle cx="59" cy="45" r="3.4" fill="#120804"/><circle cx="42.2" cy="43.8" r="1.1" fill="#fff"/><circle cx="60.2" cy="43.8" r="1.1" fill="#fff"/>';
+  /* Ooh Ooh: faded, washed-lots fur, shown as soft worn patches and a few loose fluffs on the edge */
+  var fluff = old ? '<ellipse cx="62" cy="24" rx="9" ry="5" fill="' + m.furHi + '" opacity=".5"/><ellipse cx="28" cy="58" rx="4" ry="7" fill="' + m.furHi + '" opacity=".45"/>' +
+    [[-60], [-25], [15], [50]].map(function (a) { var r = 31, t = (a[0] - 90) * Math.PI / 180, x = 50 + r * Math.cos(t), y = 48 + r * Math.sin(t) * 1.06;
+      return '<path d="M' + x.toFixed(1) + ' ' + y.toFixed(1) + ' l' + (Math.cos(t) * 3.5).toFixed(1) + ' ' + (Math.sin(t) * 3.5).toFixed(1) + '" stroke="' + m.fur + '" stroke-width="3" stroke-linecap="round"/>'; }).join("") : "";
+  var banana = old ? "" : '<g transform="translate(70 70) rotate(-20)"><path d="M0 18 Q-6 0 6 -14 Q4 0 12 16 Z" fill="#ffd84a" stroke="#c9a400" stroke-width="1.3"/><path d="M5 -14 l1 -4" stroke="#6b4a10" stroke-width="2" stroke-linecap="round"/></g>' +
+    '<ellipse cx="74" cy="88" rx="10" ry="7" fill="' + m.face + '" stroke="' + m.faceLo + '" stroke-width="1"/>';
   return '<svg class="' + (cls || "mk") + '" viewBox="0 0 100 100" role="img" aria-label="' + m.name + '">' +
-    '<circle cx="18" cy="46" r="13" fill="' + m.body + '"/><circle cx="18" cy="46" r="7" fill="' + m.face + '"/><circle cx="82" cy="46" r="13" fill="' + m.body + '"/><circle cx="82" cy="46" r="7" fill="' + m.face + '"/>' +
-    '<circle cx="50" cy="48" r="32" fill="' + m.body + '"/>' +
-    '<path d="M28 52 Q28 34 40 36 Q50 30 60 36 Q72 34 72 52 Q72 78 50 80 Q28 78 28 52 Z" fill="' + m.face + '"/>' +
-    eyes + '<ellipse cx="46" cy="57" rx="1.8" ry="1.4" fill="#3a1a0a"/><ellipse cx="54" cy="57" rx="1.8" ry="1.4" fill="#3a1a0a"/>' + mouth +
-    (happy ? '<circle cx="34" cy="62" r="4" fill="#ff9aa8" opacity=".5"/><circle cx="66" cy="62" r="4" fill="#ff9aa8" opacity=".5"/>' : '') + extra + '</svg>';
+    /* ears */
+    '<circle cx="17" cy="44" r="12" fill="' + m.fur + '"/><circle cx="18" cy="45" r="7" fill="' + m.face + '"/>' +
+    '<circle cx="83" cy="44" r="12" fill="' + m.fur + '"/><circle cx="82" cy="45" r="7" fill="' + m.face + '"/>' +
+    /* head: Uuh Uuh is plumper */
+    '<ellipse cx="50" cy="48" rx="' + (old ? 31 : 33) + '" ry="' + (old ? 33 : 34) + '" fill="' + m.fur + '"/>' +
+    '<ellipse cx="44" cy="30" rx="14" ry="8" fill="' + m.furHi + '" opacity=".45"/>' +
+    /* tan face: eye patch joined to a big muzzle */
+    '<path d="M27 46 Q27 31 39 32 Q46 33 50 37 Q54 33 61 32 Q73 31 73 46 Q73 52 67 54 Q76 62 70 74 Q62 86 50 86 Q38 86 30 74 Q24 62 33 54 Q27 52 27 46 Z" fill="' + m.face + '"/>' +
+    '<path d="M33 55 Q50 50 67 55" stroke="' + m.faceLo + '" stroke-width="1.4" fill="none" opacity=".8"/>' +
+    /* stitched brows and nose */
+    '<path d="M34 37 Q40 33 46 37 M54 37 Q60 33 66 37" stroke="' + m.stitch + '" stroke-width="1.3" fill="none" stroke-linecap="round" opacity=".7"/>' +
+    eyes + '<path d="M47 57 Q50 60 53 57" stroke="' + m.stitch + '" stroke-width="1.6" fill="none" stroke-linecap="round"/>' + mouth +
+    (mood !== "sad" && mood !== "shock" ? '<circle cx="33" cy="66" r="3.5" fill="#ff9aa8" opacity=".35"/><circle cx="67" cy="66" r="3.5" fill="#ff9aa8" opacity=".35"/>' : '') +
+    fluff + banana + '</svg>';
 }
 
 /* ---------- jokes and chatter (always kind, always silly) ---------- */
@@ -43,7 +59,7 @@ var MONKEY_JOKES = [
 ];
 var CHAT = {
   uuh: {
-    hello: ["Uuh uuh! Hi Millie! I brought snacks. I ate the snacks.", "Is it game time? I've been practising. Mostly practising eating bananas.", "Millie! I learned a new fact today. I forgot it. But it was a GOOD one."],
+    hello: ["Uuh uuh! Hi Millie! I brought snacks. I ate the snacks.", "Is it game time? I've been practising. Mostly practising eating bananas.", "Millie! I learned a new fact today. I forgot it. But it was a GOOD one.", "I'm extra squishy today. Probably all the bananas.", "Ooh Ooh says I'm 'plump'. I say I'm 'full of fluff and fun'."],
     win: ["Uuh uuh! I won?! I don't know how either!", "Yay! I'm doing my happy wobble. Wobble wobble.", "I won that one! Want half my banana to cheer up?"],
     lose: ["Nooo! Oh well. You're too clever, Millie!", "Uuh uuh… *falls off chair* …I'm OK!", "You beat me! I'm going to tell everyone how good you are."],
     draw: ["A draw! We're both winners! Can we both have a banana?", "Same same! Like twins! Banana twins!"],
@@ -52,7 +68,7 @@ var CHAT = {
     wrong: ["Uh oh! Even I get that one wrong. Lots.", "Never mind! Wrong answers help our brains grow. Like bananas!", "Oopsie! Let's look at the answer together."]
   },
   ooh: {
-    hello: ["Ooh ooh! Welcome back, Space Cadet Millie!", "Greetings, Earthling! I mean… Millie! Ready to play?", "I've been doing my brain exercises. Monkey push-ups for the mind!"],
+    hello: ["Ooh ooh! Welcome back, Space Cadet Millie!", "Greetings, Earthling! I mean… Millie! Ready to play?", "I've been through the washing machine so many times, I'm the cleanest monkey in space. And the wisest.", "I was Millie's very first monkey, you know. That makes me Chief Monkey. Uuh Uuh is Deputy Chief of Bananas."],
     win: ["Ooh ooh! Victory dance! *does the robot badly*", "I won! But you played brilliantly. Rematch?", "Hooray! I'm going to put that on my fridge!"],
     lose: ["Nooo! My lovely planets! You're a superstar, Millie!", "Ooh! Beaten fair and square! *bows dramatically*", "You win! I'll write a song about it. It goes 'ooh ooh ooh'."],
     draw: ["A draw! Great minds think alike!", "Exactly the same! Spooky!"],
