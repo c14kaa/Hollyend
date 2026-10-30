@@ -5,7 +5,7 @@
 var MONKEYS = {
   /* Both are the same Toys "R" Us chimp plush. Ooh Ooh came first: much loved, washed lots, faded and a bit fluffed-up.
      Uuh Uuh is the newer one: rich dark brown, plump, and always holding a banana. */
-  ooh: { id: "ooh", name: "Ooh Ooh", fur: "#6f5845", furHi: "#8a735f", face: "#cfae86", faceLo: "#bf9c74", stitch: "#5a3e2a", tag: "the first monkey: wise, cuddly and a bit fluffy from all the washes" },
+  ooh: { id: "ooh", name: "Ooh Ooh", fur: "#6e4a2e", furHi: "#8a6444", face: "#d6ab78", faceLo: "#c4976a", stitch: "#55361f", tag: "the first monkey: wise, cuddly and a bit fluffy from all the washes" },
   uuh: { id: "uuh", name: "Uuh Uuh", fur: "#4a2c16", furHi: "#5e3a1f", face: "#d9a464", faceLo: "#c98f4f", stitch: "#3a1f0c", tag: "the newer monkey: plump, silly and always hungry" }
 };
 

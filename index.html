@@ -242,6 +242,10 @@ body.k .earn { font-size: 30px; }
 .wal-split { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .wal-split div { background: var(--card2); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; display: flex; flex-direction: column; }
 .arcade { gap: 12px; }
+.buddy-top { margin: 0 0 12px; } .buddy-top .say { margin: 0; }
+.fb .say { margin-top: 10px; } .fb .say .bub { background: rgba(255,255,255,.06); }
+.tmk { display: inline-flex; vertical-align: middle; margin-left: 6px; gap: 0; } .tmk .mk { width: .95em; height: .95em; }
+@media (max-width: 520px) { #title { font-size: 26px; } }
 .ar-top { display: flex; gap: 12px; align-items: center; }
 .ar-mk { display: flex; flex: none; } .ar-mk .mk { width: 64px; height: 64px; }
 .ar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
@@ -803,7 +807,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
 <div class="wrap">
   <header>
     <div class="top">
-      <div><div class="week"><span id="week"></span> · <button class="signout" id="signout" type="button">Sign out</button></div><h1 id="title"><em id="who">Millie</em>'s Mission Control</h1><div class="sub" id="sub" hidden></div></div>
+      <div><div class="week"><span id="week"></span> · <button class="signout" id="signout" type="button">Sign out</button></div><h1 id="title"><em id="who">Millie</em> &amp; her Space Monkeys</h1><div class="sub" id="sub" hidden></div></div>
       <div class="hud"><div class="streak off" id="streak" aria-live="polite"></div><div class="wallet" id="wallet" aria-live="polite"></div></div>
     </div>
     <div class="kids" role="group" aria-label="Choose who's playing">
@@ -858,6 +862,49 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   var purchases = [], bankRows = [], profiles = {};
   var LV = { 1: "Warm-up", 2: "Core", 3: "Challenge" };
   var app = document.getElementById("app");
+  /* ---------- Millie's monkey buddies: Ooh Ooh and Uuh Uuh appear on every page of her side ----------
+     BRAND keeps the name in one place: the theme (space) can change later, the monkeys always stay. */
+  var BRAND = { millie: { title: "&amp; her Space Monkeys" } };
+  function millieTitle() { return '<em id="who">Millie</em> ' + BRAND.millie.title + '<span class="tmk" aria-hidden="true">' + monkeySVG("ooh", "happy", "mk") + monkeySVG("uuh", "wink", "mk") + '</span>'; }
+  function spick(arr, key) { var h = 0; key = String(key); for (var i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0; return arr[h % arr.length]; }
+  function buddyLine() {
+    var c = "millie", t = todayD(), v = state.view, key = t + v + state.mode;
+    if (v === "quiz") {
+      if (state.started && state.i >= state.qs.length) {
+        var n = state.answers.filter(function (a) { return a && a.ok; }).length, tot = state.qs.length, k = t + "fin" + n + tot + (state.lastAt || "");
+        if (n === tot) return ["uuh", spick(["PERFECT SCORE! *both monkeys do a backflip* *Uuh Uuh lands on his head* I'm OK!", "Every single one right! I'm so happy I ate my banana sideways."], k), "silly"];
+        if (n >= tot * 0.8) return ["ooh", spick(["Brilliant work, Millie! I'm writing your name on the fridge. In big letters.", "Ooh ooh! What a score! You're the cleverest astronaut in the whole galaxy."], k), "happy"];
+        if (n >= tot * 0.5) return ["ooh", spick(["Good effort! The ones you missed come back later so you can win them back.", "Nice going! Every quiz makes your brain a bit stronger. Like monkey muscles!"], k), "happy"];
+        return ["uuh", spick(["That one was tricky! Wrong answers are brain workouts. Shall we try Warm-up next?", "Never mind! Even Ooh Ooh gets things wrong. He once called the Moon a big cheese."], k), "wink"];
+      }
+      if (state.started) return null;
+      var open = hwOpen(c).length, sk = streakInfo(all, c);
+      if (state.mode === "spelling") return ["uuh", spick(["Spelling time! I spell banana with seven n's. Can you beat me?", "Type the words carefully. Tap Hear it if you want me to read them. Well, the computer reads them. I just nod."], key), "silly"];
+      if (state.mode === "challenge") return ["ooh", spick(["Challenge words! Even grown-ups get these wrong. I'm hiding behind the sofa.", "These are SUPER hard. Don't worry about mistakes, just give them a go!"], key), "shock"];
+      if (state.mode === "revise") return ["ooh", spick(["Revision is like the monkey bars: the more you practise, the easier it gets.", "Start with this week's topics. Then lessons feel easy-peasy banana-squeezy!"], key), "happy"];
+      if (sk.atRisk) return ["uuh", "Our streak is on " + sk.current + " day" + (sk.current === 1 ? "" : "s") + "! One quiz with 70% today keeps it going. Go go go!", "silly"];
+      if (open) return ["ooh", spick(["You've got " + open + " bit" + (open === 1 ? "" : "s") + " of homework to do. Homework first, then the Space Arcade? Very sensible. That's me. Sensible.", "Don't forget your homework! Uuh Uuh will hold your pencil. Badly."], key), "wink"];
+      return ["uuh", spick(["Ready for today's mission? I'll hold the bananas, you do the brain bit.", "If you get 10 right I'll do a cartwheel. If you get 11 right… wait, there are only 10.", "Let's go, Millie! Rocket fuel loading… 3… 2… 1… QUIZ!"], key), "happy"];
+    }
+    if (v === "homework") { var o = hwOpen(c), late = o.filter(function (x) { return x.due && String(x.due).slice(0, 10) < t; }).length;
+      if (!o.length) return ["uuh", "All your homework is done! I'm doing a happy wobble. Wobble wobble wobble.", "silly"];
+      if (late) return ["ooh", "There's some homework that's a bit late. No worries, let's do it now and tick it off together!", "wink"];
+      return ["ooh", spick(["You've got " + o.length + " to do. Let's do one now! I'll read the instructions in my most dramatic voice.", "Homework time! Tick it off when you're done and Mum or Dad will check it. Then it's banana time."], key), "happy"]; }
+    if (v === "shop") return ["uuh", spick(["Ooh! Are you buying something for us? A banana hat would be lovely. Just saying.", "Shopping! Can I have a rocket? A small one? A banana-shaped one?"], key), "silly"];
+    if (v === "bank") { var wt = walletTotals(c).balance;
+      return ["uuh", wt > 0 ? "You've got " + fmtMoney(wt) + " in your Star Wallet! Can we spend it on bananas? No? OK. Saving is clever too." : spick(["Points into money! Can we buy bananas with it? Ooh Ooh says I have to ask Mum.", "Every quiz fills up your points. Then — ka-ching! — real money!"], key), "happy"]; }
+    if (v === "progress") return ["ooh", spick(["Look at all your awards! I'm so proud I could burst. Uuh Uuh actually did burst a bit. Just some fluff.", "Every badge is a little trophy from your brain. You're amazing, Millie!"], key), "happy"];
+    if (v === "calendar") { var nx = calItems().filter(function (e) { return String(e.date).slice(0, 10) >= t && e.kind !== "news"; })[0];
+      return ["ooh", nx ? "Coming up: " + (nx.title || "something fun") + "! " + (nx.bring ? "Don't forget: " + nx.bring + "." : "I've put it in my monkey diary.") : "Nothing big coming up. More time for quizzes and bananas!", "wink"]; }
+    return null;
+  }
+  function buddyTop() {
+    if (state.child !== "millie" || !role() || (state.view === "world") || (state.view === "quiz" && state.flash)) return;
+    var first = app.firstElementChild; if (first && first.classList && first.classList.contains("buddy-top")) return;
+    var b; try { b = buddyLine(); } catch (e) { b = null; } if (!b) return;
+    app.insertAdjacentHTML("afterbegin", '<div class="buddy-top">' + say(b[0], b[1], b[2]) + '</div>');
+  }
+  new MutationObserver(function () { buddyTop(); }).observe(app, { childList: true });
   var db = null, dbState = "connecting", all = [], firstLoad = true;
 
   function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
@@ -944,7 +991,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     state.child = c;
     document.body.classList.toggle("k", c === "kristan");
     document.body.classList.toggle("m", c === "millie");
-    document.getElementById("title").innerHTML = c === "millie" ? '<em id="who">Millie</em>\u2019s Mission Control' : '<em id="who">Kristan</em>';
+    document.getElementById("title").innerHTML = c === "millie" ? millieTitle() : '<em id="who">Kristan</em>';
     document.getElementById("sub").hidden = c === "millie";
     var tc = document.querySelector('meta[name="theme-color"]'); if (tc) tc.setAttribute("content", c === "millie" ? "#080b2b" : "#07090d");
     state.shop = { cat: null, tryOn: null, confirm: null, msg: "" }; state.bankConfirm = false; state.payConfirm = null; state.bankMsg = ""; state.bankAmt = 50;
@@ -998,7 +1045,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     document.getElementById("v-cal").setAttribute("aria-pressed", v === "calendar");
     document.getElementById("v-par").setAttribute("aria-pressed", v === "parents");
     document.body.classList.toggle("fam", v === "parents");
-    document.getElementById("title").innerHTML = v === "parents" ? '<em id="who">Hollyend</em> Family' : state.child === "millie" ? '<em id="who">Millie</em>\u2019s Mission Control' : '<em id="who">Kristan</em>';
+    document.getElementById("title").innerHTML = v === "parents" ? '<em id="who">Hollyend</em> Family' : state.child === "millie" ? millieTitle() : '<em id="who">Kristan</em>';
     if (v === "parents") checkPush();
     if (v !== "quiz") state.flash = null;
     if (v === "homework") { state.hwMsg = state.hwMsg || ""; checkPush(); }
@@ -1165,22 +1212,27 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     if (!q.steps || !q.steps.length) return "";
     return '<div class="steps-h">How to work it out</div><ol class="steps">' + q.steps.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ol>";
   }
+  function quizBuddy(ok) {
+    if (state.child !== "millie" || state.mode === "match") return "";
+    var who = state.i % 2 ? "uuh" : "ooh", k = todayD() + state.i + (state.qs[0] && state.qs[0].prompt);
+    return say(who, spick(CHAT[who][ok ? "right" : "wrong"], k), ok ? (who === "uuh" ? "silly" : "happy") : "wink");
+  }
   function feedback(q, a) {
     if (a.ok) {
-      return '<div class="fb good"><h3>' + (q.comeback ? "Comeback complete! +5 bonus" : pick(["Spot on!", "Correct!", "Nailed it!", "Yes, that's right!", "Great work!"])) + '</h3><p>' + esc(q.explain) + '</p></div>';
+      return '<div class="fb good"><h3>' + (q.comeback ? "Comeback complete! +5 bonus" : pick(["Spot on!", "Correct!", "Nailed it!", "Yes, that's right!", "Great work!"])) + '</h3><p>' + esc(q.explain) + '</p>' + quizBuddy(true) + '</div>';
     }
     var note = whyWrong(q, a.chosen);
     if (q.type === "type") {
       note = q.notes[norm(a.chosen)] || typedNote(a.chosen, q.answer);
       return '<div class="fb bad"><h3>Not quite. It\u2019s spelled \u201C' + esc(q.answer) + '\u201D</h3>' + markWord(a.chosen, q.answer) +
         '<p class="why">' + esc(note) + '</p><p>' + esc(q.explain) + '</p>' + steps(q).replace("How to work it out", "How to learn it") +
-        '<p class="small">This word will come back in a later quiz so you can win it back.</p></div>';
+        '<p class="small">This word will come back in a later quiz so you can win it back.</p>' + quizBuddy(false) + '</div>';
     }
     return '<div class="fb bad"><h3>Not quite. The answer is ' + esc(q.answer) + '</h3>' +
       '<p class="why"><b>You chose ' + esc(a.chosen) + '.</b> ' + esc(note || "That's not the one. Look at the working below to see where it goes differently.") + '</p>' +
       '<p>' + esc(q.explain) + '</p>' + steps(q) +
       (q.tip ? '<div class="tip"><b>Remember:</b> ' + esc(q.tip) + '</div>' : "") +
-      '<p class="small">This skill will come back in a later quiz so you can win it back.</p></div>';
+      '<p class="small">This skill will come back in a later quiz so you can win it back.</p>' + quizBuddy(false) + '</div>';
   }
   function answer(o) {
     var q = state.qs[state.i];
