@@ -1376,7 +1376,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       if (!a) document.getElementById("typed").focus({ preventScroll: true });
     }
     var hb = document.getElementById("hear");
-    if (hb) hb.addEventListener("click", function () { say(q.speak, q.lang); });
+    if (hb) hb.addEventListener("click", function () { speakAloud(q.speak, q.lang); });
     [].forEach.call(app.querySelectorAll(".acc"), function (b) {
       b.addEventListener("click", function () {
         var inp = document.getElementById("typed"), st = inp.selectionStart == null ? inp.value.length : inp.selectionStart, en = inp.selectionEnd == null ? st : inp.selectionEnd;
@@ -1387,7 +1387,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     if (nx) { nx.addEventListener("click", function () { state.i++; render(); window.scrollTo({ top: 0 }); }); nx.focus({ preventScroll: true }); }
   }
   function canSpeak() { try { return !!(window.speechSynthesis && window.SpeechSynthesisUtterance); } catch (e) { return false; } }
-  function say(text, lang) {
+  function speakAloud(text, lang) {
     try {
       lang = lang || "en-GB";
       window.speechSynthesis.cancel();
@@ -3112,7 +3112,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     var flip = function () { F.flipped = true; flashView(); };
     document.getElementById("flCard").addEventListener("click", function () { if (!F.flipped) flip(); });
     var fb = document.getElementById("flFlip"); if (fb) fb.addEventListener("click", flip);
-    var hr = document.getElementById("flHear"); if (hr) hr.addEventListener("click", function () { say(F.flipped ? c.speak : (c.speakFront || c.front), F.flipped ? c.lang : (state.child === "millie" ? "en-GB" : "en-GB")); });
+    var hr = document.getElementById("flHear"); if (hr) hr.addEventListener("click", function () { speakAloud(F.flipped ? c.speak : (c.speakFront || c.front), F.flipped ? c.lang : (state.child === "millie" ? "en-GB" : "en-GB")); });
     var g = document.getElementById("flGot"); if (g) g.addEventListener("click", function () { F.queue.shift(); F.known++; F.flipped = false; flashView(); });
     var a = document.getElementById("flAgainCard"); if (a) a.addEventListener("click", function () { var x = F.queue.shift(); F.queue.splice(Math.min(F.queue.length, 3), 0, x); F.flipped = false; flashView(); });
     document.getElementById("flStop").addEventListener("click", function () { state.flash = null; render(); });
