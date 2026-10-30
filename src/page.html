@@ -226,7 +226,17 @@ body.k .earn { font-size: 30px; }
 .wal-split { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .wal-split div { background: var(--card2); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; display: flex; flex-direction: column; }
 .arcade { gap: 12px; }
-.buddy-top { margin: 0 0 12px; } .buddy-top .say { margin: 0; }
+.buddy-top { margin: 0 0 12px; }
+.ftick { display: flex; gap: 10px; align-items: center; background: var(--card); border: 1px solid var(--line); border-left: 4px solid #ef0107; border-radius: 12px; padding: 8px 12px; font-size: 14px; }
+.ft-i { font-size: 18px; } .ft-sep { color: var(--muted); padding: 0 2px; }
+.fr.W { color: var(--good); } .fr.L { color: var(--bad); } .fr.D { color: var(--gold); }
+.chip.fr { border-color: currentColor; }
+.ftable table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.ftable th, .ftable td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.ftable th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; }
+.ftable td:nth-child(n+3), .ftable th:nth-child(n+3) { text-align: right; }
+.ftable tr.afc td { background: color-mix(in srgb, #ef0107 22%, transparent); font-weight: 700; }
+.ft-recent { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; } .buddy-top .say { margin: 0; }
 .fb .say { margin-top: 10px; } .fb .say .bub { background: rgba(255,255,255,.06); }
 .tmk { display: inline-flex; vertical-align: middle; margin-left: 6px; gap: 0; } .tmk .mk { width: .95em; height: .95em; }
 @media (max-width: 520px) { #title { font-size: 26px; } }
@@ -879,7 +889,17 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       return ["ooh", nx ? "Coming up: " + (nx.title || "something fun") + "! " + (nx.bring ? "Don't forget: " + nx.bring + "." : "I've put it in my monkey diary.") : "Nothing big coming up. More time for quizzes and bananas!", "wink"]; }
     return null;
   }
+  function footyTop() {
+    if (state.child !== "kristan" || !role() || typeof footyReady !== "function" || !footyReady()) return;
+    if (state.view === "quiz" && !state.started && !state.flash) {
+      var f = app.firstElementChild; if (f && f.classList && f.classList.contains("buddy-top")) return;
+      var tk = footyTicker(); if (tk) app.insertAdjacentHTML("afterbegin", '<div class="buddy-top">' + tk + '</div>');
+    } else if (state.view === "world" && !(state.mode === "match" && state.started) && !app.querySelector(".ftable")) {
+      var card = footyTableCard(); if (card) app.insertAdjacentHTML("beforeend", card);
+    }
+  }
   function buddyTop() {
+    footyTop();
     if (state.child !== "millie" || !role() || (state.view === "world") || (state.view === "quiz" && state.flash)) return;
     var first = app.firstElementChild; if (first && first.classList && first.classList.contains("buddy-top")) return;
     var b; try { b = buddyLine(); } catch (e) { b = null; } if (!b) return;
@@ -906,6 +926,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       }, function () { dbState = "off"; refresh(); });
       db.collection("purchases").onSnapshot(function (snap) { purchases = snap.docs.map(function (d) { return d.data(); }).filter(Boolean); setShopBank(purchases, bankRows); refresh(); }, function () {});
       db.collection("bank").onSnapshot(function (snap) { bankRows = snap.docs.map(function (d) { var x = d.data() || {}; return Object.assign({ id: d.id }, x); }); setShopBank(purchases, bankRows); refresh(); }, function () {});
+      db.collection("football_cache").onSnapshot(function (snap) { setFootball(snap.docs.map(function (d) { return d.data() || {}; })); refresh(); }, function () {});
       db.collection("game_plays").onSnapshot(function (snap) { state.games = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); setGames(state.games); refresh(); }, function () {});
       db.collection("school_awards").onSnapshot(function (snap) { state.schoolAwards = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("wallet").onSnapshot(function (snap) { state.wallet = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});

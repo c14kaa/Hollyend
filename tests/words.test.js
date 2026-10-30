@@ -3,7 +3,7 @@ const fs = require('fs'), vm = require('vm'), path = require('path');
 const R = p => fs.readFileSync(path.join(__dirname, '..', p), 'utf8');
 const ctx = { console, Math, Date, JSON, String, Number, Object, Array, isNaN, window: {} };
 vm.createContext(ctx);
-['engine.js', 'words.js', 'curriculum.js', 'progress.js'].forEach(f => vm.runInContext(R(f), ctx, { filename: f }));
+['engine.js', 'words.js', 'curriculum.js', 'football.js', 'progress.js'].forEach(f => vm.runInContext(R(f), ctx, { filename: f }));
 const fail = []; const bad = m => fail.push(m);
 const { KLISTS, WB } = ctx;
 // 1. banks: no duplicates, all fields, sentences valid

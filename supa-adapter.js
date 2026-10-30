@@ -24,6 +24,7 @@
     profiles: { child: 1, equipped: 1, updatedAt: "updated_at" },
     bank: { child: 1, pence: 1, points: 1, at: 1, week: 1, status: 1, paidAt: "paid_at", cancelledAt: "cancelled_at" },
     wallet: { child: 1, kind: 1, pence: 1, note: 1, day: 1, at: 1 },
+    football_cache: { key: 1, data: 1, updatedAt: "updated_at" },
     game_plays: { child: 1, game: 1, kind: 1, score: 1, total: 1, won: 1, item: 1, points: 1, playDay: "play_day", at: 1 },
     school_awards: { ref: 1, child: 1, date: 1, kind: 1, title: 1, details: 1, givenBy: "given_by", source: 1, createdAt: "created_at" }
   };
