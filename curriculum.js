@@ -1,5 +1,5 @@
 /* Curriculum map and the question sets that cover it.
-   Millie: Year 5 (NAS Abu Dhabi curriculum overview + Term 1 guide). Kristan: Year 8 curriculum overview.
+   Millie: Year 5 (school curriculum overview + Term 1 guide). Kristan: Year 8 curriculum overview.
    Statuses ("done", "now", "next", "later") are updated by the school run each week. */
 
 /* ===================== Millie · Year 5 ===================== */

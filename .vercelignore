@@ -1,0 +1,6 @@
+# Only the site itself is published. Notes, source, tests and database code stay in the private repo.
+README.md
+src/
+supabase/
+tests/
+.gitignore

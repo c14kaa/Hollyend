@@ -1058,7 +1058,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   }
   /* ---------- grouped tabs: Rewards (Shop, Bank) and Me (Awards, Reports) ---------- */
   var SUBNAV = { shop: "rewards", bank: "rewards", progress: "me", reports: "me" };
-  var SUBNAV_ITEMS = { rewards: [["shop", "Shop"], ["bank", "Bank"]], me: [["progress", "Awards"], ["reports", "School reports"]] };
+  var SUBNAV_ITEMS = { rewards: [["bank", "Bank"], ["shop", "Shop"]], me: [["progress", "Awards"], ["reports", "School reports"]] };
   function subNavTop() {
     var g = SUBNAV[state.view]; if (!g || app.querySelector(":scope > .subnav")) return;
     app.insertAdjacentHTML("afterbegin", '<div class="subnav" role="tablist">' + SUBNAV_ITEMS[g].map(function (it) { return '<button role="tab" aria-selected="' + (state.view === it[0]) + '" data-sub="' + it[0] + '">' + it[1] + '</button>'; }).join("") + '</div>');
@@ -3114,7 +3114,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   document.getElementById("v-prog").addEventListener("click", function () { setView((state.lastSub && state.lastSub.me) || "progress"); });
   document.getElementById("v-world").addEventListener("click", function () { state.game = null; setView("world"); });
   document.getElementById("v-hw").addEventListener("click", function () { state.hwMsg = ""; setView("homework"); });
-  document.getElementById("v-shop").addEventListener("click", function () { setView((state.lastSub && state.lastSub.rewards) || "shop"); });
+  document.getElementById("v-shop").addEventListener("click", function () { setView((state.lastSub && state.lastSub.rewards) || "bank"); });
   document.getElementById("v-cal").addEventListener("click", function () { state.calMsg = ""; setView("calendar"); });
   document.getElementById("v-hub").addEventListener("click", function () { setView("hub"); window.scrollTo({ top: 0 }); });
   document.getElementById("v-par").addEventListener("click", function () { state.hwMsg = ""; setView("parents"); });
