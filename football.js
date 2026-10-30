@@ -4,10 +4,12 @@
 
 var FOOTY = { table: [], matches: [], updated: null };
 var ARSENAL_ID = 57;
+var TEAM_NAMES = { "Brighton Hove": "Brighton", "Nottingham": "Forest", "Wolverhampton": "Wolves", "Tottenham": "Spurs", "Slavia Praha": "Slavia Prague" };
+function tidyName(n) { return TEAM_NAMES[n] || n; }
 function setFootball(rows) {
   (rows || []).forEach(function (r) {
-    if (r.key === "pl_table") { FOOTY.table = (r.data && r.data.table) || []; FOOTY.matchday = r.data && r.data.matchday; FOOTY.updated = r.updatedAt || FOOTY.updated; }
-    if (r.key === "arsenal_matches") FOOTY.matches = ((r.data && r.data.matches) || []).slice().sort(function (a, b) { return String(a.at).localeCompare(String(b.at)); });
+    if (r.key === "pl_table") { FOOTY.table = ((r.data && r.data.table) || []).map(function (t) { return Object.assign({}, t, { team: tidyName(t.team) }); }); FOOTY.matchday = r.data && r.data.matchday; FOOTY.updated = r.updatedAt || FOOTY.updated; }
+    if (r.key === "arsenal_matches") FOOTY.matches = ((r.data && r.data.matches) || []).map(function (m) { return Object.assign({}, m, { home: tidyName(m.home), away: tidyName(m.away) }); }).sort(function (a, b) { return String(a.at).localeCompare(String(b.at)); });
   });
 }
 function footyReady() { return FOOTY.table.length >= 10; }
