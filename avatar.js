@@ -273,6 +273,7 @@ function wallet(child, attempts, purchases, bank, now) {
   var earned = 0, spent = 0, cashed = 0, weekPence = 0, paidPence = 0, wk = mondayKey(now || new Date());
   attempts.forEach(function (a) { if (a.child === child) earned += a.points || 0; });
   if (typeof homeworkPoints === "function") earned += homeworkPoints(child);
+  if (typeof gamePointsFor === "function") earned += gamePointsFor(child);
   purchases.forEach(function (p) { if (p.child === child) spent += p.cost || 0; });
   bank.forEach(function (b) {
     if (b.child !== child || b.status === "cancelled") return;

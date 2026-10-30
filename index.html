@@ -241,6 +241,63 @@ body.k .earn { font-size: 30px; }
 .wal-bal b { font-family: var(--display); font-size: 44px; line-height: 1.05; color: var(--gold); }
 .wal-split { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .wal-split div { background: var(--card2); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; display: flex; flex-direction: column; }
+.arcade { gap: 12px; }
+.ar-top { display: flex; gap: 12px; align-items: center; }
+.ar-mk { display: flex; flex: none; } .ar-mk .mk { width: 64px; height: 64px; }
+.ar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.ar-tile { background: var(--card2); border: 2px solid var(--line); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.ar-h { display: flex; gap: 8px; align-items: center; } .ar-i { font-size: 26px; } .ar-h b { font-size: 17px; }
+.say { display: flex; gap: 10px; align-items: flex-start; margin: 6px 0; }
+.say .mk.sm { width: 54px; height: 54px; flex: none; }
+.say .bub { background: var(--card2); border: 1px solid var(--line); border-radius: 14px; padding: 8px 12px; display: flex; flex-direction: column; font-size: 15px; position: relative; }
+.say .bub b { font-size: 12px; color: var(--accent); }
+.say.uuh .bub b { color: var(--gold); }
+.aq-p { font-weight: 700; font-size: 19px; margin: 6px 0; white-space: pre-line; }
+.aq-o { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+.aq-b { font: 600 16px var(--body); color: var(--ink); background: var(--card2); border: 2px solid var(--line); border-radius: 12px; padding: 12px; cursor: pointer; text-align: left; }
+.aq-b:hover:not(:disabled) { border-color: var(--accent); }
+.aq-b.ok { border-color: var(--good); background: color-mix(in srgb, var(--good) 22%, var(--card2)); }
+.aq-b.no { border-color: var(--bad); background: color-mix(in srgb, var(--bad) 22%, var(--card2)); }
+.aq-b.dim { opacity: .55; }
+.aq-f { margin-top: 8px; padding: 10px 12px; border-radius: 12px; background: var(--card2); border-left: 4px solid var(--good); font-size: 15px; }
+.aq-f.no { border-left-color: var(--bad); }
+.tr-score { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 16px; }
+.tr-score b { font-size: 22px; color: var(--gold); }
+.tr-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+.tcard { background: linear-gradient(160deg, #2b3290, #161b55); border: 2px solid #5b62b8; border-radius: 16px; padding: 10px; display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.tcard.win { border-color: var(--gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 40%, transparent); }
+.tcard.back { align-items: center; justify-content: center; min-height: 220px; background: repeating-linear-gradient(45deg, #2b3290 0 10px, #232a7a 10px 20px); }
+.tc-back { font-size: 54px; font-weight: 800; color: var(--gold); }
+.tc-top { display: flex; gap: 8px; align-items: center; } .tc-top b { display: block; font-size: 17px; }
+.tc-pl { width: 40px; height: 40px; flex: none; }
+.tc-s { display: flex; justify-content: space-between; gap: 6px; font: inherit; font-size: 13px; color: var(--ink); background: rgba(255,255,255,.06); border: 1px solid transparent; border-radius: 8px; padding: 6px 8px; text-align: left; }
+.tc-s b { white-space: nowrap; }
+.tc-s.pick { cursor: pointer; border-color: var(--accent); background: color-mix(in srgb, var(--accent) 18%, transparent); }
+.tc-s.pick:hover { background: color-mix(in srgb, var(--accent) 35%, transparent); }
+.tc-s.sel { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 25%, transparent); }
+.tc-fact { font-size: 12px; color: var(--muted); }
+.mem { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; width: 100%; max-width: 560px; margin: 0 auto; }
+.mc { display: flex; align-items: center; justify-content: center; text-align: center; font: 700 15px var(--body); color: var(--ink); aspect-ratio: 1 / 0.85; border-radius: 12px; border: 2px solid #5b62b8; background: linear-gradient(160deg, #2b3290, #161b55); cursor: pointer; padding: 4px; }
+.mc.up { background: var(--card2); border-color: var(--accent); }
+.mc.got.me { border-color: var(--good); } .mc.got.them { border-color: var(--gold); opacity: .8; }
+.bucket { display: flex; align-items: flex-end; justify-content: center; gap: 8px; } .bucket .mk { width: 70px; height: 70px; }
+.bk { min-width: 120px; max-width: 220px; min-height: 40px; background: #6b4a2a; border-radius: 0 0 20px 20px; padding: 6px; font-size: 18px; text-align: center; line-height: 1.1; }
+.bn-q { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 30px; font-weight: 800; margin: 8px 0; }
+.bn-in { min-width: 90px; border-bottom: 3px solid var(--accent); text-align: center; } .bn-in.ok { color: var(--good); } .bn-in.no { color: var(--bad); }
+.numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; max-width: 320px; margin: 0 auto; }
+.np { font: 800 22px var(--body); color: var(--ink); background: var(--card2); border: 2px solid var(--line); border-radius: 14px; padding: 12px 0; cursor: pointer; }
+.np.go { background: var(--accent); color: #1a0d2e; border-color: var(--accent); }
+.moonbase { width: 100%; height: auto; border-radius: 14px; display: block; }
+.mb-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.mb-it { background: var(--card2); border: 1px solid var(--line); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+.mb-it.has { border-color: var(--good); }
+.qs-stage { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+.ladder { margin: 0; padding: 0; list-style: none; font-size: 12px; display: flex; flex-direction: column; gap: 2px; text-align: right; min-width: 92px; }
+.ladder li { padding: 1px 8px; border-radius: 6px; color: var(--muted); }
+.ladder li.done { color: var(--good); } .ladder li.now { background: var(--accent); color: #1a0d2e; font-weight: 800; } .ladder li.safe { outline: 1px dashed var(--gold); }
+.qs-life { flex-wrap: wrap; } .qs-life .btn:disabled { opacity: .4; cursor: default; }
+.aq-b[hidden] { display: none; }
+@media (max-width: 520px) { .ladder { display: none; } .mc { font-size: 13px; } .tc-s { font-size: 12px; } }
 .sa-merits { display: flex; gap: 14px; align-items: flex-start; flex-wrap: wrap; padding-bottom: 10px; border-bottom: 1px dashed var(--line); }
 .sa-big { display: flex; flex-direction: column; align-items: center; background: var(--card2); border: 2px solid var(--accent); border-radius: 16px; padding: 10px 18px; }
 .sa-big b { font-family: var(--display); font-size: 44px; line-height: 1; }
@@ -790,6 +847,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
 <script src="engine.js"></script>
 <script src="words.js"></script>
 <script src="curriculum.js"></script>
+<script src="games.js"></script>
 <script src="progress.js"></script>
 <script src="avatar.js"></script>
 <script>
@@ -820,6 +878,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       }, function () { dbState = "off"; refresh(); });
       db.collection("purchases").onSnapshot(function (snap) { purchases = snap.docs.map(function (d) { return d.data(); }).filter(Boolean); setShopBank(purchases, bankRows); refresh(); }, function () {});
       db.collection("bank").onSnapshot(function (snap) { bankRows = snap.docs.map(function (d) { var x = d.data() || {}; return Object.assign({ id: d.id }, x); }); setShopBank(purchases, bankRows); refresh(); }, function () {});
+      db.collection("game_plays").onSnapshot(function (snap) { state.games = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); setGames(state.games); refresh(); }, function () {});
       db.collection("school_awards").onSnapshot(function (snap) { state.schoolAwards = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("wallet").onSnapshot(function (snap) { state.wallet = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("merits").onSnapshot(function (snap) { state.merits = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
@@ -833,7 +892,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       db.collection("profiles").onSnapshot(function (snap) { profiles = {}; snap.docs.forEach(function (d) { profiles[d.id] = d.data(); }); refresh(); }, function () {});
     }, function () { dbState = "off"; refresh(); });
   }
-  function busy() { return (state.started && (state.view === "quiz" || state.mode === "match")) || (state.view === "quiz" && !!state.flash) || (state.view === "homework" && !!state.hwFeel); }
+  function busy() { return (state.view === "world" && !!state.game && state.game.phase !== "base") || (state.started && (state.view === "quiz" || state.mode === "match")) || (state.view === "quiz" && !!state.flash) || (state.view === "homework" && !!state.hwFeel); }
   function refresh() { autoVerify(); chrome(); hwBadge(); bellSync(); meritSync(); if (!busy()) render(); }
   var hwLoaded = false, landed = false, landHash = (location.hash || "").replace("#", "");
   function maybeLandOnHomework() {
@@ -1299,6 +1358,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
         out.push({ at: day + "T19:59:00+04:00", child: c, kind: "daily", icon: "✅", title: (task ? task.title.replace(/:.*/, "") : t.task), sub: "Daily task", noTime: true }); });
       purchases.forEach(function (x) { if (x.child === c && x.at && lgToday(x.at) >= fromDay) { var it = shopItem(c, x.item); out.push({ at: x.at, child: c, kind: "buy", icon: "🛍️", title: "Bought " + (it ? it.name : x.item), sub: "Shop", pts: -(x.cost || 0) }); } });
       bankRows.forEach(function (b) { if (b.child === c && b.at && lgToday(b.at) >= fromDay && b.status !== "cancelled") out.push({ at: b.at, child: c, kind: "bank", icon: "🏦", title: (b.status === "wallet" ? "Moved " + fmtMoney(b.pence) + " to her wallet" : "Cashed out " + fmtMoney(b.pence)), sub: b.status === "wallet" ? "Star Wallet" : b.status === "paid" ? "Paid" : "Waiting for Mum or Dad to pay", pts: -(b.points || 0) }); });
+      (state.games || []).forEach(function (x) { if (x.child === c && x.kind !== "build" && x.at && lgToday(x.at) >= fromDay) { var gm = ARCADE.filter(function (a) { return a.id === x.game; })[0]; out.push({ at: x.at, child: c, kind: "game", icon: "🎮", title: (gm ? gm.name : "Game") + ": " + x.score + "/" + x.total + (x.won ? " · won" : ""), sub: "Space Arcade" + (x.points ? " · +" + x.points + " points" : "") }); } });
       (state.wallet || []).forEach(function (x) { if (x.child === c && x.at && lgToday(x.at) >= fromDay) out.push({ at: x.at, child: c, kind: "bank", icon: x.kind === "in" ? "💷" : "🛍️", title: (x.kind === "in" ? "Money added: " : "Spent: ") + fmtMoney(x.pence), sub: (x.note || "") + " · Star Wallet" }); });
       state.merits.forEach(function (m) { if (m.child === c && !/^opening/.test(m.ref || "") && String(m.date).slice(0, 10) >= fromDay) out.push({ at: String(m.date).slice(0, 10) + "T12:00:00+04:00", child: c, kind: "merit", icon: "🏅", title: "Merit" + (m.count > 1 ? " ×" + m.count : "") + (m.subject ? ": " + m.subject : ""), sub: m.reason || "From school", noTime: true }); });
     });
@@ -1641,12 +1701,313 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     if (!p.id) h += '<path d="M' + (x - 12) + ' ' + (y - 6) + 'c5 -6 10 -2 13 -6c2 5 -4 7 -1 11c-5 2 -9 -2 -12 -5zM' + (x + 4) + ' ' + (y + 8) + 'c4 -3 8 -1 10 -4c1 4 -3 8 -7 9c-2 -1 -3 -3 -3 -5z" fill="#3fbf6e" opacity=".9"/>';
     return h + '</g>';
   }
+  /* ---------- Space Arcade (Millie): games with Ooh Ooh and Uuh Uuh ---------- */
+  var ARCADE = [
+    { id: "quizshow", name: "The Banana Quiz Show", blurb: "Ooh Ooh hosts, Uuh Uuh 'helps'. Ten questions from your lessons. Win up to 1,000 bananas!", icon: "🎤" },
+    { id: "trumps", name: "Planet Trumps", blurb: "Battle with planet cards. Answer right to pick the stat that wins!", icon: "🪐", friend: true },
+    { id: "moonbase", name: "Build a Moon Base", blurb: "Do missions to dig up moon rocks, then build a base for the monkeys.", icon: "🌙" },
+    { id: "memory", name: "Monkey Memory", blurb: "Find the matching pairs. Take turns with a monkey friend.", icon: "🃏", friend: true },
+    { id: "bananas", name: "Banana Blast", blurb: "Quick times tables. Every right answer throws a banana to the hungry monkeys!", icon: "🍌" }
+  ];
+  function arcadeToday() { return lgToday(Date.now()); }
+  function arcadeQ(g, L) {
+    var plan = typeof CURRICULUM !== "undefined" && CURRICULUM.millie, gens = [];
+    var addTopic = function (id, w) { var t = revTopic("millie", id); if (!t) return; t.gens.forEach(function (x) { if (!/^(spell|ch|en|fr|fq|eu|em):/.test(x)) for (var k = 0; k < w; k++) gens.push(x); }); };
+    if (plan) plan.units.forEach(function (u) { if (u.subject === "Spelling") return; u.topics.forEach(function (id) { addTopic(id, u.status === "now" ? 3 : u.status === "done" ? 2 : u.status === "next" ? 1 : 0); }); });
+    if (!gens.length) REVISION.millie.forEach(function (t) { addTopic(t.id, 1); });
+    g.seenQ = g.seenQ || {};
+    for (var tries = 0; tries < 40; tries++) {
+      var it = genOne("millie", pick(gens), L);
+      if (!it || it.type === "type" || !it.options || it.options.length < 2 || g.seenQ[it.prompt]) continue;
+      g.seenQ[it.prompt] = 1; return it;
+    }
+    return genOne("millie", "earthMoon", L);
+  }
+  function qBlock(item, chosen, opts) {
+    opts = opts || {};
+    var h = '<div class="aq"><p class="aq-p">' + esc(item.prompt) + '</p>' + (item.html ? '<div class="ftwrap">' + item.html + '</div>' : '') + '<div class="aq-o">';
+    item.options.forEach(function (o, i) {
+      var hidden = opts.hide && opts.hide.indexOf(o) >= 0, cls = chosen == null ? '' : o === item.answer ? ' ok' : o === chosen ? ' no' : ' dim';
+      h += '<button class="aq-b' + cls + '" data-ga="' + i + '"' + (chosen != null || hidden ? ' disabled' : '') + (hidden ? ' hidden' : '') + '>' + esc(o) + '</button>';
+    });
+    h += '</div>';
+    if (chosen != null) { var ok = chosen === item.answer, why = ok ? null : whyWrong(item, chosen);
+      h += '<div class="aq-f ' + (ok ? 'ok' : 'no') + '"><b>' + (ok ? 'Correct!' : 'The answer is ' + esc(item.answer) + '.') + '</b> ' + (why ? esc(why) + ' ' : '') + esc(item.explain || '') + '</div>'; }
+    return h + '</div>';
+  }
+  function bindQ(g, onAnswer) {
+    [].forEach.call(app.querySelectorAll("[data-ga]"), function (b) { b.addEventListener("click", function () { if (g.chosen != null) return; onAnswer(g.q.options[+b.dataset.ga]); }); });
+  }
+  function say(id, text, mood) { return '<div class="say ' + id + '">' + monkeySVG(id, mood || "happy", "mk sm") + '<div class="bub"><b>' + MONKEYS[id].name + '</b>' + esc(text) + '</div></div>'; }
+  function arcadeSave(game, score, total, won) {
+    var est = gamePointsEstimate(game, score, total, won, "millie", arcadeToday());
+    if (dbState !== "live" || !db) return 0;
+    var rec = { child: "millie", game: game, kind: "play", score: score, total: total, won: !!won };
+    var tmp = Object.assign({ id: "pending-" + Date.now(), points: est, playDay: arcadeToday(), at: new Date().toISOString() }, rec);
+    state.games = (state.games || []).concat([tmp]); setGames(state.games); chrome();
+    db.collection("game_plays").add(rec).catch(function (e) {
+      state.games = state.games.filter(function (x) { return x !== tmp; }); setGames(state.games);
+      if (state.game) state.game.saveMsg = /Too quick/.test((e && e.message) || "") ? "That game finished too quickly to save. Have another go!" : "That game didn't save. Points will still come from the next one.";
+      refresh();
+    });
+    return est;
+  }
+  function endNote(pts) { return '<p class="small">' + (pts ? '+' + pts + ' bonus points! ' : 'No bonus points this time (games give up to 20 a day, and 2 plays of each game). ') + 'Games are just for fun: they don’t count towards your streak.</p>'; }
+  function arcadeHub() {
+    var today = arcadeToday(), got = gamePointsToday("millie", today), ms = moonState(state.games || [], "millie");
+    var joke = MONKEY_JOKES[(+today.replace(/-/g, "")) % MONKEY_JOKES.length];
+    var h = '<section class="card arcade"><div class="ar-top"><div class="ar-mk">' + monkeySVG("ooh", "happy", "mk") + monkeySVG("uuh", "silly", "mk") + '</div><div><span class="small">With Ooh Ooh and Uuh Uuh</span><h2 class="jt">Space Arcade</h2>' +
+      '<p class="small" style="margin:0">Joke of the day from Uuh Uuh: <i>' + esc(joke) + '</i></p></div></div>' +
+      '<div class="ar-grid">' + ARCADE.map(function (a) {
+        return '<div class="ar-tile"><div class="ar-h"><span class="ar-i" aria-hidden="true">' + a.icon + '</span><b>' + esc(a.name) + '</b></div><span class="small">' + esc(a.blurb) + (a.id === "moonbase" ? ' You have <b>' + ms.rocks + ' moon rocks</b> and ' + ms.count + ' of ' + MOONBASE.length + ' parts built.' : '') + '</span>' +
+          (a.friend ? '<div class="row"><button class="btn sm" data-play="' + a.id + '" data-who="ooh">Play with Ooh Ooh</button><button class="btn sm ghost" data-play="' + a.id + '" data-who="uuh">Play with Uuh Uuh</button></div>'
+            : '<div class="row"><button class="btn sm" data-play="' + a.id + '">' + (a.id === "moonbase" ? "Go to the Moon" : "Play") + '</button></div>') + '</div>';
+      }).join("") + '</div><p class="small" style="margin:0">Bonus points from games today: <b>' + got + ' of 20</b>. Games don’t count towards your streak, so do a quiz too!</p></section>';
+    return h;
+  }
+  function startGame(id, who) {
+    if (id === "trumps") state.game = newTrumps(who);
+    else if (id === "memory") { var sets = MEMORY_SETS.map(function (s) { return s.id; }); state.game = newMemory(who, pick(sets)); }
+    else if (id === "moonbase") state.game = { id: "moonbase", phase: "base", line: "Welcome to the Moon! " + chat("uuh", "hello") };
+    else if (id === "bananas") state.game = newBananas();
+    else if (id === "quizshow") state.game = { id: "quizshow", i: 0, right: 0, q: null, chosen: null, used: {}, hide: null, line: "Welcome, welcome, WELCOME to the Banana Quiz Show, live from the Moon! I'm your host, Ooh Ooh!", side: chat("uuh", "hello"), over: false };
+    if (id === "quizshow") qsNext(state.game, true);
+    if (id === "trumps") state.game.q = arcadeQ(state.game, 2);
+    window.scrollTo({ top: 0 }); journeyView();
+  }
+  function arcadeView() {
+    var g = state.game, h = '<div class="row ar-back"><button class="linkbtn" id="arBack">← Space Arcade</button></div>';
+    if (g.id === "trumps") h += trumpsView(g);
+    else if (g.id === "memory") h += memoryView(g);
+    else if (g.id === "moonbase") h += moonView(g);
+    else if (g.id === "bananas") h += bananasView(g);
+    else if (g.id === "quizshow") h += quizShowView(g);
+    if (g.saveMsg) h += '<p class="cbnote">' + esc(g.saveMsg) + '</p>';
+    app.innerHTML = h;
+    document.getElementById("arBack").addEventListener("click", function () { state.game = null; calcSync(); journeyView(); window.scrollTo({ top: 0 }); });
+    if (g.id === "trumps") bindTrumps(g); else if (g.id === "memory") bindMemory(g); else if (g.id === "moonbase") bindMoon(g); else if (g.id === "bananas") bindBananas(g); else bindQuizShow(g);
+    [].forEach.call(app.querySelectorAll("[data-again]"), function (b) { b.addEventListener("click", function () { startGame(g.id, g.who); }); });
+    calcSync();
+  }
+
+  /* Planet Trumps */
+  function trumpCardHTML(id, opts) {
+    var c = trumpCard(id); opts = opts || {};
+    return '<div class="tcard' + (opts.win ? ' win' : '') + (opts.back ? ' back' : '') + '">' + (opts.back ? '<span class="tc-back">?</span><span class="small">' + esc(opts.backLabel || '') + '</span>' :
+      '<div class="tc-top"><svg viewBox="0 0 40 40" class="tc-pl" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="' + c.col + '"/>' + (c.id === "saturn" ? '<ellipse cx="20" cy="20" rx="19" ry="5" fill="none" stroke="#c9a86a" stroke-width="2"/>' : '') + '</svg><div><b>' + esc(c.name) + '</b><span class="small">' + esc(c.kind) + '</span></div></div>' +
+      TRUMP_STATS.map(function (s) {
+        var sel = opts.stat === s.id;
+        return (opts.pickable ? '<button class="tc-s pick" data-stat="' + s.id + '">' : '<div class="tc-s' + (sel ? ' sel' : '') + '">') + '<span>' + s.name + '</span><b>' + s.fmt(c[s.id]) + '</b>' + (opts.pickable ? '</button>' : '</div>');
+      }).join("") + '<span class="tc-fact">' + esc(c.fact) + '</span>') + '</div>';
+  }
+  function trumpsView(g) {
+    var who = g.who, M = MONKEYS[who];
+    var h = '<section class="card"><div class="tr-score"><span>Millie <b>' + g.me.length + '</b></span><span class="small">Round ' + Math.min(g.round, g.maxRounds) + ' of ' + g.maxRounds + (g.pot.length ? ' · ' + g.pot.length + ' in the middle' : '') + '</span><span><b>' + g.them.length + '</b> ' + M.name + '</span></div>';
+    if (g.phase === "end") {
+      var won = g.me.length > g.them.length, draw = g.me.length === g.them.length;
+      h += '<h2 class="jt">' + (won ? 'You win! 🎉' : draw ? 'It’s a draw!' : M.name + ' wins this time!') + '</h2>' + say(who, chat(who, won ? "lose" : draw ? "draw" : "win"), won ? "shock" : "silly") +
+        endNote(g.pts) + '<div class="row"><button class="btn" data-again="1">Play again</button></div></section>';
+      return h;
+    }
+    h += say(who, g.line, g.phase === "reveal" ? (g.result === "me" ? "shock" : g.result === "them" ? "silly" : "wink") : "happy");
+    if (g.phase === "ask") h += '<p class="small"><b>Answer this to choose the stat.</b> Get it wrong and ' + M.name + ' chooses instead!</p>' + qBlock(g.q, g.chosen) + '<div class="tr-cards">' + trumpCardHTML(g.me[0]) + trumpCardHTML(g.them[0], { back: true, backLabel: M.name + "'s card" }) + '</div>';
+    if (g.phase === "choose") h += qBlock(g.q, g.chosen) + '<p class="cbnote">Pick the stat you think will beat ' + M.name + '’s card!</p><div class="tr-cards">' + trumpCardHTML(g.me[0], { pickable: true }) + trumpCardHTML(g.them[0], { back: true, backLabel: M.name + "'s card" }) + '</div>';
+    if (g.phase === "reveal") h += (g.chosen !== g.q.answer ? qBlock(g.q, g.chosen) : '') + '<p class="cbnote">' + esc(g.compare) + '</p><div class="tr-cards">' + trumpCardHTML(g.me[0], { stat: g.stat, win: g.result === "me" }) + trumpCardHTML(g.them[0], { stat: g.stat, win: g.result === "them" }) + '</div>' +
+      '<div class="row"><button class="btn" id="trNext">' + (g.round >= g.maxRounds ? 'See who won' : 'Next round') + '</button></div>';
+    return h + '</section>';
+  }
+  function trReveal(g, stat) {
+    var a = trumpCard(g.me[0]), b = trumpCard(g.them[0]); g.stat = stat;
+    g.result = a[stat] > b[stat] ? "me" : a[stat] < b[stat] ? "them" : "draw";
+    g.compare = trumpCompareText(a, b, stat);
+    g.line = g.result === "me" ? chat(g.who, "lose") : g.result === "them" ? chat(g.who, "win") : chat(g.who, "draw");
+    g.phase = "reveal";
+  }
+  function bindTrumps(g) {
+    bindQ(g, function (o) {
+      g.chosen = o;
+      if (o === g.q.answer) { g.phase = "choose"; g.line = chat(g.who, "right"); }
+      else { var st = monkeyChoose(trumpCard(g.them[0]), g.who); trReveal(g, st); g.line = chat(g.who, "pick") + " I pick " + trumpStat(st).name + "! " + g.line; }
+      arcadeView();
+    });
+    [].forEach.call(app.querySelectorAll("[data-stat]"), function (b) { b.addEventListener("click", function () { trReveal(g, b.dataset.stat); arcadeView(); }); });
+    var nx = document.getElementById("trNext");
+    if (nx) nx.addEventListener("click", function () {
+      var mine = g.me.shift(), theirs = g.them.shift();
+      if (g.result === "me") g.me = g.me.concat([mine, theirs], g.pot); else if (g.result === "them") g.them = g.them.concat([theirs, mine], g.pot); else g.pot = g.pot.concat([mine, theirs]);
+      if (g.result !== "draw") g.pot = [];
+      g.round++; g.chosen = null; g.stat = null;
+      if (g.round > g.maxRounds || !g.me.length || !g.them.length) { g.phase = "end"; g.pts = arcadeSave("trumps", Math.min(g.me.length, 16), 16, g.me.length > g.them.length); }
+      else { g.phase = "ask"; g.q = arcadeQ(g, g.round > 6 ? 3 : 2); g.line = Math.random() < 0.3 ? pick(MONKEY_JOKES) : chat(g.who, "hello"); }
+      arcadeView(); window.scrollTo({ top: 0 });
+    });
+  }
+
+  /* Monkey Memory */
+  function memoryView(g) {
+    var M = MONKEYS[g.who];
+    var h = '<section class="card"><div class="tr-score"><span>Millie <b>' + g.mine + '</b></span><span class="small">Pairs: ' + esc(g.title) + '</span><span><b>' + g.theirs + '</b> ' + M.name + '</span></div>';
+    if (g.done) { var won = g.mine > g.theirs, draw = g.mine === g.theirs;
+      return h + '<h2 class="jt">' + (won ? 'You win! 🎉' : draw ? 'A draw!' : M.name + ' wins!') + '</h2>' + say(g.who, chat(g.who, won ? "lose" : draw ? "draw" : "win"), won ? "shock" : "silly") + endNote(g.pts) + '<div class="row"><button class="btn" data-again="1">Play again</button></div></section>'; }
+    h += say(g.who, g.line, g.turn === "me" ? "happy" : "wink") + '<p class="small">' + (g.turn === "me" ? '<b>Your turn:</b> flip two cards. A match means you go again!' : '<b>' + M.name + '’s turn…</b>') + '</p><div class="mem">';
+    g.cards.forEach(function (c) {
+      var shown = c.up || c.owner;
+      h += '<button class="mc' + (shown ? ' up' : '') + (c.owner ? ' got ' + c.owner : '') + '" data-mc="' + c.i + '"' + (shown || g.turn !== "me" || g.open.length >= 2 ? ' disabled' : '') + '>' + (shown ? esc(c.t) : '🍌') + '</button>';
+    });
+    return h + '</div></section>';
+  }
+  function memFlip(g, i) { var c = g.cards[i]; c.up = true; g.seen[i] = true; g.open.push(i); }
+  function memCheck(g, who) {
+    var a = g.cards[g.open[0]], b = g.cards[g.open[1]];
+    if (a.k === b.k) { a.owner = b.owner = who; if (who === "me") g.mine++; else g.theirs++; g.line = who === "me" ? chat(g.who, "right") : "Ooh! A pair! " + chat(g.who, "win"); }
+    else { a.up = b.up = false; g.line = who === "me" ? "Not a pair! My turn… *cracks knuckles*" : pick(["Hmm, I was SURE that was the one.", "Oops! My brain was thinking about bananas.", "Not a pair! Your go, Millie!"]); }
+    var matched = a.k === b.k; g.open = [];
+    if (g.cards.every(function (c) { return c.owner; })) { g.done = true; g.pts = arcadeSave("memory", g.mine, 6, g.mine > g.theirs); return; }
+    g.turn = matched ? who : (who === "me" ? "them" : "me");
+  }
+  function memMonkey(g) {
+    if (state.game !== g || g.done || g.turn !== "them") return;
+    var mv = monkeyMemoryMove(g);
+    setTimeout(function () { if (state.game !== g) return; memFlip(g, mv[0]); arcadeView();
+      setTimeout(function () { if (state.game !== g) return; memFlip(g, mv[1]); arcadeView();
+        setTimeout(function () { if (state.game !== g) return; memCheck(g, "them"); arcadeView(); if (g.turn === "them") memMonkey(g); }, 1100); }, 700); }, 700);
+  }
+  function bindMemory(g) {
+    [].forEach.call(app.querySelectorAll("[data-mc]"), function (b) { b.addEventListener("click", function () {
+      if (g.turn !== "me" || g.open.length >= 2) return; memFlip(g, +b.dataset.mc); arcadeView();
+      if (g.open.length === 2) setTimeout(function () { if (state.game !== g) return; memCheck(g, "me"); arcadeView(); if (g.turn === "them") memMonkey(g); }, 900);
+    }); });
+  }
+
+  /* Banana Blast */
+  function newBananas() {
+    var qs = [], seen = {};
+    while (qs.length < 12) { var a = rnd(2, 12), b = rnd(3, 12), div = Math.random() < 0.3, k = (div ? "d" : "m") + a + "x" + b; if (seen[k]) continue; seen[k] = 1;
+      qs.push(div ? { p: (a * b) + " ÷ " + a, a: b } : { p: a + " × " + b, a: a * b }); }
+    return { id: "bananas", qs: qs, i: 0, right: 0, input: "", flash: null, line: "We're SO hungry. Every right answer = one banana. No pressure. (Some pressure. We're very hungry.)", done: false };
+  }
+  function bananasView(g) {
+    var h = '<section class="card"><div class="tr-score"><span>🍌 <b>' + g.right + '</b> bananas thrown</span><span class="small">Question ' + Math.min(g.i + 1, 12) + ' of 12</span></div>';
+    var bucket = '<div class="bucket">' + monkeySVG("ooh", g.flash === "no" ? "sad" : "happy", "mk") + '<div class="bk">' + new Array(g.right + 1).join("🍌") + '</div>' + monkeySVG("uuh", g.flash === "ok" ? "silly" : g.flash === "no" ? "shock" : "happy", "mk") + '</div>';
+    if (g.done) {
+      var r = g.right;
+      return h + bucket + '<h2 class="jt">' + (r === 12 ? 'BANANA PARTY! 🎉' : r >= 9 ? 'Full tummies!' : 'Yum, thank you!') + '</h2>' + say("uuh", r === 12 ? "Twelve bananas! I'm going to do a banana dance. *dances* *slips on banana skin*" : r >= 9 ? "Burp! Excuse me. That was a happy burp." : "Thank you, Millie! Next time, a few more? My tummy is rumbling like Jupiter.", "silly") +
+        endNote(g.pts) + '<div class="row"><button class="btn" data-again="1">Play again</button></div></section>';
+    }
+    var q = g.qs[g.i];
+    h += bucket + say("uuh", g.line, g.flash === "ok" ? "silly" : g.flash === "no" ? "sad" : "happy") +
+      '<div class="bn-q"><span>' + esc(q.p) + ' =</span><b class="bn-in' + (g.flash ? ' ' + g.flash : '') + '">' + (g.flash === "no" ? q.a : esc(g.input) || '&nbsp;') + '</b></div><div class="numpad">' +
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫", 0, "Go"].map(function (k) { return '<button class="np' + (k === "Go" ? ' go' : '') + '" data-np="' + k + '"' + (g.flash ? ' disabled' : '') + '>' + k + '</button>'; }).join("") + '</div></section>';
+    return h;
+  }
+  function bindBananas(g) {
+    var press = function (k) {
+      if (g.flash || g.done) return;
+      if (k === "⌫") g.input = g.input.slice(0, -1);
+      else if (k === "Go") {
+        if (!g.input) return;
+        var ok = +g.input === g.qs[g.i].a; g.flash = ok ? "ok" : "no";
+        if (ok) { g.right++; g.line = pick(["Catch! *nom nom*", "Banana incoming! Got it!", "Yesss! Delicious maths!", "Mmmm, tastes like times tables!"]); }
+        else g.line = "Oops! " + g.qs[g.i].p + " = " + g.qs[g.i].a + ". That banana flew to Mars! Never mind!";
+        arcadeView();
+        setTimeout(function () { if (state.game !== g) return; g.flash = null; g.input = ""; g.i++; if (g.i >= 12) { g.done = true; g.pts = arcadeSave("bananas", g.right, 12, g.right >= 10); } arcadeView(); }, ok ? 700 : 1800);
+        return;
+      } else if (g.input.length < 4) g.input += k;
+      arcadeView();
+    };
+    [].forEach.call(app.querySelectorAll("[data-np]"), function (b) { b.addEventListener("click", function () { press(b.dataset.np); }); });
+    document.onkeydown = function (e) { if (state.game !== g || g.done) return; if (/^[0-9]$/.test(e.key)) press(e.key); else if (e.key === "Backspace") press("⌫"); else if (e.key === "Enter") press("Go"); };
+  }
+
+  /* Moon Base */
+  function moonView(g) {
+    var ms = moonState(state.games || [], "millie");
+    if (g.phase === "mission") {
+      var h = '<section class="card"><div class="tr-score"><span>⛏️ Mission: question <b>' + (g.i + 1) + '</b> of 6</span><span>🪨 <b>' + g.right + '</b> rocks dug</span></div>' + say(g.i % 2 ? "uuh" : "ooh", g.line, g.chosen == null ? "happy" : g.chosen === g.q.answer ? "silly" : "sad") + qBlock(g.q, g.chosen);
+      if (g.chosen != null) h += '<div class="row"><button class="btn" id="mbNext">' + (g.i >= 5 ? 'Finish the mission' : 'Next question') + '</button></div>';
+      return h + '</section>';
+    }
+    var h2 = '<section class="card"><h2 class="jt">Millie’s Moon Base</h2>' + moonSVG(ms.built, g.party ? "party" : "") + say(g.speaker || "ooh", g.line, "happy") +
+      '<div class="tr-score"><span>🪨 <b>' + ms.rocks + '</b> moon rocks</span><span class="small">' + ms.count + ' of ' + MOONBASE.length + ' parts built</span></div>' +
+      (g.missionMsg ? '<p class="cbnote">' + esc(g.missionMsg) + '</p>' + endNote(g.pts) : '') +
+      '<div class="row"><button class="btn" id="mbGo">Start a mission (6 questions)</button></div><p class="small">Every right answer digs up 1 moon rock. Get all 6 right for 2 bonus rocks!</p></section>';
+    h2 += '<section class="card sect"><h2>Build</h2><div class="mb-list">' + MOONBASE.map(function (it) {
+      var has = ms.built[it.id], can = !has && ms.rocks >= it.cost;
+      return '<div class="mb-it' + (has ? ' has' : '') + '"><b>' + esc(it.name) + '</b><span class="small">' + (has ? 'Built ✓' : '🪨 ' + it.cost + ' rocks') + '</span>' + (has ? '' : '<button class="btn sm' + (can ? '' : ' ghost') + '" data-build="' + it.id + '"' + (can ? '' : ' disabled') + '>' + (can ? 'Build' : 'Need ' + (it.cost - ms.rocks) + ' more') + '</button>') + '</div>';
+    }).join("") + '</div></section>';
+    return h2;
+  }
+  function bindMoon(g) {
+    var go = document.getElementById("mbGo");
+    if (go) go.addEventListener("click", function () { g.phase = "mission"; g.i = 0; g.right = 0; g.chosen = null; g.missionMsg = null; g.q = arcadeQ(g, 2); g.line = "Put on your space helmet! Question 1…"; arcadeView(); });
+    bindQ(g, function (o) { g.chosen = o; if (o === g.q.answer) { g.right++; g.line = pick(["Clang! A shiny moon rock!", "Rock found! Uuh Uuh tried to eat it. It is not a banana.", "Ding! Another rock for the base!"]); } else g.line = chat(g.i % 2 ? "uuh" : "ooh", "wrong"); arcadeView(); });
+    var nx = document.getElementById("mbNext");
+    if (nx) nx.addEventListener("click", function () {
+      g.i++; g.chosen = null;
+      if (g.i >= 6) { var bonus = g.right === 6 ? 2 : 0; g.pts = arcadeSave("moonbase", g.right, 6, g.right >= 5); g.phase = "base"; g.party = g.right === 6;
+        g.missionMsg = "Mission complete! You dug up " + (g.right + bonus) + " moon rock" + (g.right + bonus === 1 ? "" : "s") + (bonus ? " (including 2 bonus rocks for a perfect mission!)" : "") + ".";
+        g.line = g.right === 6 ? "PERFECT MISSION! Uuh Uuh is doing cartwheels. In low gravity. He's been up there a while." : "Great digging! Let's build something!"; g.speaker = "ooh"; }
+      else { g.q = arcadeQ(g, g.i >= 4 ? 3 : 2); g.line = "Question " + (g.i + 1) + "! " + (Math.random() < 0.35 ? pick(MONKEY_JOKES) : "Keep digging!"); }
+      arcadeView(); window.scrollTo({ top: 0 });
+    });
+    [].forEach.call(app.querySelectorAll("[data-build]"), function (b) { b.addEventListener("click", function () {
+      var it = moonItem(b.dataset.build), ms = moonState(state.games || [], "millie"); if (!it || ms.built[it.id] || ms.rocks < it.cost) return;
+      var rec = { child: "millie", game: "moonbase", kind: "build", item: it.id }, tmp = Object.assign({ id: "pending-" + Date.now(), points: 0, playDay: arcadeToday() }, rec);
+      state.games = (state.games || []).concat([tmp]); setGames(state.games);
+      g.line = it.line; g.speaker = /Uuh Uuh/.test(it.line) ? "uuh" : "ooh"; g.party = true; g.missionMsg = null;
+      if (db) db.collection("game_plays").add(rec).catch(function () { state.games = state.games.filter(function (x) { return x !== tmp; }); setGames(state.games); g.saveMsg = "That didn't save. Please try again."; refresh(); });
+      arcadeView(); window.scrollTo({ top: 0 });
+    }); });
+  }
+
+  /* Banana Quiz Show */
+  function qsNext(g, first) {
+    g.q = arcadeQ(g, g.i < 3 ? 1 : g.i < 7 ? 2 : 3); g.chosen = null; g.hide = null; g.uuhSays = null;
+    if (!first) g.line = pick(["Next question, for " + nf(QS_LADDER[g.i]) + " banana" + (QS_LADDER[g.i] === 1 ? "" : "s") + "!", "The audience is going bananas! Question " + (g.i + 1) + "…", "Ooh ooh! Here comes question " + (g.i + 1) + ", for " + nf(QS_LADDER[g.i]) + " bananas!"]);
+  }
+  function quizShowView(g) {
+    var ladder = '<ol class="ladder" reversed>' + QS_LADDER.slice().reverse().map(function (v, ri) { var i = QS_LADDER.length - 1 - ri;
+      return '<li class="' + (i === g.i && !g.over ? 'now' : i < g.i ? 'done' : '') + '">' + nf(v) + ' 🍌</li>'; }).join("") + '</ol>';
+    var h = '<section class="card qs"><div class="qs-stage"><div><span class="small">Live from the Moon</span><h2 class="jt">The Banana Quiz Show</h2></div>' + ladder + '</div>';
+    if (g.over) {
+      var bank = g.right ? QS_LADDER[g.right - 1] : 0;
+      h += '<h2 class="jt">' + (g.right === 10 ? 'BANANA MILLIONAIRE! 🏆' : bank ? 'You won ' + nf(bank) + ' banana' + (bank === 1 ? '' : 's') + '!' : 'Great try!') + '</h2>' +
+        say("ooh", g.right === 10 ? "TEN out of TEN! I've never seen anything like it! Confetti! Where's the confetti? Uuh Uuh, did you eat the confetti?" : "What a show! You got " + g.right + " right. Give it up for Millie, everybody! *audience of three monkeys cheers*", "silly") +
+        say("uuh", g.right >= 7 ? "Can I have one of your bananas? Just one. Or seven." : "I'd have got zero, so you're WAY better than me!", "silly") + endNote(g.pts) + '<div class="row"><button class="btn" data-again="1">Play again</button></div></section>';
+      return h;
+    }
+    h += say("ooh", g.line, "happy") + '<p class="small"><b>Question ' + (g.i + 1) + ' of 10</b> for <b>' + nf(QS_LADDER[g.i]) + ' banana' + (QS_LADDER[g.i] === 1 ? '' : 's') + '</b></p>' + qBlock(g.q, g.chosen, { hide: g.hide });
+    if (g.uuhSays) h += say("uuh", g.uuhSays, "silly");
+    if (g.hint) h += say("ooh", "Psst… " + g.hint, "wink");
+    if (g.chosen == null) h += '<div class="row qs-life"><button class="btn sm ghost" data-life="split"' + (g.used.split ? ' disabled' : '') + '>🍌 Banana split (50:50)</button><button class="btn sm ghost" data-life="uuh"' + (g.used.uuh ? ' disabled' : '') + '>🐵 Ask Uuh Uuh</button><button class="btn sm ghost" data-life="hint"' + (g.used.hint ? ' disabled' : '') + '>💡 Ooh Ooh’s hint</button></div>';
+    else h += say("uuh", g.side, g.chosen === g.q.answer ? "silly" : "sad") + '<div class="row"><button class="btn" id="qsNext">' + (g.chosen !== g.q.answer || g.i >= 9 ? 'See your bananas' : 'Next question') + '</button></div>';
+    return h + '</section>';
+  }
+  function bindQuizShow(g) {
+    bindQ(g, function (o) { g.chosen = o; g.hint = null; if (o === g.q.answer) { g.right++; g.line = chat("ooh", "right"); g.side = chat("uuh", "right"); } else { g.line = chat("ooh", "wrong"); g.side = "Aww! But that was a brilliant go, Millie!"; } arcadeView(); });
+    [].forEach.call(app.querySelectorAll("[data-life]"), function (b) { b.addEventListener("click", function () {
+      var k = b.dataset.life; g.used[k] = true;
+      if (k === "split") { g.hide = shuffle(g.q.options.filter(function (o) { return o !== g.q.answer; })).slice(0, Math.max(0, g.q.options.length - 2)); g.line = "Banana split! Two wrong answers have been eaten. By Uuh Uuh. Obviously."; }
+      if (k === "uuh") { var right = Math.random() < 0.75, guess = right ? g.q.answer : pick(g.q.options.filter(function (o) { return o !== g.q.answer; }));
+        g.uuhSays = pick(["Ooh! I know this one! I think it's… " + guess + ". I'm about 75% sure. And 25% banana.", "My tummy says " + guess + ". My tummy is usually right. Usually.", guess + "! Final answer! …wait, is it my turn? Oh. Then I mean, maybe " + guess + "."]); }
+      if (k === "hint") { g.hint = g.q.tip || (g.q.steps && g.q.steps[0]) || "Read the question slowly, then cross out the answers that can't be right."; }
+      arcadeView();
+    }); });
+    var nx = document.getElementById("qsNext");
+    if (nx) nx.addEventListener("click", function () {
+      if (g.chosen !== g.q.answer || g.i >= 9) { g.over = true; g.pts = arcadeSave("quizshow", g.right, 10, g.right >= 7); }
+      else { g.i++; qsNext(g, false); }
+      arcadeView(); window.scrollTo({ top: 0 });
+    });
+  }
+
   function journeyView() {
+    if (state.game) return arcadeView();
     var J = journeyState(all, "millie"), S = JOURNEY.stops, nodes = [JOURNEY.start].concat(S);
     var W = 340, top = 70, dy = 104, H = top + (nodes.length - 1) * dy + 70;
     var pt = function (i) { return { x: i % 2 === 0 ? 92 : 248, y: top + i * dy }; };
     var pick = state.postcard == null ? J.reached : state.postcard;
-    var h = '<section class="card"><div class="jhead"><div><span class="small">Millie’s mission</span><h2 class="jt">Journey through the Solar System</h2></div><div class="jstars"><b>' + J.stars + '</b><span>stars of fuel</span></div></div>' +
+    var h = arcadeHub() + '<section class="card"><div class="jhead"><div><span class="small">Millie’s mission</span><h2 class="jt">Journey through the Solar System</h2></div><div class="jstars"><b>' + J.stars + '</b><span>stars of fuel</span></div></div>' +
       '<p class="small" style="margin:0">Every correct answer is a star of rocket fuel. Collect stars to fly from Earth past every planet to the very edge of the Solar System. Each stop unlocks a postcard of real space facts.</p>' +
       (J.done ? '<p class="cbnote">You made it to the edge of the Solar System! Every postcard is unlocked.</p>' :
         '<div><div class="jline"><span>Now: <b>' + esc(J.at) + '</b></span><span>Next: <b>' + esc(J.next.name) + '</b></span></div><div class="bar"><i style="width:' + Math.round(J.frac * 100) + '%"></i></div>' +
@@ -1679,6 +2040,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     svg += '</svg>';
     h += '<section class="card jmap">' + svg + '<p class="small" style="margin:0">Tap a planet to read its postcard.</p></section>';
     app.innerHTML = h;
+    [].forEach.call(app.querySelectorAll("[data-play]"), function (b) { b.addEventListener("click", function () { startGame(b.dataset.play, b.dataset.who || "ooh"); }); });
     [].forEach.call(app.querySelectorAll(".stop.tap"), function (g) {
       var go = function () {
         var i = +g.dataset.stop;
@@ -2157,7 +2519,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
 
   /* ---------- Calculator (pops up from the corner; hidden while a quiz or match is running) ---------- */
   var calc = { open: false, expr: "", res: "", err: false, hist: [] };
-  function calcAllowed() { return !(state.started && (state.view === "quiz" || state.mode === "match")); }
+  function calcAllowed() { return !(state.started && (state.view === "quiz" || state.mode === "match")) && !(state.view === "world" && state.game); }
   function calcEval(src) {
     var s = src.replace(/\s+/g, ""), i = 0;
     function peek() { return s[i]; }
@@ -2512,7 +2874,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   [].forEach.call(document.querySelectorAll(".md"), function (b) { b.addEventListener("click", function () { setMode(b.dataset.m); }); });
   document.getElementById("v-quiz").addEventListener("click", function () { setView("quiz"); });
   document.getElementById("v-prog").addEventListener("click", function () { setView("progress"); });
-  document.getElementById("v-world").addEventListener("click", function () { setView("world"); });
+  document.getElementById("v-world").addEventListener("click", function () { state.game = null; setView("world"); });
   document.getElementById("v-hw").addEventListener("click", function () { state.hwMsg = ""; setView("homework"); });
   document.getElementById("v-shop").addEventListener("click", function () { setView("shop"); });
   document.getElementById("v-cal").addEventListener("click", function () { state.calMsg = ""; setView("calendar"); });
