@@ -35,12 +35,20 @@ Deno.serve(async (req) => {
       homeId: x.homeTeam?.id, awayId: x.awayTeam?.id, hs: x.score?.fullTime?.home ?? null, as: x.score?.fullTime?.away ?? null, matchday: x.matchday ?? null,
     }));
     const now = new Date().toISOString();
+    // Fantasy Premier League gameweek deadlines (public feed, no key). Optional: never stops the rest.
+    let fpl: any = null;
+    try {
+      const r = await fetch("https://fantasy.premierleague.com/api/bootstrap-static/", { headers: { "User-Agent": "Mozilla/5.0 Hollyend" } });
+      if (r.ok) { const b = await r.json(); fpl = (b.events || []).map((e: any) => ({ gw: e.id, name: e.name, deadline: e.deadline_time, current: e.is_current, next: e.is_next, finished: e.finished })); }
+      else console.log("fpl status", r.status);
+    } catch (e) { console.log("fpl error", String(e)); }
+    if (fpl) await db.from("football_cache").upsert([{ key: "fpl_events", data: { events: fpl }, updated_at: now }]);
     const up = await db.from("football_cache").upsert([
       { key: "pl_table", data: { season: st.season?.startDate?.slice(0, 4) || null, matchday: st.season?.currentMatchday || null, table }, updated_at: now },
       { key: "arsenal_matches", data: { matches }, updated_at: now },
     ]);
     if (up.error) throw up.error;
-    return json({ ok: true, teams: table.length, matches: matches.length });
+    return json({ ok: true, teams: table.length, matches: matches.length, fpl: fpl ? fpl.length : 0 });
   } catch (e) {
     console.log("football error", String(e));
     return json({ ok: false, error: String(e) }, 500);
