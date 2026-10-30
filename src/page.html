@@ -227,6 +227,30 @@ body.k .earn { font-size: 30px; }
 .wal-split div { background: var(--card2); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; display: flex; flex-direction: column; }
 .arcade { gap: 12px; }
 .buddy-top { margin: 0 0 12px; }
+.subnav { display: inline-flex; gap: 4px; padding: 4px; margin: 0 0 12px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+.subnav button { font: 700 14px var(--body); color: var(--muted); background: transparent; border: 0; border-radius: 9px; padding: 8px 16px; cursor: pointer; }
+.subnav button[aria-selected="true"] { background: var(--accent); color: var(--on-accent); }
+.rp-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 8px 0; }
+.rp-stats div { background: var(--card2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; }
+.rp-stats b { font-family: var(--display); font-size: 34px; line-height: 1; color: var(--accent); } .rp-stats b small { font-size: 16px; color: var(--muted); } .rp-stats span { font-size: 13px; color: var(--muted); }
+.rp-head { font-size: 18px; font-weight: 700; margin: 4px 0 0; }
+.rp-list { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.rp-goals { display: flex; flex-direction: column; gap: 8px; } .rp-goal { display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; background: var(--card2); border: 1px solid var(--line); border-radius: 12px; }
+.rp-bars { width: 100%; height: auto; } .gbt { font: 700 12px var(--body); fill: #10131d; } .gbl { font: 600 12px var(--body); fill: var(--muted); }
+.gb5 { fill: #b388ff; background: #b388ff; } .gb4 { fill: #3fd28b; background: #3fd28b; } .gb3 { fill: #4ea8ff; background: #4ea8ff; } .gb2 { fill: #ffc24b; background: #ffc24b; } .gb1 { fill: #ff6b6b; background: #ff6b6b; }
+.rp-key { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--muted); } .rp-key i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+.gp { display: inline-flex; min-width: 30px; justify-content: center; padding: 2px 6px; border-radius: 8px; font-weight: 800; font-size: 13px; color: #10131d; }
+.gp.g5 { background: #b388ff; } .gp.g4 { background: #3fd28b; } .gp.g3 { background: #4ea8ff; } .gp.g2 { background: #ffc24b; } .gp.g1 { background: #ff6b6b; } .gp.g0 { background: var(--line); color: var(--muted); }
+.rp-grid { width: 100%; border-collapse: collapse; font-size: 14px; } .rp-grid th, .rp-grid td { padding: 6px 6px; border-bottom: 1px solid var(--line); text-align: center; } .rp-grid th:first-child, .rp-grid td:first-child { text-align: left; }
+.rp-grid th { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.tr { font-size: 12px; font-weight: 800; white-space: nowrap; } .tr.up { color: var(--good); } .tr.down { color: var(--bad); } .tr.same { color: var(--muted); }
+.rp-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.gl-row { display: grid; grid-template-columns: 80px minmax(0, 1fr) 120px; gap: 10px; align-items: center; margin-top: 10px; }
+.gl-track { position: relative; height: 14px; background: var(--card2); border: 1px solid var(--line); border-radius: 999px; } .gl-track i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent2), var(--accent)); }
+.gl-avg { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); opacity: .7; } .gl-n { font-weight: 800; } .gl-n small { font-weight: 500; color: var(--muted); }
+.rp-quote { margin: 0; padding: 10px 14px; border-left: 4px solid var(--accent); background: var(--card2); border-radius: 0 12px 12px 0; font-style: italic; }
+.rp-sub { border-top: 1px solid var(--line); padding: 8px 0; } .sect details.rp-sub > summary { cursor: pointer; display: flex; flex-direction: row; gap: 8px; align-items: center; flex-wrap: wrap; text-align: left; } .rp-sub p { margin: 6px 0 0; } .rp-target { color: var(--gold); }
+.rp-old { padding: 8px 0; border-top: 1px solid var(--line); }
 .tl-day { display: flex; flex-direction: column; gap: 6px; padding: 8px 0; border-top: 1px solid var(--line); }
 .tl-day:first-of-type { border-top: 0; }
 .tl-d { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
@@ -821,10 +845,10 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       <button class="vw" id="v-quiz" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7 4 20 12 7 20 7 4"/></svg>Play</button>
       <button class="vw" id="v-world" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" id="v-world-i"><path d="M12 21s-6-5.3-6-11a6 6 0 0 1 12 0c0 5.7-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg><span id="v-world-l">Journey</span></button>
       <button class="vw" id="v-cal" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Calendar</button>
-      <button class="vw" id="v-shop" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>Shop</button>
-      <button class="vw" id="v-bank" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg>Bank</button>
+      <button class="vw" id="v-shop" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>Rewards</button>
+      <button class="vw" id="v-bank" aria-pressed="false" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg>Bank</button>
       <button class="vw" id="v-hub" aria-pressed="false" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M7 10.5v4M5 12.5h4"/><circle cx="15.5" cy="11.5" r="1"/><circle cx="17.5" cy="14" r="1"/></svg>Hub</button>
-      <button class="vw" id="v-prog" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg>Awards</button>
+      <button class="vw" id="v-prog" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg>Me</button>
     </nav>
     <div class="modes" id="modes" role="group" aria-label="Quiz type">
       <button class="md" id="m-mix" data-m="mix" aria-pressed="true">Weekly mix<small id="m-mix-sub">Maths, English &amp; science</small></button>
@@ -894,6 +918,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     if (v === "shop") return ["uuh", spick(["Ooh! Are you buying something for us? A banana hat would be lovely. Just saying.", "Shopping! Can I have a rocket? A small one? A banana-shaped one?"], key), "silly"];
     if (v === "bank") { var wt = walletTotals(c).balance;
       return ["uuh", wt > 0 ? "You've got " + fmtMoney(wt) + " in your Star Wallet! Can we spend it on bananas? No? OK. Saving is clever too." : spick(["Points into money! Can we buy bananas with it? Ooh Ooh says I have to ask Mum.", "Every quiz fills up your points. Then — ka-ching! — real money!"], key), "happy"]; }
+    if (v === "reports") return null;
     if (v === "progress") return ["ooh", spick(["Look at all your awards! I'm so proud I could burst. Uuh Uuh actually did burst a bit. Just some fluff.", "Every badge is a little trophy from your brain. You're amazing, Millie!"], key), "happy"];
     if (v === "calendar") { var nx = calItems("millie").filter(function (e) { return String(e.date).slice(0, 10) >= t && e.kind !== "news" && e.kind !== "action" && (e.child === "millie" || e.child === "both"); })[0];
       return ["ooh", nx ? "Coming up: " + (nx.title || "something fun") + "! " + (nx.bring ? "Don't forget: " + nx.bring + "." : "I've put it in my monkey diary.") : "Nothing big coming up. More time for quizzes and bananas!", "wink"]; }
@@ -947,19 +972,114 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     }).join("") : '<p class="small">Nothing in the next six weeks yet.</p>') + '</section>' + hubFpl() + '</div><div class="col">' + (footyTableCard() || '') + hubGameCard("fortnite") + hubGameCard("rocketleague") + '</div></div>';
     app.innerHTML = h;
   }
+  /* ---------- School reports: progress across every report, plus the latest in detail ---------- */
+  var GRADE = { "1+": 5, "1": 4, "2": 3, "3": 2, "4": 1 };
+  var GRADE_WORD = { 5: "Significantly exceeding", 4: "Above expectations", 3: "Meeting expectations", 2: "Working towards", 1: "Needs support" };
+  var GRADE_SHORT = { 5: "1+", 4: "1", 3: "2", 2: "3", 1: "4" };
+  var ATT = { "Outstanding": 4, "Good": 3, "Satisfactory": 2, "Requires significant improvement": 1 };
+  var REPORT_PRACTICE = {
+    millie: { "Maths": "sq-cube", "English Reading": "figurative", "English Writing": "grammar5", "Science": "earth-moon" },
+    kristan: { "Maths": "sample-space", "English": "poetry", "Science": "metals", "French": "fr-futur" }
+  };
+  function reportsFor(c) { return (state.reports || []).filter(function (r) { return r.child === c; }).sort(function (a, b) { return String(a.issued).localeCompare(String(b.issued)); }); }
+  function shortTerm(r) { return (r.termLabel === "End of year" ? "EOY" : r.termLabel.replace("Term ", "T")) + " · " + r.yearLabel.replace("Year ", "Y"); }
+  function gradeOf(r, subj) { var s = (r.subjects || []).filter(function (x) { return x.name === subj; })[0]; return s ? GRADE[s.grade] : null; }
+  function pill(v) { return v ? '<span class="gp g' + v + '" title="' + GRADE_WORD[v] + '">' + GRADE_SHORT[v] + '</span>' : '<span class="gp g0">–</span>'; }
+  function reportTrends(list) {
+    var first = list[0], last = list[list.length - 1], prev = list[list.length - 2], up = [], down = [], same = [], dip = [];
+    (last.subjects || []).forEach(function (s) {
+      var a = gradeOf(first, s.name), b = GRADE[s.grade], p = prev ? gradeOf(prev, s.name) : null;
+      if (a == null || list.length < 2) return;
+      (b > a ? up : b < a ? down : same).push({ name: s.name, from: a, to: b });
+      if (p != null && b < p) dip.push({ name: s.name, from: p, to: b });
+    });
+    return { up: up, down: down, same: same, dip: dip };
+  }
+  function stackBars(list) {
+    var W = 520, H = 190, pad = 34, bw = Math.min(70, (W - pad * 2) / list.length - 24), max = Math.max.apply(null, list.map(function (r) { return (r.subjects || []).length; }));
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" class="rp-bars" role="img" aria-label="Grades in each report">';
+    list.forEach(function (r, i) {
+      var x = pad + i * ((W - pad * 2) / list.length) + 12, y = H - 30, counts = [5, 4, 3, 2, 1].map(function (v) { return (r.subjects || []).filter(function (s) { return GRADE[s.grade] === v; }).length; });
+      [1, 2, 3, 4, 5].forEach(function (v) { var n = counts[5 - v]; if (!n) return; var h = n / max * (H - 60); y -= h; svg += '<rect x="' + x + '" y="' + y.toFixed(1) + '" width="' + bw + '" height="' + h.toFixed(1) + '" class="gb' + v + '" rx="3"><title>' + n + ' × ' + GRADE_WORD[v] + '</title></rect>' + (h > 14 ? '<text x="' + (x + bw / 2) + '" y="' + (y + h / 2 + 4).toFixed(1) + '" text-anchor="middle" class="gbt">' + n + '</text>' : ''); });
+      svg += '<text x="' + (x + bw / 2) + '" y="' + (H - 10) + '" text-anchor="middle" class="gbl">' + esc(shortTerm(r)) + '</text>';
+    });
+    return svg + '</svg><div class="rp-key">' + [5, 4, 3, 2].map(function (v) { return '<span><i class="gb' + v + '"></i>' + GRADE_WORD[v] + '</span>'; }).join("") + '</div>';
+  }
+  function glCard(ext, isM) {
+    if (!ext || !ext.gl) return "";
+    var bar = function (g) { var pct = Math.max(0, Math.min(100, (g.sas - 70) / 70 * 100)), avg = (100 - 70) / 70 * 100;
+      return '<div class="gl-row"><b>' + esc(g.name) + '</b><div class="gl-track"><i style="width:' + pct.toFixed(0) + '%"></i><span class="gl-avg" style="left:' + avg.toFixed(0) + '%"></span></div><span class="gl-n">' + g.sas + ' <small>stanine ' + g.stanine + '</small></span></div>'; };
+    return '<section class="card sect"><h2>National tests (GL)</h2><p class="small" style="margin:0">Compared with children of the same age across the UK. The line marks the average (100). Above 104 is above expected.</p>' + ext.gl.map(bar).join("") +
+      (ext.ngrt ? '<p class="small" style="margin:6px 0 0"><b>Reading test (NGRT):</b> ' + ext.ngrt.sas + ', reading age <b>' + esc(ext.ngrt.readingAge) + '</b>.</p>' : '') + '</section>';
+  }
+  function reportsView() {
+    var c = state.child, list = reportsFor(c), parent = isParentNow(), isM = c === "millie";
+    if (!list.length) { app.innerHTML = '<section class="card"><h2 class="hw-h">School reports</h2><p class="small">No reports yet. They’re added after each school report comes out.</p></section>'; return; }
+    var last = list[list.length - 1], T = reportTrends(list), fb = last.feedback || {};
+    var above = (last.subjects || []).filter(function (s) { return GRADE[s.grade] >= 4; }).length, outst = (last.subjects || []).filter(function (s) { return s.attitude === "Outstanding"; }).length;
+    var h = '<section class="card rp-hero"><span class="small">' + esc(name()) + '’s school reports</span><h2 class="hw-h">' + esc(last.yearLabel + ' · ' + last.termLabel) + '</h2>' +
+      '<div class="rp-stats"><div><b>' + above + '<small>/' + (last.subjects || []).length + '</small></b><span>Above expectations or higher</span></div><div><b>' + T.up.length + '</b><span>subjects gone up since ' + esc(shortTerm(list[0])) + '</span></div><div><b>' + outst + '</b><span>Outstanding attitude</span></div>' +
+      (last.housePoints != null ? '<div><b>' + last.housePoints + '</b><span>house points</span></div>' : last.attendance != null ? '<div><b>' + last.attendance + '%</b><span>attendance</span></div>' : '') + '</div>' +
+      (isM ? say("ooh", (fb.kid && fb.kid[0]) || "Look how much you've grown!", "happy") : (fb.kid && fb.kid[0] ? '<p class="rp-head">' + esc(fb.kid[0]) + '</p>' : '')) + '</section>';
+    h += '<div class="cols"><div class="col">';
+    h += '<section class="card sect"><h2>Highlights</h2><ul class="rp-list">' + (fb.kid || []).slice(isM ? 1 : 1).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul></section>';
+    if (fb.next && fb.next.length) h += '<section class="card sect"><h2>' + (isM ? "My next goals" : "Next steps") + '</h2><div class="rp-goals">' + fb.next.map(function (x) {
+      var subj = x.split(":")[0], topic = (REPORT_PRACTICE[c] || {})[subj] || (REPORT_PRACTICE[c] || {})[subj === "Reading" ? "English Reading" : subj];
+      return '<div class="rp-goal"><span>' + esc(x) + '</span>' + (topic && revTopic(c, topic) ? '<button class="linkbtn sm" data-rptopic="' + topic + '">Practise: ' + esc(revTopic(c, topic).title) + '</button>' : '') + '</div>'; }).join("") + '</div></section>';
+    h += '<section class="card sect"><h2>Grades in every report</h2>' + stackBars(list) + '</section>';
+    h += glCard(last.external, isM);
+    if (last.tutorComment) h += '<section class="card sect"><h2>From ' + esc(last.tutor || "your tutor") + '</h2><blockquote class="rp-quote">' + esc(last.tutorComment) + '</blockquote></section>';
+    h += '</div><div class="col">';
+    var subjects = (last.subjects || []).slice().sort(function (a, b) { return GRADE[b.grade] - GRADE[a.grade]; });
+    h += '<section class="card sect"><h2>Subject by subject</h2><p class="small" style="margin:0">Every report, left to right. Higher is better: 1+ is the top grade, then 1 (Above), 2 (Meeting), 3 (Working towards).</p><table class="rp-grid"><thead><tr><th>Subject</th>' + list.map(function (r) { return '<th>' + esc(shortTerm(r)) + '</th>'; }).join("") + '<th></th></tr></thead><tbody>' +
+      subjects.map(function (s) {
+        var vals = list.map(function (r) { return gradeOf(r, s.name); }), firstV = vals.filter(function (v) { return v != null; })[0], lastV = GRADE[s.grade];
+        var tr = firstV == null || list.length < 2 ? '' : lastV > firstV ? '<span class="tr up">▲ up</span>' : lastV < firstV ? '<span class="tr down">▼ down</span>' : '<span class="tr same">● steady</span>';
+        return '<tr><td>' + esc(s.name) + '</td>' + vals.map(function (v) { return '<td>' + pill(v) + '</td>'; }).join("") + '<td>' + tr + '</td></tr>';
+      }).join("") + '</tbody></table></section>';
+    var dips = T.dip.length ? '<p class="small" style="margin:6px 0 0"><b>Small dips since last time:</b> ' + T.dip.map(function (d) { return esc(d.name) + ' (' + GRADE_SHORT[d.from] + ' → ' + GRADE_SHORT[d.to] + ')'; }).join(", ") + '.</p>' : '';
+    if (T.up.length || T.down.length) h += '<section class="card sect"><h2>Going up</h2><div class="rp-chips">' + T.up.map(function (u) { return '<span class="chip paid">' + esc(u.name) + ' ' + GRADE_SHORT[u.from] + ' → ' + GRADE_SHORT[u.to] + '</span>'; }).join("") + '</div>' +
+      (T.down.filter(function (d) { return !T.dip.some(function (x) { return x.name === d.name; }); }).length ? '<p class="small" style="margin:6px 0 0"><b>Lower than the first report:</b> ' + T.down.filter(function (d) { return !T.dip.some(function (x) { return x.name === d.name; }); }).map(function (d) { return esc(d.name); }).join(", ") + '.</p>' : '') + dips + '</section>';
+    var withNotes = subjects.filter(function (s) { return s.comment || s.target; });
+    if (withNotes.length) h += '<section class="card sect"><h2>What your teachers said</h2>' + withNotes.map(function (s) {
+      return '<details class="rp-sub"><summary>' + pill(GRADE[s.grade]) + ' <b>' + esc(s.name) + '</b> <span class="small">' + esc(GRADE_WORD[GRADE[s.grade]]) + ' · ' + esc(s.attitude || "") + '</span></summary>' + (s.comment ? '<p>' + esc(s.comment) + '</p>' : '') + (s.target ? '<p class="rp-target"><b>Target:</b> ' + esc(s.target) + '</p>' : '') + '</details>'; }).join("") + '</section>';
+    h += '</div></div>';
+    if (parent) {
+      h += '<section class="card"><div class="parentbox"><h3>For Mum and Dad</h3><ul class="rp-list">' + (fb.parent || []).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' +
+        '<table class="rp-grid att"><thead><tr><th></th>' + list.map(function (r) { return '<th>' + esc(shortTerm(r)) + '</th>'; }).join("") + '</tr></thead><tbody>' +
+        [["Attendance", "attendance", "%"], ["Absences", "absences", ""], ["Lates", "lates", ""], ["House points", "housePoints", ""], ["Referrals", "referrals", ""]].filter(function (row) { return list.some(function (r) { return r[row[1]] != null; }); }).map(function (row) {
+          return '<tr><td>' + row[0] + '</td>' + list.map(function (r) { return '<td>' + (r[row[1]] != null ? r[row[1]] + row[2] : '–') + '</td>'; }).join("") + '</tr>'; }).join("") + '</tbody></table>' +
+        '<p class="small">Only parents see this box. The next report is likely to arrive in late November (Term 1); the school run will add it.</p></div></section>';
+    }
+    h += '<section class="card sect"><details><summary><h2>Earlier reports</h2></summary>' + list.slice(0, -1).reverse().map(function (r) {
+      return '<div class="rp-old"><b>' + esc(r.yearLabel + ' · ' + r.termLabel) + '</b>' + ((r.feedback && r.feedback.kid) ? '<ul class="rp-list">' + r.feedback.kid.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' : '') + '</div>'; }).join("") + '</details></section>';
+    app.innerHTML = h;
+    [].forEach.call(app.querySelectorAll("[data-rptopic]"), function (b) { b.addEventListener("click", function () { state.mode = "revise"; state.reviseTopic = b.dataset.rptopic; setView("quiz"); showMode(); newQuiz(); window.scrollTo({ top: 0 }); }); });
+  }
+  /* ---------- grouped tabs: Rewards (Shop, Bank) and Me (Awards, Reports) ---------- */
+  var SUBNAV = { shop: "rewards", bank: "rewards", progress: "me", reports: "me" };
+  var SUBNAV_ITEMS = { rewards: [["shop", "Shop"], ["bank", "Bank"]], me: [["progress", "Awards"], ["reports", "School reports"]] };
+  function subNavTop() {
+    var g = SUBNAV[state.view]; if (!g || app.querySelector(":scope > .subnav")) return;
+    app.insertAdjacentHTML("afterbegin", '<div class="subnav" role="tablist">' + SUBNAV_ITEMS[g].map(function (it) { return '<button role="tab" aria-selected="' + (state.view === it[0]) + '" data-sub="' + it[0] + '">' + it[1] + '</button>'; }).join("") + '</div>');
+  }
+  document.addEventListener("click", function (e) { var b = e.target.closest && e.target.closest("[data-sub]"); if (!b) return; state.lastSub = state.lastSub || {}; state.lastSub[SUBNAV[b.dataset.sub]] = b.dataset.sub; setView(b.dataset.sub); window.scrollTo({ top: 0 }); });
+
   function footyTop() {
     if (state.child !== "kristan" || !canSeeHub() || typeof footyReady !== "function" || !footyReady()) return;
     if (state.view === "quiz" && !state.started && !state.flash) {
-      var f = app.firstElementChild; if (f && f.classList && f.classList.contains("buddy-top")) return;
+      if (app.querySelector(":scope > .buddy-top")) return;
       var tk = footyTicker(); if (tk) app.insertAdjacentHTML("afterbegin", '<div class="buddy-top">' + tk + '</div>');
     }
   }
   function buddyTop() {
+    subNavTop();
     footyTop();
     if (state.child !== "millie" || !role() || (state.view === "world") || (state.view === "quiz" && state.flash)) return;
-    var first = app.firstElementChild; if (first && first.classList && first.classList.contains("buddy-top")) return;
+    if (app.querySelector(":scope > .buddy-top")) return;
     var b; try { b = buddyLine(); } catch (e) { b = null; } if (!b) return;
-    app.insertAdjacentHTML("afterbegin", '<div class="buddy-top">' + say(b[0], b[1], b[2]) + '</div>');
+    var sn = app.querySelector(":scope > .subnav"), html = '<div class="buddy-top">' + say(b[0], b[1], b[2]) + '</div>';
+    if (sn) sn.insertAdjacentHTML("afterend", html); else app.insertAdjacentHTML("afterbegin", html);
   }
   new MutationObserver(function () { buddyTop(); }).observe(app, { childList: true });
   var db = null, dbState = "connecting", all = [], firstLoad = true;
@@ -982,6 +1102,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       }, function () { dbState = "off"; refresh(); });
       db.collection("purchases").onSnapshot(function (snap) { purchases = snap.docs.map(function (d) { return d.data(); }).filter(Boolean); setShopBank(purchases, bankRows); refresh(); }, function () {});
       db.collection("bank").onSnapshot(function (snap) { bankRows = snap.docs.map(function (d) { var x = d.data() || {}; return Object.assign({ id: d.id }, x); }); setShopBank(purchases, bankRows); refresh(); }, function () {});
+      db.collection("reports").onSnapshot(function (snap) { state.reports = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("hub_items").onSnapshot(function (snap) { state.hubItems = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("football_cache").onSnapshot(function (snap) { setFootball(snap.docs.map(function (d) { return d.data() || {}; })); refresh(); }, function () {});
       db.collection("game_plays").onSnapshot(function (snap) { state.games = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); setGames(state.games); refresh(); }, function () {});
@@ -1111,9 +1232,9 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     if (v === "parents") checkPush();
     if (v !== "quiz") state.flash = null;
     if (v === "homework") { state.hwMsg = state.hwMsg || ""; checkPush(); }
-    document.getElementById("v-shop").setAttribute("aria-pressed", v === "shop");
-    document.getElementById("v-bank").setAttribute("aria-pressed", v === "bank");
-    document.getElementById("v-prog").setAttribute("aria-pressed", v === "progress");
+    document.getElementById("v-shop").setAttribute("aria-pressed", v === "shop" || v === "bank");
+    document.getElementById("v-bank").setAttribute("aria-pressed", "false");
+    document.getElementById("v-prog").setAttribute("aria-pressed", v === "progress" || v === "reports");
     document.getElementById("v-hub").setAttribute("aria-pressed", v === "hub");
     document.getElementById("focus").hidden = v !== "quiz";
     showLevels();
@@ -1129,6 +1250,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     if (state.view === "parents") return isParentNow() ? familyView() : (state.view = "homework", homeworkView());
     if (state.view === "quiz" && state.flash && !state.started) return flashView();
     if (state.view === "progress") return progressView();
+    if (state.view === "reports") return reportsView();
     if (state.view === "hub") return canSeeHub() && state.child === "kristan" ? hubView() : (state.view = "quiz", render());
     if (state.view === "shop") return shopView();
     if (state.view === "bank") return bankView();
@@ -2989,10 +3111,10 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   document.getElementById("pick-kristan").addEventListener("click", function () { setChild("kristan"); });
   [].forEach.call(document.querySelectorAll(".md"), function (b) { b.addEventListener("click", function () { setMode(b.dataset.m); }); });
   document.getElementById("v-quiz").addEventListener("click", function () { setView("quiz"); });
-  document.getElementById("v-prog").addEventListener("click", function () { setView("progress"); });
+  document.getElementById("v-prog").addEventListener("click", function () { setView((state.lastSub && state.lastSub.me) || "progress"); });
   document.getElementById("v-world").addEventListener("click", function () { state.game = null; setView("world"); });
   document.getElementById("v-hw").addEventListener("click", function () { state.hwMsg = ""; setView("homework"); });
-  document.getElementById("v-shop").addEventListener("click", function () { setView("shop"); });
+  document.getElementById("v-shop").addEventListener("click", function () { setView((state.lastSub && state.lastSub.rewards) || "shop"); });
   document.getElementById("v-cal").addEventListener("click", function () { state.calMsg = ""; setView("calendar"); });
   document.getElementById("v-hub").addEventListener("click", function () { setView("hub"); window.scrollTo({ top: 0 }); });
   document.getElementById("v-par").addEventListener("click", function () { state.hwMsg = ""; setView("parents"); });
