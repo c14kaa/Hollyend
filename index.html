@@ -894,7 +894,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     if (v === "bank") { var wt = walletTotals(c).balance;
       return ["uuh", wt > 0 ? "You've got " + fmtMoney(wt) + " in your Star Wallet! Can we spend it on bananas? No? OK. Saving is clever too." : spick(["Points into money! Can we buy bananas with it? Ooh Ooh says I have to ask Mum.", "Every quiz fills up your points. Then — ka-ching! — real money!"], key), "happy"]; }
     if (v === "progress") return ["ooh", spick(["Look at all your awards! I'm so proud I could burst. Uuh Uuh actually did burst a bit. Just some fluff.", "Every badge is a little trophy from your brain. You're amazing, Millie!"], key), "happy"];
-    if (v === "calendar") { var nx = calItems().filter(function (e) { return String(e.date).slice(0, 10) >= t && e.kind !== "news"; })[0];
+    if (v === "calendar") { var nx = calItems("millie").filter(function (e) { return String(e.date).slice(0, 10) >= t && e.kind !== "news" && e.kind !== "action" && (e.child === "millie" || e.child === "both"); })[0];
       return ["ooh", nx ? "Coming up: " + (nx.title || "something fun") + "! " + (nx.bring ? "Don't forget: " + nx.bring + "." : "I've put it in my monkey diary.") : "Nothing big coming up. More time for quizzes and bananas!", "wink"]; }
     return null;
   }
@@ -2466,8 +2466,8 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   /* ---------- Calendar (shared: school events from the school run, homework due dates, parent to-dos) ---------- */
   var TYPE_LABEL = { event: "Event", deadline: "Deadline", action: "To do", trip: "Trip", sport: "Sport", holiday: "Holiday", term: "Term", news: "News", homework: "Homework" };
   function isParentNow() { return (role() || {}).role === "parent"; }
-  function calItems() {
-    var who = state.calWho, out = [];
+  function calItems(forWho) {
+    var who = forWho || state.calWho, out = [];
     var keep = function (c) { return who === "all" || c === who || c === "both"; };
     state.events.forEach(function (e) {
       if (e.active === false || e.type === "news" || !e.date || !keep(e.child)) return;
