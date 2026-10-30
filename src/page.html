@@ -620,7 +620,7 @@ body.k .seg button[aria-pressed="true"] { color: #07090d; }
 .ev-body b { font-size: 15.5px; line-height: 1.3; }
 .ev-tags { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .tag { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--line); color: var(--ink); }
-.tag.deadline, .tag.action { background: #ffe1e6; color: #a3122f; } .tag.homework { background: #e4ecff; color: #1d3f9e; } .tag.sport { background: #dff6e6; color: #146c34; } .tag.trip, .tag.holiday { background: #fff1d6; color: #8a5300; }
+.tag.deadline, .tag.action { background: #ffe1e6; color: #a3122f; } .tag.homework { background: #e4ecff; color: #1d3f9e; } .tag.sport { background: #dff6e6; color: #146c34; } .tag.arsenal { background: #ffe0e0; color: #c00008; } .tag.trip, .tag.holiday { background: #fff1d6; color: #8a5300; }
 .cal-d.hol { background: repeating-linear-gradient(135deg, var(--card2), var(--card2) 5px, var(--accent-soft) 5px, var(--accent-soft) 10px); }
 .tag.term { background: #fff1d6; color: #8a5300; }
 .news { display: flex; flex-direction: column; gap: 8px; }
@@ -2466,7 +2466,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   }
 
   /* ---------- Calendar (shared: school events from the school run, homework due dates, parent to-dos) ---------- */
-  var TYPE_LABEL = { event: "Event", deadline: "Deadline", action: "To do", trip: "Trip", sport: "Sport", holiday: "Holiday", term: "Term", news: "News", homework: "Homework" };
+  var TYPE_LABEL = { event: "Event", deadline: "Deadline", action: "To do", trip: "Trip", sport: "Sport", holiday: "Holiday", term: "Term", news: "News", homework: "Homework", arsenal: "Arsenal" };
   function isParentNow() { return (role() || {}).role === "parent"; }
   function calItems(forWho) {
     var who = forWho || state.calWho, out = [];
@@ -2480,6 +2480,13 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       if (h.active === false || !h.due || !keep(h.child)) return;
       out.push({ kind: "homework", type: "homework", id: h.id, child: h.child, date: String(h.due).slice(0, 10), time: h.dueTime || "", title: h.title, details: h.subject ? (h.child === "millie" ? "Millie" : "Kristan") + " · " + h.subject : "", linkUrl: h.linkUrl, done: !hwPending(h) });
     });
+    /* Arsenal men's first team (football-data.org team 57): Kristan's calendar only. */
+    if (keep("kristan") && who !== "both" && typeof FOOTY !== "undefined") FOOTY.matches.forEach(function (m) {
+      if (m.status === "POSTPONED" || m.status === "CANCELLED") return;
+      var u = new Date(new Date(m.at).getTime() + 4 * 3600e3).toISOString(), done = m.status === "FINISHED" && m.hs != null;
+      var title = done ? m.home + " " + m.hs + "–" + m.as + " " + m.away : m.home + " v " + m.away;
+      out.push({ kind: "arsenal", type: "arsenal", id: "afc-" + m.at, child: "kristan", date: u.slice(0, 10), time: done ? "" : u.slice(11, 16), title: title, details: (m.comp || "") + (done ? " · full time" : " · kick-off UAE time"), done: false });
+    });
     return out.sort(function (a, b) { return a.date.localeCompare(b.date) || String(a.time || "99").localeCompare(String(b.time || "99")) || a.title.localeCompare(b.title); });
   }
   function onDay(items, d) { return items.filter(function (x) { return x.date === d || (x.end && x.date <= d && x.end >= d); }); }
@@ -2488,7 +2495,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     var tags = '<span class="tag ' + esc(x.type) + '">' + esc(TYPE_LABEL[x.type] || "Event") + '</span>' + (state.calWho === "all" ? '<span class="small">' + nm + '</span>' : '') + (x.done ? '<span class="small">✓ Done</span>' : '');
     var links = (x.formUrl ? ' <a class="linkbtn" href="' + esc(x.formUrl) + '" target="_blank" rel="noopener">Open form ↗</a>' : '') + (x.linkUrl && x.kind !== "homework" ? ' <a class="linkbtn" href="' + esc(x.linkUrl) + '" target="_blank" rel="noopener">Open ↗</a>' : '');
     var acts = "";
-    if (isParentNow() && x.kind !== "homework") acts = '<span class="ev-tags">' + (x.kind === "action" ? '<button class="linkbtn" data-evdone="' + x.id + '">' + (x.done ? 'Not done' : 'Mark done') + '</button>' : '') + '<button class="linkbtn" data-evdel="' + x.id + '">Remove</button></span>';
+    if (isParentNow() && x.kind !== "homework" && x.kind !== "arsenal") acts = '<span class="ev-tags">' + (x.kind === "action" ? '<button class="linkbtn" data-evdone="' + x.id + '">' + (x.done ? 'Not done' : 'Mark done') + '</button>' : '') + '<button class="linkbtn" data-evdel="' + x.id + '">Remove</button></span>';
     if (x.kind === "homework" && !x.done) acts = '<span class="ev-tags"><button class="linkbtn" data-evhw="' + x.child + '">Open homework</button></span>';
     return '<div class="ev ' + esc(x.child) + (x.done ? ' isdone' : '') + '"><span class="ev-time">' + esc(x.time || "") + '</span><div class="ev-body"><div class="ev-tags">' + tags + '</div><b>' + esc(x.title) + '</b>' +
       (x.bring ? '<span class="bring">Bring: ' + esc(x.bring) + '</span>' : '') + (x.details ? '<span class="small">' + esc(x.details) + '</span>' : '') + (links ? '<span>' + links + '</span>' : '') + acts + '</div></div>';
