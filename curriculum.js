@@ -588,13 +588,13 @@ REVISION.kristan = REVISION.kristan.concat([
    The school run updates `week`, `focus` and each unit's status from Toddle class posts and homework. */
 var CURRICULUM = {
   millie: {
-    year: "Year 5", updated: "2026-10-29", week: "Term 1 · Week 9 (from 2 Nov)",
+    year: "Year 5", updated: "2026-10-30", week: "Term 1 · Week 9 (from 2 Nov)",
     focus: "Multiplication & division in maths, Earth & Space in science, and stormy-sea description in English.",
     units: [
       { subject: "Maths", title: "Place value to 1,000,000", term: 1, status: "done", topics: ["place-value", "rounding", "negatives", "roman"] },
       { subject: "Maths", title: "Addition & subtraction", term: 1, status: "done", topics: ["mental-add", "column"] },
       { subject: "Maths", title: "Multiples, factors & primes", term: 1, status: "done", topics: ["factors", "multiples", "primes"] },
-      { subject: "Maths", title: "Multiplication & division", term: 1, status: "now", why: "Squares, cubes, × and ÷ by 10/100/1000 and written methods come next in the unit.", topics: ["sq-cube", "x10", "written-mult", "short-div", "tables"] },
+      { subject: "Maths", title: "Multiplication & division", term: 1, status: "now", why: "Week 8 homework: square and cube numbers, and × and ÷ by 10, 100 and 1,000.", topics: ["sq-cube", "x10", "written-mult", "short-div", "tables"] },
       { subject: "Maths", title: "Decimals & percentages", term: 1, status: "next", topics: ["fdp", "decimals"] },
       { subject: "Maths", title: "Measurement: time & length", term: 1, status: "next", topics: ["time", "measures"] },
       { subject: "Maths", title: "Fractions", term: 2, status: "later", topics: ["fractions"] },
@@ -609,22 +609,23 @@ var CURRICULUM = {
     ]
   },
   kristan: {
-    year: "Year 8", updated: "2026-10-29", week: "Term 1 · from 2 Nov",
-    focus: "Probability in maths, 8I Fluids in science, Gothic fiction coming up in English, and aller + infinitive in French.",
+    year: "Year 8", updated: "2026-10-30", week: "Term 1 · from 2 Nov",
+    focus: "Probability in maths, Metals and their uses in science, Ballads in English, and aller + infinitive in French.",
     units: [
       { subject: "Maths", title: "Topic 1 · Linear equations", term: 1, status: "done", topics: ["eq-both", "equations", "algebra"] },
       { subject: "Maths", title: "Topic 2 · Calculators", term: 1, status: "done", topics: ["calc"] },
       { subject: "Maths", title: "Topic 3 · Percentages", term: 1, status: "done", topics: ["percent"] },
       { subject: "Maths", title: "Topic 4 · Statistics & averages", term: 1, status: "done", topics: ["averages", "freq", "grouped"] },
-      { subject: "Maths", title: "Topic 5 · Probability", term: 1, status: "now", why: "Next in the Year 8 order after averages (Dr Frost, due 28 Oct).", topics: ["sample-space", "probability"] },
+      { subject: "Maths", title: "Topic 5 · Probability", term: 1, status: "now", why: "Maths class flow: sample spaces, two-way tables and experimental probability.", topics: ["sample-space", "probability"] },
       { subject: "Maths", title: "Topic 6 · Algebraic manipulation", term: 1, status: "next", topics: ["expand-factor", "algebra"] },
       { subject: "Maths", title: "Earlier work: ratio, sequences, indices, angles", term: 0, status: "done", topics: ["ratio", "sequences", "indices", "angles", "rounding"] },
-      { subject: "English", title: "Poetry anthology", term: 1, status: "done", topics: ["poetry", "eng-words"] },
+      { subject: "English", title: "Ballads (poetry) and PEAL responses", term: 1, status: "now", why: "English class flow: Ballads unit with a model PEAL response.", topics: ["poetry", "eng-words"] },
       { subject: "English", title: "Gothic fiction", term: 1, status: "next", why: "The first unit in the Year 8 English overview, after the poetry assessment.", topics: ["gothic", "en-description"] },
       { subject: "English", title: "Shakespeare: The Tempest", term: 2, status: "later", topics: ["tempest", "en-analysing-texts", "en-character"] },
-      { subject: "Science", title: "7F Acids & alkalis", term: 1, status: "done", topics: ["acids"] },
-      { subject: "Science", title: "8I Fluids", term: 1, status: "now", why: "Second unit in the Year 8 science order.", topics: ["fluids"] },
-      { subject: "Science", title: "8G Metals & their uses", term: 1, status: "next", topics: ["metals"] },
+      { subject: "Science", title: "Animal reproduction (cells, organs, fertilisation, pregnancy)", term: 1, status: "done", topics: ["science"] },
+      { subject: "Science", title: "8G Metals & their uses", term: 1, status: "now", why: "Science class flow: Topic 2, Metals and their uses.", topics: ["metals"] },
+      { subject: "Science", title: "8I Fluids", term: 1, status: "later", topics: ["fluids"] },
+      { subject: "Science", title: "7F Acids & alkalis", term: 2, status: "later", topics: ["acids"] },
       { subject: "Science", title: "KS3 basics: energy, cells & particles", term: 0, status: "done", topics: ["science"] },
       { subject: "French", title: "More about me", term: 1, status: "done", topics: ["fr-describing-people", "fr-family"] },
       { subject: "French", title: "Where I live", term: 1, status: "done", topics: ["fr-home", "fr-town"] },

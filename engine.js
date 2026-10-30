@@ -1,20 +1,19 @@
 /* ===== Week config: refreshed each week from the latest homework ===== */
 var WEEK = {
-  label: "Week of 24 Oct 2026",
-  start: "2026-10-24", // day 0 of the learning week
+  label: "Week of 30 Oct 2026",
+  start: "2026-10-30", // day 0 of the learning week
   millie: {
-    focus: ["Factors & factor pairs", "Multiples & lowest common multiple", "Prime numbers",
-            "Homophones", "Roman numerals", "Decimals", "Our Solar System"],
-    topics: ["factorOf","countFactors","factorPair","commonFactor","multipleOf","lcm","prime",
-             "homophone","roman","decimals","space","tables"]
+    focus: ["Square & cube numbers", "× and ÷ by 10, 100 and 1000", "Written multiplication & division", "Silent-letter spellings",
+            "Similes, metaphors & personification", "Earth, Sun & Moon", "Factors & primes (review)"],
+    topics: ["squareCube","squareCube","mulDiv10","mulDiv10","powersTen","multiply","shortDiv","tables",
+             "figurative","figurative","grammar5","earthMoon","earthMoon","space","prime","factorPair","commonFactor"]
   },
   kristan: {
-    focus: ["Averages (homework)", "Y8 poetry & PEACEAL (assessment)", "Algebra & sequences", "Equations",
-            "Ratio", "Rounding & estimation", "Angles", "Probability", "Indices & negatives", "Science"],
-    topics: ["meanList","medianList","modeRange","freqMode","freqMean","freqMedian","missingMean","bestAverage",
-             "poetry","poetry","poetry","simplify","nthTerm","commutative","solveEq","solveEq",
-             "ratioSimplify","ratioShare","round1sf","estimate","angles","probability","indices","negatives",
-             "science","science"]
+    focus: ["Probability & sample spaces (class)", "Metals & their uses (science)", "Ballads & PEAL (English)", "French vocab quiz Mon 2 Nov",
+            "Expanding & factorising (next)", "Percentages", "Grouped averages", "Equations", "Physics: energy resources (CENTURY)"],
+    topics: ["sampleSpace","sampleSpace","sampleSpace","probability","probability","metals","metals","metals","poetry","poetry",
+             "expandFactor","expandFactor","pctMult","pctMult","grouped","freqMean","eqBoth","solveEq","ratioShare","calcOrder",
+             "science","science","indices","nthTerm"]
   }
 };
 
@@ -668,7 +667,7 @@ function buildQuiz(child, level, count, seenPrompts, mode) {
 }
 
 /* ===== Millie's weekly spelling test ===== */
-var SPELLING = {
+var SPELL_W7 = {
   label: "Week 7 spellings: trickier homophones",
   words: [
     { word: "father", partner: "farther", meaning: "your dad", chunks: "fa · ther", tricky: "no 'r' after the 'a'",
@@ -701,6 +700,30 @@ var SPELLING = {
     { word: "morning", partner: "mourning", meaning: "the early part of the day, before midday", chunks: "morn · ing", tricky: "no 'u' in it",
       hook: "Morning is the start of the day: m-o-r-n-i-n-g, no 'u' needed.",
       sentences: ["I eat my breakfast every ___.", "We have maths first thing in the ___.", "The ___ sun shone through my window."], wrongs: ["mornig", "morening", "mornin"] }
+  ]
+};
+/* Week 8 (due Mon 2 Nov 2026): words with silent letters. */
+var SPELLING = {
+  label: "Week 8 spellings: silent letters",
+  words: [
+    { word: "doubt", partner: null, meaning: "a feeling of not being sure", chunks: "dou · b · t", tricky: "the silent b", hook: "There's no DOUBT about it: the B in doubt keeps very quiet.",
+      sentences: ["I have no ___ that you'll win.", "If in ___, ask the teacher.", "She started to ___ the map was right."], wrongs: ["dout", "doubte", "dowt"] },
+    { word: "lamb", partner: null, meaning: "a young sheep", chunks: "lam · b", tricky: "the silent b after m", hook: "LAMB: the little lamb hides a silent B behind the M, like it's hiding behind mum.",
+      sentences: ["The ___ followed its mother across the field.", "A baby sheep is called a ___.", "The ___ said baa."], wrongs: ["lam", "lambe", "lamm"] },
+    { word: "debt", partner: null, meaning: "money that you owe", chunks: "deb · t", tricky: "the silent b", hook: "DEBT: the B is silent because it doesn't want to talk about money.",
+      sentences: ["He paid off his ___ to the bank.", "I'm in your ___ for helping me.", "Try not to get into ___."], wrongs: ["det", "dett", "debet"] },
+    { word: "thumb", partner: null, meaning: "the short, thick finger on your hand", chunks: "thum · b", tricky: "the silent b after m", hook: "THUMB: give it a thumbs-up, but don't say the B.",
+      sentences: ["She gave me a ___s-up.", "He hurt his ___ in the door.", "Press the button with your ___."], wrongs: ["thum", "thumm", "thumbe"] },
+    { word: "solemn", partner: null, meaning: "serious and quiet", chunks: "sol · em · n", tricky: "the silent n after m", hook: "SOLEMN: be serious, keep the N silent at the end.",
+      sentences: ["It was a ___ ceremony.", "His face was ___ and still.", "She made a ___ promise."], wrongs: ["solem", "solumn", "sollemn"] },
+    { word: "autumn", partner: null, meaning: "the season between summer and winter", chunks: "au · tum · n", tricky: "the silent n after m", hook: "AUTUMN: a silent N falls at the end, like a leaf.",
+      sentences: ["Leaves turn orange in ___.", "Conkers fall in the ___.", "School starts again in the ___."], wrongs: ["autum", "awtumn", "autumm"] },
+    { word: "column", partner: null, meaning: "a tall pillar, or a line going down a page", chunks: "col · um · n", tricky: "the silent n after m", hook: "COLUMN: a silent N sits at the bottom of the column.",
+      sentences: ["Add up the numbers in each ___.", "A stone ___ held up the roof.", "Write your answers in the second ___."], wrongs: ["colum", "collumn", "colomn"] },
+    { word: "knight", partner: "night", meaning: "a soldier in armour who served a king", chunks: "k · nigh · t", tricky: "silent k at the start, and 'igh' in the middle", hook: "KNIGHT: a Knight has a silent K at the front, unlike the night sky.",
+      sentences: ["The ___ rode into battle on his horse.", "The ___ wore shining armour.", "The king made him a ___."], wrongs: ["night", "nite", "knite"] },
+    { word: "knuckle", partner: null, meaning: "a joint in your finger", chunks: "k · nuck · le", tricky: "silent k at the start, and -ckle at the end", hook: "KNUCKLE: Knock with your Knuckles: both start with a silent K.",
+      sentences: ["She knocked on the door with her ___s.", "He banged his ___ on the table.", "Bend your finger at the ___."], wrongs: ["nuckle", "knuckel", "knukle"] }
   ]
 };
 function spellEntry(w) {
@@ -992,6 +1015,7 @@ function typedNote(attempt, word) {
 
 /* ===== Revision library: every topic covered so far. Topics are only ever ADDED, never removed. ===== */
 var SPELL_ARCHIVE = []; /* past weeks' spelling entries, so old spell:<word> questions keep working */
+SPELL_ARCHIVE = SPELL_ARCHIVE.concat(SPELL_W7.words);
 var REVISION = {
   millie: [
     { id: "factors", title: "Factors & factor pairs", subject: "Maths", covered: "Week 7 homework · 26 Oct", gens: ["factorOf", "countFactors", "factorPair", "commonFactor"] },
@@ -1001,6 +1025,8 @@ var REVISION = {
     { id: "roman", title: "Roman numerals", subject: "Maths", covered: "CENTURY · Year 5", gens: ["roman"] },
     { id: "decimals", title: "Decimals & rounding", subject: "Maths", covered: "CENTURY · Year 5", gens: ["decimals"] },
     { id: "space", title: "Our Solar System", subject: "Science & theme", covered: "Week 7 homework · 26 Oct", gens: ["space"] },
+    { id: "spell-w8", title: "Week 8 spellings: silent letters", subject: "Spelling", covered: "Week 8 homework · 2 Nov",
+      gens: ["spell:doubt", "spell:lamb", "spell:debt", "spell:thumb", "spell:solemn", "spell:autumn", "spell:column", "spell:knight", "spell:knuckle"] },
     { id: "spell-w7", title: "Week 7 spellings: trickier homophones", subject: "Spelling", covered: "Week 7 homework · 26 Oct",
       gens: ["spell:father", "spell:farther", "spell:guessed", "spell:guest", "spell:heard", "spell:herd", "spell:led", "spell:lead", "spell:mourning", "spell:morning"] },
     { id: "homophone-mix", title: "Homophones in sentences", subject: "Spelling", covered: "Week 7 homework · 26 Oct", gens: ["homophone"] }
