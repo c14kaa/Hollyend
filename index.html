@@ -2500,13 +2500,6 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       if (h.active === false || !h.due || !keep(h.child)) return;
       out.push({ kind: "homework", type: "homework", id: h.id, child: h.child, date: String(h.due).slice(0, 10), time: h.dueTime || "", title: h.title, details: h.subject ? (h.child === "millie" ? "Millie" : "Kristan") + " · " + h.subject : "", linkUrl: h.linkUrl, done: !hwPending(h) });
     });
-    /* Arsenal men's first team (football-data.org team 57): Kristan's calendar only. */
-    if (keep("kristan") && who !== "both" && typeof FOOTY !== "undefined") FOOTY.matches.forEach(function (m) {
-      if (m.status === "POSTPONED" || m.status === "CANCELLED") return;
-      var u = new Date(new Date(m.at).getTime() + 4 * 3600e3).toISOString(), done = m.status === "FINISHED" && m.hs != null;
-      var title = done ? m.home + " " + m.hs + "–" + m.as + " " + m.away : m.home + " v " + m.away;
-      out.push({ kind: "arsenal", type: "arsenal", id: "afc-" + m.at, child: "kristan", date: u.slice(0, 10), time: done ? "" : u.slice(11, 16), title: title, details: (m.comp || "") + (done ? " · full time" : " · kick-off UAE time"), done: false });
-    });
     return out.sort(function (a, b) { return a.date.localeCompare(b.date) || String(a.time || "99").localeCompare(String(b.time || "99")) || a.title.localeCompare(b.title); });
   }
   function onDay(items, d) { return items.filter(function (x) { return x.date === d || (x.end && x.date <= d && x.end >= d); }); }

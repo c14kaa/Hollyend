@@ -40,8 +40,11 @@ function footyTableCard() {
   if (a && a.pos > 6) rows = rows.concat([a]);
   var tr = function (r) { return '<tr class="' + (r.id === ARSENAL_ID ? "afc" : "") + '"><td>' + r.pos + '</td><td>' + r.team + '</td><td>' + r.p + '</td><td>' + sgd(r.gd) + '</td><td><b>' + r.pts + '</b></td></tr>'; };
   var recent = FOOTY.matches.filter(function (m) { return m.status === "FINISHED" && m.hs != null; }).slice(-3).reverse().map(function (m) { var r = arsenalResult(m); return '<span class="chip fr ' + r.res + '">' + r.res + ' ' + r.score + ' v ' + r.opp + '</span>'; }).join("");
+  var now = new Date().toISOString(), upcoming = FOOTY.matches.filter(function (m) { return m.status !== "FINISHED" && m.status !== "POSTPONED" && m.status !== "CANCELLED" && String(m.at) >= now; }).slice(0, 3).map(function (m) {
+    return '<div class="li"><span><b>' + (arsenalHome(m) ? m.away + ' (H)' : m.home + ' (A)') + '</b> <span class="small">' + (m.comp || '') + '</span></span><span class="small">' + uaeKick(m.at) + '</span></div>'; }).join("");
   return '<section class="card sect ftable"><h2>Premier League</h2>' + footyTicker() + '<table><thead><tr><th>#</th><th>Team</th><th>P</th><th>GD</th><th>Pts</th></tr></thead><tbody>' + rows.map(tr).join("") + '</tbody></table>' +
     (recent ? '<div class="ft-recent"><span class="small">Arsenal’s last three:</span> ' + recent + '</div>' : '') +
+    (upcoming ? '<h3 class="fv-sub">Arsenal\u2019s next three</h3><div class="list">' + upcoming + '</div>' : '') +
     '<span class="small">Updated twice a day' + (FOOTY.updated ? ' · last ' + new Date(FOOTY.updated).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : '') + '. Data: football-data.org</span></section>';
 }
 
