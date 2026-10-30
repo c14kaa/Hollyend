@@ -241,6 +241,20 @@ body.k .earn { font-size: 30px; }
 .wal-bal b { font-family: var(--display); font-size: 44px; line-height: 1.05; color: var(--gold); }
 .wal-split { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .wal-split div { background: var(--card2); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; display: flex; flex-direction: column; }
+.sa-merits { display: flex; gap: 14px; align-items: flex-start; flex-wrap: wrap; padding-bottom: 10px; border-bottom: 1px dashed var(--line); }
+.sa-big { display: flex; flex-direction: column; align-items: center; background: var(--card2); border: 2px solid var(--accent); border-radius: 16px; padding: 10px 18px; }
+.sa-big b { font-family: var(--display); font-size: 44px; line-height: 1; }
+.sa-mside { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 200px; }
+.sa-subj { display: flex; flex-wrap: wrap; gap: 6px; }
+.sa-recent { margin: 0; padding-left: 18px; font-size: 14px; }
+.sa-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+.sa-item { display: flex; gap: 10px; background: var(--card2); border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+.sa-item > div { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.sa-ic { font-size: 30px; line-height: 1; }
+.sa-k { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.sa-item.certificate, .sa-item.award { border-color: var(--gold); }
+.sa-add summary { cursor: pointer; font-weight: 700; color: var(--accent); }
+.wal-form select { font: inherit; color: var(--ink); background: var(--card2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
 .aed { font-size: 12px; color: var(--muted); font-weight: 600; white-space: nowrap; }
 .aed.big { font-size: 16px; }
 .amt small.aed { display: block; font-size: 13px; }
@@ -806,6 +820,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       }, function () { dbState = "off"; refresh(); });
       db.collection("purchases").onSnapshot(function (snap) { purchases = snap.docs.map(function (d) { return d.data(); }).filter(Boolean); setShopBank(purchases, bankRows); refresh(); }, function () {});
       db.collection("bank").onSnapshot(function (snap) { bankRows = snap.docs.map(function (d) { var x = d.data() || {}; return Object.assign({ id: d.id }, x); }); setShopBank(purchases, bankRows); refresh(); }, function () {});
+      db.collection("school_awards").onSnapshot(function (snap) { state.schoolAwards = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("wallet").onSnapshot(function (snap) { state.wallet = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("merits").onSnapshot(function (snap) { state.merits = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("homework").onSnapshot(function (snap) { state.hw = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); hwLoaded = true; maybeLandOnHomework(); refresh(); }, function () {});
@@ -1186,10 +1201,11 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   function progressView() {
     var aw = awards(all, state.child, WEEK.start), week = weekAttempts(all, state.child, WEEK.start).slice().reverse();
     var topics = topicSummary(all, state.child, WEEK.start), weak = weakSkills(skillState(all, state.child, WEEK.start));
-    var h = '<section class="card">' + rankBlock(aw) + streakBlock() + '</section>';
-    var ld = state.logDays || 14;
-    h += '<section class="card sect"><h2>Everything ' + esc(name()) + ' has done</h2><p class="small">Every quiz, spelling test, ' + (state.child === "kristan" ? 'league match, ' : '') + 'homework, daily task, shop buy and cash-out from the last ' + ld + ' days, newest first. Tap a quiz to see each question and answer.</p>' + activityLog([state.child], ld) +
-      '<div class="row"><button class="btn sm ghost" id="logMore">Show ' + (ld < 60 ? 'older quizzes' : 'all quizzes') + '</button></div></section>';
+    var h = schoolAwardsCard(state.child);
+    h += '<section class="card">' + rankBlock(aw) + streakBlock() + '</section>';
+    var bd = function (b) { return '<div class="bd' + (b.earned ? ' on' : '') + '"><b>' + esc(b.name) + '</b><span>' + esc(b.desc) + '</span></div>'; };
+    h += '<section class="card sect"><h2>Hollyend badges</h2><p class="small">' + aw.badges.filter(function (b) { return b.earned; }).length + ' of ' + aw.badges.length + ' earned</p><div class="badges">' +
+      aw.badges.filter(function (b) { return !b.silly; }).map(bd).join("") + '</div><h3 class="fv-sub">Silly badges</h3><div class="badges">' + aw.badges.filter(function (b) { return b.silly; }).map(bd).join("") + '</div></section>';
     h += listReport(state.child);
     h += '<section class="card sect"><h2>How each topic is going</h2><p class="small" style="margin:0">This quiz week, weakest first. ' + (state.child === "millie" ? 'Spelling is shown in its own section above.' : 'The school French list is shown in its own section above.') + '</p>' + (topics.length ? topics.map(function (t) {
       var pct = Math.round(t.right / t.total * 100);
@@ -1206,13 +1222,64 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     h += '<section class="card sect"><h2>Skills to win back</h2>' + (weak.length ? '<p class="small">Missed this week and not yet got right twice in a row. These come back as comeback questions.</p><div class="list">' + weak.map(function (s) {
       return '<div class="li"><span>' + esc(s.topic) + '</span><span>' + s.wrong + ' missed · ' + s.right + ' right</span></div>';
     }).join("") + '</div>' : '<p class="small">Nothing to win back right now.</p>') + '</section>';
-    var bd = function (b) { return '<div class="bd' + (b.earned ? ' on' : '') + '"><b>' + esc(b.name) + '</b><span>' + esc(b.desc) + '</span></div>'; };
-    h += '<section class="card sect"><h2>Badges</h2><p class="small">' + aw.badges.filter(function (b) { return b.earned; }).length + ' of ' + aw.badges.length + ' earned</p><div class="badges">' +
-      aw.badges.filter(function (b) { return !b.silly; }).map(bd).join("") + '</div><h3 class="fv-sub">Silly badges</h3><div class="badges">' + aw.badges.filter(function (b) { return b.silly; }).map(bd).join("") + '</div></section>';
-    if ((role() || {}).role === "parent") h += restDaysCard();
+    if ((role() || {}).role === "parent") {
+      var ld = state.logDays || 14;
+    h += '<section class="card sect"><h2>Everything ' + esc(name()) + ' has done</h2><p class="small">Every quiz, spelling test, ' + (state.child === "kristan" ? 'league match, ' : '') + 'homework, daily task, shop buy and cash-out from the last ' + ld + ' days, newest first. Tap a quiz to see each question and answer.</p>' + activityLog([state.child], ld) +
+      '<div class="row"><button class="btn sm ghost" id="logMore">Show ' + (ld < 60 ? 'older quizzes' : 'all quizzes') + '</button></div></section>';
+      h += restDaysCard();
+    }
     if (dbState !== "live") h += '<p class="status">' + (dbState === "connecting" ? "Loading saved results…" : "Saved results aren't available in this view.") + '</p>';
-    app.innerHTML = h; bindRestDays();
+    app.innerHTML = h; bindRestDays(); bindSchoolAwards();
     var lm = document.getElementById("logMore"); if (lm) lm.addEventListener("click", function () { state.logDays = (state.logDays || 14) < 60 ? 60 : 3650; progressView(); });
+  }
+
+  /* ---------- School awards (certificates, selections) and Kristan's merits ---------- */
+  var SA_KIND = { certificate: ["📜", "Certificate"], award: ["🏆", "Award"], selection: ["⭐", "Picked"], "class": ["👏", "Class award"] };
+  function schoolAwardsFor(c) { return (state.schoolAwards || []).filter(function (x) { return x.child === c; }).sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); }); }
+  function schoolAwardsCard(c) {
+    var list = schoolAwardsFor(c), parent = isParentNow(), h = '<section class="card sect sa-card ' + c + '"><h2>' + (c === "kristan" ? "School awards & merits" : esc(cname(c)) + "\u2019s school awards") + '</h2>';
+    if (c === "kristan") {
+      var mt = meritTotals("kristan"), subj = {};
+      mt.list.forEach(function (m) { if (m.subject) subj[m.subject] = (subj[m.subject] || 0) + (m.count || 1); });
+      var recent = mt.list.filter(function (m) { return m.ref !== "opening-2026-10-29"; }).slice(0, 4);
+      h += '<div class="sa-merits"><div class="sa-big"><span>🏅</span><b>' + mt.count + '</b><span class="small">merits this year</span></div><div class="sa-mside">' +
+        '<span class="small">£1 each: ' + fmtMoney(mt.count * 100) + ' earned so far</span>' +
+        (Object.keys(subj).length ? '<div class="sa-subj">' + Object.keys(subj).sort(function (a, b) { return subj[b] - subj[a]; }).map(function (k) { return '<span class="chip">' + esc(k) + ' ×' + subj[k] + '</span>'; }).join("") + '</div>' : '') +
+        (recent.length ? '<ul class="sa-recent">' + recent.map(function (m) { return '<li><b>' + esc(m.subject || "Merit") + '</b>' + (m.reason ? ' · ' + esc(m.reason) : '') + ' <span class="small">' + esc(fmtDay(String(m.date).slice(0, 10))) + '</span></li>'; }).join("") + '</ul>' : '') +
+        '<button class="linkbtn" id="saMerits">See all merits</button></div></div>';
+    }
+    h += list.length ? '<div class="sa-list">' + list.map(function (x) {
+      var k = SA_KIND[x.kind] || SA_KIND.certificate, del = state.saDel === x.id;
+      return '<div class="sa-item ' + esc(x.kind) + '"><span class="sa-ic" aria-hidden="true">' + k[0] + '</span><div><span class="sa-k">' + k[1] + ' · ' + esc(fmtDay(String(x.date).slice(0, 10))) + '</span><b>' + esc(x.title) + '</b>' +
+        (x.details ? '<span class="small">' + esc(x.details) + '</span>' : '') + (x.givenBy ? '<span class="small">From ' + esc(x.givenBy) + '</span>' : '') +
+        (parent ? '<button class="linkbtn sm" data-sadel="' + x.id + '">' + (del ? 'Tap again to remove' : 'Remove') + '</button>' : '') + '</div></div>';
+    }).join("") + '</div>' : '<p class="small">No certificates or awards yet. When school gives ' + esc(cname(c)) + ' one, it shows up here.</p>';
+    if (parent) h += '<details class="sa-add"' + (state.saOpen ? ' open' : '') + '><summary>Add a certificate or award</summary><div class="wal-form">' +
+      '<label>Type<select id="saKind"><option value="certificate">Certificate</option><option value="award">Award or trophy</option><option value="selection">Picked for a team or role</option><option value="class">Class award</option></select></label>' +
+      '<label>What it was<input id="saTitle" maxlength="160" placeholder="' + (c === "kristan" ? "Player of the match" : "Star of the Week") + '"></label>' +
+      '<label>Date<input id="saDate" type="date" value="' + todayD() + '" max="' + todayD() + '"></label>' +
+      '<label>Who gave it<input id="saBy" maxlength="80" placeholder="Teacher or coach"></label>' +
+      '<label style="grid-column:1/-1">What for (optional)<input id="saWhy" maxlength="400" placeholder="For excellent teamwork"></label>' +
+      '<div class="row"><button class="btn sm" id="saAdd">Add</button></div></div></details>';
+    if (state.saMsg) h += '<p class="cbnote">' + esc(state.saMsg) + '</p>';
+    return h + '</section>';
+  }
+  function bindSchoolAwards() {
+    var c = state.child, mb = document.getElementById("saMerits");
+    if (mb) mb.addEventListener("click", function () { meritOpen = true; bellOpen = false; bellDraw(); meritDraw(); window.scrollTo({ top: 0 }); });
+    [].forEach.call(app.querySelectorAll("[data-sadel]"), function (b) { b.addEventListener("click", function () {
+      var id = b.dataset.sadel; if (state.saDel !== id) { state.saDel = id; return progressView(); }
+      state.saDel = null; state.schoolAwards = state.schoolAwards.filter(function (x) { return x.id !== id; });
+      db.collection("school_awards").doc(id).remove().catch(function () { state.saMsg = "That didn't save. Please try again."; refresh(); }); progressView(); }); });
+    var add = document.getElementById("saAdd");
+    if (add) add.addEventListener("click", function () {
+      var t = document.getElementById("saTitle").value.trim();
+      if (!t) { state.saOpen = true; state.saMsg = "Say what the award was first."; return progressView(); }
+      var rec = { child: c, kind: document.getElementById("saKind").value, title: t, date: document.getElementById("saDate").value || todayD(), givenBy: document.getElementById("saBy").value.trim() || null, details: document.getElementById("saWhy").value.trim() || null, source: "parent" };
+      var tmp = Object.assign({ id: "pending-" + Date.now() }, rec); state.schoolAwards = (state.schoolAwards || []).concat([tmp]); state.saOpen = false; state.saMsg = "Added. Well done, " + cname(c) + "!";
+      db.collection("school_awards").add(rec).catch(function () { state.schoolAwards = state.schoolAwards.filter(function (x) { return x !== tmp; }); state.saMsg = "That didn't save. Please try again."; refresh(); });
+      progressView();
+    });
   }
 
   /* ---------- Quiz log + spelling / vocab list report ---------- */
@@ -2385,11 +2452,11 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     h += '<section class="card sect"><h2>Today and tomorrow</h2>' + (tt.length ? tt.map(function (x) { return '<div class="ev ' + esc(x.child) + '"><span class="ev-time w">' + esc(x.when) + '</span><div class="ev-body"><b>' + esc(x.title) + '</b><span class="small">' + esc(x.sub) + ' · ' + cname(x.child) + '</span>' + (x.bring ? '<span class="bring">Bring: ' + esc(x.bring) + '</span>' : '') + '</div></div>'; }).join("") : '<p class="small">No school events today or tomorrow.</p>') +
       '<div class="row"><button class="btn sm ghost" id="fvCal">Open the calendar</button></div></section>';
     L += h; h = '';
-    R += termCard(t);
     L += '<section class="card sect"><h2>Activity: last 3 days</h2><p class="small">Everything both children have done on Hollyend. Tap a quiz to see the questions.</p>' + activityLog(["millie", "kristan"], 3) +
       '<div class="row"><button class="btn sm ghost" data-fvlog="millie">Millie’s full log</button><button class="btn sm ghost" data-fvlog="kristan">Kristan’s full log</button></div></section>';
     var nw = newsList(14).slice(0, 5);
     if (nw.length) R += '<section class="card sect"><h2>Latest school news</h2><div class="news">' + nw.map(function (e) { return '<div class="nw ' + esc(e.child) + '"><div class="ev-tags"><span class="small">' + esc(fmtDay(String(e.date).slice(0, 10))) + ' · ' + (e.child === "both" ? "Whole school" : cname(e.child)) + '</span>' + (e.audience === "parents" ? '<span class="tag action">Parents</span>' : '') + '</div><b>' + esc(e.title) + '</b>' + (e.details ? '<span class="small">' + esc(e.details) + '</span>' : '') + '</div>'; }).join("") + '</div></section>';
+    R += termCard(t);
     app.innerHTML = head + '<div class="cols"><div class="col">' + L + '</div><div class="col">' + R + '</div></div>';
     bindHomework(); bindCalendar(); bindOwed(familyView);
     [].forEach.call(app.querySelectorAll("[data-fvkid]"), function (b) { b.addEventListener("click", function () { setChild(b.dataset.fvkid); setView("homework"); window.scrollTo({ top: 0 }); }); });
