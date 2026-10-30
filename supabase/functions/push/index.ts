@@ -107,6 +107,21 @@ async function run(cfg: any, kind: string) {
       if (left.length) parts.push("Don't forget: " + left.map((t: any) => t.title.replace(/:.*/, "")).join(", ") + ".");
       if (evs && evs.length) parts.push("Tomorrow: " + evs.map((e: any) => e.title + (e.time ? " (" + e.time + ")" : "") + (e.bring ? ". Bring: " + e.bring : "")).join("; ") + ".");
       if (parts.length) payload = { title: left.length ? "Before bed" : "Tomorrow", body: parts.join(" ").slice(0, 230), url: evs && evs.length && !left.length ? "/#calendar" : "/#homework", tag: "daily" };
+    } else if (kind === "nudge") {
+      // 7:30pm every night: a friendly nudge to open Hollyend for homework and a quiz.
+      const today = dubaiDay(0);
+      const open = await pendingHomework(child);
+      const { count: quizzes } = await db.from("attempts").select("id", { count: "exact", head: true }).eq("child", child).eq("play_day", today);
+      const hw = open.length ? open.length + " homework to do" : "";
+      if (child === "millie") {
+        const body = open.length ? "You've got " + hw + ", then a quick quiz to keep your streak going. Uuh Uuh has saved you a banana!"
+          : !quizzes ? "Time for today's quiz! One go keeps your streak alive. Ooh Ooh is warming up his brain."
+          : "Brilliant work today! Fancy a game in the Space Arcade before bed?";
+        payload = { title: "Ooh Ooh and Uuh Uuh are waiting! 🐵", body, url: open.length ? "/#homework" : "/", tag: "nudge" };
+      } else {
+        const body = [hw, !quizzes ? "today's quiz keeps your streak going" : "quiz done today, nice one"].filter(Boolean).join(" · ");
+        payload = { title: "Hollyend check-in", body: body.charAt(0).toUpperCase() + body.slice(1) + ".", url: open.length ? "/#homework" : "/", tag: "nudge" };
+      }
     } else if (kind === "new") {
       const since = new Date(Date.now() - 2 * 3600e3).toISOString();
       const { data: fresh } = await db.from("homework").select("*").eq("child", child).eq("active", true).gte("created_at", since);
