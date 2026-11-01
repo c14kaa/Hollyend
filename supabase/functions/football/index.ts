@@ -40,7 +40,8 @@ async function kidsLeague() {
     for (const x of (await ssGet(`fixtures?league_id=${SS_LEAGUE}&week_id=${w}`)) || []) {
       matches.push({ date: x.date, time: x.start_at, home: x.home_team_name, away: x.away_team_name, homeId: x.home_team_id, awayId: x.away_team_id,
         hs: x.has_finished ? x.home_team_score : null, as: x.has_finished ? x.away_team_score : null, pitch: x.pitch_name, venue: x.location_name,
-        finished: !!x.has_finished, canceled: !!x.is_canceled, postponed: !!x.is_postponed, week: x.week_name });
+        finished: !!x.has_finished, canceled: !!x.is_canceled, postponed: !!x.is_postponed, week: x.week_name,
+        video: x.smartrunners_status === "isRecorded" });
     }
   }
   matches.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));

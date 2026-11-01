@@ -68,10 +68,10 @@ function kidsLeagueCard(today) {
   return '<section class="card sect ftable kids"><h2>Your league: U13 Division 2</h2>' +
     (me ? '<div class="kl-me"><b>La Liga White: ' + ordinal(me.pos) + '</b> · ' + me.pts + ' pts from ' + me.p + ' games' + (played.length ? ' · last: <b class="fr ' + kidsResult(played[played.length - 1]).res + '">' + kidsResult(played[played.length - 1]).res + ' ' + kidsResult(played[played.length - 1]).score + '</b> v ' + fesc(kidsResult(played[played.length - 1]).opp) : '') + '</div>' : '') +
     '<table><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th><th class="kf">Form</th></tr></thead><tbody>' + K.table.map(tr).join("") + '</tbody></table>' +
-    (played.length ? '<div class="ft-recent"><span class="small">Results:</span> ' + played.slice().reverse().map(function (m) { var r = kidsResult(m); return '<span class="chip fr ' + r.res + '">' + r.res + ' ' + r.score + ' v ' + fesc(r.opp) + '</span>'; }).join("") + '</div>' : '') +
+    (played.length ? '<div class="ft-recent"><span class="small">Results:</span> ' + played.slice().reverse().map(function (m) { var r = kidsResult(m); return '<span class="kr"><span class="chip fr ' + r.res + '">' + r.res + ' ' + r.score + ' v ' + fesc(r.opp) + '</span>' + (m.video ? '<a class="chip vid" href="https://tunnel.smartrunners.ai" target="_blank" rel="noopener" title="Match video on SmartRunners">🎥</a>' : '') + '</span>'; }).join("") + '</div>' : '') +
     (next.length ? '<h3 class="fv-sub">Next matches</h3><div class="list">' + next.map(function (m) { var home = m.home === KIDS_TEAM;
       return '<div class="li"><span><b>' + fesc(kidsShort(home ? m.away : m.home)) + (home ? ' (H)' : ' (A)') + '</b> <span class="small">' + fesc(m.pitch || "") + '</span></span><span class="small">' + nd(m.date) + ', ' + fesc(m.time || "") + '</span></div>'; }).join("") + '</div>' : '') +
-    '<span class="small">Man City Abu Dhabi League, Sundays at Zayed Sports City. Updated twice a day.</span></section>';
+    (played.some(function (m) { return m.video; }) ? '<span class="small">🎥 Filmed matches open in SmartRunners (sign in with your Smart Player account).</span>' : '') + '<span class="small">Man City Abu Dhabi League, Sundays at Zayed Sports City. Updated twice a day.</span></section>';
 }
 
 /* Maths with real Premier League numbers (Year 8: averages, percentages, ratio). Used sparingly. */
