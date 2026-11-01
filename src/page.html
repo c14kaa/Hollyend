@@ -259,7 +259,8 @@ body.k .earn { font-size: 30px; }
 .tag.afc { background: #ffe0e0; color: #c00008; } .tag.fpl { background: #e9ddff; color: #37003c; } .tag.fortnite { background: #e2ecff; color: #1d4fd6; } .tag.rocketleague { background: #ffe9d6; color: #a14a00; } .tag.school { background: #dff6e6; color: #146c34; }
 .hg-now { display: flex; flex-direction: column; gap: 3px; padding: 10px 12px; border-radius: 12px; background: var(--card2); border: 1px solid var(--line); }
 .hg-now b { font-size: 18px; } .hg-news { margin: 0; padding-left: 18px; font-size: 14px; }
-.hub-fpl .hf { display: flex; flex-direction: column; gap: 4px; } .hf-c { font-family: var(--display); font-size: 40px; font-weight: 800; color: var(--accent); line-height: 1; }
+.card.hub-fpl { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 8px 16px; text-align: left; } .hub-fpl h2 { grid-column: 1 / -1; text-align: left; } .hub-fpl .hf { align-items: flex-start; }
+@media (max-width: 560px) { .card.hub-fpl { grid-template-columns: 1fr; } } .hub-fpl .btn { text-decoration: none; } .hub-fpl .hf { display: flex; flex-direction: column; gap: 4px; } .hf-c { font-family: var(--display); font-size: 40px; font-weight: 800; color: var(--accent); line-height: 1; }
 .ftick { display: flex; gap: 10px; align-items: center; background: var(--card); border: 1px solid var(--line); border-left: 4px solid #ef0107; border-radius: 12px; padding: 8px 12px; font-size: 14px; }
 .ft-i { font-size: 18px; } .ft-sep { color: var(--muted); padding: 0 2px; }
 .fr.W { color: var(--good); } .fr.L { color: var(--bad); } .fr.D { color: var(--gold); }
@@ -967,17 +968,18 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     var now = new Date().toISOString(), nx = (FOOTY.fpl || []).filter(function (e) { return e.deadline && String(e.deadline) > now; })[0];
     if (!nx) return "";
     var ms = new Date(nx.deadline) - Date.now(), dys = Math.floor(ms / 864e5), hrs = Math.floor(ms % 864e5 / 36e5), u = uaeParts(nx.deadline);
-    return '<section class="card sect hub-fpl"><h2>Fantasy Premier League</h2><div class="hf"><b>' + esc(nx.name || "Gameweek " + nx.gw) + ' deadline</b><span class="hf-c">' + (dys ? dys + "d " : "") + hrs + 'h</span><span class="small">' + fmtDay(u.date) + ', ' + u.time + ' UAE. Transfers and captain locked after this.</span></div></section>';
+    return '<section class="card sect hub-fpl"><h2>Fantasy Premier League</h2><div class="hf"><b>' + esc(nx.name || "Gameweek " + nx.gw) + ' deadline</b><span class="hf-c">' + (dys ? dys + "d " : "") + hrs + 'h</span><span class="small">' + fmtDay(u.date) + ', ' + u.time + ' UAE. Transfers and captain locked after this.</span></div><a class="btn" href="https://fantasy.premierleague.com/my-team" target="_blank" rel="noopener">Open FPL: pick your team</a></section>';
   }
   function hubView() {
     var tl = hubTimeline(), groups = [], last = null, t = todayD();
     tl.forEach(function (x) { if (x.date !== last) { groups.push({ date: x.date, items: [] }); last = x.date; } groups[groups.length - 1].items.push(x); });
     var label = function (d) { return d === t ? "Today" : d === addDays(t, 1) ? "Tomorrow" : fmtDay(d); };
     var h = '<section class="card"><span class="small">Just for Kristan</span><h2 class="hw-h">The Hub</h2><p class="small" style="margin:0">Your Sunday league, Arsenal, FPL, Fortnite and Rocket League, all in one place. Only you and Dad can see this page.</p></section>';
+    h += hubFpl();
     h += '<div class="cols"><div class="col"><section class="card sect"><h2>Timeline</h2>' + (groups.length ? groups.slice(0, 14).map(function (g) {
       return '<div class="tl-day"><span class="tl-d">' + label(g.date) + '</span>' + g.items.map(function (x) {
         return '<div class="tl-it ' + x.cls + '"><span class="tl-t">' + esc(x.time || "") + '</span><div><span class="tag ' + x.cls + '">' + esc(x.tag) + '</span> <b>' + esc(x.title) + '</b>' + (x.sub ? '<span class="small">' + esc(x.sub) + '</span>' : '') + '</div></div>'; }).join("") + '</div>';
-    }).join("") : '<p class="small">Nothing in the next six weeks yet.</p>') + '</section>' + hubFpl() + '</div><div class="col">' + kidsLeagueCard(t) + (footyTableCard() || '') + hubGameCard("fortnite") + hubGameCard("rocketleague") + '</div></div>';
+    }).join("") : '<p class="small">Nothing in the next six weeks yet.</p>') + '</section></div><div class="col">' + kidsLeagueCard(t) + (footyTableCard() || '') + hubGameCard("fortnite") + hubGameCard("rocketleague") + '</div></div>';
     app.innerHTML = h;
   }
   /* ---------- School reports: progress across every report, plus the latest in detail ---------- */
