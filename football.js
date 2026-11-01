@@ -2,13 +2,14 @@
    `football` edge function (football-data.org) in public.football_cache. Nothing here calls the API.
    Kept deliberately light: a ticker on two pages and the odd real-numbers maths question. */
 
-var FOOTY = { table: [], matches: [], fpl: [], updated: null };
+var FOOTY = { table: [], matches: [], fpl: [], kids: null, updated: null };
 var ARSENAL_ID = 57;
 var TEAM_NAMES = { "Brighton Hove": "Brighton", "Nottingham": "Forest", "Wolverhampton": "Wolves", "Tottenham": "Spurs", "Slavia Praha": "Slavia Prague" };
 function tidyName(n) { return TEAM_NAMES[n] || n; }
 function setFootball(rows) {
   (rows || []).forEach(function (r) {
     if (r.key === "pl_table") { FOOTY.table = ((r.data && r.data.table) || []).map(function (t) { return Object.assign({}, t, { team: tidyName(t.team) }); }); FOOTY.matchday = r.data && r.data.matchday; FOOTY.updated = r.updatedAt || FOOTY.updated; }
+    if (r.key === "kids_league") { FOOTY.kids = r.data || null; if (FOOTY.kids) FOOTY.kids.updated = r.updatedAt || null; }
     if (r.key === "fpl_events") FOOTY.fpl = (r.data && r.data.events) || [];
     if (r.key === "arsenal_matches") FOOTY.matches = ((r.data && r.data.matches) || []).map(function (m) { return Object.assign({}, m, { home: tidyName(m.home), away: tidyName(m.away) }); }).sort(function (a, b) { return String(a.at).localeCompare(String(b.at)); });
   });
@@ -47,6 +48,30 @@ function footyTableCard() {
     (recent ? '<div class="ft-recent"><span class="small">Arsenal’s last three:</span> ' + recent + '</div>' : '') +
     (upcoming ? '<h3 class="fv-sub">Arsenal\u2019s next three</h3><div class="list">' + upcoming + '</div>' : '') +
     '<span class="small">Updated twice a day' + (FOOTY.updated ? ' · last ' + new Date(FOOTY.updated).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : '') + '. Data: football-data.org</span></section>';
+}
+
+/* Kristan's own Sunday league: Man City Abu Dhabi League, U13 Division 2. His team: La Liga Academy Abu Dhabi White. */
+var KIDS_TEAM = "La Liga Academy Abu Dhabi White";
+function fesc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[c]; }); }
+function kidsShort(n) { return n === KIDS_TEAM ? "La Liga White" : String(n || "").replace(/ Football Academy$/, "").replace(/^La Liga Academy Abu Dhabi /, "La Liga "); }
+function kidsMine(m) { return m.home === KIDS_TEAM || m.away === KIDS_TEAM; }
+function kidsResult(m) { var home = m.home === KIDS_TEAM, us = home ? m.hs : m.as, them = home ? m.as : m.hs;
+  return { res: us > them ? "W" : us < them ? "L" : "D", score: us + "–" + them, opp: kidsShort(home ? m.away : m.home), ha: home ? "H" : "A" }; }
+function kidsUpcoming(today) { var K = FOOTY.kids; if (!K) return []; return (K.matches || []).filter(function (m) { return kidsMine(m) && !m.finished && !m.canceled && m.date >= today; }); }
+function kidsLeagueCard(today) {
+  var K = FOOTY.kids; if (!K || !(K.table || []).length) return "";
+  var mine = (K.matches || []).filter(kidsMine), played = mine.filter(function (m) { return m.finished && m.hs != null; });
+  var next = kidsUpcoming(today).slice(0, 3), me = K.table.filter(function (r) { return r.team === KIDS_TEAM; })[0];
+  var fdot = function (f) { return '<span class="fd ' + f + '">' + f + '</span>'; };
+  var tr = function (r) { return '<tr class="' + (r.team === KIDS_TEAM ? "mine" : "") + '"><td>' + r.pos + '</td><td>' + fesc(kidsShort(r.team)) + '</td><td>' + r.p + '</td><td>' + r.w + '</td><td>' + r.d + '</td><td>' + r.l + '</td><td>' + sgd(r.gd) + '</td><td><b>' + r.pts + '</b></td><td class="kf">' + (r.form || []).map(fdot).join("") + '</td></tr>'; };
+  var nd = function (d) { return new Date(d + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" }); };
+  return '<section class="card sect ftable kids"><h2>Your league: U13 Division 2</h2>' +
+    (me ? '<div class="kl-me"><b>La Liga White: ' + ordinal(me.pos) + '</b> · ' + me.pts + ' pts from ' + me.p + ' games' + (played.length ? ' · last: <b class="fr ' + kidsResult(played[played.length - 1]).res + '">' + kidsResult(played[played.length - 1]).res + ' ' + kidsResult(played[played.length - 1]).score + '</b> v ' + fesc(kidsResult(played[played.length - 1]).opp) : '') + '</div>' : '') +
+    '<table><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th><th class="kf">Form</th></tr></thead><tbody>' + K.table.map(tr).join("") + '</tbody></table>' +
+    (played.length ? '<div class="ft-recent"><span class="small">Results:</span> ' + played.slice().reverse().map(function (m) { var r = kidsResult(m); return '<span class="chip fr ' + r.res + '">' + r.res + ' ' + r.score + ' v ' + fesc(r.opp) + '</span>'; }).join("") + '</div>' : '') +
+    (next.length ? '<h3 class="fv-sub">Next matches</h3><div class="list">' + next.map(function (m) { var home = m.home === KIDS_TEAM;
+      return '<div class="li"><span><b>' + fesc(kidsShort(home ? m.away : m.home)) + (home ? ' (H)' : ' (A)') + '</b> <span class="small">' + fesc(m.pitch || "") + '</span></span><span class="small">' + nd(m.date) + ', ' + fesc(m.time || "") + '</span></div>'; }).join("") + '</div>' : '') +
+    '<span class="small">Man City Abu Dhabi League, Sundays at Zayed Sports City. Updated twice a day.</span></section>';
 }
 
 /* Maths with real Premier League numbers (Year 8: averages, percentages, ratio). Used sparingly. */

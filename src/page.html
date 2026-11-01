@@ -269,6 +269,11 @@ body.k .earn { font-size: 30px; }
 .ftable th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; }
 .ftable td:nth-child(n+3), .ftable th:nth-child(n+3) { text-align: right; }
 .ftable tr.afc td { background: color-mix(in srgb, #ef0107 22%, transparent); font-weight: 700; }
+.ftable.kids { border-top: 4px solid #e4002b; } .ftable tr.mine td { background: color-mix(in srgb, #e4002b 18%, transparent); font-weight: 700; }
+.kl-me { font-size: 14px; margin: 2px 0 8px; } .kf { white-space: nowrap; } .fd { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; font-weight: 800; color: #fff; margin-left: 2px; }
+.fd.W { background: #2e7d32; } .fd.L { background: #c62828; } .fd.D { background: #37474f; }
+.tag.kids { background: #fde2e6; color: #b0001f; } .tl-it.kids b { color: inherit; }
+@media (max-width: 560px) { .ftable.kids .kf { display: none; } }
 .ft-recent { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; } .buddy-top .say { margin: 0; }
 .fb .say { margin-top: 10px; } .fb .say .bub { background: rgba(255,255,255,.06); }
 .tmk { display: inline-flex; vertical-align: middle; margin-left: 6px; gap: 0; } .tmk .mk { width: .95em; height: .95em; }
@@ -937,7 +942,10 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       var st = x.status === "rumour" ? " (rumoured)" : x.status === "expected" ? " (expected)" : "";
       if (x.starts && x.starts >= t && x.starts <= end) out.push({ date: x.starts, time: "", tag: g.name, cls: x.game, title: x.title + " starts" + st, sub: x.details || "" });
       if (x.ends && x.ends >= t && x.ends <= end) out.push({ date: x.ends, time: "", tag: g.name, cls: x.game, title: x.title + " ends" + st, sub: "" }); });
+    var kidDays = {}; kidsUpcoming(t).forEach(function (m) { if (m.date > end) return; kidDays[m.date] = 1; var home = m.home === KIDS_TEAM;
+      out.push({ date: m.date, time: m.time || "", tag: "Your league", cls: "kids", title: "La Liga White v " + kidsShort(home ? m.away : m.home) + (home ? " (H)" : " (A)"), sub: "U13 Division 2 · " + [m.pitch, m.venue].filter(Boolean).join(", ") }); });
     state.events.forEach(function (e) { if (e.active === false || e.audience === "parents" || !e.date || (e.child !== "kristan" && e.child !== "both")) return;
+      if (e.type === "sport" && kidDays[String(e.date).slice(0, 10)] && /la ?liga/i.test(e.title || "")) return;
       if (/^laliga-/.test(e.ref || "") || ["sport", "trip", "event", "deadline"].indexOf(e.type) < 0) return; var d = String(e.date).slice(0, 10); if (d < t || d > end) return;
       out.push({ date: d, time: e.time || "", tag: "School", cls: "school", title: e.title, sub: e.bring ? "Bring: " + e.bring : (e.details || "") }); });
     return out.sort(function (a, b) { return a.date.localeCompare(b.date) || String(a.time || "99").localeCompare(String(b.time || "99")); });
@@ -965,11 +973,11 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     var tl = hubTimeline(), groups = [], last = null, t = todayD();
     tl.forEach(function (x) { if (x.date !== last) { groups.push({ date: x.date, items: [] }); last = x.date; } groups[groups.length - 1].items.push(x); });
     var label = function (d) { return d === t ? "Today" : d === addDays(t, 1) ? "Tomorrow" : fmtDay(d); };
-    var h = '<section class="card"><span class="small">Just for Kristan</span><h2 class="hw-h">The Hub</h2><p class="small" style="margin:0">Arsenal, FPL, Fortnite, Rocket League and your own fixtures, all in one place. Only you and Dad can see this page.</p></section>';
+    var h = '<section class="card"><span class="small">Just for Kristan</span><h2 class="hw-h">The Hub</h2><p class="small" style="margin:0">Your Sunday league, Arsenal, FPL, Fortnite and Rocket League, all in one place. Only you and Dad can see this page.</p></section>';
     h += '<div class="cols"><div class="col"><section class="card sect"><h2>Timeline</h2>' + (groups.length ? groups.slice(0, 14).map(function (g) {
       return '<div class="tl-day"><span class="tl-d">' + label(g.date) + '</span>' + g.items.map(function (x) {
         return '<div class="tl-it ' + x.cls + '"><span class="tl-t">' + esc(x.time || "") + '</span><div><span class="tag ' + x.cls + '">' + esc(x.tag) + '</span> <b>' + esc(x.title) + '</b>' + (x.sub ? '<span class="small">' + esc(x.sub) + '</span>' : '') + '</div></div>'; }).join("") + '</div>';
-    }).join("") : '<p class="small">Nothing in the next six weeks yet.</p>') + '</section>' + hubFpl() + '</div><div class="col">' + (footyTableCard() || '') + hubGameCard("fortnite") + hubGameCard("rocketleague") + '</div></div>';
+    }).join("") : '<p class="small">Nothing in the next six weeks yet.</p>') + '</section>' + hubFpl() + '</div><div class="col">' + kidsLeagueCard(t) + (footyTableCard() || '') + hubGameCard("fortnite") + hubGameCard("rocketleague") + '</div></div>';
     app.innerHTML = h;
   }
   /* ---------- School reports: progress across every report, plus the latest in detail ---------- */

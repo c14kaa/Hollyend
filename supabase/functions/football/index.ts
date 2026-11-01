@@ -1,4 +1,5 @@
-// Hollyend football feed for Kristan: Premier League table and Arsenal's recent and upcoming matches.
+// Hollyend football feed for Kristan: Premier League table, Arsenal's recent and upcoming matches, FPL deadlines
+// and his own Sunday league (U13 Division 2).
 // Called by pg_cron twice a day (header x-cron-secret). Uses football-data.org's free tier with the
 // FOOTBALL_DATA_KEY secret (added by Harps in Supabase > Edge Functions > Secrets). Results are cached in
 // public.football_cache so the site never calls the API itself.
@@ -13,6 +14,37 @@ async function get(path: string, key: string) {
   const r = await fetch(API + path, { headers: { "X-Auth-Token": key } });
   if (!r.ok) throw new Error(path + " -> " + r.status + " " + (await r.text()).slice(0, 200));
   return r.json();
+}
+
+// Kristan's own Sunday league: Manchester City Abu Dhabi League, U13 Division 2 (SportStack public API, no key).
+// His team is La Liga Academy Abu Dhabi White. Optional: a failure here never stops the Premier League part.
+const SS = "https://api.sportstack.ai/api/v1/public/";
+const SS_COMP = "manchester-city-abu-dhabi-league-202627", SS_LEAGUE = 416;
+async function ssGet(path: string) {
+  const r = await fetch(SS + path, { headers: { "Accept": "application/json", "User-Agent": "Mozilla/5.0 Hollyend" } });
+  if (!r.ok) throw new Error("sportstack " + path + " -> " + r.status);
+  return (await r.json()).data;
+}
+async function kidsLeague() {
+  const view = await ssGet(`leagues/view/${SS_LEAGUE}`);
+  const g = (view.groups || [])[0] || {};
+  const table = (g.table || []).map((r: any, i: number) => {
+    const s = r.stats || {};
+    return { pos: i + 1, id: r.team?.id, team: r.team?.name, p: s.total_matches ?? 0, w: s.total_wins ?? 0, d: s.total_draws ?? 0, l: s.total_losses ?? 0,
+      gf: s.total_goals ?? 0, ga: s.total_conceded ?? 0, gd: (s.total_goals ?? 0) - (s.total_conceded ?? 0), pts: s.total_points ?? 0, form: s.form || [] };
+  });
+  const sched = await ssGet(`competitions/${SS_COMP}/schedule`);
+  const weeks = (sched || []).filter((w: any) => (w.fixtures || []).some((f: any) => f.league_id === SS_LEAGUE)).map((w: any) => w.id);
+  const matches: any[] = [];
+  for (const w of weeks) {
+    for (const x of (await ssGet(`fixtures?league_id=${SS_LEAGUE}&week_id=${w}`)) || []) {
+      matches.push({ date: x.date, time: x.start_at, home: x.home_team_name, away: x.away_team_name, homeId: x.home_team_id, awayId: x.away_team_id,
+        hs: x.has_finished ? x.home_team_score : null, as: x.has_finished ? x.away_team_score : null, pitch: x.pitch_name, venue: x.location_name,
+        finished: !!x.has_finished, canceled: !!x.is_canceled, postponed: !!x.is_postponed, week: x.week_name });
+    }
+  }
+  matches.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+  return { league: "U13 Division 2", competition: "Man City Abu Dhabi League", team: "La Liga Academy Abu Dhabi White", table, matches };
 }
 const day = (offset: number) => new Date(Date.now() + offset * 864e5).toISOString().slice(0, 10);
 
@@ -42,13 +74,16 @@ Deno.serve(async (req) => {
       if (r.ok) { const b = await r.json(); fpl = (b.events || []).map((e: any) => ({ gw: e.id, name: e.name, deadline: e.deadline_time, current: e.is_current, next: e.is_next, finished: e.finished })); }
       else console.log("fpl status", r.status);
     } catch (e) { console.log("fpl error", String(e)); }
+    let kids: any = null;
+    try { kids = await kidsLeague(); await db.from("football_cache").upsert([{ key: "kids_league", data: kids, updated_at: now }]); }
+    catch (e) { console.log("kids league error", String(e)); }
     if (fpl) await db.from("football_cache").upsert([{ key: "fpl_events", data: { events: fpl }, updated_at: now }]);
     const up = await db.from("football_cache").upsert([
       { key: "pl_table", data: { season: st.season?.startDate?.slice(0, 4) || null, matchday: st.season?.currentMatchday || null, table }, updated_at: now },
       { key: "arsenal_matches", data: { matches }, updated_at: now },
     ]);
     if (up.error) throw up.error;
-    return json({ ok: true, teams: table.length, matches: matches.length, fpl: fpl ? fpl.length : 0 });
+    return json({ ok: true, teams: table.length, matches: matches.length, fpl: fpl ? fpl.length : 0, kidsLeague: kids ? { teams: kids.table.length, matches: kids.matches.length } : null });
   } catch (e) {
     console.log("football error", String(e));
     return json({ ok: false, error: String(e) }, 500);
