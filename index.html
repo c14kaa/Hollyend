@@ -2420,12 +2420,14 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       var res = lgResultLetter(home ? my.hg : my.ag, home ? my.ag : my.hg);
       h += '<p class="lg-res ' + res + '">' + (res === "W" ? "Win" : res === "D" ? "Draw" : "Defeat") + ' · ' + my.s + '/5 answers right · ' + ord(me.pos) + ' in the table</p>' + timeline(my, home, opp);
       if (st && st.answers && st.answers.length >= 5 && !att && isKristan) h += '<div class="row"><button class="btn" id="collect">See the match report and collect your points</button></div>';
-      else h += '<p class="small">Next match: tomorrow. One match a day, so come back then.</p>';
+      else h += (att && att.points != null ? '<p class="earn">+' + att.points + ' points from today\u2019s match</p>' : '') + '<p class="small">Next match: tomorrow. One match a day, so come back then.</p>';
     } else if (L.status === "live") {
       h += isKristan ? '<div class="row"><button class="btn" id="resume">Resume the match (' + L.answered + ' of 5 answered)</button></div>' : '<p class="small">Kristan is playing this match now: ' + L.answered + ' of 5 answered.</p>';
     } else {
       h += '<div class="need"><span>Difficulty ' + fdr(L.defs) + '</span><span>Draw: <b>' + L.defs + '/5</b></span><span>Win: <b>' + (L.defs + 1) + '/5</b></span><span>' + (5 - L.defs) + ' attacks · ' + L.defs + ' defends</span></div>' +
         '<ul class="lg-rules"><li><b>Attack</b> questions: right = you score. <b>Defend</b> questions: wrong = they score. No luck, just your answers.</li><li>Stronger opponents attack more, so you need more right to beat them.</li><li>One match a day, <b>no replays</b>: each answer locks in as you go. Miss a day and it’s a 0–3 forfeit.</li><li>' + LEAGUE.length + ' matchdays a season. Top ' + (D.up || 1) + ' ' + (D.up ? 'go up' : 'is champion') + '.' + (D.down ? ' Bottom 3 go down.' : '') + '</li></ul>';
+      var mx = Math.round(25 * ({ 1: 1, 2: 1.5, 3: 2 }[L.level] || 1.5) + 10);
+      h += '<p class="earn">Today\u2019s match earns points: up to ' + mx + ' for 5/5, plus extra for comeback questions.</p>';
       h += isKristan ? '<div class="row"><button class="btn" id="kickoff"' + (dbState !== "live" ? ' disabled' : '') + '>Kick off</button></div>' : '<p class="small">Kristan kicks off from his own login.</p>';
     }
     if (state.lgMsg) h += '<p class="cbnote">' + esc(state.lgMsg) + '</p>';
