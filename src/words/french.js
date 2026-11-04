@@ -92,3 +92,12 @@ WB.verbs({
   finir: { en: "to finish", forms: ["finis", "finis", "finit", "finissons", "finissez", "finissent"], end: "les devoirs", note: "Regular -ir verb: -is, -is, -it, -issons, -issez, -issent." },
   sortir: { en: "to go out", forms: ["sors", "sors", "sort", "sortons", "sortez", "sortent"], end: "le samedi", note: "Sortir: je sors, tu sors, il sort, nous sortons, vous sortez, ils sortent." }
 });
+
+/* TV and films (Year 8 French, coming next). */
+WB.fr("2026-11-04", [
+  ["le film", "film", "m", "TV and films", "n"], ["la série", "series", "f", "TV and films", "n"], ["le dessin animé", "cartoon", "m", "TV and films", "n"],
+  ["l'émission", "programme (on TV)", "f", "TV and films", "n"], ["les informations", "the news", "pl", "TV and films", "n"], ["la comédie", "comedy", "f", "TV and films", "n"],
+  ["le film d'horreur", "horror film", "m", "TV and films", "n"], ["le film d'action", "action film", "m", "TV and films", "n"], ["le documentaire", "documentary", "m", "TV and films", "n"],
+  ["la télé-réalité", "reality TV", "f", "TV and films", "n"], ["émouvant", "moving (emotional)", "", "TV and films", "a"], ["nul", "rubbish", "", "TV and films", "a"],
+  ["effrayant", "scary", "", "TV and films", "a"], ["passionnant", "exciting", "", "TV and films", "a"], ["je préfère", "I prefer", "", "TV and films", "p"]
+]);

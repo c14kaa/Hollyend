@@ -118,3 +118,16 @@ WB.add("english", "2026-10-27", [
   ["contradict", "Argument", "to say the opposite of", "con · tra · dict", "contra + dict", "CONTRA (against) + DICT (say): to say against.", "The two witnesses ___ each other.", "Don't ___ yourself in your essay."],
   ["perceive", "Argument", "to notice or understand something in a particular way", "per · ceive", "'ei' after c", "PER + CEIVE: i before e except after c.", "Many people ___ maths as difficult.", "How do others ___ you?"]
 ]);
+
+WB.add("english", "2026-11-04", [
+  ["refrain", "Analysing texts", "a line or verse repeated through a poem or song", "re · frain", "re + frain (not 'frane')", "A refrain RE-turns again and again.", "The ballad's ___ is repeated at the end of every verse.", "Each time the ___ comes back, the mood grows darker."],
+  ["quatrain", "Analysing texts", "a verse of four lines", "quat · rain", "quat (four) + rain", "QUAT = quarter, four. A quatrain has four lines.", "Most traditional ballads are written in ___s.", "The first ___ sets the scene in just four lines."],
+  ["couplet", "Analysing texts", "two lines of poetry next to each other that usually rhyme", "coup · let", "'coup', like couple", "A COUPLE of lines make a couplet.", "The poem ends with a rhyming ___ that sums up the message.", "Shakespeare's sonnets finish with a ___."],
+  ["colloquial", "Analysing texts", "informal, like everyday speech", "col · lo · qui · al", "double l, then -quial", "COL + LOQUI (speak) + AL: how people really speak.", "The poet's ___ language makes the speaker sound like a real person.", "Avoid ___ phrases like 'loads of' in a formal essay."],
+  ["anthology", "Analysing texts", "a collection of poems or stories in one book", "an · thol · o · gy", "'th', then -ology", "ANTH + OLOGY: a bouquet of poems.", "We studied the ballads from the class ___.", "Her poem was chosen for a national ___."],
+  ["juxtaposition", "Analysing texts", "placing two contrasting things side by side for effect", "jux · ta · po · si · tion", "'jux' with an x", "JUXTA (next to) + POSITION: put side by side.", "The ___ of the calm sea and the violent storm creates tension.", "The poet uses ___ to contrast rich and poor."],
+  ["poignant", "Description", "making you feel sad or emotional", "poi · gnant", "the silent g", "POIGNANT: the G is silent, like a quiet tear.", "The ending of the ballad is deeply ___.", "It was a ___ moment when the old player waved goodbye."],
+  ["nostalgic", "Character", "longing for happy times in the past", "nos · tal · gic", "ends -gic", "NOST + ALGIC: nostos is Greek for 'returning home'.", "The speaker feels ___ about his childhood in the desert.", "Old photos make my grandparents feel ___."],
+  ["lyrical", "Description", "expressing feelings in a beautiful, musical way", "lyr · i · cal", "the y after l", "LYRIC + AL: like song lyrics.", "The description of the dunes is calm and ___.", "Her ___ writing makes the scene feel like a song."],
+  ["elegy", "Analysing texts", "a sad poem written about someone who has died", "el · e · gy", "e-l-e-g-y: no 'i'", "ELEGY: E, L, E, G, Y: say each letter like a slow drumbeat.", "The poet wrote an ___ for his lost friend.", "An ___ is often slow and mournful in tone."]
+]);

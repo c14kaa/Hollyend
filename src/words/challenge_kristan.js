@@ -107,3 +107,16 @@ WB.add("challenge_kristan", "2026-10-27", [
   ["rhinoceros", "a large animal with one or two horns on its nose", "rhi · noc · er · os", "'rh' at the start, -ceros at the end", "RHINO + CEROS: 'ceros' means horn.", "A ___ can weigh over two tonnes.", "We saw a black ___ on safari."],
   ["ingenious", "very clever and original", "in · gen · ious", "it ends -ious (not -eous)", "IN + GENI(us) + OUS: a genius is ingenious.", "That was an ___ free-kick routine.", "She came up with an ___ solution to the puzzle."]
 ]);
+
+WB.add("challenge_kristan", "2026-11-04", [
+  ["conscientious", "careful and hard-working, wanting to do things properly", "con · sci · en · tious", "'sci' in the middle, and -tious at the end", "CON + SCIENCE + TIOUS: a conscientious scientist.", "She is a ___ student who always checks her work.", "A ___ referee watches every tackle."],
+  ["connoisseur", "an expert who knows a lot about something", "con · nois · seur", "double n, double s, and -eur", "CONN + OISS + EUR: French, with doubles everywhere.", "My uncle is a coffee ___.", "He's a ___ of classic football kits."],
+  ["entrepreneur", "someone who starts and runs a business", "en · tre · pre · neur", "it ends -eur", "ENTRE + PRENEUR: like connoisseur, it ends -eur.", "The young ___ launched her own app.", "He wants to be an ___ when he leaves school."],
+  ["idiosyncrasy", "an unusual habit that is typical of one person", "id · i · o · syn · cra · sy", "ends -crasy, not -cracy", "It ends like 'crazy' with an s: a crazy little habit.", "Wearing odd socks is his ___.", "Every manager has a strange ___ on the touchline."],
+  ["liaise", "to work together and share information", "li · aise", "two i's: l-i-a-i-s-e", "LIAISE: i, a, i: I And I meet up.", "The coaches ___ with the school about fixtures.", "You'll need to ___ with your group before Monday."],
+  ["manoeuvre", "a planned, skilful movement", "ma · noeu · vre", "'oeu' in the middle and -vre at the end (British spelling)", "MAN + OEU + VRE: the French 'oeu' and 'vre'.", "The winger pulled off a clever ___ past two defenders.", "Parking the coach took a tricky ___."],
+  ["millennium", "a period of a thousand years", "mil · len · ni · um", "double l and double n", "Mille (thousand) + annum (year): ll and nn.", "The year 2000 began a new ___.", "That castle has stood for nearly a ___."],
+  ["onomatopoeia", "a word that sounds like what it describes", "on · o · mat · o · poe · ia", "'poeia' at the end", "ONO + MATO + POEIA: say it slowly, six parts.", "'Bang' and 'whoosh' are examples of ___.", "The poet used ___ to bring the storm to life."],
+  ["pharaoh", "a ruler of ancient Egypt", "phar · aoh", "'aoh' at the end, not 'oah'", "PHARAOH: the A comes first, then O, then H.", "The ___ was buried with gold and jewels.", "Tutankhamun became ___ as a boy."],
+  ["questionnaire", "a set of written questions to collect information", "ques · tion · naire", "double n, and -aire", "QUESTION + NAIRE: two Ns join them.", "Please fill in the ___ about school lunches.", "The club sent fans a ___ about the new kit."]
+]);

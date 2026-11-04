@@ -135,6 +135,19 @@ WB.add("challenge_millie", "2026-10-27", [
   ["laboratory", "a room where scientists do experiments", "lab · or · a · tor · y", "'lab' + 'or' + 'atory'", "LAB + OR + ATORY: lab is short for laboratory.", "The scientist works in a ___.", "We wore goggles in the ___."]
 ]);
 
+WB.add("challenge_millie", "2026-11-04", [
+  ["rhythm", "a regular, repeated pattern of beats or sounds", "rhy · thm", "no vowels after the y, and a silent h after r", "Rhythm Helps Your Two Hips Move.", "Clap along to the ___ of the song.", "The drummer kept a steady ___."],
+  ["separate", "to split apart, or not joined together", "sep · a · rate", "'par' in the middle, not 'per'", "There is A RAT in sepARATe.", "Please ___ the red beads from the blue ones.", "We sat at two ___ tables."],
+  ["necessary", "needed; something you must have", "ne · ces · sa · ry", "one c, double s", "One Collar, two Sleeves: one c and two s's.", "Is it ___ to bring a coat?", "Water is ___ for all living things."],
+  ["embarrass", "to make someone feel awkward or ashamed", "em · bar · rass", "double r and double s", "Two Red faces, two Silly smiles: rr and ss.", "Please don't ___ me in front of my friends.", "Tripping on stage would ___ anyone."],
+  ["privilege", "a special right or advantage that not everyone has", "priv · i · lege", "'lege' at the end (no d)", "PRIVI + LEGE: there's no D, it's not a ledge.", "It was a ___ to meet the astronaut.", "Being team captain is a real ___."],
+  ["mischievous", "playfully naughty", "mis · chie · vous", "it ends -vous, with no i before -ous", "MISCHIEF + OUS: just three syllables, mis-chi-vus.", "The ___ monkey hid my banana.", "My little cousin gave a ___ grin."],
+  ["accommodate", "to provide room or space for someone", "ac · com · mo · date", "double c and double m", "It has room for two Cs and two Ms.", "The hotel can ___ two hundred guests.", "The bus can ___ forty children."],
+  ["silhouette", "a dark shape seen against a light background", "sil · hou · ette", "silent h, and -ette at the end", "SIL + HOU + ETTE: the H hides in the shadow.", "We saw the ___ of a cat on the wall.", "The castle's ___ stood out against the sunset."],
+  ["queue", "a line of people waiting for something", "q · ueue", "'ueue': four vowels after the q", "Q then U-E-U-E: the letters wait in a line too.", "We stood in a long ___ for the rollercoaster.", "Please join the back of the ___."],
+  ["occasionally", "sometimes, but not often", "oc · ca · sion · al · ly", "double c, one s, double l", "OCCASION + ALLY: two Cs, one S, two Ls.", "We ___ have pizza on a Friday.", "It ___ rains in Abu Dhabi in winter."]
+]);
+
 /* Kristan's challenge words: extremely hard spellings that adults often get wrong. British spelling.
    Each entry: [word, meaning, chunks, tricky bit, memory hook, sentence 1, sentence 2]. */
 WB.add("challenge_kristan", "2026-10-27", [
@@ -243,6 +256,19 @@ WB.add("challenge_kristan", "2026-10-27", [
   ["psychology", "the study of the mind and behaviour", "psy · chol · o · gy", "silent p, then 'ch' sounds like k", "P + SYCH + OLOGY: the P is silent, like a quiet thought.", "Sports ___ helps players handle pressure.", "She wants to study ___ at university."],
   ["rhinoceros", "a large animal with one or two horns on its nose", "rhi · noc · er · os", "'rh' at the start, -ceros at the end", "RHINO + CEROS: 'ceros' means horn.", "A ___ can weigh over two tonnes.", "We saw a black ___ on safari."],
   ["ingenious", "very clever and original", "in · gen · ious", "it ends -ious (not -eous)", "IN + GENI(us) + OUS: a genius is ingenious.", "That was an ___ free-kick routine.", "She came up with an ___ solution to the puzzle."]
+]);
+
+WB.add("challenge_kristan", "2026-11-04", [
+  ["conscientious", "careful and hard-working, wanting to do things properly", "con · sci · en · tious", "'sci' in the middle, and -tious at the end", "CON + SCIENCE + TIOUS: a conscientious scientist.", "She is a ___ student who always checks her work.", "A ___ referee watches every tackle."],
+  ["connoisseur", "an expert who knows a lot about something", "con · nois · seur", "double n, double s, and -eur", "CONN + OISS + EUR: French, with doubles everywhere.", "My uncle is a coffee ___.", "He's a ___ of classic football kits."],
+  ["entrepreneur", "someone who starts and runs a business", "en · tre · pre · neur", "it ends -eur", "ENTRE + PRENEUR: like connoisseur, it ends -eur.", "The young ___ launched her own app.", "He wants to be an ___ when he leaves school."],
+  ["idiosyncrasy", "an unusual habit that is typical of one person", "id · i · o · syn · cra · sy", "ends -crasy, not -cracy", "It ends like 'crazy' with an s: a crazy little habit.", "Wearing odd socks is his ___.", "Every manager has a strange ___ on the touchline."],
+  ["liaise", "to work together and share information", "li · aise", "two i's: l-i-a-i-s-e", "LIAISE: i, a, i: I And I meet up.", "The coaches ___ with the school about fixtures.", "You'll need to ___ with your group before Monday."],
+  ["manoeuvre", "a planned, skilful movement", "ma · noeu · vre", "'oeu' in the middle and -vre at the end (British spelling)", "MAN + OEU + VRE: the French 'oeu' and 'vre'.", "The winger pulled off a clever ___ past two defenders.", "Parking the coach took a tricky ___."],
+  ["millennium", "a period of a thousand years", "mil · len · ni · um", "double l and double n", "Mille (thousand) + annum (year): ll and nn.", "The year 2000 began a new ___.", "That castle has stood for nearly a ___."],
+  ["onomatopoeia", "a word that sounds like what it describes", "on · o · mat · o · poe · ia", "'poeia' at the end", "ONO + MATO + POEIA: say it slowly, six parts.", "'Bang' and 'whoosh' are examples of ___.", "The poet used ___ to bring the storm to life."],
+  ["pharaoh", "a ruler of ancient Egypt", "phar · aoh", "'aoh' at the end, not 'oah'", "PHARAOH: the A comes first, then O, then H.", "The ___ was buried with gold and jewels.", "Tutankhamun became ___ as a boy."],
+  ["questionnaire", "a set of written questions to collect information", "ques · tion · naire", "double n, and -aire", "QUESTION + NAIRE: two Ns join them.", "Please fill in the ___ about school lunches.", "The club sent fans a ___ about the new kit."]
 ]);
 
 /* Kristan's English words: ambitious vocabulary to USE in writing and speaking (Year 8). British spelling.
@@ -366,6 +392,19 @@ WB.add("english", "2026-10-27", [
   ["perceive", "Argument", "to notice or understand something in a particular way", "per · ceive", "'ei' after c", "PER + CEIVE: i before e except after c.", "Many people ___ maths as difficult.", "How do others ___ you?"]
 ]);
 
+WB.add("english", "2026-11-04", [
+  ["refrain", "Analysing texts", "a line or verse repeated through a poem or song", "re · frain", "re + frain (not 'frane')", "A refrain RE-turns again and again.", "The ballad's ___ is repeated at the end of every verse.", "Each time the ___ comes back, the mood grows darker."],
+  ["quatrain", "Analysing texts", "a verse of four lines", "quat · rain", "quat (four) + rain", "QUAT = quarter, four. A quatrain has four lines.", "Most traditional ballads are written in ___s.", "The first ___ sets the scene in just four lines."],
+  ["couplet", "Analysing texts", "two lines of poetry next to each other that usually rhyme", "coup · let", "'coup', like couple", "A COUPLE of lines make a couplet.", "The poem ends with a rhyming ___ that sums up the message.", "Shakespeare's sonnets finish with a ___."],
+  ["colloquial", "Analysing texts", "informal, like everyday speech", "col · lo · qui · al", "double l, then -quial", "COL + LOQUI (speak) + AL: how people really speak.", "The poet's ___ language makes the speaker sound like a real person.", "Avoid ___ phrases like 'loads of' in a formal essay."],
+  ["anthology", "Analysing texts", "a collection of poems or stories in one book", "an · thol · o · gy", "'th', then -ology", "ANTH + OLOGY: a bouquet of poems.", "We studied the ballads from the class ___.", "Her poem was chosen for a national ___."],
+  ["juxtaposition", "Analysing texts", "placing two contrasting things side by side for effect", "jux · ta · po · si · tion", "'jux' with an x", "JUXTA (next to) + POSITION: put side by side.", "The ___ of the calm sea and the violent storm creates tension.", "The poet uses ___ to contrast rich and poor."],
+  ["poignant", "Description", "making you feel sad or emotional", "poi · gnant", "the silent g", "POIGNANT: the G is silent, like a quiet tear.", "The ending of the ballad is deeply ___.", "It was a ___ moment when the old player waved goodbye."],
+  ["nostalgic", "Character", "longing for happy times in the past", "nos · tal · gic", "ends -gic", "NOST + ALGIC: nostos is Greek for 'returning home'.", "The speaker feels ___ about his childhood in the desert.", "Old photos make my grandparents feel ___."],
+  ["lyrical", "Description", "expressing feelings in a beautiful, musical way", "lyr · i · cal", "the y after l", "LYRIC + AL: like song lyrics.", "The description of the dunes is calm and ___.", "Her ___ writing makes the scene feel like a song."],
+  ["elegy", "Analysing texts", "a sad poem written about someone who has died", "el · e · gy", "e-l-e-g-y: no 'i'", "ELEGY: E, L, E, G, Y: say each letter like a slow drumbeat.", "The poet wrote an ___ for his lost friend.", "An ___ is often slow and mournful in tone."]
+]);
+
 /* Kristan's French bank (KS3). Each entry: [French (with le/la/l'/les for nouns), English, gender m/f/pl or "" , topic, kind n/v/a/p].
    Kinds: n = noun, v = verb (infinitive), a = adjective, p = phrase. */
 WB.fr("2026-10-27", [
@@ -460,6 +499,15 @@ WB.verbs({
   finir: { en: "to finish", forms: ["finis", "finis", "finit", "finissons", "finissez", "finissent"], end: "les devoirs", note: "Regular -ir verb: -is, -is, -it, -issons, -issez, -issent." },
   sortir: { en: "to go out", forms: ["sors", "sors", "sort", "sortons", "sortez", "sortent"], end: "le samedi", note: "Sortir: je sors, tu sors, il sort, nous sortons, vous sortez, ils sortent." }
 });
+
+/* TV and films (Year 8 French, coming next). */
+WB.fr("2026-11-04", [
+  ["le film", "film", "m", "TV and films", "n"], ["la série", "series", "f", "TV and films", "n"], ["le dessin animé", "cartoon", "m", "TV and films", "n"],
+  ["l'émission", "programme (on TV)", "f", "TV and films", "n"], ["les informations", "the news", "pl", "TV and films", "n"], ["la comédie", "comedy", "f", "TV and films", "n"],
+  ["le film d'horreur", "horror film", "m", "TV and films", "n"], ["le film d'action", "action film", "m", "TV and films", "n"], ["le documentaire", "documentary", "m", "TV and films", "n"],
+  ["la télé-réalité", "reality TV", "f", "TV and films", "n"], ["émouvant", "moving (emotional)", "", "TV and films", "a"], ["nul", "rubbish", "", "TV and films", "a"],
+  ["effrayant", "scary", "", "TV and films", "a"], ["passionnant", "exciting", "", "TV and films", "a"], ["je préfère", "I prefer", "", "TV and films", "p"]
+]);
 
 
 /* ---------- merge the banks into the quiz lists (existing words keep their place) ---------- */

@@ -107,3 +107,16 @@ WB.add("challenge_millie", "2026-10-27", [
   ["sword", "a weapon with a long metal blade", "sword", "the silent w", "S + W + ORD: a silent W hides in a sword.", "The knight pulled out his shining ___.", "The pirate waved his ___."],
   ["laboratory", "a room where scientists do experiments", "lab · or · a · tor · y", "'lab' + 'or' + 'atory'", "LAB + OR + ATORY: lab is short for laboratory.", "The scientist works in a ___.", "We wore goggles in the ___."]
 ]);
+
+WB.add("challenge_millie", "2026-11-04", [
+  ["rhythm", "a regular, repeated pattern of beats or sounds", "rhy · thm", "no vowels after the y, and a silent h after r", "Rhythm Helps Your Two Hips Move.", "Clap along to the ___ of the song.", "The drummer kept a steady ___."],
+  ["separate", "to split apart, or not joined together", "sep · a · rate", "'par' in the middle, not 'per'", "There is A RAT in sepARATe.", "Please ___ the red beads from the blue ones.", "We sat at two ___ tables."],
+  ["necessary", "needed; something you must have", "ne · ces · sa · ry", "one c, double s", "One Collar, two Sleeves: one c and two s's.", "Is it ___ to bring a coat?", "Water is ___ for all living things."],
+  ["embarrass", "to make someone feel awkward or ashamed", "em · bar · rass", "double r and double s", "Two Red faces, two Silly smiles: rr and ss.", "Please don't ___ me in front of my friends.", "Tripping on stage would ___ anyone."],
+  ["privilege", "a special right or advantage that not everyone has", "priv · i · lege", "'lege' at the end (no d)", "PRIVI + LEGE: there's no D, it's not a ledge.", "It was a ___ to meet the astronaut.", "Being team captain is a real ___."],
+  ["mischievous", "playfully naughty", "mis · chie · vous", "it ends -vous, with no i before -ous", "MISCHIEF + OUS: just three syllables, mis-chi-vus.", "The ___ monkey hid my banana.", "My little cousin gave a ___ grin."],
+  ["accommodate", "to provide room or space for someone", "ac · com · mo · date", "double c and double m", "It has room for two Cs and two Ms.", "The hotel can ___ two hundred guests.", "The bus can ___ forty children."],
+  ["silhouette", "a dark shape seen against a light background", "sil · hou · ette", "silent h, and -ette at the end", "SIL + HOU + ETTE: the H hides in the shadow.", "We saw the ___ of a cat on the wall.", "The castle's ___ stood out against the sunset."],
+  ["queue", "a line of people waiting for something", "q · ueue", "'ueue': four vowels after the q", "Q then U-E-U-E: the letters wait in a line too.", "We stood in a long ___ for the rollercoaster.", "Please join the back of the ___."],
+  ["occasionally", "sometimes, but not often", "oc · ca · sion · al · ly", "double c, one s, double l", "OCCASION + ALLY: two Cs, one S, two Ls.", "We ___ have pizza on a Friday.", "It ___ rains in Abu Dhabi in winter."]
+]);

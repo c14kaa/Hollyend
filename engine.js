@@ -1,17 +1,17 @@
 /* ===== Week config: refreshed each week from the latest homework ===== */
 var WEEK = {
-  label: "Week of 30 Oct 2026",
-  start: "2026-10-30", // day 0 of the learning week
+  label: "Week of 4 Nov 2026",
+  start: "2026-11-04", // day 0 of the learning week
   millie: {
-    focus: ["Square & cube numbers", "× and ÷ by 10, 100 and 1000", "Written multiplication & division", "Silent-letter spellings",
-            "Similes, metaphors & personification", "Earth, Sun & Moon", "Factors & primes (review)"],
-    topics: ["squareCube","squareCube","mulDiv10","mulDiv10","powersTen","multiply","shortDiv","tables",
-             "figurative","figurative","grammar5","earthMoon","earthMoon","space","prime","factorPair","commonFactor"]
+    focus: ["12- and 24-hour times & durations", "Converting time, length & mass", "Grammar: nouns, prefixes, relative clauses & pronouns",
+            "Week 9 spellings: silent letters", "Earth & Space: life on Mars", "Multiplication & division (review)", "Rounding decimals (CENTURY)"],
+    topics: ["timeTable","timeTable","timeTable","timeConv","timeConv","unitConv","unitConv","grammar5","grammar5","grammar",
+             "earthMoon","space","space","squareCube","mulDiv10","multiply","decimals","tables"]
   },
   kristan: {
-    focus: ["Probability & sample spaces (class)", "Metals & their uses (science)", "Ballads & PEAL (English)", "French vocab quiz Mon 2 Nov",
+    focus: ["Probability & sample spaces (class)", "Metals & their uses (science)", "Ballads & Nabati poetry (English, presenting Mon 9 Nov)",
             "Expanding & factorising (next)", "Percentages", "Grouped averages", "Equations", "Physics: energy resources (CENTURY)"],
-    topics: ["sampleSpace","sampleSpace","sampleSpace","probability","probability","metals","metals","metals","poetry","poetry",
+    topics: ["sampleSpace","sampleSpace","sampleSpace","probability","probability","metals","metals","metals","poetry","poetry","poetry",
              "expandFactor","expandFactor","pctMult","pctMult","grouped","freqMean","eqBoth","solveEq","ratioShare","calcOrder",
              "science","science","indices","nthTerm"]
   }
@@ -703,7 +703,7 @@ var SPELL_W7 = {
   ]
 };
 /* Week 8 (due Mon 2 Nov 2026): words with silent letters. */
-var SPELLING = {
+var SPELL_W8 = {
   label: "Week 8 spellings: silent letters",
   words: [
     { word: "doubt", partner: null, meaning: "a feeling of not being sure", chunks: "dou · b · t", tricky: "the silent b", hook: "There's no DOUBT about it: the B in doubt keeps very quiet.",
@@ -724,6 +724,30 @@ var SPELLING = {
       sentences: ["The ___ rode into battle on his horse.", "The ___ wore shining armour.", "The king made him a ___."], wrongs: ["night", "nite", "knite"] },
     { word: "knuckle", partner: null, meaning: "a joint in your finger", chunks: "k · nuck · le", tricky: "silent k at the start, and -ckle at the end", hook: "KNUCKLE: Knock with your Knuckles: both start with a silent K.",
       sentences: ["She knocked on the door with her ___s.", "He banged his ___ on the table.", "Bend your finger at the ___."], wrongs: ["nuckle", "knuckel", "knukle"] }
+  ]
+};
+/* Week 9 (due Mon 9 Nov 2026): more words with silent letters. */
+var SPELLING = {
+  label: "Week 9 spellings: silent letters",
+  words: [
+    { word: "wrestle", partner: null, meaning: "to fight by holding and pushing someone, as a sport or game", chunks: "w · res · tle", tricky: "the silent w at the start, and the silent t", hook: "WRESTLE: W and T are both wrestled into silence.",
+      sentences: ["Puppies love to ___ with each other.", "It's against the rules to ___ in the corridor.", "We watched two bear cubs ___ in the grass."], wrongs: ["restle", "wressle", "wrestel"] },
+    { word: "wrapper", partner: null, meaning: "the paper or plastic that covers something like a sweet", chunks: "w · rap · per", tricky: "the silent w, and double p", hook: "WRAPPER: a silent W is wrapped around the front.",
+      sentences: ["Put your sweet ___ in the bin.", "The chocolate bar had a shiny gold ___.", "Please don't drop that ___ on the floor."], wrongs: ["rapper", "wraper", "wrappa"] },
+    { word: "castle", partner: null, meaning: "a large, strong building with thick walls, built long ago to keep people safe", chunks: "cas · tle", tricky: "the silent t", hook: "CASTLE: the T hides silently in the tower.",
+      sentences: ["The king lived in a stone ___.", "We built a sand ___ on the beach.", "The ___ had a moat and a drawbridge."], wrongs: ["casel", "cassle", "castel"] },
+    { word: "aisle", partner: "isle", meaning: "a path between rows of seats or shelves", chunks: "ai · s · le", tricky: "'ai' sounds like 'eye', and the s is silent", hook: "AISLE: As I Stroll, Look Everywhere: the first letters spell aisle.",
+      sentences: ["Walk down the ___ to find the cereal.", "I'd like the seat next to the ___ on the plane.", "Keep the ___ clear so people can walk past."], wrongs: ["isle", "aile", "aisel"] },
+    { word: "debris", partner: null, meaning: "broken pieces left after something is destroyed", chunks: "de · bri · s", tricky: "the silent s at the end, and it sounds like 'deb-ree'", hook: "DEBRIS: the S at the end has been broken off, so you can't hear it.",
+      sentences: ["After the storm, ___ covered the beach.", "Firefighters cleared the ___ from the road.", "Bits of ___ floated in the sea."], wrongs: ["debree", "debri", "debriss"] },
+    { word: "yacht", partner: null, meaning: "a boat with sails or an engine, used for racing or holidays", chunks: "ya · ch · t", tricky: "the silent 'ch'", hook: "YACHT: Your Amazing Cruise Has Treats.",
+      sentences: ["A white ___ sailed across the bay.", "The millionaire owned an enormous ___.", "We watched the ___ race from the marina."], wrongs: ["yot", "yaht", "yatch"] },
+    { word: "guilty", partner: null, meaning: "feeling bad because you did something wrong, or having done it", chunks: "g · u · il · ty", tricky: "the silent u after g", hook: "GUILTY: G-U-I: Gosh, U did It!",
+      sentences: ["The dog looked ___ after eating my sandwich.", "I felt ___ for forgetting her birthday.", "The jury decided the man was ___."], wrongs: ["gilty", "guilti", "giulty"] },
+    { word: "guarantee", partner: null, meaning: "a promise that something will happen or will work", chunks: "g · uar · an · tee", tricky: "the silent u after g, and double e at the end", hook: "GUARANTEE: a GUARd promises the tea is safe: guar + an + tee.",
+      sentences: ["I can't ___ that it won't rain tomorrow.", "The new watch came with a one-year ___.", "Practice is the best ___ of getting better."], wrongs: ["garantee", "guarentee", "guarantie"] },
+    { word: "mortgage", partner: null, meaning: "money borrowed from a bank to buy a house", chunks: "mor · t · gage", tricky: "the silent t in the middle", hook: "MORTGAGE: a silent T hides between MOR and GAGE.",
+      sentences: ["My parents pay the ___ on our house every month.", "The bank gave them a ___ to buy a home.", "They finally paid off their ___."], wrongs: ["morgage", "mortgege", "morgadge"] }
   ]
 };
 function spellEntry(w) {
@@ -1015,7 +1039,7 @@ function typedNote(attempt, word) {
 
 /* ===== Revision library: every topic covered so far. Topics are only ever ADDED, never removed. ===== */
 var SPELL_ARCHIVE = []; /* past weeks' spelling entries, so old spell:<word> questions keep working */
-SPELL_ARCHIVE = SPELL_ARCHIVE.concat(SPELL_W7.words);
+SPELL_ARCHIVE = SPELL_ARCHIVE.concat(SPELL_W7.words, SPELL_W8.words);
 var REVISION = {
   millie: [
     { id: "factors", title: "Factors & factor pairs", subject: "Maths", covered: "Week 7 homework · 26 Oct", gens: ["factorOf", "countFactors", "factorPair", "commonFactor"] },
@@ -1025,6 +1049,8 @@ var REVISION = {
     { id: "roman", title: "Roman numerals", subject: "Maths", covered: "CENTURY · Year 5", gens: ["roman"] },
     { id: "decimals", title: "Decimals & rounding", subject: "Maths", covered: "CENTURY · Year 5", gens: ["decimals"] },
     { id: "space", title: "Our Solar System", subject: "Science & theme", covered: "Week 7 homework · 26 Oct", gens: ["space"] },
+    { id: "spell-w9", title: "Week 9 spellings: more silent letters", subject: "Spelling", covered: "Week 9 homework · 9 Nov",
+      gens: ["spell:wrestle", "spell:wrapper", "spell:castle", "spell:aisle", "spell:debris", "spell:yacht", "spell:guilty", "spell:guarantee", "spell:mortgage"] },
     { id: "spell-w8", title: "Week 8 spellings: silent letters", subject: "Spelling", covered: "Week 8 homework · 2 Nov",
       gens: ["spell:doubt", "spell:lamb", "spell:debt", "spell:thumb", "spell:solemn", "spell:autumn", "spell:column", "spell:knight", "spell:knuckle"] },
     { id: "spell-w7", title: "Week 7 spellings: trickier homophones", subject: "Spelling", covered: "Week 7 homework · 26 Oct",

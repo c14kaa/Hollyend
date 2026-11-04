@@ -102,6 +102,38 @@ M.timeConv = function (L) {
   return q("Converting time", s[0], s[1], s[2], s[3], "", { notes: s[4], steps: [s[3]], tip: "60 seconds = 1 min · 60 min = 1 hour · 24 hours = 1 day · 7 days = 1 week · 12 months = 1 year." });
 };
 
+/* --- Maths: 12- and 24-hour times and durations (Week 9: plan a day out) --- */
+function hm24(m) { m = ((m % 1440) + 1440) % 1440; var h = Math.floor(m / 60), mi = m % 60; return (h < 10 ? "0" : "") + h + ":" + (mi < 10 ? "0" : "") + mi; }
+function hm12(m) { m = ((m % 1440) + 1440) % 1440; var h = Math.floor(m / 60), mi = m % 60, ap = h < 12 ? "am" : "pm", h12 = h % 12 === 0 ? 12 : h % 12; return h12 + ":" + (mi < 10 ? "0" : "") + mi + " " + ap; }
+function durTxt(d) { var h = Math.floor(d / 60), m = d % 60; return (h ? h + " h" : "") + (h && m ? " " : "") + (m ? m + " min" : "") || "0 min"; }
+M.timeTable = function (L) {
+  var places = ["the Grand Mosque", "the Louvre", "Yas Island", "the beach", "the aquarium", "the Corniche", "the souk", "the museum"];
+  var kind = pick(L === 1 ? ["to24", "to12", "dur"] : L === 2 ? ["to24", "to12", "dur", "dur", "finish"] : ["dur", "dur", "finish", "total"]);
+  if (kind === "to24" || kind === "to12") {
+    var t = rnd(13, 22) * 60 + pick([0, 15, 30, 45, 5, 50]), ans = kind === "to24" ? hm24(t) : hm12(t), from = kind === "to24" ? hm12(t) : hm24(t);
+    var wr = kind === "to24" ? [hm24(t - 720).replace(/^0/, ""), hm24(t + 120), hm24(t - 60)] : [hm12(t).replace("pm", "am"), hm12(t + 60), hm24(t) + " pm"];
+    var nt = {}; nt[wr[0]] = kind === "to24" ? "Afternoon times are 12 more in 24-hour time: add 12 to the hour." : "Any hour after 12 in 24-hour time is in the afternoon or evening, so it is pm, not am.";
+    return q("12- and 24-hour time", "Write " + from + " in " + (kind === "to24" ? "24-hour" : "12-hour") + " time.", ans, wr, from + " = " + ans + ". " + (kind === "to24" ? "For pm times, add 12 to the hour." : "For hours after 12, take away 12 and add pm."), "",
+      { notes: nt, steps: [kind === "to24" ? "It's pm, so add 12 to the hour." : "The hour is bigger than 12, so take away 12.", "Keep the minutes the same.", "Answer: " + ans + "."], tip: "24-hour time: 1 pm = 13:00, 6 pm = 18:00. Always 4 digits, e.g. 09:05." });
+  }
+  var a = rnd(8, 15) * 60 + pick([0, 10, 15, 20, 30, 40, 45]), d = pick(L === 1 ? [30, 45, 60, 90] : [35, 50, 75, 85, 95, 110, 125, 140, 155]), b = a + d, pl = pick(places);
+  if (kind === "dur") {
+    var nt2 = {}; nt2[durTxt(d + 40)] = "Times don't work like normal numbers: there are 60 minutes in an hour, not 100. Count on to the next o'clock first.";
+    return q("Durations", "You arrive at " + pl + " at " + hm24(a) + " and leave at " + hm24(b) + ". How long were you there?", durTxt(d), [durTxt(d + 40), durTxt(d + 10), durTxt(Math.max(5, d - 15))].filter(function (x) { return x !== durTxt(d); }),
+      "Count on from " + hm24(a) + " to " + hm24(b) + ": that's " + durTxt(d) + ".", "",
+      { notes: nt2, steps: (a % 60 && Math.ceil(a / 60) * 60 < b ? ["Count on to the next o'clock: " + hm24(a) + " → " + hm24(Math.ceil(a / 60) * 60) + " is " + (Math.ceil(a / 60) * 60 - a) + " min.", "Then count on to " + hm24(b) + "."] : ["Count on from " + hm24(a) + " to " + hm24(b) + " in hours, then minutes."]).concat(["Add the pieces: " + durTxt(d) + "."]), tip: "Use a number line: jump to the next hour, then the hours, then the minutes." });
+  }
+  if (kind === "finish") {
+    var nt3 = {}; nt3[hm24(a + Math.floor(d / 60) * 100 + d % 60)] = "Don't add minutes like hundreds: 60 minutes makes an hour.";
+    return q("Durations", "You leave home at " + hm12(a) + ". The journey to " + pl + " takes " + durTxt(d) + ". What time do you arrive (24-hour)?", hm24(b), [hm24(b + 60), hm24(b - 10), hm24(b + 40)],
+      hm12(a) + " is " + hm24(a) + ". Add " + durTxt(d) + ": " + hm24(b) + ".", "", { notes: nt3, steps: ["Change to 24-hour: " + hm24(a) + ".", "Add the hours, then the minutes.", "If the minutes go past 60, carry 1 hour: " + hm24(b) + "."], tip: "60 minutes = 1 hour. 75 minutes = 1 h 15 min." });
+  }
+  var d2 = pick([40, 55, 70, 90]), d3 = pick([25, 35, 45]), tot = d + d2 + d3;
+  return q("Durations", "A day out: " + durTxt(d) + " at the aquarium, " + durTxt(d2) + " at the park and " + durTxt(d3) + " travelling. What is the total time?", durTxt(tot),
+    [durTxt(tot + 40), durTxt(tot - 15), durTxt(tot + 20)], d + " + " + d2 + " + " + d3 + " = " + tot + " minutes = " + durTxt(tot) + ".", "",
+    { steps: ["Change everything to minutes.", d + " + " + d2 + " + " + d3 + " = " + tot + " minutes.", "Every 60 minutes is an hour: " + durTxt(tot) + "."], tip: "Add in minutes, then change back to hours and minutes." });
+};
+
 /* --- Maths: converting metric units --- */
 M.unitConv = function (L) {
   var pairs = [["km", "m", 1000], ["m", "cm", 100], ["cm", "mm", 10], ["kg", "g", 1000], ["l", "ml", 1000]];
@@ -191,6 +223,14 @@ M.figurative = function () { return bq("Figurative language", FIGURATIVE, "Simil
 
 /* --- English: Year 5 grammar and punctuation --- */
 var GRAMMAR5 = [
+  ["Which noun is formed from the verb 'decide'?", "decision", ["decided", "decisive", "deciding"], "A noun names a thing: 'decide' (verb) → 'decision' (noun). The suffix -sion turns it into a noun.", {"decisive": "That's an adjective (describes a noun)."}],
+  ["Which prefix can go in front of 'build', 'write' and 'play'?", "re", ["un", "dis", "mis"], "Re- means 'again': rebuild, rewrite, replay.", {"un": "Unbuild and unwrite aren't words."}],
+  ["Which word is the adverb? 'Tom quietly closed the door.'", "quietly", ["Tom", "closed", "door"], "An adverb tells you HOW, WHEN or WHERE something happens. 'Quietly' tells you how Tom closed it.", {"closed": "That's the verb. The adverb describes the verb."}],
+  ["Which part is the subordinate clause? 'Because it was raining, we stayed inside.'", "Because it was raining", ["we stayed inside", "it was", "stayed inside"], "A subordinate clause doesn't make sense on its own. It often starts with because, when, if or although.", {"we stayed inside": "That's the main clause: it makes sense on its own."}],
+  ["Which sentence uses commas in a list correctly?", "I packed a towel, sun cream and a hat.", ["I packed a towel sun cream, and a hat.", "I packed, a towel sun cream and a hat.", "I packed a towel, sun cream, and, a hat."], "Put a comma between list items, but usually not before the final 'and'.", {}],
+  ["Which word is a relative pronoun?", "whose", ["they", "because", "then"], "Relative pronouns start relative clauses: who, which, that, whose, where, when.", {"they": "That's a personal pronoun."}],
+  ["Which word is a pronoun? 'Sara lost her bag, so she looked everywhere.'", "she", ["lost", "bag", "everywhere"], "A pronoun replaces a noun: 'she' stands for Sara.", {}],
+  ["Which sentence has a modal verb?", "We should leave early tomorrow.", ["We left early yesterday.", "We are leaving early.", "We leave early on Mondays."], "Modal verbs (should, could, might, will, must, shall) show how likely or necessary something is.", {}],
   ["Which sentence uses brackets for parenthesis correctly?", "Kensuke (who lived alone) watched the boy.", ["Kensuke (who lived alone watched the boy).", "(Kensuke) who lived alone watched the boy.", "Kensuke who (lived alone) watched the boy."], "Parenthesis adds extra information. If you take the brackets out, the sentence still makes sense.", {}],
   ["In “Michael, who was tired, fell asleep”, the part between the commas is a…", "relative clause", ["fronted adverbial", "main clause", "conjunction"], "It begins with 'who' and adds information about Michael: a relative clause.", {}],
   ["Which word starts a relative clause?", "which", ["because", "and", "but"], "Relative clauses start with who, which, where, when, whose or that.", {}],
@@ -556,13 +596,14 @@ REVISION.millie = REVISION.millie.concat([
   { id: "short-div", title: "Short division & remainders", subject: "Maths", covered: "Multiplication & division", gens: ["shortDiv"] },
   { id: "fdp", title: "Fractions, decimals & percentages", subject: "Maths", covered: "Decimals & percentages", gens: ["fdp", "decimals"] },
   { id: "fractions", title: "Equivalent fractions & mixed numbers", subject: "Maths", covered: "Fractions", gens: ["fractions"] },
-  { id: "time", title: "Converting units of time", subject: "Maths", covered: "Measurement", gens: ["timeConv"] },
+  { id: "time", title: "Converting units of time", subject: "Maths", covered: "Measurement · Week 9 homework", gens: ["timeConv", "timeTable"] },
+  { id: "time-24h", title: "12- and 24-hour times & durations", subject: "Maths", covered: "Week 9 homework · 9 Nov (day-out timetable)", gens: ["timeTable"] },
   { id: "measures", title: "Converting length, mass & capacity", subject: "Maths", covered: "Measurement", gens: ["unitConv"] },
   { id: "perim-area", title: "Perimeter & area", subject: "Maths", covered: "Measurement", gens: ["perimArea"] },
   { id: "angles", title: "Angles", subject: "Maths", covered: "Shape", gens: ["angles"] },
   { id: "negatives", title: "Negative numbers", subject: "Maths", covered: "Number & place value", gens: ["negatives"] },
   { id: "figurative", title: "Similes, metaphors & personification", subject: "English", covered: "Kensuke's Kingdom", gens: ["figurative"] },
-  { id: "grammar5", title: "Parenthesis, relative clauses & modal verbs", subject: "English", covered: "Year 5 grammar", gens: ["grammar5", "grammar"] },
+  { id: "grammar5", title: "Grammar: clauses, pronouns, prefixes & modal verbs", subject: "English", covered: "Year 5 grammar · Week 9 homework", gens: ["grammar5", "grammar"] },
   { id: "earth-moon", title: "Earth, Sun & Moon", subject: "Science", covered: "Earth & Space", gens: ["earthMoon", "space"] },
   { id: "changes", title: "Reversible & irreversible changes", subject: "Science", covered: "Properties & changes of materials", gens: ["changes", "mixtures"] },
   { id: "forces", title: "Forces", subject: "Science", covered: "Forces", gens: ["forces"] },
@@ -588,29 +629,29 @@ REVISION.kristan = REVISION.kristan.concat([
    The school run updates `week`, `focus` and each unit's status from Toddle class posts and homework. */
 var CURRICULUM = {
   millie: {
-    year: "Year 5", updated: "2026-10-30", week: "Term 1 · Week 9 (from 2 Nov)",
-    focus: "Multiplication & division in maths, Earth & Space in science, and stormy-sea description in English.",
+    year: "Year 5", updated: "2026-11-04", week: "Term 1 · Week 10 (from 9 Nov)",
+    focus: "Converting time, length and mass in maths, life on Mars in science, and grammar in English.",
     units: [
       { subject: "Maths", title: "Place value to 1,000,000", term: 1, status: "done", topics: ["place-value", "rounding", "negatives", "roman"] },
       { subject: "Maths", title: "Addition & subtraction", term: 1, status: "done", topics: ["mental-add", "column"] },
       { subject: "Maths", title: "Multiples, factors & primes", term: 1, status: "done", topics: ["factors", "multiples", "primes"] },
       { subject: "Maths", title: "Multiplication & division", term: 1, status: "now", why: "Week 8 homework: square and cube numbers, and × and ÷ by 10, 100 and 1,000.", topics: ["sq-cube", "x10", "written-mult", "short-div", "tables"] },
       { subject: "Maths", title: "Decimals & percentages", term: 1, status: "next", topics: ["fdp", "decimals"] },
-      { subject: "Maths", title: "Measurement: time & length", term: 1, status: "next", topics: ["time", "measures"] },
+      { subject: "Maths", title: "Measurement: time & length", term: 1, status: "now", why: "Week 9 homework: converting length, mass and time, with a 12/24-hour day-out timetable.", topics: ["time-24h", "time", "measures"] },
       { subject: "Maths", title: "Fractions", term: 2, status: "later", topics: ["fractions"] },
       { subject: "Maths", title: "Shape: angles & polygons", term: 2, status: "later", topics: ["angles"] },
       { subject: "Maths", title: "Perimeter, area & volume", term: 3, status: "later", topics: ["perim-area"] },
-      { subject: "English", title: "Kensuke's Kingdom: description & figurative language", term: 1, status: "now", why: "Week 8 homework was stormy-sea writing with similes and personification.", topics: ["figurative", "grammar5"] },
+      { subject: "English", title: "Kensuke's Kingdom: description & figurative language", term: 1, status: "now", why: "Week 9 homework: a grammar sheet on nouns, prefixes, relative clauses and pronouns.", topics: ["grammar5", "figurative"] },
       { subject: "English", title: "Sentences: fronted adverbials, clauses & phrases", term: 1, status: "done", topics: ["grammar"] },
       { subject: "Science", title: "Properties & changes of materials", term: 1, status: "done", topics: ["materials", "states", "mixtures", "changes"] },
-      { subject: "Science", title: "Earth & Space", term: 1, status: "now", why: "The second science unit this term: day and night, the Moon, the planets.", topics: ["earth-moon", "space"] },
+      { subject: "Science", title: "Earth & Space", term: 1, status: "now", why: "Week 9 homework: design a habitat for astronauts on Mars.", topics: ["earth-moon", "space"] },
       { subject: "Science", title: "Forces", term: 2, status: "later", topics: ["forces"] },
       { subject: "Science", title: "Living things & life cycles", term: 3, status: "later", topics: ["life-cycles"] }
     ]
   },
   kristan: {
-    year: "Year 8", updated: "2026-10-30", week: "Term 1 · from 2 Nov",
-    focus: "Probability in maths, Metals and their uses in science, Ballads in English, and aller + infinitive in French.",
+    year: "Year 8", updated: "2026-11-04", week: "Term 1 · from 4 Nov",
+    focus: "Probability in maths, Metals and their uses in science, and Ballads and Nabati poetry in English (group presentation on 9 Nov).",
     units: [
       { subject: "Maths", title: "Topic 1 · Linear equations", term: 1, status: "done", topics: ["eq-both", "equations", "algebra"] },
       { subject: "Maths", title: "Topic 2 · Calculators", term: 1, status: "done", topics: ["calc"] },
@@ -619,7 +660,7 @@ var CURRICULUM = {
       { subject: "Maths", title: "Topic 5 · Probability", term: 1, status: "now", why: "Maths class flow: sample spaces, two-way tables and experimental probability.", topics: ["sample-space", "probability"] },
       { subject: "Maths", title: "Topic 6 · Algebraic manipulation", term: 1, status: "next", topics: ["expand-factor", "algebra"] },
       { subject: "Maths", title: "Earlier work: ratio, sequences, indices, angles", term: 0, status: "done", topics: ["ratio", "sequences", "indices", "angles", "rounding"] },
-      { subject: "English", title: "Ballads (poetry) and PEAL responses", term: 1, status: "now", why: "English class flow: Ballads unit with a model PEAL response.", topics: ["poetry", "eng-words"] },
+      { subject: "English", title: "Ballads and Nabati poetry (PEAL responses)", term: 1, status: "now", why: "Group project: present a Nabati poem on Mon 9 Nov, comparing it with the ballads.", topics: ["poetry", "eng-words"] },
       { subject: "English", title: "Gothic fiction", term: 1, status: "next", why: "The first unit in the Year 8 English overview, after the poetry assessment.", topics: ["gothic", "en-description"] },
       { subject: "English", title: "Shakespeare: The Tempest", term: 2, status: "later", topics: ["tempest", "en-analysing-texts", "en-character"] },
       { subject: "Science", title: "Animal reproduction (cells, organs, fertilisation, pregnancy)", term: 1, status: "done", topics: ["science"] },
