@@ -17,7 +17,7 @@
     homework: { child: 1, title: 1, subject: 1, details: 1, due: 1, dueTime: "due_time", linkUrl: "link_url", linkLabel: "link_label", kind: 1, target: 1, source: 1, active: 1, createdAt: "created_at" },
     homework_done: { homeworkId: "homework_id", child: 1, status: 1, feel: 1, note: 1, doneAt: "done_at", checkedAt: "checked_at", points: 1 },
     daily_tasks: { child: 1, title: 1, linkUrl: "link_url", sort: 1, active: 1 },
-    daily_ticks: { child: 1, task: 1, day: 1 },
+    daily_ticks: { child: 1, task: 1, day: 1, points: 1 },
     merits: { ref: 1, child: 1, date: 1, subject: 1, reason: 1, teacher: 1, count: 1, penceEach: "pence_each", paidAt: "paid_at", source: 1, createdAt: "created_at" },
     events: { ref: 1, child: 1, type: 1, title: 1, details: 1, date: 1, endDate: "end_date", time: 1, bring: 1, formUrl: "form_url", linkUrl: "link_url", audience: 1, done: 1, source: 1, active: 1, createdAt: "created_at" },
     purchases: { child: 1, item: 1, cost: 1, at: 1 },

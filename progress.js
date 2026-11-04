@@ -79,6 +79,10 @@ var REST_DAYS = [], STREAK_FREEZE_EVERY = 7, STREAK_FREEZE_MAX = 2;
 /* Homework marks (homework_done rows): their points count towards totals, and verified or confirmed homework counts as a streak day. */
 var HW_DONE = [];
 function setHomeworkDone(rows) { HW_DONE = rows || []; }
+/* Daily task ticks (TT Rockstars, reading, Reading Record): small points, never a streak day. */
+var DAILY_TICKS = [];
+function setDailyTicks(rows) { DAILY_TICKS = rows || []; }
+function dailyPoints(child) { return DAILY_TICKS.reduce(function (s, r) { return s + (r.child === child ? (r.points || 0) : 0); }, 0); }
 function homeworkPoints(child) { return HW_DONE.reduce(function (s, r) { return s + (r.child === child ? (r.points || 0) : 0); }, 0); }
 function setRestDays(rows) { REST_DAYS = rows || []; }
 function streakInfo(all, child, now) {
@@ -323,5 +327,5 @@ function playerCard(all, child) {
 
 if (typeof module !== "undefined" && module.exports) module.exports = {
   skillState: skillState, weakSkills: weakSkills, buildAdaptiveQuiz: buildAdaptiveQuiz, scoreAttempt: scoreAttempt,
-  awards: awards, revisionStats: revisionStats, rankFor: rankFor, topicSummary: topicSummary, weekAttempts: weekAttempts, BADGES: BADGES, streakInfo: streakInfo, dubaiDay: dubaiDay, addDays: addDays, qualifies: qualifies, STREAK_RULE: STREAK_RULE, playerCard: playerCard, setRestDays: setRestDays, setHomeworkDone: setHomeworkDone, setShopBank: setShopBank, homeworkPoints: homeworkPoints
+  awards: awards, revisionStats: revisionStats, rankFor: rankFor, topicSummary: topicSummary, weekAttempts: weekAttempts, BADGES: BADGES, streakInfo: streakInfo, dubaiDay: dubaiDay, addDays: addDays, qualifies: qualifies, STREAK_RULE: STREAK_RULE, playerCard: playerCard, setRestDays: setRestDays, setHomeworkDone: setHomeworkDone, setDailyTicks: setDailyTicks, dailyPoints: dailyPoints, setShopBank: setShopBank, homeworkPoints: homeworkPoints
 };

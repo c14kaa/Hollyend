@@ -274,6 +274,7 @@ function wallet(child, attempts, purchases, bank, now) {
   attempts.forEach(function (a) { if (a.child === child) earned += a.points || 0; });
   if (typeof homeworkPoints === "function") earned += homeworkPoints(child);
   if (typeof gamePointsFor === "function") earned += gamePointsFor(child);
+  if (typeof dailyPoints === "function") earned += dailyPoints(child);
   purchases.forEach(function (p) { if (p.child === child) spent += p.cost || 0; });
   bank.forEach(function (b) {
     if (b.child !== child || b.status === "cancelled") return;

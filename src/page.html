@@ -1123,7 +1123,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       db.collection("homework_done").onSnapshot(function (snap) { state.hwDone = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); setHomeworkDone(state.hwDone); refresh(); }, function () {});
       db.collection("events").onSnapshot(function (snap) { state.events = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("daily_tasks").onSnapshot(function (snap) { state.daily = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
-      db.collection("daily_ticks").onSnapshot(function (snap) { state.dailyTicks = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
+      db.collection("daily_ticks").onSnapshot(function (snap) { state.dailyTicks = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); setDailyTicks(state.dailyTicks); refresh(); }, function () {});
       db.collection("rest_days").onSnapshot(function (snap) { state.restDays = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); setRestDays(state.restDays); refresh(); }, function () {});
       db.collection("match_starts").onSnapshot(function (snap) { state.matches = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data() || {}); }); refresh(); }, function () {});
       db.collection("profiles").onSnapshot(function (snap) { profiles = {}; snap.docs.forEach(function (d) { profiles[d.id] = d.data(); }); refresh(); }, function () {});
@@ -2593,9 +2593,9 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     var dt = state.daily.filter(function (t) { return t.child === c && t.active !== false; }).sort(function (a, b) { return (a.sort || 0) - (b.sort || 0); });
     if (dt.length) {
       var t0 = todayD();
-      h += '<section class="card sect"><h2>Every day</h2><p class="small">Daily reminders: tick them off when you’ve done them. They don’t count towards your streak.</p><div class="daily">' +
+      h += '<section class="card sect"><h2>Every day</h2><p class="small">Tick them off when you’ve done them: <b>+3 points each</b>, and <b>+3 bonus</b> when they’re all done. They don’t count towards your streak.</p><div class="daily">' +
         dt.map(function (t) { var on = state.dailyTicks.some(function (x) { return x.child === c && x.task === t.id && String(x.day).slice(0, 10) === t0; });
-          return '<label class="dt' + (on ? ' on' : '') + '"><input type="checkbox" data-daily="' + esc(t.id) + '"' + (on ? ' checked' : '') + (isParent ? ' disabled' : '') + '><span>' + esc(t.title) + '</span>' + (t.linkUrl ? '<a href="' + esc(t.linkUrl) + '" target="_blank" rel="noopener" class="linkbtn">Open ↗</a>' : '') + '</label>'; }).join("") + '</div></section>';
+          return '<label class="dt' + (on ? ' on' : '') + '"><input type="checkbox" data-daily="' + esc(t.id) + '"' + (on ? ' checked' : '') + (isParent ? ' disabled' : '') + '><span>' + esc(t.title) + '</span>' + (t.linkUrl ? '<a href="' + esc(t.linkUrl) + '" target="_blank" rel="noopener" class="linkbtn">Open ↗</a>' : '') + '</label>'; }).join("") + '</div>' + (function () { var tp = state.dailyTicks.reduce(function (n, x) { return n + (x.child === c && String(x.day).slice(0, 10) === t0 ? (x.points || 0) : 0); }, 0); return tp ? '<p class="earn" style="margin:6px 0 0">+' + tp + ' points today</p>' : ''; })() + '</section>';
     }
     h += '<section class="card sect"><h2>To do</h2>' + (open.length ? '<div class="hw-list">' + open.map(function (x) { return hwCard(x, isParent); }).join("") + '</div>' : '<p class="small">Nothing to do right now. New homework appears here after each school run.</p>') + '</section>';
     if (isParent) {
