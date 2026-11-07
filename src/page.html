@@ -813,6 +813,16 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
 .mw-wb { display: flex; gap: 6px; flex-wrap: wrap; }
 @media (max-width: 460px) { .hero, .shopTop { grid-template-columns: 110px minmax(0, 1fr); gap: 12px; } }
 @media (prefers-reduced-motion: no-preference) { .fb, .card { animation: rise .22s ease-out; } @keyframes rise { from { transform: translateY(6px); } to { transform: none; } } .bigav svg { animation: bob 3.2s ease-in-out infinite; } @keyframes bob { 50% { transform: translateY(-3px); } } }
+
+/* Nightdoor link: a glowing door fixed top-right on every screen; opens nightdoor.vercel.app in a new tab. */
+.nd-door { position: fixed; z-index: 55; top: max(10px, calc(env(safe-area-inset-top, 0px) + 6px)); right: max(10px, env(safe-area-inset-right, 0px)); width: 40px; height: 56px; display: block; border-radius: 3px; filter: drop-shadow(0 0 6px rgba(255,200,110,.55)) drop-shadow(0 3px 8px rgba(0,0,0,.45)); transition: transform .15s ease, filter .15s ease; -webkit-tap-highlight-color: transparent; }
+.nd-door svg { width: 100%; height: 100%; display: block; }
+.nd-door:hover, .nd-door:focus-visible { transform: scale(1.08) rotate(-2deg); filter: drop-shadow(0 0 12px rgba(255,200,110,.9)) drop-shadow(0 3px 8px rgba(0,0,0,.45)); }
+.nd-door:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.nd-door .crack { animation: ndcrack 4.5s ease-in-out infinite; }
+@keyframes ndcrack { 0%,100% { opacity: .85 } 50% { opacity: 1 } 62% { opacity: .55 } }
+@media (prefers-reduced-motion: reduce) { .nd-door .crack { animation: none; } .nd-door { transition: none; } }
+@media (max-width: 839px) { .top { padding-right: 50px; } }
 </style>
 
 <div id="login" hidden>
@@ -835,6 +845,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     </form>
   </div>
 </div>
+<a class="nd-door" href="https://nightdoor.vercel.app" target="_blank" rel="noopener" aria-label="Nightdoor" title="Nightdoor"><svg viewBox="0 0 40 56" aria-hidden="true"><rect x="1" y="1" width="38" height="54" rx="2" fill="#3a2416"/><rect x="5" y="5" width="30" height="51" fill="#1a0f0a"/><rect x="8" y="9" width="20" height="16" rx="1" fill="none" stroke="#2e1b10" stroke-width="1.5"/><rect x="8" y="30" width="20" height="20" rx="1" fill="none" stroke="#2e1b10" stroke-width="1.5"/><rect class="crack" x="30" y="5" width="5" height="51" fill="#ffd68a"/><rect class="crack" x="27" y="5" width="3" height="51" fill="#ffb347" opacity=".45"/><circle cx="11" cy="30" r="1.8" fill="#d6ad4a"/></svg></a>
 <div class="wrap">
   <header>
     <div class="top">
