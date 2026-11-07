@@ -629,8 +629,8 @@ REVISION.kristan = REVISION.kristan.concat([
    The school run updates `week`, `focus` and each unit's status from Toddle class posts and homework. */
 var CURRICULUM = {
   millie: {
-    year: "Year 5", updated: "2026-11-04", week: "Term 1 · Week 10 (from 9 Nov)",
-    focus: "Converting time, length and mass in maths, life on Mars in science, and grammar in English.",
+    year: "Year 5", updated: "2026-11-07", week: "Term 1 · Week 10 (from 9 Nov)",
+    focus: "Converting units and reading timetables in maths, planets and orbits in science, and the Mars rover book Curiosity in English.",
     units: [
       { subject: "Maths", title: "Place value to 1,000,000", term: 1, status: "done", topics: ["place-value", "rounding", "negatives", "roman"] },
       { subject: "Maths", title: "Addition & subtraction", term: 1, status: "done", topics: ["mental-add", "column"] },
@@ -641,7 +641,7 @@ var CURRICULUM = {
       { subject: "Maths", title: "Fractions", term: 2, status: "later", topics: ["fractions"] },
       { subject: "Maths", title: "Shape: angles & polygons", term: 2, status: "later", topics: ["angles"] },
       { subject: "Maths", title: "Perimeter, area & volume", term: 3, status: "later", topics: ["perim-area"] },
-      { subject: "English", title: "Kensuke's Kingdom: description & figurative language", term: 1, status: "now", why: "Week 9 homework: a grammar sheet on nouns, prefixes, relative clauses and pronouns.", topics: ["grammar5", "figurative"] },
+      { subject: "English", title: "Curiosity: The Story of a Mars Rover (new class book) & grammar", term: 1, status: "now", why: "New class text this week (inference, prediction, questions); Week 9 homework is a grammar sheet.", topics: ["grammar5", "figurative"] },
       { subject: "English", title: "Sentences: fronted adverbials, clauses & phrases", term: 1, status: "done", topics: ["grammar"] },
       { subject: "Science", title: "Properties & changes of materials", term: 1, status: "done", topics: ["materials", "states", "mixtures", "changes"] },
       { subject: "Science", title: "Earth & Space", term: 1, status: "now", why: "Week 9 homework: design a habitat for astronauts on Mars.", topics: ["earth-moon", "space"] },
