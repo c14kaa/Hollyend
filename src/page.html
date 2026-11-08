@@ -189,39 +189,46 @@ body.k .earn { font-size: 30px; }
 #login .art { position: absolute; bottom: 0; left: 50%; width: var(--w); aspect-ratio: 1672 / 728; transform: translateX(-50%); }
 #login .art img { width: 100%; height: 100%; display: block; -webkit-mask: linear-gradient(#000 90%, transparent); mask: linear-gradient(#000 90%, transparent); }
 #login .lawn { position: absolute; inset: calc(var(--h) * .8) 0 0 0; background: url("hollyend-lawn.png") 50% 0 / var(--w) auto repeat-y, #5db026; }
-#login .fx { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .6s; }
-#login .tint { inset: 0; }
-#login .scene[data-sky="sunset"] .art img, #login .scene[data-sky="sunset"] .lawn { filter: saturate(1.1) sepia(.18) brightness(.97); }
-#login .scene[data-sky="sunset"] .art .tint { opacity: 1; background: linear-gradient(rgba(255,104,72,.9), rgba(255,140,90,.75) 22%, rgba(255,180,110,.35) 40%, rgba(255,170,110,.18) 60%, rgba(255,160,100,.12)); mix-blend-mode: color; }
-#login .scene[data-sky="sunset"] .art::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(rgba(120,40,70,.35), rgba(255,150,90,.12) 38%, transparent 60%); mix-blend-mode: multiply; }
-#login .scene[data-sky="sunset"] .art .haze { opacity: 1; background: radial-gradient(60% 46% at 82% 30%, rgba(255,200,120,.55), transparent 70%); mix-blend-mode: screen; }
-#login .scene[data-sky="sunset"] .lawn::after { content: ""; position: absolute; inset: 0; background: rgba(255,170,110,.1); mix-blend-mode: multiply; }
-#login .scene[data-sky="night"] .art img, #login .scene[data-sky="night"] .lawn { filter: brightness(.42) saturate(.65) hue-rotate(-12deg); }
-#login .scene[data-sky="night"] .art .tint { opacity: 1; background: linear-gradient(rgba(14,22,70,.75), rgba(20,30,80,.4) 45%, rgba(20,30,70,.25)); mix-blend-mode: multiply; }
-#login .scene[data-sky="night"] .lawn::after { content: ""; position: absolute; inset: 0; background: rgba(20,30,70,.25); mix-blend-mode: multiply; }
-#login .scene[data-sky="night"] .stars, #login .scene[data-sky="night"] .lit, #login .scene[data-sky="night"] .moon { opacity: 1; }
-#login .stars { inset: 0 0 62% 0; background:
+.hscene .fx { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .6s; }
+.hscene .tint { inset: 0; }
+.hscene[data-sky="sunset"] .art img, .hscene[data-sky="sunset"] .lawn { filter: saturate(1.1) sepia(.18) brightness(.97); }
+.hscene[data-sky="sunset"] .art .tint { opacity: 1; background: linear-gradient(rgba(255,104,72,.9), rgba(255,140,90,.75) 22%, rgba(255,180,110,.35) 40%, rgba(255,170,110,.18) 60%, rgba(255,160,100,.12)); mix-blend-mode: color; }
+.hscene[data-sky="sunset"] .art::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(rgba(120,40,70,.35), rgba(255,150,90,.12) 38%, transparent 60%); mix-blend-mode: multiply; }
+.hscene[data-sky="sunset"] .art .haze { opacity: 1; background: radial-gradient(60% 46% at 82% 30%, rgba(255,200,120,.55), transparent 70%); mix-blend-mode: screen; }
+.hscene[data-sky="sunset"] .lawn::after { content: ""; position: absolute; inset: 0; background: rgba(255,170,110,.1); mix-blend-mode: multiply; }
+.hscene[data-sky="night"] .art img, .hscene[data-sky="night"] .lawn { filter: brightness(.42) saturate(.65) hue-rotate(-12deg); }
+.hscene[data-sky="night"] .art .tint { opacity: 1; background: linear-gradient(rgba(14,22,70,.75), rgba(20,30,80,.4) 45%, rgba(20,30,70,.25)); mix-blend-mode: multiply; }
+.hscene[data-sky="night"] .lawn::after { content: ""; position: absolute; inset: 0; background: rgba(20,30,70,.25); mix-blend-mode: multiply; }
+.hscene[data-sky="night"] .stars, .hscene[data-sky="night"] .lit, .hscene[data-sky="night"] .moon { opacity: 1; }
+.hscene .stars { inset: 0 0 62% 0; background:
   radial-gradient(1.6px 1.6px at 20px 30px, #fff 50%, transparent 55%) 0 0 / 190px 150px,
   radial-gradient(1.2px 1.2px at 120px 80px, #e8ecff 50%, transparent 55%) 0 0 / 190px 150px,
   radial-gradient(2px 2px at 160px 20px, #fff8e0 50%, transparent 55%) 0 0 / 190px 150px,
   radial-gradient(1px 1px at 70px 120px, #fff 50%, transparent 55%) 0 0 / 190px 150px;
   -webkit-mask: linear-gradient(#000 55%, transparent); mask: linear-gradient(#000 55%, transparent); animation: tw 4s ease-in-out infinite alternate; }
 @keyframes tw { to { filter: brightness(.6); } }
-#login .moon { inset: auto; left: 13%; top: 7%; width: 4.2%; aspect-ratio: 1; border-radius: 50%; background: #fdf6dc; box-shadow: 0 0 30px 10px rgba(253,246,220,.35), inset -8px -4px 0 rgba(200,200,190,.35); }
-#login .lit i { position: absolute; background: #ffd27a; opacity: .82; box-shadow: 0 0 14px 3px rgba(255,200,110,.55); mix-blend-mode: screen; }
-#login .lit b { position: absolute; width: 4%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(rgba(255,214,130,.9), rgba(255,190,90,.25) 40%, transparent 70%); }
-#login .scene[data-sky="rain"] .art img, #login .scene[data-sky="rain"] .lawn { filter: saturate(.5) brightness(.8) contrast(.95); }
-#login .scene[data-sky="rain"] .art .tint { opacity: 1; background: linear-gradient(rgba(70,80,96,.85), rgba(110,120,135,.55) 30%, rgba(120,130,140,.2) 55%, rgba(110,120,130,.15)); mix-blend-mode: multiply; }
-#login .rain { z-index: 2; }
-#login .scene[data-sky="rain"] .rain { opacity: .55; inset: 0; background: repeating-linear-gradient(105deg, transparent 0 22px, rgba(220,230,245,.55) 22px 23px, transparent 23px 47px) 0 0 / 220px 220px; animation: fall .6s linear infinite; }
-#login .scene[data-sky="rain"] .rain.b { opacity: .35; background-size: 160px 160px; animation-duration: .9s; }
+.hscene .moon { inset: auto; left: 13%; top: 7%; width: 4.2%; aspect-ratio: 1; border-radius: 50%; background: #fdf6dc; box-shadow: 0 0 30px 10px rgba(253,246,220,.35), inset -8px -4px 0 rgba(200,200,190,.35); }
+.hscene .lit i { position: absolute; background: #ffd27a; opacity: .82; box-shadow: 0 0 14px 3px rgba(255,200,110,.55); mix-blend-mode: screen; }
+.hscene .lit b { position: absolute; width: 4%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(rgba(255,214,130,.9), rgba(255,190,90,.25) 40%, transparent 70%); }
+.hscene[data-sky="rain"] .art img, .hscene[data-sky="rain"] .lawn { filter: saturate(.5) brightness(.8) contrast(.95); }
+.hscene[data-sky="rain"] .art .tint { opacity: 1; background: linear-gradient(rgba(70,80,96,.85), rgba(110,120,135,.55) 30%, rgba(120,130,140,.2) 55%, rgba(110,120,130,.15)); mix-blend-mode: multiply; }
+.hscene .rain { z-index: 2; }
+.hscene[data-sky="rain"] .rain { opacity: .55; inset: 0; background: repeating-linear-gradient(105deg, transparent 0 22px, rgba(220,230,245,.55) 22px 23px, transparent 23px 47px) 0 0 / 220px 220px; animation: fall .6s linear infinite; }
+.hscene[data-sky="rain"] .rain.b { opacity: .35; background-size: 160px 160px; animation-duration: .9s; }
 @keyframes fall { to { background-position: -60px 220px; } }
-#login .scene[data-sky="day"] .clouds, #login .scene[data-sky="rain"] .clouds { opacity: 1; }
-#login .clouds { inset: 0 0 60% 0; }
-#login .clouds span { position: absolute; width: 16%; height: 22%; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,255,255,.75), rgba(255,255,255,0)); animation: drift 70s linear infinite; }
-#login .scene[data-sky="rain"] .clouds span { background: radial-gradient(closest-side, rgba(70,78,92,.85), rgba(70,78,92,0)); width: 26%; height: 40%; }
+.hscene[data-sky="day"] .clouds, .hscene[data-sky="rain"] .clouds { opacity: 1; }
+.hscene .clouds { inset: 0 0 60% 0; }
+.hscene .clouds span { position: absolute; width: 16%; height: 22%; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,255,255,.75), rgba(255,255,255,0)); animation: drift 70s linear infinite; }
+.hscene[data-sky="rain"] .clouds span { background: radial-gradient(closest-side, rgba(70,78,92,.85), rgba(70,78,92,0)); width: 26%; height: 40%; }
 @keyframes drift { from { transform: translateX(-30vw); } to { transform: translateX(110vw); } }
-@media (prefers-reduced-motion: reduce) { #login .fx, #login .clouds span { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .hscene .fx, .hscene .clouds span { animation: none !important; } }
+/* The same picture as a banner on the Me page: the whole house, with the same weather as the sign-in. */
+.home-pic { position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 1672 / 660; margin: 0 0 14px; box-shadow: 0 10px 26px rgba(0,0,0,.25); background: #5db026; }
+.home-pic .art { position: absolute; inset: 0 0 auto 0; aspect-ratio: 1672 / 728; }
+.home-pic .art img { width: 100%; height: 100%; display: block; }
+.home-pic .hp-cap { position: absolute; left: 12px; bottom: 10px; z-index: 3; font: 700 15px "Atkinson Hyperlegible", system-ui, sans-serif; color: #fff; background: rgba(15,30,20,.55); padding: 5px 12px; border-radius: 999px; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+@media (max-width: 600px) { .home-pic .hp-cap { top: 8px; bottom: auto; left: 8px; font-size: 12px; padding: 4px 10px; } }
+body.k .home-pic .hp-cap { font-family: inherit; text-transform: uppercase; letter-spacing: .06em; font-size: 13px; }
 #login .box { margin: calc(var(--h) * .8) max(16px, env(safe-area-inset-left, 0px)) 0; position: relative; z-index: 1; }
 #login .box { width: calc(100% - 32px); max-width: 440px; display: flex; flex-direction: column; gap: 14px; background: rgba(255,255,255,.88); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,.9); border-radius: 22px; padding: 20px 18px; box-shadow: 0 18px 40px rgba(20,50,30,.25); }
 #login h1 { font-family: "Fredoka", system-ui, sans-serif; font-size: 40px; line-height: 1; margin: 0; color: #24452d; }
@@ -873,10 +880,9 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
 </style>
 
 <div id="login" hidden>
-  <div class="stage"><div class="scene" data-sky="day">
+  <div class="stage"><div class="scene hscene" data-sky="day">
     <div class="pic"><div class="art" role="img" aria-label="Hollyend: the house, the horses in the field, the double garage, the car port and the tree with a swing">
       <img src="hollyend-house.webp" alt="" width="1672" height="728" decoding="async" fetchpriority="high">
-      <div class="fx tint"></div><div class="fx haze"></div><div class="fx stars"></div><div class="fx moon"></div><div class="fx clouds"></div><div class="fx lit"></div>
     </div></div>
     <div class="lawn"></div>
     <div class="fx rain"></div><div class="fx rain b"></div>
@@ -900,23 +906,23 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   </div></div>
 </div>
 <script>
-/* Sign-in scene: pick the weather at random, light the windows for night, add a few drifting clouds. */
+/* Hollyend scene: the weather is picked at random once per visit (day, sunset, night or rain) and shared by the
+   sign-in page and the Me page banner. hollyendFx() gives the overlays: tint, stars, moon, clouds, lit windows. */
 (function () {
+  var skies = ["day", "sunset", "night", "rain"];
+  window.HOLLYEND_SKY = skies[Math.floor(Math.random() * skies.length)];
+  var W = 1672, H = 728, P = function (v, d) { return (v / d * 100).toFixed(2) + "%"; };
+  window.hollyendFx = function () {
+    var lit = [[583,222,680,268],[565,315,680,365],[768,323,810,367],[883,323,922,367],[410,328,430,370],[444,328,464,370],
+      [280,425,325,508],[390,425,495,508],[555,425,670,508],[882,425,915,480],[945,425,1050,508],[742,440,816,538]].map(function (r) {
+      return '<i style="left:' + P(r[0], W) + ';top:' + P(r[1], H) + ';width:' + P(r[2] - r[0], W) + ';height:' + P(r[3] - r[1], H) + '"></i>'; }).join("") +
+      [[262,437],[360,437],[525,437],[697,440],[1085,440],[1337,440]].map(function (p) { return '<b style="left:' + P(p[0], W) + ';top:' + P(p[1], H) + '"></b>'; }).join("");
+    var clouds = [[8, 0], [30, -24], [52, -48], [18, -36]].map(function (c) { return '<span style="top:' + c[0] + '%;animation-delay:' + c[1] + 's"></span>'; }).join("");
+    return '<div class="fx tint"></div><div class="fx haze"></div><div class="fx stars"></div><div class="fx moon"></div><div class="fx clouds">' + clouds + '</div><div class="fx lit">' + lit + '</div>';
+  };
   var sc = document.querySelector("#login .scene"); if (!sc) return;
-  var skies = ["day", "sunset", "night", "rain"]; sc.setAttribute("data-sky", skies[Math.floor(Math.random() * skies.length)]);
-  var W = 1672, H = 728, lit = sc.querySelector(".lit"), cl = sc.querySelector(".clouds");
-  [[583,222,680,268],[565,315,680,365],[768,323,810,367],[883,323,922,367],[410,328,430,370],[444,328,464,370],
-   [280,425,325,508],[390,425,495,508],[555,425,670,508],[882,425,915,480],[945,425,1050,508],[742,440,816,538]].forEach(function (r) {
-    var i = document.createElement("i");
-    i.style.cssText = "left:" + (r[0] / W * 100) + "%;top:" + (r[1] / H * 100) + "%;width:" + ((r[2] - r[0]) / W * 100) + "%;height:" + ((r[3] - r[1]) / H * 100) + "%";
-    lit.appendChild(i);
-  });
-  [[262,437],[360,437],[525,437],[697,440],[1085,440],[1337,440]].forEach(function (p) {
-    var b = document.createElement("b"); b.style.cssText = "left:" + (p[0] / W * 100) + "%;top:" + (p[1] / H * 100) + "%"; lit.appendChild(b);
-  });
-  [[8, 0], [30, -24], [52, -48], [18, -36]].forEach(function (c) {
-    var s = document.createElement("span"); s.style.top = c[0] + "%"; s.style.animationDelay = c[1] + "s"; cl.appendChild(s);
-  });
+  sc.setAttribute("data-sky", window.HOLLYEND_SKY);
+  sc.querySelector(".art").insertAdjacentHTML("beforeend", window.hollyendFx());
 })();
 </script>
 <a class="nd-door" href="https://nightdoor.vercel.app" target="_blank" rel="noopener" aria-label="Nightdoor" title="Nightdoor"><svg viewBox="0 0 40 56" aria-hidden="true"><rect x="1" y="1" width="38" height="54" rx="2" fill="#3a2416"/><rect x="5" y="5" width="30" height="51" fill="#1a0f0a"/><rect x="8" y="9" width="20" height="16" rx="1" fill="none" stroke="#2e1b10" stroke-width="1.5"/><rect x="8" y="30" width="20" height="20" rx="1" fill="none" stroke="#2e1b10" stroke-width="1.5"/><rect class="crack" x="30" y="5" width="5" height="51" fill="#ffd68a"/><rect class="crack" x="27" y="5" width="3" height="51" fill="#ffb347" opacity=".45"/><circle cx="11" cy="30" r="1.8" fill="#d6ad4a"/></svg></a>
@@ -1158,6 +1164,9 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   function subNavTop() {
     var g = SUBNAV[state.view]; if (!g || app.querySelector(":scope > .subnav")) return;
     app.insertAdjacentHTML("afterbegin", '<div class="subnav" role="tablist">' + SUBNAV_ITEMS[g].map(function (it) { return '<button role="tab" aria-selected="' + (state.view === it[0]) + '" data-sub="' + it[0] + '">' + it[1] + '</button>'; }).join("") + '</div>');
+    if (g === "me" && window.hollyendFx && !app.querySelector(":scope > .home-pic")) app.insertAdjacentHTML("afterbegin",
+      '<div class="home-pic hscene" data-sky="' + window.HOLLYEND_SKY + '"><div class="art" role="img" aria-label="Hollyend, home"><img src="hollyend-house.webp" alt="" width="1672" height="728" decoding="async">' +
+      window.hollyendFx() + '</div><div class="fx rain"></div><div class="fx rain b"></div><span class="hp-cap">' + (state.child === "millie" ? "Home sweet home, Millie" : "Hollyend · Home ground") + '</span></div>');
   }
   document.addEventListener("click", function (e) { var b = e.target.closest && e.target.closest("[data-sub]"); if (!b) return; state.lastSub = state.lastSub || {}; state.lastSub[SUBNAV[b.dataset.sub]] = b.dataset.sub; setView(b.dataset.sub); window.scrollTo({ top: 0 }); });
 
