@@ -196,6 +196,10 @@ body.k .earn { font-size: 30px; }
 .hscene[data-sky="sunset"] .art::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(rgba(120,40,70,.35), rgba(255,150,90,.12) 38%, transparent 60%); mix-blend-mode: multiply; }
 .hscene[data-sky="sunset"] .art .haze { opacity: 1; background: radial-gradient(60% 46% at 82% 30%, rgba(255,200,120,.55), transparent 70%); mix-blend-mode: screen; }
 .hscene[data-sky="sunset"] .lawn::after { content: ""; position: absolute; inset: 0; background: rgba(255,170,110,.1); mix-blend-mode: multiply; }
+.hscene[data-sky="dawn"] .art img, .hscene[data-sky="dawn"] .lawn { filter: brightness(.9) saturate(.92); }
+.hscene[data-sky="dawn"] .art .tint { opacity: 1; background: linear-gradient(rgba(200,150,220,.85), rgba(255,170,180,.7) 20%, rgba(255,205,160,.4) 38%, rgba(255,210,170,.12) 58%, transparent); mix-blend-mode: color; }
+.hscene[data-sky="dawn"] .art::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(rgba(70,60,120,.32), rgba(255,180,170,.1) 40%, transparent 60%); mix-blend-mode: multiply; }
+.hscene[data-sky="dawn"] .art .haze { opacity: 1; background: radial-gradient(55% 42% at 12% 34%, rgba(255,214,170,.6), transparent 70%); mix-blend-mode: screen; }
 .hscene[data-sky="night"] .art img, .hscene[data-sky="night"] .lawn { filter: brightness(.42) saturate(.65) hue-rotate(-12deg); }
 .hscene[data-sky="night"] .art .tint { opacity: 1; background: linear-gradient(rgba(14,22,70,.75), rgba(20,30,80,.4) 45%, rgba(20,30,70,.25)); mix-blend-mode: multiply; }
 .hscene[data-sky="night"] .lawn::after { content: ""; position: absolute; inset: 0; background: rgba(20,30,70,.25); mix-blend-mode: multiply; }
@@ -210,24 +214,49 @@ body.k .earn { font-size: 30px; }
 .hscene .moon { inset: auto; left: 13%; top: 7%; width: 4.2%; aspect-ratio: 1; border-radius: 50%; background: #fdf6dc; box-shadow: 0 0 30px 10px rgba(253,246,220,.35), inset -8px -4px 0 rgba(200,200,190,.35); }
 .hscene .lit i { position: absolute; background: #ffd27a; opacity: .82; box-shadow: 0 0 14px 3px rgba(255,200,110,.55); mix-blend-mode: screen; }
 .hscene .lit b { position: absolute; width: 4%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(rgba(255,214,130,.9), rgba(255,190,90,.25) 40%, transparent 70%); }
-.hscene[data-sky="rain"] .art img, .hscene[data-sky="rain"] .lawn { filter: saturate(.5) brightness(.8) contrast(.95); }
-.hscene[data-sky="rain"] .art .tint { opacity: 1; background: linear-gradient(rgba(70,80,96,.85), rgba(110,120,135,.55) 30%, rgba(120,130,140,.2) 55%, rgba(110,120,130,.15)); mix-blend-mode: multiply; }
+/* Weather sits on top of the time of day: data-wx = clear | cloudy | rain. */
+.hscene[data-wx="rain"]:not([data-sky="night"]) .art img, .hscene[data-wx="rain"]:not([data-sky="night"]) .lawn { filter: saturate(.5) brightness(.8) contrast(.95); }
+.hscene[data-wx="rain"]:not([data-sky="night"]) .art .tint { opacity: 1; background: linear-gradient(rgba(70,80,96,.85), rgba(110,120,135,.55) 30%, rgba(120,130,140,.2) 55%, rgba(110,120,130,.15)); mix-blend-mode: multiply; }
+.hscene[data-wx="rain"]:not([data-sky="night"]) .art::after, .hscene[data-wx="rain"] .art .haze { display: none; }
+.hscene[data-wx="rain"][data-sky="night"] .art img, .hscene[data-wx="rain"][data-sky="night"] .lawn { filter: brightness(.36) saturate(.45) hue-rotate(-12deg); }
+.hscene[data-wx="cloudy"]:not([data-sky="night"]) .art img, .hscene[data-wx="cloudy"]:not([data-sky="night"]) .lawn { filter: saturate(.78) brightness(.92); }
+.hscene[data-wx="cloudy"][data-sky="day"] .art .tint { opacity: 1; background: linear-gradient(rgba(150,160,175,.75), rgba(170,178,190,.4) 32%, transparent 55%); mix-blend-mode: color; }
+.hscene[data-wx="cloudy"] .art .haze { opacity: .35; }
+.hscene[data-wx="rain"] .stars, .hscene[data-wx="rain"] .moon, .hscene[data-wx="cloudy"] .stars { opacity: 0; }
+.hscene[data-wx="cloudy"][data-sky="night"] .moon { opacity: .45; }
 .hscene .rain { z-index: 2; }
-.hscene[data-sky="rain"] .rain { opacity: .55; inset: 0; background: repeating-linear-gradient(105deg, transparent 0 22px, rgba(220,230,245,.55) 22px 23px, transparent 23px 47px) 0 0 / 220px 220px; animation: fall .6s linear infinite; }
-.hscene[data-sky="rain"] .rain.b { opacity: .35; background-size: 160px 160px; animation-duration: .9s; }
+.hscene[data-wx="rain"] .rain { opacity: .55; inset: 0; background: repeating-linear-gradient(105deg, transparent 0 22px, rgba(220,230,245,.55) 22px 23px, transparent 23px 47px) 0 0 / 220px 220px; animation: fall .6s linear infinite; }
+.hscene[data-wx="rain"] .rain.b { opacity: .35; background-size: 160px 160px; animation-duration: .9s; }
 @keyframes fall { to { background-position: -60px 220px; } }
-.hscene[data-sky="day"] .clouds, .hscene[data-sky="rain"] .clouds { opacity: 1; }
+.hscene[data-sky="day"] .clouds, .hscene[data-sky="dawn"] .clouds, .hscene[data-wx="cloudy"] .clouds, .hscene[data-wx="rain"] .clouds { opacity: 1; }
 .hscene .clouds { inset: 0 0 60% 0; }
 .hscene .clouds span { position: absolute; width: 16%; height: 22%; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,255,255,.75), rgba(255,255,255,0)); animation: drift 70s linear infinite; }
-.hscene[data-sky="rain"] .clouds span { background: radial-gradient(closest-side, rgba(70,78,92,.85), rgba(70,78,92,0)); width: 26%; height: 40%; }
+.hscene[data-wx="cloudy"] .clouds span { background: radial-gradient(closest-side, rgba(200,205,214,.85), rgba(200,205,214,0)); width: 24%; height: 34%; }
+.hscene[data-wx="cloudy"][data-sky="night"] .clouds span { background: radial-gradient(closest-side, rgba(60,66,90,.85), rgba(60,66,90,0)); }
+.hscene[data-wx="rain"] .clouds span { background: radial-gradient(closest-side, rgba(70,78,92,.85), rgba(70,78,92,0)); width: 26%; height: 40%; }
 @keyframes drift { from { transform: translateX(-30vw); } to { transform: translateX(110vw); } }
 @media (prefers-reduced-motion: reduce) { .hscene .fx, .hscene .clouds span { animation: none !important; } }
 /* The same picture as a banner on the Me page: the whole house, with the same weather as the sign-in. */
 .home-pic { position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 1672 / 660; margin: 0 0 14px; box-shadow: 0 10px 26px rgba(0,0,0,.25); background: #5db026; }
 .home-pic .art { position: absolute; inset: 0 0 auto 0; aspect-ratio: 1672 / 728; }
 .home-pic .art img { width: 100%; height: 100%; display: block; }
-.home-pic .hp-cap { position: absolute; left: 12px; bottom: 10px; z-index: 3; font: 700 15px "Atkinson Hyperlegible", system-ui, sans-serif; color: #fff; background: rgba(15,30,20,.55); padding: 5px 12px; border-radius: 999px; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
-@media (max-width: 600px) { .home-pic .hp-cap { top: 8px; bottom: auto; left: 8px; font-size: 12px; padding: 4px 10px; } }
+.home-pic .hp-cap { position: absolute; left: 40px; bottom: 12px; z-index: 3; font: 700 15px "Atkinson Hyperlegible", system-ui, sans-serif; color: #fff; background: rgba(15,30,20,.55); padding: 5px 12px; border-radius: 999px; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+/* Camera look: viewfinder corners, REC light, and the live time at Hollyend (UK time). */
+.home-pic .cam { position: absolute; inset: 0; z-index: 3; pointer-events: none; font: 700 13px ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.8); letter-spacing: .04em; }
+.home-pic .cam::before { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 50%, transparent 60%, rgba(0,0,0,.38)), repeating-linear-gradient(transparent 0 2px, rgba(0,0,0,.05) 2px 3px); }
+.home-pic .cam i { position: absolute; width: 22px; height: 22px; border: 2px solid rgba(255,255,255,.85); }
+.home-pic .cam i:nth-child(1) { top: 10px; left: 10px; border-right: 0; border-bottom: 0; } .home-pic .cam i:nth-child(2) { top: 10px; right: 10px; border-left: 0; border-bottom: 0; }
+.home-pic .cam i:nth-child(3) { bottom: 10px; left: 10px; border-right: 0; border-top: 0; } .home-pic .cam i:nth-child(4) { bottom: 10px; right: 10px; border-left: 0; border-top: 0; }
+.home-pic .cam .rec { position: absolute; top: 16px; left: 40px; display: flex; align-items: center; gap: 6px; }
+.home-pic .cam .rec::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: #ff3b30; box-shadow: 0 0 6px #ff3b30; animation: recb 1.2s steps(1) infinite; }
+@keyframes recb { 50% { opacity: .15; } }
+.home-pic .cam .clk { position: absolute; top: 14px; right: 40px; text-align: right; line-height: 1.25; }
+.home-pic .cam .clk b { display: block; font-size: 20px; letter-spacing: .02em; }
+.home-pic .cam .clk span { font-size: 11px; opacity: .9; }
+.home-pic .cam .wx { position: absolute; bottom: 16px; right: 40px; font-size: 11px; opacity: .9; }
+@media (max-width: 600px) { .home-pic .cam { font-size: 10px; } .home-pic .cam i { width: 14px; height: 14px; } .home-pic .cam .rec { top: 10px; left: 28px; } .home-pic .cam .clk { top: 8px; right: 28px; } .home-pic .cam .clk b { font-size: 14px; } .home-pic .cam .clk span, .home-pic .cam .wx { font-size: 9px; } .home-pic .cam .wx { bottom: 10px; right: 28px; } }
+@media (prefers-reduced-motion: reduce) { .home-pic .cam .rec::before { animation: none; } }
+@media (max-width: 600px) { .home-pic .hp-cap { bottom: 8px; left: 28px; font-size: 11px; padding: 3px 9px; } }
 body.k .home-pic .hp-cap { font-family: inherit; text-transform: uppercase; letter-spacing: .06em; font-size: 13px; }
 #login .box { margin: calc(var(--h) * .8) max(16px, env(safe-area-inset-left, 0px)) 0; position: relative; z-index: 1; }
 #login .box { width: calc(100% - 32px); max-width: 440px; display: flex; flex-direction: column; gap: 14px; background: rgba(255,255,255,.88); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,.9); border-radius: 22px; padding: 20px 18px; box-shadow: 0 18px 40px rgba(20,50,30,.25); }
@@ -909,8 +938,40 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
 /* Hollyend scene: the weather is picked at random once per visit (day, sunset, night or rain) and shared by the
    sign-in page and the Me page banner. hollyendFx() gives the overlays: tint, stars, moon, clouds, lit windows. */
 (function () {
-  var skies = ["day", "sunset", "night", "rain"];
+  /* Time of day at Hollyend (UK): sunrise and sunset worked out for the date (central England), so dawn, day,
+     sunset and night follow the real clock there. The weather (clear, cloudy or rain) is random per visit. */
+  function sunHoursUTC(d) {
+    var N = Math.floor((Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) - Date.UTC(d.getUTCFullYear(), 0, 0)) / 864e5);
+    var rad = Math.PI / 180, lat = 52.2, lon = -1.2, decl = 23.44 * Math.sin(2 * Math.PI * (284 + N) / 365);
+    var B = 2 * Math.PI * (N - 81) / 364, eot = 9.87 * Math.sin(2 * B) - 7.53 * Math.cos(B) - 1.5 * Math.sin(B);
+    var cosH = (Math.sin(-0.833 * rad) - Math.sin(lat * rad) * Math.sin(decl * rad)) / (Math.cos(lat * rad) * Math.cos(decl * rad));
+    var Hh = Math.acos(Math.max(-1, Math.min(1, cosH))) / rad / 15, noon = 12 - lon / 15 - eot / 60;
+    return { rise: noon - Hh, set: noon + Hh };
+  }
+  window.hollyendTime = function (now) {
+    now = now || new Date(); var t = now.getUTCHours() + now.getUTCMinutes() / 60, s = sunHoursUTC(now);
+    if (t >= s.rise - 0.6 && t < s.rise + 0.8) return "dawn";
+    if (t >= s.set - 0.9 && t < s.set + 0.7) return "sunset";
+    if (t >= s.rise + 0.8 && t < s.set - 0.9) return "day";
+    return "night";
+  };
+  var r = Math.random(); window.HOLLYEND_WX = r < 0.45 ? "clear" : r < 0.7 ? "cloudy" : "rain";
+  var skies = ["day", "sunset", "night", "dawn"];
   window.HOLLYEND_SKY = skies[Math.floor(Math.random() * skies.length)];
+  window.hollyendClock = function () {
+    var now = new Date(), tz = "Europe/London";
+    var tm = now.toLocaleTimeString("en-GB", { timeZone: tz, hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    var dt = now.toLocaleDateString("en-GB", { timeZone: tz, weekday: "short", day: "numeric", month: "short", year: "numeric" });
+    var zone = (now.toLocaleTimeString("en-GB", { timeZone: tz, timeZoneName: "short" }).split(" ").pop()) || "UK";
+    return { time: tm, date: dt + " · " + zone, sky: window.hollyendTime(now) };
+  };
+  window.hollyendWxLabel = function (sky, wx) {
+    return wx === "rain" ? "Rain" : wx === "cloudy" ? "Cloudy" : { dawn: "Sunrise", day: "Sunny", sunset: "Sunset", night: "Clear night" }[sky] || "Clear";
+  };
+  setInterval(function () {
+    var pics = document.querySelectorAll(".home-pic"); if (!pics.length) return; var c = window.hollyendClock();
+    [].forEach.call(pics, function (p) { var b = p.querySelector(".clk b"), sp = p.querySelector(".clk span"); if (b) b.textContent = c.time; if (sp) sp.textContent = c.date; if (p.getAttribute("data-sky") !== c.sky) { p.setAttribute("data-sky", c.sky); var w = p.querySelector(".cam .wx"); if (w) w.textContent = "HOLLYEND · " + window.hollyendWxLabel(c.sky, p.getAttribute("data-wx")).toUpperCase(); } });
+  }, 1000);
   var W = 1672, H = 728, P = function (v, d) { return (v / d * 100).toFixed(2) + "%"; };
   window.hollyendFx = function () {
     var lit = [[583,222,680,268],[565,315,680,365],[768,323,810,367],[883,323,922,367],[410,328,430,370],[444,328,464,370],
@@ -921,7 +982,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     return '<div class="fx tint"></div><div class="fx haze"></div><div class="fx stars"></div><div class="fx moon"></div><div class="fx clouds">' + clouds + '</div><div class="fx lit">' + lit + '</div>';
   };
   var sc = document.querySelector("#login .scene"); if (!sc) return;
-  sc.setAttribute("data-sky", window.HOLLYEND_SKY);
+  sc.setAttribute("data-sky", window.HOLLYEND_SKY); sc.setAttribute("data-wx", window.HOLLYEND_SKY === "night" ? (window.HOLLYEND_WX === "rain" ? "rain" : "clear") : window.HOLLYEND_WX);
   sc.querySelector(".art").insertAdjacentHTML("beforeend", window.hollyendFx());
 })();
 </script>
@@ -1164,9 +1225,14 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   function subNavTop() {
     var g = SUBNAV[state.view]; if (!g || app.querySelector(":scope > .subnav")) return;
     app.insertAdjacentHTML("afterbegin", '<div class="subnav" role="tablist">' + SUBNAV_ITEMS[g].map(function (it) { return '<button role="tab" aria-selected="' + (state.view === it[0]) + '" data-sub="' + it[0] + '">' + it[1] + '</button>'; }).join("") + '</div>');
-    if (g === "me" && window.hollyendFx && !app.querySelector(":scope > .home-pic")) app.insertAdjacentHTML("afterbegin",
-      '<div class="home-pic hscene" data-sky="' + window.HOLLYEND_SKY + '"><div class="art" role="img" aria-label="Hollyend, home"><img src="hollyend-house.webp" alt="" width="1672" height="728" decoding="async">' +
-      window.hollyendFx() + '</div><div class="fx rain"></div><div class="fx rain b"></div><span class="hp-cap">' + (state.child === "millie" ? "Home sweet home, Millie" : "Hollyend · Home ground") + '</span></div>');
+    if (g === "me" && window.hollyendFx && !app.querySelector(":scope > .home-pic")) {
+      var hc = window.hollyendClock(), wxName = window.hollyendWxLabel(hc.sky, window.HOLLYEND_WX);
+      app.insertAdjacentHTML("afterbegin",
+      '<div class="home-pic hscene" data-sky="' + hc.sky + '" data-wx="' + window.HOLLYEND_WX + '"><div class="art" role="img" aria-label="Live view of Hollyend: ' + hc.time.slice(0, 5) + ' UK time, ' + wxName.toLowerCase() + '"><img src="hollyend-house.webp" alt="" width="1672" height="728" decoding="async">' +
+      window.hollyendFx() + '</div><div class="fx rain"></div><div class="fx rain b"></div>' +
+      '<div class="cam" aria-hidden="true"><i></i><i></i><i></i><i></i><span class="rec">LIVE · CAM 1</span><span class="clk"><b>' + hc.time + '</b><span>' + hc.date + '</span></span><span class="wx">HOLLYEND · ' + wxName.toUpperCase() + '</span></div>' +
+      '<span class="hp-cap">' + (state.child === "millie" ? "Home sweet home, Millie" : "Home ground") + '</span></div>');
+    }
   }
   document.addEventListener("click", function (e) { var b = e.target.closest && e.target.closest("[data-sub]"); if (!b) return; state.lastSub = state.lastSub || {}; state.lastSub[SUBNAV[b.dataset.sub]] = b.dataset.sub; setView(b.dataset.sub); window.scrollTo({ top: 0 }); });
 
