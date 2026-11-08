@@ -6,8 +6,7 @@
   var LOGINS = {
     millie: { email: "millie@hollyend.com", label: "Millie" },
     kristan: { email: "kristan@hollyend.com", label: "Kristan" },
-    parent: { email: "dad@hollyend.com", label: "Dad" },
-    mum: { email: "mum@hollyend.com", label: "Mum" }
+    parent: { email: "dad@hollyend.com", label: "Dad" }
   };
   var sb = window.supabase.createClient(URL, KEY, { auth: { persistSession: true, autoRefreshToken: true } });
   var COLS = {
