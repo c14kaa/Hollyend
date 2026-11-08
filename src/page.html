@@ -28,12 +28,7 @@ body.k {
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 body { background-color: var(--bg); color: var(--ink); font: 17px/1.55 var(--body); margin: 0; min-height: 100vh; }
-body.m { background-image:
-  radial-gradient(1.4px 1.4px at 22px 34px, #fff 50%, transparent 52%), radial-gradient(1px 1px at 140px 90px, #dfe4ff 50%, transparent 52%),
-  radial-gradient(1.8px 1.8px at 210px 160px, #ffe7f3 50%, transparent 52%), radial-gradient(1px 1px at 70px 210px, #fff 50%, transparent 52%),
-  radial-gradient(1.2px 1.2px at 250px 40px, #cfe9ff 50%, transparent 52%),
-  radial-gradient(700px 460px at 92% -6%, rgba(155,140,255,.30), transparent 70%), radial-gradient(560px 420px at -12% 34%, rgba(255,111,181,.18), transparent 70%);
-  background-size: 280px 260px, 280px 260px, 280px 260px, 280px 260px, 280px 260px, auto, auto; background-attachment: fixed; }
+/* Millie's colours, background and decorations come from themes.js (MILLIE_LOOK / THEMES). */
 body.k { font-size: 16px; background-image:
   radial-gradient(900px 520px at 100% -10%, rgba(198,255,58,.10), transparent 60%),
   radial-gradient(700px 500px at -20% 30%, rgba(62,224,255,.07), transparent 65%),
@@ -60,7 +55,7 @@ body.k .wallet b { font-size: 28px; }
 .kid .kav svg { width: 100%; height: 100%; display: block; }
 .kid span.t { display: flex; flex-direction: column; min-width: 0; }
 .kid small { font-weight: 400; color: var(--muted); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.kid.m[aria-pressed="true"] { border-color: #ff6fb5; box-shadow: 0 0 0 3px rgba(255,111,181,.25); }
+.kid.m[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
 .kid.kr[aria-pressed="true"] { border-color: #ffd23f; box-shadow: 0 0 0 3px rgba(255,210,63,.25); }
 .tabs { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 4px; gap: 4px; }
 .vw { font: 700 15px var(--body); border: none; background: transparent; color: var(--muted); border-radius: 10px; padding: 10px 4px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; }
@@ -77,7 +72,6 @@ body.k .wallet b { font-size: 28px; }
 .pill { background: var(--accent-soft); color: var(--accent); font-weight: 700; border-radius: 999px; padding: 3px 10px; letter-spacing: .02em; }
 .dots { display: flex; gap: 6px; flex-wrap: wrap; }
 .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--line); }
-body.m .dot { clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); width: 15px; height: 15px; border-radius: 0; }
 .dot.now { background: var(--accent); }
 .dot.ok { background: var(--good); }
 .dot.no { background: var(--bad); }
@@ -180,7 +174,7 @@ details.list-box summary { cursor: pointer; font-weight: 700; }
 body.k .btn, body.k .vw, body.k .lv { text-transform: none; }
 .score { font-family: var(--display); }
 body.k .score { font-size: clamp(64px, 18vw, 96px); font-style: italic; color: var(--ink); align-self: flex-start; letter-spacing: -.01em; }
-body.m .score { text-shadow: 0 0 18px rgba(255,111,181,.6); }
+
 body.k .rank .nm, body.k .sect h2, body.k .fb h3 { font-size: 28px; letter-spacing: .01em; line-height: 1; text-transform: uppercase; font-style: italic; font-weight: 800; }
 body.k .earn { font-size: 30px; }
 /* sign in */
@@ -818,6 +812,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
 /* Nightdoor link: a glowing door fixed top-right on every screen; opens nightdoor.vercel.app in a new tab. */
 .nd-door { position: fixed; z-index: 55; top: max(10px, calc(env(safe-area-inset-top, 0px) + 6px)); right: max(10px, env(safe-area-inset-right, 0px)); width: 40px; height: 56px; display: block; border-radius: 3px; filter: drop-shadow(0 0 6px rgba(255,200,110,.55)) drop-shadow(0 3px 8px rgba(0,0,0,.45)); transition: transform .15s ease, filter .15s ease; -webkit-tap-highlight-color: transparent; }
 .nd-door svg { width: 100%; height: 100%; display: block; }
+.top { padding-right: 52px; } /* room for the door */
 .nd-door:hover, .nd-door:focus-visible { transform: scale(1.08) rotate(-2deg); filter: drop-shadow(0 0 12px rgba(255,200,110,.9)) drop-shadow(0 3px 8px rgba(0,0,0,.45)); }
 .nd-door:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .nd-door .crack { animation: ndcrack 4.5s ease-in-out infinite; }
@@ -850,7 +845,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
 <div class="wrap">
   <header>
     <div class="top">
-      <div><div class="week"><span id="week"></span> · <button class="signout" id="signout" type="button">Sign out</button></div><h1 id="title"><em id="who">Millie</em> &amp; her Space Monkeys</h1><div class="sub" id="sub" hidden></div></div>
+      <div><div class="week"><span id="week"></span> · <button class="signout" id="signout" type="button">Sign out</button></div><h1 id="title"><em id="who">Millie</em> &amp; her Monkeys</h1><div class="sub" id="sub" hidden></div></div>
       <div class="hud"><div class="streak off" id="streak" aria-live="polite"></div><div class="wallet" id="wallet" aria-live="polite"></div></div>
     </div>
     <div class="kids" role="group" aria-label="Choose who's playing">
@@ -908,7 +903,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   var app = document.getElementById("app");
   /* ---------- Millie's monkey buddies: Ooh Ooh and Uuh Uuh appear on every page of her side ----------
      BRAND keeps the name in one place: the theme (space) can change later, the monkeys always stay. */
-  var BRAND = { millie: { title: "&amp; her Space Monkeys" } };
+  var BRAND = { millie: { get title() { return millieTheme("main").title; } } };
   function millieTitle() { return '<em id="who">Millie</em> ' + BRAND.millie.title + '<span class="tmk" aria-hidden="true">' + monkeySVG("ooh", "happy", "mk") + monkeySVG("uuh", "wink", "mk") + '</span>'; }
   function spick(arr, key) { var h = 0; key = String(key); for (var i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0; return arr[h % arr.length]; }
   function buddyLine() {
@@ -917,7 +912,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       if (state.started && state.i >= state.qs.length) {
         var n = state.answers.filter(function (a) { return a && a.ok; }).length, tot = state.qs.length, k = t + "fin" + n + tot + (state.lastAt || "");
         if (n === tot) return ["uuh", spick(["PERFECT SCORE! *both monkeys do a backflip* *Uuh Uuh lands on his head* I'm OK!", "Every single one right! I'm so happy I ate my banana sideways."], k), "silly"];
-        if (n >= tot * 0.8) return ["ooh", spick(["Brilliant work, Millie! I'm writing your name on the fridge. In big letters.", "Ooh ooh! What a score! You're the cleverest astronaut in the whole galaxy."], k), "happy"];
+        if (n >= tot * 0.8) return ["ooh", spick(["Brilliant work, Millie! I'm writing your name on the fridge. In big letters.", "Ooh ooh! What a score! You're " + millieTheme("main").words.hero + "."], k), "happy"];
         if (n >= tot * 0.5) return ["ooh", spick(["Good effort! The ones you missed come back later so you can win them back.", "Nice going! Every quiz makes your brain a bit stronger. Like monkey muscles!"], k), "happy"];
         return ["uuh", spick(["That one was tricky! Wrong answers are brain workouts. Shall we try Warm-up next?", "Never mind! Even Ooh Ooh gets things wrong. He once called the Moon a big cheese."], k), "wink"];
       }
@@ -928,7 +923,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       if (state.mode === "revise") return ["ooh", spick(["Revision is like the monkey bars: the more you practise, the easier it gets.", "Start with this week's topics. Then lessons feel easy-peasy banana-squeezy!"], key), "happy"];
       if (sk.atRisk) return ["uuh", "Our streak is on " + sk.current + " day" + (sk.current === 1 ? "" : "s") + "! One quiz with 70% today keeps it going. Go go go!", "silly"];
       if (open) return ["ooh", spick(["You've got " + open + " bit" + (open === 1 ? "" : "s") + " of homework to do. Homework first, then the Space Arcade? Very sensible. That's me. Sensible.", "Don't forget your homework! Uuh Uuh will hold your pencil. Badly."], key), "wink"];
-      return ["uuh", spick(["Ready for today's mission? I'll hold the bananas, you do the brain bit.", "If you get 10 right I'll do a cartwheel. If you get 11 right… wait, there are only 10.", "Let's go, Millie! Rocket fuel loading… 3… 2… 1… QUIZ!"], key), "happy"];
+      return ["uuh", spick([millieTheme("main").words.ready, "If you get 10 right I'll do a cartwheel. If you get 11 right… wait, there are only 10.", "Let's go, Millie! " + millieTheme("main").words.go], key), "happy"];
     }
     if (v === "homework") { var o = hwOpen(c), late = o.filter(function (x) { return x.due && String(x.due).slice(0, 10) < t; }).length;
       if (!o.length) return ["uuh", "All your homework is done! I'm doing a happy wobble. Wobble wobble wobble.", "silly"];
@@ -1199,7 +1194,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     document.body.classList.toggle("m", c === "millie");
     document.getElementById("title").innerHTML = c === "millie" ? millieTitle() : '<em id="who">Kristan</em>';
     document.getElementById("sub").hidden = c === "millie";
-    var tc = document.querySelector('meta[name="theme-color"]'); if (tc) tc.setAttribute("content", c === "millie" ? "#080b2b" : "#07090d");
+    var tc = document.querySelector('meta[name="theme-color"]'); if (tc) tc.setAttribute("content", c === "millie" ? millieTheme(millieZone(state.view)).meta : "#07090d");
     state.shop = { cat: null, tryOn: null, confirm: null, msg: "" }; state.bankConfirm = false; state.payConfirm = null; state.bankMsg = ""; state.bankAmt = 50;
     document.getElementById("pick-millie").setAttribute("aria-pressed", c === "millie");
     document.getElementById("pick-kristan").setAttribute("aria-pressed", c === "kristan");
@@ -1272,6 +1267,8 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   function render() {
     calcSync(); if (typeof meritSync === "function") meritSync();
     app.setAttribute("data-view", state.view === "quiz" && state.flash ? "quiz" : state.view);
+    var zone = state.child === "millie" ? millieZone(state.view) : "main";
+    if (document.body.getAttribute("data-zone") !== zone) { document.body.setAttribute("data-zone", zone); var mc = document.querySelector('meta[name="theme-color"]'); if (mc && state.child === "millie") mc.setAttribute("content", millieTheme(zone).meta); }
     if (state.view === "homework") return homeworkView();
     if (state.view === "calendar") return calendarView();
     if (state.view === "parents") return isParentNow() ? familyView() : (state.view = "homework", homeworkView());
