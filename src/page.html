@@ -178,12 +178,51 @@ body.k .score { font-size: clamp(64px, 18vw, 96px); font-style: italic; color: v
 body.k .rank .nm, body.k .sect h2, body.k .fb h3 { font-size: 28px; letter-spacing: .01em; line-height: 1; text-transform: uppercase; font-style: italic; font-weight: 800; }
 body.k .earn { font-size: 30px; }
 /* sign in */
-/* Sign-in: Hollyend itself. An illustration of the house (hollyend.svg), with the sign-in card floating in the sky. */
-#login { position: fixed; inset: 0; z-index: 50; background: #f4f1ea; color: #1d2a22; display: flex; flex-direction: column; align-items: center; overflow-y: auto; padding: 0 0 max(24px, env(safe-area-inset-bottom, 0px)); }
-#login .scene { flex: none; width: 100%; height: clamp(210px, 44vh, 470px); background: #a9d2f7 url("hollyend.svg") 50% 100% / cover no-repeat; overflow: hidden; }
-#login .scene svg { width: 100%; height: 100%; display: block; }
-#login .scene { position: relative; } #login .scene::after { content: ""; position: absolute; inset: auto 0 0 0; height: 34px; background: linear-gradient(transparent, #f4f1ea); pointer-events: none; }
-#login .box { margin: -18px max(16px, env(safe-area-inset-left, 0px)) 0; position: relative; }
+/* Sign-in: the Hollyend picture fills the screen, the lawn carries on below it, and the card sits on the lawn.
+   One of four weather looks is picked at random on load (day, sunset, night, rain). */
+#login { --h: clamp(300px, 43.54vw, 74vh); --w: max(100%, calc(var(--h) * 2.2967));
+  position: fixed; inset: 0; z-index: 50; background: #5db026; color: #1d2a22; overflow-y: auto; }
+#login .stage { position: relative; min-height: 100%; display: flex; flex-direction: column; align-items: center; padding: 0 0 max(28px, env(safe-area-inset-bottom, 0px)); box-sizing: border-box; }
+#login .scene { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+#login .pic { position: absolute; inset: 0 0 auto 0; height: var(--h); overflow: hidden; z-index: 1; }
+@media (max-aspect-ratio: 1/1) { #login { --h: clamp(300px, 66vw, 56vh); } }
+#login .art { position: absolute; bottom: 0; left: 50%; width: var(--w); aspect-ratio: 1672 / 728; transform: translateX(-50%); }
+#login .art img { width: 100%; height: 100%; display: block; -webkit-mask: linear-gradient(#000 90%, transparent); mask: linear-gradient(#000 90%, transparent); }
+#login .lawn { position: absolute; inset: calc(var(--h) * .8) 0 0 0; background: url("hollyend-lawn.png") 50% 0 / var(--w) auto repeat-y, #5db026; }
+#login .fx { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .6s; }
+#login .tint { inset: 0; }
+#login .scene[data-sky="sunset"] .art img, #login .scene[data-sky="sunset"] .lawn { filter: saturate(1.1) sepia(.18) brightness(.97); }
+#login .scene[data-sky="sunset"] .art .tint { opacity: 1; background: linear-gradient(rgba(255,104,72,.9), rgba(255,140,90,.75) 22%, rgba(255,180,110,.35) 40%, rgba(255,170,110,.18) 60%, rgba(255,160,100,.12)); mix-blend-mode: color; }
+#login .scene[data-sky="sunset"] .art::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(rgba(120,40,70,.35), rgba(255,150,90,.12) 38%, transparent 60%); mix-blend-mode: multiply; }
+#login .scene[data-sky="sunset"] .art .haze { opacity: 1; background: radial-gradient(60% 46% at 82% 30%, rgba(255,200,120,.55), transparent 70%); mix-blend-mode: screen; }
+#login .scene[data-sky="sunset"] .lawn::after { content: ""; position: absolute; inset: 0; background: rgba(255,170,110,.1); mix-blend-mode: multiply; }
+#login .scene[data-sky="night"] .art img, #login .scene[data-sky="night"] .lawn { filter: brightness(.42) saturate(.65) hue-rotate(-12deg); }
+#login .scene[data-sky="night"] .art .tint { opacity: 1; background: linear-gradient(rgba(14,22,70,.75), rgba(20,30,80,.4) 45%, rgba(20,30,70,.25)); mix-blend-mode: multiply; }
+#login .scene[data-sky="night"] .lawn::after { content: ""; position: absolute; inset: 0; background: rgba(20,30,70,.25); mix-blend-mode: multiply; }
+#login .scene[data-sky="night"] .stars, #login .scene[data-sky="night"] .lit, #login .scene[data-sky="night"] .moon { opacity: 1; }
+#login .stars { inset: 0 0 62% 0; background:
+  radial-gradient(1.6px 1.6px at 20px 30px, #fff 50%, transparent 55%) 0 0 / 190px 150px,
+  radial-gradient(1.2px 1.2px at 120px 80px, #e8ecff 50%, transparent 55%) 0 0 / 190px 150px,
+  radial-gradient(2px 2px at 160px 20px, #fff8e0 50%, transparent 55%) 0 0 / 190px 150px,
+  radial-gradient(1px 1px at 70px 120px, #fff 50%, transparent 55%) 0 0 / 190px 150px;
+  -webkit-mask: linear-gradient(#000 55%, transparent); mask: linear-gradient(#000 55%, transparent); animation: tw 4s ease-in-out infinite alternate; }
+@keyframes tw { to { filter: brightness(.6); } }
+#login .moon { inset: auto; left: 13%; top: 7%; width: 4.2%; aspect-ratio: 1; border-radius: 50%; background: #fdf6dc; box-shadow: 0 0 30px 10px rgba(253,246,220,.35), inset -8px -4px 0 rgba(200,200,190,.35); }
+#login .lit i { position: absolute; background: #ffd27a; opacity: .82; box-shadow: 0 0 14px 3px rgba(255,200,110,.55); mix-blend-mode: screen; }
+#login .lit b { position: absolute; width: 4%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(rgba(255,214,130,.9), rgba(255,190,90,.25) 40%, transparent 70%); }
+#login .scene[data-sky="rain"] .art img, #login .scene[data-sky="rain"] .lawn { filter: saturate(.5) brightness(.8) contrast(.95); }
+#login .scene[data-sky="rain"] .art .tint { opacity: 1; background: linear-gradient(rgba(70,80,96,.85), rgba(110,120,135,.55) 30%, rgba(120,130,140,.2) 55%, rgba(110,120,130,.15)); mix-blend-mode: multiply; }
+#login .rain { z-index: 2; }
+#login .scene[data-sky="rain"] .rain { opacity: .55; inset: 0; background: repeating-linear-gradient(105deg, transparent 0 22px, rgba(220,230,245,.55) 22px 23px, transparent 23px 47px) 0 0 / 220px 220px; animation: fall .6s linear infinite; }
+#login .scene[data-sky="rain"] .rain.b { opacity: .35; background-size: 160px 160px; animation-duration: .9s; }
+@keyframes fall { to { background-position: -60px 220px; } }
+#login .scene[data-sky="day"] .clouds, #login .scene[data-sky="rain"] .clouds { opacity: 1; }
+#login .clouds { inset: 0 0 60% 0; }
+#login .clouds span { position: absolute; width: 16%; height: 22%; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,255,255,.75), rgba(255,255,255,0)); animation: drift 70s linear infinite; }
+#login .scene[data-sky="rain"] .clouds span { background: radial-gradient(closest-side, rgba(70,78,92,.85), rgba(70,78,92,0)); width: 26%; height: 40%; }
+@keyframes drift { from { transform: translateX(-30vw); } to { transform: translateX(110vw); } }
+@media (prefers-reduced-motion: reduce) { #login .fx, #login .clouds span { animation: none !important; } }
+#login .box { margin: calc(var(--h) * .8) max(16px, env(safe-area-inset-left, 0px)) 0; position: relative; z-index: 1; }
 #login .box { width: calc(100% - 32px); max-width: 440px; display: flex; flex-direction: column; gap: 14px; background: rgba(255,255,255,.88); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,.9); border-radius: 22px; padding: 20px 18px; box-shadow: 0 18px 40px rgba(20,50,30,.25); }
 #login h1 { font-family: "Fredoka", system-ui, sans-serif; font-size: 40px; line-height: 1; margin: 0; color: #24452d; }
 #login h1 em { font-style: normal; color: #2f6b3a; }
@@ -193,6 +232,13 @@ body.k .earn { font-size: 30px; }
 .who .wav { width: 84px; height: 101px; border-radius: 12px; overflow: hidden; }
 .who .wav svg { width: 100%; height: 100%; display: block; }
 .who.parent { flex-direction: row; justify-content: center; font-size: 16px; padding: 12px; grid-column: 1 / -1; }
+@media (min-aspect-ratio: 5/4) and (min-width: 700px) {
+  #login .box { max-width: 560px; gap: 10px; padding: 16px 18px; }
+  #login h1 { font-size: 32px; }
+  #login .whos { grid-template-columns: 1fr 1fr 1fr; }
+  #login .who.parent { grid-column: auto; flex-direction: column; }
+  #login .who .wav { width: 58px; height: 70px; }
+}
 .who[aria-pressed="true"] { border-color: #2f6b3a; box-shadow: 0 0 0 3px rgba(47,107,58,.25); }
 .who[data-who="kristan"][aria-pressed="true"] { border-color: #2f6b3a; box-shadow: 0 0 0 3px rgba(47,107,58,.25); }
 .who:focus-visible, #login input:focus-visible, #login button:focus-visible { outline: 3px solid #2f6b3a; outline-offset: 2px; }
@@ -827,7 +873,14 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
 </style>
 
 <div id="login" hidden>
-  <div class="scene" role="img" aria-label="Hollyend: the house, the horses in the field, the forest, the swing, the garage and the car port"></div>
+  <div class="stage"><div class="scene" data-sky="day">
+    <div class="pic"><div class="art" role="img" aria-label="Hollyend: the house, the horses in the field, the double garage, the car port and the tree with a swing">
+      <img src="hollyend-house.webp" alt="" width="1672" height="728" decoding="async" fetchpriority="high">
+      <div class="fx tint"></div><div class="fx haze"></div><div class="fx stars"></div><div class="fx moon"></div><div class="fx clouds"></div><div class="fx lit"></div>
+    </div></div>
+    <div class="lawn"></div>
+    <div class="fx rain"></div><div class="fx rain b"></div>
+  </div>
   <div class="box">
     <h1><em>Hollyend</em></h1>
     <p>Who's playing today?</p>
@@ -844,16 +897,26 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       </div>
       <p id="loginMsg" aria-live="polite"></p>
     </form>
-  </div>
+  </div></div>
 </div>
 <script>
-/* Sign-in scene: load the Hollyend drawing inline and pick a sky at random (day, sunset, night or rain). */
+/* Sign-in scene: pick the weather at random, light the windows for night, add a few drifting clouds. */
 (function () {
-  var el = document.querySelector("#login .scene"); if (!el || !window.fetch) return;
-  var skies = ["day", "sunset", "night", "rain"], sky = skies[Math.floor(Math.random() * skies.length)];
-  fetch("hollyend.svg").then(function (r) { return r.ok ? r.text() : null; }).then(function (t) {
-    if (!t) return; el.innerHTML = t; var s = el.querySelector("svg"); if (s) { s.setAttribute("data-sky", sky); el.style.backgroundImage = "none"; }
-  }).catch(function () {});
+  var sc = document.querySelector("#login .scene"); if (!sc) return;
+  var skies = ["day", "sunset", "night", "rain"]; sc.setAttribute("data-sky", skies[Math.floor(Math.random() * skies.length)]);
+  var W = 1672, H = 728, lit = sc.querySelector(".lit"), cl = sc.querySelector(".clouds");
+  [[583,222,680,268],[565,315,680,365],[768,323,810,367],[883,323,922,367],[410,328,430,370],[444,328,464,370],
+   [280,425,325,508],[390,425,495,508],[555,425,670,508],[882,425,915,480],[945,425,1050,508],[742,440,816,538]].forEach(function (r) {
+    var i = document.createElement("i");
+    i.style.cssText = "left:" + (r[0] / W * 100) + "%;top:" + (r[1] / H * 100) + "%;width:" + ((r[2] - r[0]) / W * 100) + "%;height:" + ((r[3] - r[1]) / H * 100) + "%";
+    lit.appendChild(i);
+  });
+  [[262,437],[360,437],[525,437],[697,440],[1085,440],[1337,440]].forEach(function (p) {
+    var b = document.createElement("b"); b.style.cssText = "left:" + (p[0] / W * 100) + "%;top:" + (p[1] / H * 100) + "%"; lit.appendChild(b);
+  });
+  [[8, 0], [30, -24], [52, -48], [18, -36]].forEach(function (c) {
+    var s = document.createElement("span"); s.style.top = c[0] + "%"; s.style.animationDelay = c[1] + "s"; cl.appendChild(s);
+  });
 })();
 </script>
 <a class="nd-door" href="https://nightdoor.vercel.app" target="_blank" rel="noopener" aria-label="Nightdoor" title="Nightdoor"><svg viewBox="0 0 40 56" aria-hidden="true"><rect x="1" y="1" width="38" height="54" rx="2" fill="#3a2416"/><rect x="5" y="5" width="30" height="51" fill="#1a0f0a"/><rect x="8" y="9" width="20" height="16" rx="1" fill="none" stroke="#2e1b10" stroke-width="1.5"/><rect x="8" y="30" width="20" height="20" rx="1" fill="none" stroke="#2e1b10" stroke-width="1.5"/><rect class="crack" x="30" y="5" width="5" height="51" fill="#ffd68a"/><rect class="crack" x="27" y="5" width="3" height="51" fill="#ffb347" opacity=".45"/><circle cx="11" cy="30" r="1.8" fill="#d6ad4a"/></svg></a>
