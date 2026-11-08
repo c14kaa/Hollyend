@@ -378,6 +378,55 @@ K.pctMult = function (L) {
     fmt(P) + " × " + round2(f) + "^" + n + " = £" + fmt(A) + ".", "", { notes: n4, steps: ["Multiplier for one year: " + round2(f) + ".", "For " + n + " years: × " + round2(f) + "^" + n + ".", P + " × " + round2(f) + "^" + n + " = " + fmt(A) + "."], tip: "Compound: amount × multiplier^years." });
 };
 
+/* --- Maths: grouped frequency classes (Dr Frost 313: modal and median class, estimated range) --- */
+K.groupedClass = function (L) {
+  var w = pick([5, 10, 20]), start = pick([0, 10, 20, 40, 50]), n = L === 1 ? 4 : 5, rows = [];
+  for (var i = 0; i < n; i++) rows.push({ lo: start + i * w, hi: start + (i + 1) * w, f: rnd(2, 30) });
+  var maxF = Math.max.apply(null, rows.map(function (r) { return r.f; }));
+  rows.forEach(function (r, i) { if (r.f === maxF && rows.findIndex(function (x) { return x.f === maxF; }) !== i) r.f = Math.max(1, r.f - 1); });
+  var lbl = function (r) { return r.lo + " < x ≤ " + r.hi; }, table = rows.map(function (r) { return lbl(r) + ": " + r.f; }).join(" · ");
+  var thing = pick(["Heights of sunflowers (cm)", "Times for a 100 m sprint (s)", "Minutes spent on homework", "Goals-per-season of youth players", "Lengths of fish caught (cm)"]);
+  var kind = pick(L === 1 ? ["modal", "range", "modal"] : ["modal", "median", "median", "range"]);
+  var others = function (r) { return rows.filter(function (x) { return x !== r; }).map(lbl); };
+  if (kind === "modal") {
+    var m = rows.filter(function (r) { return r.f === maxF; })[0], last = rows[rows.length - 1], nt = {};
+    if (last !== m) nt[lbl(last)] = "That's the class with the biggest VALUES. The modal class is the one with the biggest FREQUENCY.";
+    nt[String(m.f)] = "That's the frequency. The modal class is the group it belongs to.";
+    var wr = others(m).slice(0, 3).concat(last === m ? [] : []);
+    if (wr.indexOf(lbl(last)) < 0 && last !== m) wr[0] = lbl(last);
+    return q("Grouped data", thing + " — " + table + ". What is the modal class?", lbl(m), wr.concat([String(m.f)]), "The modal class has the highest frequency (" + m.f + "): " + lbl(m) + ".", "",
+      { notes: nt, steps: ["Look only at the frequency column.", "The biggest frequency is " + m.f + ".", "Its class is " + lbl(m) + "."], tip: "Modal class = biggest frequency, not biggest numbers." });
+  }
+  if (kind === "range") {
+    var lo = rows[0].lo, hi = rows[rows.length - 1].hi, ans = hi - lo, nt2 = {};
+    nt2[String(maxF - Math.min.apply(null, rows.map(function (r) { return r.f; })))] = "You used the frequencies. Range is about the data values: biggest possible minus smallest possible.";
+    return q("Grouped data", thing + " — " + table + ". Estimate the range of the data.", String(ans),
+      [String(maxF - Math.min.apply(null, rows.map(function (r) { return r.f; }))), String(ans - w), String(rows[rows.length - 1].lo - rows[0].hi)].filter(function (x) { return x !== String(ans) && +x > 0; }),
+      "Largest possible value " + hi + " − smallest possible value " + lo + " = " + ans + ".", "", { notes: nt2, steps: ["Smallest possible value: the bottom of the first class, " + lo + ".", "Largest possible value: the top of the last class, " + hi + ".", hi + " − " + lo + " = " + ans + "."], tip: "Estimated range = top of the last class − bottom of the first class." });
+  }
+  var total = rows.reduce(function (a, r) { return a + r.f; }, 0), pos = (total + 1) / 2, run = 0, med = null;
+  rows.forEach(function (r) { if (!med) { run += r.f; if (run >= pos) med = r; } });
+  var nt3 = {}, mid = rows[Math.floor(rows.length / 2)];
+  if (mid !== med) nt3[lbl(mid)] = "That's the middle CLASS in the table. The median is the middle VALUE: count up the frequencies to position " + pos + ".";
+  var wr3 = others(med); if (mid !== med && wr3.indexOf(lbl(mid)) > 0) { wr3.splice(wr3.indexOf(lbl(mid)), 1); wr3.unshift(lbl(mid)); }
+  return q("Grouped data", thing + " — " + table + ". Which class contains the median?", lbl(med), wr3.slice(0, 3),
+    "There are " + total + " values, so the median is the " + pos + (pos % 1 ? " (between two values)" : "") + "th value. Running totals reach it in " + lbl(med) + ".", "",
+    { notes: nt3, steps: ["Total frequency: " + total + ".", "Median position: (" + total + " + 1) ÷ 2 = " + pos + ".", "Add up the frequencies until you pass " + pos + ": it's in " + lbl(med) + "."], tip: "Median class: find (n + 1) ÷ 2, then count up the running total." });
+};
+
+/* --- Maths: value after a simple % change, no calculator (Dr Frost 220) --- */
+K.pctChangeNC = function (L) {
+  var amt = pick(L === 1 ? [40, 60, 80, 120, 200, 300] : [36, 48, 64, 140, 240, 360, 450, 520, 680]), p = pick(L === 1 ? [10, 20, 25, 50] : [5, 15, 30, 35, 45, 75, 12.5]);
+  var up = Math.random() < 0.5, part = amt * p / 100, ans = round2(up ? amt + part : amt - part), sym = function (x) { x = round2(x); return "£" + (x % 1 ? x.toFixed(2) : String(x)); };
+  var nt = {}; nt[sym(part)] = "That's just " + p + "% of £" + amt + ". Now " + (up ? "add it on" : "take it away") + ".";
+  nt[sym(up ? amt - part : amt + part)] = up ? "That's a decrease. An increase means add the percentage on." : "That's an increase. A decrease means take the percentage away.";
+  var steps = p === 12.5 ? ["10% = £" + fmt(amt / 10) + ", 2.5% = £" + fmt(amt / 40) + ".", "12.5% = £" + fmt(part) + "."] : p % 5 === 0 && p % 10 ? ["10% = £" + fmt(amt / 10) + ", 5% = half of that = £" + fmt(amt / 20) + ".", p + "% = £" + fmt(part) + "."] : ["10% = £" + fmt(amt / 10) + ".", p + "% = £" + fmt(part) + "."];
+  return q("Percentages (no calculator)", "A " + pick(["football shirt", "pair of boots", "game console", "bike", "season ticket"]) + " costs £" + amt + ". The price " + (up ? "rises" : "falls") + " by " + p + "%. What is the new price?", sym(ans),
+    [sym(part), sym(up ? amt - part : amt + part), sym(round2(up ? amt + p : amt - p))].filter(function (x) { return x !== sym(ans); }),
+    p + "% of £" + amt + " = £" + fmt(part) + ", so the new price is £" + amt + (up ? " + " : " − ") + "£" + fmt(part) + " = " + sym(ans) + ".", "",
+    { notes: nt, steps: steps.concat([(up ? "Add: " : "Subtract: ") + amt + (up ? " + " : " − ") + fmt(part) + " = " + fmt(ans) + "."]), tip: "Build percentages from 10%, 5% and 1%, then add or subtract." });
+};
+
 /* --- Maths: grouped frequency (estimate of mean, modal class) --- */
 K.grouped = function (L) {
   var w = pick([5, 10]), start = pick([0, 10, 20]), rows = [], tot = 0, fx = 0;
@@ -612,8 +661,8 @@ REVISION.millie = REVISION.millie.concat([
 REVISION.kristan = REVISION.kristan.concat([
   { id: "eq-both", title: "Equations: brackets, fractions & x on both sides", subject: "Maths", covered: "Topic 1 · Linear equations", gens: ["eqBoth", "solveEq"] },
   { id: "calc", title: "Calculator skills & BIDMAS", subject: "Maths", covered: "Topic 2 · Calculators", gens: ["calcOrder"] },
-  { id: "percent", title: "Multipliers, reverse % & compound interest", subject: "Maths", covered: "Topic 3 · Percentages", gens: ["pctMult"] },
-  { id: "grouped", title: "Grouped data: estimated mean & modal class", subject: "Maths", covered: "Topic 4 · Statistics", gens: ["grouped", "freqMean"] },
+  { id: "percent", title: "Percentage change, multipliers & reverse %", subject: "Maths", covered: "Topic 3 · Percentages · Dr Frost", gens: ["pctMult", "pctChangeNC"] },
+  { id: "grouped", title: "Grouped data: mean, modal & median class, range", subject: "Maths", covered: "Topic 4 · Statistics · Dr Frost 29 Oct", gens: ["grouped", "groupedClass", "groupedClass", "freqMean"] },
   { id: "sample-space", title: "Sample spaces & two events", subject: "Maths", covered: "Topic 5 · Probability", gens: ["sampleSpace", "probability"] },
   { id: "expand-factor", title: "Expanding, factorising & quadratics", subject: "Maths", covered: "Topic 6 · Algebraic manipulation", gens: ["expandFactor", "simplify"] },
   { id: "acids", title: "7F Acids & alkalis", subject: "Science", covered: "7F Acids and alkalis", gens: ["acids"] },
@@ -684,3 +733,14 @@ function topicStatus(child, id) {
   return best ? { status: best, unit: unit } : null;
 }
 if (typeof module !== "undefined") Object.assign(module.exports, { CURRICULUM: CURRICULUM, topicStatus: topicStatus });
+
+/* Kristan's Sunday test: a fixed mix from SUNDAY_TEST topics, Core level, no repeats. */
+function sundayTestOpen(now) { return new Date((now || Date.now()) + 4 * 3600e3).getUTCDay() === 0; }
+function nextSunday(now) { var d = new Date((now || Date.now()) + 4 * 3600e3); d.setUTCDate(d.getUTCDate() + ((7 - d.getUTCDay()) % 7)); return d.toISOString().slice(0, 10); }
+function buildSundayTest(child) {
+  var T = typeof SUNDAY_TEST !== "undefined" && SUNDAY_TEST[child]; if (!T) return [];
+  var out = [], seen = [];
+  T.topics.forEach(function (t) { buildRevision(child, t.id, T.level || 2, t.n).forEach(function (q) { var k = q.type === "type" ? q.sentence : q.prompt; if (seen.indexOf(k) < 0 && out.length < T.count) { seen.push(k); out.push(q); } }); });
+  for (var g = 0; out.length < T.count && g < 40; g++) { var t = T.topics[g % T.topics.length]; buildRevision(child, t.id, T.level || 2, 1, seen).forEach(function (q) { var k = q.type === "type" ? q.sentence : q.prompt; if (seen.indexOf(k) < 0) { seen.push(k); out.push(q); } }); }
+  return shuffle(out).map(function (q) { q.level = T.level || 2; return q; });
+}

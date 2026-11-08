@@ -10,12 +10,28 @@ var WEEK = {
   },
   kristan: {
     focus: ["Probability & sample spaces (class)", "Metals & their uses (science)", "Ballads & Nabati poetry (English, presenting Mon 9 Nov)",
-            "Expanding & factorising (next)", "Percentages", "Grouped averages", "Equations", "Physics: energy resources (CENTURY)"],
+            "Expanding & factorising (next)", "Percentage change, no calculator (Dr Frost)", "Grouped data: modal & median class (Dr Frost)", "Equations", "Physics: energy resources (CENTURY)"],
     topics: ["sampleSpace","sampleSpace","sampleSpace","probability","probability","metals","metals","metals","poetry","poetry","poetry",
-             "expandFactor","expandFactor","pctMult","pctMult","grouped","freqMean","eqBoth","solveEq","ratioShare","calcOrder",
+             "expandFactor","expandFactor","pctMult","pctChangeNC","pctChangeNC","grouped","groupedClass","groupedClass","freqMean","eqBoth","solveEq","ratioShare","calcOrder",
              "science","science","indices","nthTerm"]
   }
 };
+/* Kristan's Sunday test: one test each Sunday (Abu Dhabi day) on what he's learnt that week.
+   All correct = double points (the server doubles it too). The school run updates the topics; "hint" lines show all week. */
+var SUNDAY_TEST = {
+  kristan: {
+    count: 15, level: 2,
+    topics: [
+      { id: "grouped", n: 3, hint: "Grouped data: estimate the mean, find the modal and median class, estimate the range (Dr Frost, 29 Oct)" },
+      { id: "percent", n: 3, hint: "Percentage change without a calculator, plus multipliers (Dr Frost: work on next)" },
+      { id: "sample-space", n: 3, hint: "Probability: sample spaces and two events (maths class)" },
+      { id: "metals", n: 2, hint: "8G Metals and their uses (science)" },
+      { id: "poetry", n: 2, hint: "Ballads and poetry terms (English, Nabati project)" },
+      { id: "fr-futur", n: 2, hint: "French: aller + infinitive" }
+    ]
+  }
+};
+
 
 /* ===== Helpers ===== */
 function rnd(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }

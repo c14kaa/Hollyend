@@ -272,6 +272,7 @@ body.k .earn { font-size: 30px; }
 .ftable tr.afc td { background: color-mix(in srgb, #ef0107 22%, transparent); font-weight: 700; }
 .ftable.kids { border-top: 4px solid #e4002b; } .ftable tr.mine td { background: color-mix(in srgb, #e4002b 18%, transparent); font-weight: 700; }
 .kl-me { font-size: 14px; margin: 2px 0 8px; } .kf { white-space: nowrap; } .fd { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; font-weight: 800; color: #fff; margin-left: 2px; }
+.sun-topics { list-style: none; padding: 0; margin: 6px 0 12px; display: grid; gap: 6px; } .sun-topics li { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; } .btn.sm { padding: 4px 10px; font-size: 13px; min-height: 0; }
 .kr { display: inline-flex; gap: 4px; white-space: nowrap; } .chip.vid { background: #1f2937; color: #fff; text-decoration: none; } .fd.W { background: #2e7d32; } .fd.L { background: #c62828; } .fd.D { background: #37474f; }
 .tag.kids { background: #fde2e6; color: #b0001f; } .tl-it.kids b { color: inherit; }
 @media (max-width: 560px) { .ftable.kids .kf { display: none; } }
@@ -875,6 +876,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       <button class="md" id="m-voc" data-m="vocab" aria-pressed="false" hidden>Vocab test prep<small>Flashcards &amp; practice test</small></button>
       <button class="md" id="m-ch" data-m="challenge" aria-pressed="false">Challenge words<small>Extremely hard! Double points</small></button>
       <button class="md" id="m-rev" data-m="revise" aria-pressed="false">Revise a topic<small>This week's class topics first</small></button>
+      <button class="md" id="m-sun" data-m="sunday" aria-pressed="false" hidden>Sunday test<small>15/15 = double points</small></button>
     </div>
     <div class="levels" id="levels" role="group" aria-label="Difficulty">
       <span>Level:</span>
@@ -1185,7 +1187,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   function newQuiz() {
     var qm = qMode(); setWordHistory(all);
     state.flash = null;
-    state.qs = qm ? buildAdaptiveQuiz(state.child, lvl(), qm === "vocab" ? KLISTS.french.words.length : qm === "spelling" ? SPELLING.words.length : 10, all, WEEK.start, genOne, buildQuiz, shuffle, qm) : [];
+    state.qs = qm === "sunday" ? (sundayTestOpen() && !sundayDone() ? buildSundayTest(state.child) : []) : qm ? buildAdaptiveQuiz(state.child, lvl(), qm === "vocab" ? KLISTS.french.words.length : qm === "spelling" ? SPELLING.words.length : 10, all, WEEK.start, genOne, buildQuiz, shuffle, qm) : [];
     state.i = 0; state.answers = []; state.started = false; state.saved = null; state.finishHtml = null;
     render();
   }
@@ -1205,7 +1207,8 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     document.getElementById("v-world-l").textContent = c === "millie" ? "Journey" : "League";
     document.getElementById("v-world-i").innerHTML = c === "millie" ? '<path d="M12 21s-6-5.3-6-11a6 6 0 0 1 12 0c0 5.7-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/>' : '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M8 4v16"/>';
     state.postcard = null; state.lgMsg = ""; state.match = null;
-    var ok = c === "millie" ? ["mix", "spelling", "challenge", "revise"] : ["mix", "english", "french", "vocab", "challenge", "revise"];
+    var ok = c === "millie" ? ["mix", "spelling", "challenge", "revise"] : ["mix", "english", "french", "vocab", "challenge", "revise", "sunday"];
+    document.getElementById("m-sun").hidden = c !== "kristan";
     document.getElementById("m-voc").hidden = c === "millie";
     state.reviseTopic = null;
     if (ok.indexOf(state.mode) < 0) state.mode = "mix";
@@ -1223,10 +1226,13 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     var L = listFor(state.mode);
     if (state.mode === "revise") { var rt = state.reviseTopic && revTopic(state.child, state.reviseTopic);
       document.getElementById("focus").innerHTML = rt ? "<b>Revising:</b> " + esc(rt.title) + " · " + esc(rt.covered) : (typeof CURRICULUM !== "undefined" && CURRICULUM[state.child] ? "<b>This week in class:</b> " + esc(CURRICULUM[state.child].focus) : "<b>Revision:</b> pick a topic"); return; }
-    document.getElementById("focus").innerHTML = L ? "<b>" + esc(L.label) + ":</b> " + L.words.length + " words" : "<b>This week:</b> " + WEEK[state.child].focus.map(esc).join(" · ");
+    document.getElementById("focus").innerHTML = state.mode === "sunday" ? "<b>Sunday test:</b> " + (SUNDAY_TEST[state.child] || { topics: [] }).topics.map(function (t) { var r = revTopic(state.child, t.id); return esc(r ? r.title : t.id); }).join(" · ")
+      : L ? "<b>" + esc(L.label) + ":</b> " + L.words.length + " words" : "<b>This week:</b> " + WEEK[state.child].focus.map(esc).join(" · ");
   }
   function listFor(m) { return m === "spelling" ? SPELLING : (m === "english" || m === "french") ? KLISTS[m] : m === "vocab" ? KLISTS.french : m === "challenge" ? KLISTS["challenge_" + state.child] : null; }
-  function lvl() { return state.mode === "match" ? state.matchLevel : state.mode === "challenge" ? 3 : state.mode === "vocab" ? 2 : state.level; }
+  function sundayDone() { var t = lgToday(Date.now()); return all.some(function (a) { return a.child === state.child && a.mode === "sunday" && String(a.playDay).slice(0, 10) === t; }); }
+  function sundayDoneAtt() { var t = lgToday(Date.now()); return all.filter(function (a) { return a.child === state.child && a.mode === "sunday" && String(a.playDay).slice(0, 10) === t; })[0]; }
+  function lvl() { return state.mode === "sunday" ? ((SUNDAY_TEST[state.child] || {}).level || 2) : state.mode === "match" ? state.matchLevel : state.mode === "challenge" ? 3 : state.mode === "vocab" ? 2 : state.level; }
   function setMode(m) { state.mode = m; state.reviseTopic = null; showMode(); newQuiz(); }
   function qMode() { return state.mode === "revise" ? (state.reviseTopic ? "revise:" + state.reviseTopic : null) : state.mode; }
   function showLevels() {
@@ -1280,6 +1286,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       return state.child === "millie" ? journeyView() : leagueView();
     }
     if (state.mode === "revise" && !state.reviseTopic) return libraryView();
+    if (state.mode === "sunday" && !state.started) return sundayView();
     if (!state.started) return startView();
     if (state.i >= state.qs.length) return finish();
     questionView();
@@ -1448,8 +1455,24 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     render();
   }
 
+  function sundayView() {
+    var T = SUNDAY_TEST[state.child] || { topics: [], count: 15 }, open = sundayTestOpen(), done = sundayDoneAtt();
+    var nd = new Date(nextSunday() + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "short", timeZone: "UTC" });
+    var topics = T.topics.map(function (t) { var r = revTopic(state.child, t.id); return '<li><span>' + esc(t.hint || (r && r.title) || t.id) + '</span>' + (r ? '<button class="btn ghost sm" data-sunrev="' + esc(t.id) + '">Revise</button>' : '') + '</li>'; }).join("");
+    var h = '<section class="card sect sunday"><span class="small">Weekly test</span><h2>Sunday test</h2>' +
+      '<p class="prompt">' + T.count + ' questions on what you\u2019ve learnt this week. Get them <b>all right</b> and you win <b>double points</b>.</p>' +
+      (done ? '<p class="earn">Done today: ' + done.score + '/' + done.total + ' · +' + (done.points || 0) + ' points' + (done.score === done.total ? ' (double points!)' : '') + '. The next test opens next Sunday.</p>'
+        : open ? '<p class="small">One go only, so make it count. Revise any topic first if you want.</p>' : '<p class="small">Opens <b>' + esc(nd) + '</b> (one go, Abu Dhabi time). Revise these this week:</p>') +
+      '<h3 class="fv-sub">What\u2019s in it</h3><ul class="sun-topics">' + topics + '</ul>' +
+      (open && !done && state.qs.length ? '<div class="row"><button class="btn" id="go">Start the Sunday test</button></div>' : '') + '</section>';
+    app.innerHTML = h;
+    var go = document.getElementById("go"); if (go) go.addEventListener("click", function () { state.started = true; render(); });
+    [].forEach.call(app.querySelectorAll("[data-sunrev]"), function (b) { b.addEventListener("click", function () { state.mode = "revise"; state.reviseTopic = b.dataset.sunrev; showMode(); newQuiz(); window.scrollTo({ top: 0 }); }); });
+  }
+
   function finish() {
     var level = lvl(), sc = scoreAttempt(state.qs, state.answers, level);
+    if (state.mode === "sunday" && sc.total && sc.score === sc.total) { sc.points = Math.min(500, sc.points * 2); sc.doubled = true; }
     if (state.finishHtml) { app.innerHTML = state.finishHtml; return bindFinish(); }
     var before = awards(all, state.child, WEEK.start), jBefore = journeyState(all, "millie");
     var att = {
@@ -1481,7 +1504,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     var msg = isMatch ? (right >= 4 ? "Great match, " + name() + "!" : right >= 2 ? "Battled hard. Check the ones you missed." : "Tough game. Read the explanations, and you\u2019ll be ready tomorrow.") : right === n ? "Perfect score! Try the next level up." : right >= 8 ? "Brilliant, " + name() + "! Have a look at the ones you missed." : right >= 5 ? "Good effort. Read through the ones you missed, then have another go." : "Keep going. Go through the explanations below with a grown-up, then try again.";
     var h = (isMatch ? matchReport(sc) : '') + '<section class="card"><div class="meta"><span class="pill">' + (isMatch ? "Matchday " + state.match.matchday : state.mode === "revise" ? "Revision: " + revTopic(state.child, state.reviseTopic).title : state.mode === "challenge" ? "Challenge words" : listFor(state.mode) ? listFor(state.mode).label : LV[level]) + '</span><span id="savestatus" class="status">' + (state.saved === "off" ? "Results can't be saved in this view." : "Saving result…") + '</span></div>' +
       '<p class="score">' + right + '/' + n + '</p><p class="done-msg">' + esc(msg) + '</p>' +
-      '<p class="earn">+' + sc.points + ' points' + (sc.comebackTotal ? ' · ' + sc.comebackRight + '/' + sc.comebackTotal + ' comebacks won' : '') + '</p>' +
+      '<p class="earn">+' + sc.points + ' points' + (sc.doubled ? ' · DOUBLE POINTS for a perfect Sunday test!' : state.mode === "sunday" ? ' · get them all right next Sunday for double points' : '') + (sc.comebackTotal ? ' · ' + sc.comebackRight + '/' + sc.comebackTotal + ' comebacks won' : '') + '</p>' +
       (rankUp ? '<p class="cbnote">New rank: ' + esc(after.rank.name) + '!</p>' : '') +
       extra + rankBlock(after) +
       '<p class="small">You now have <b style="color:var(--gold)">' + (myWallet().balance) + ' points</b> to spend in the shop or save in the bank.</p>' +
@@ -1601,7 +1624,7 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   }
 
   /* ---------- Quiz log + spelling / vocab list report ---------- */
-  var MODE_NAME = { mix: "Weekly mix", spelling: "Spelling test", challenge: "Challenge words", english: "English words", french: "French", vocab: "French vocab test", match: "League match", revise: "Revision" };
+  var MODE_NAME = { sunday: "Sunday test", mix: "Weekly mix", spelling: "Spelling test", challenge: "Challenge words", english: "English words", french: "French", vocab: "French vocab test", match: "League match", revise: "Revision" };
   function quizName(a) {
     if (a.mode === "revise") { var t = a.topic && revTopic(a.child, a.topic); return "Revision: " + (t ? t.title : (a.results && a.results[0] ? a.results[0].topic : "topic")); }
     return MODE_NAME[a.mode] || "Quiz";
