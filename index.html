@@ -816,7 +816,6 @@ header { position: relative; }
 .fv-ic { width: 40px; height: 40px; color: var(--accent); flex: none; }
 .fv-sub { margin: 14px 0 8px; font-size: 15px; color: var(--muted); letter-spacing: .03em; text-transform: uppercase; }
 .fv-kids { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
-body.fam .hud .streak, body.fam .hud .wallet { display: none; }
 .cols, .col { display: flex; flex-direction: column; gap: 14px; }
 .term-hi { margin: 0; padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); font-size: 15px; }
 @media (min-width: 900px) {
@@ -912,16 +911,36 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
 @media (max-width: 460px) { .hero, .shopTop { grid-template-columns: 110px minmax(0, 1fr); gap: 12px; } }
 @media (prefers-reduced-motion: no-preference) { .fb, .card { animation: rise .22s ease-out; } @keyframes rise { from { transform: translateY(6px); } to { transform: none; } } .bigav svg { animation: bob 3.2s ease-in-out infinite; } @keyframes bob { 50% { transform: translateY(-3px); } } }
 
-/* Nightdoor link: a glowing door fixed top-right on every screen; opens nightdoor.vercel.app in a new tab. */
-.nd-door { position: fixed; z-index: 55; top: max(10px, calc(env(safe-area-inset-top, 0px) + 6px)); right: max(10px, env(safe-area-inset-right, 0px)); width: 40px; height: 56px; display: block; border-radius: 3px; filter: drop-shadow(0 0 6px rgba(255,200,110,.55)) drop-shadow(0 3px 8px rgba(0,0,0,.45)); transition: transform .15s ease, filter .15s ease; -webkit-tap-highlight-color: transparent; }
-.nd-door svg { width: 100%; height: 100%; display: block; }
-.top { padding-right: 52px; } /* room for the door */
-.nd-door:hover, .nd-door:focus-visible { transform: scale(1.08) rotate(-2deg); filter: drop-shadow(0 0 12px rgba(255,200,110,.9)) drop-shadow(0 3px 8px rgba(0,0,0,.45)); }
-.nd-door:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-.nd-door .crack { animation: ndcrack 4.5s ease-in-out infinite; }
-@keyframes ndcrack { 0%,100% { opacity: .85 } 50% { opacity: 1 } 62% { opacity: .55 } }
-@media (prefers-reduced-motion: reduce) { .nd-door .crack { animation: none; } .nd-door { transition: none; } }
-@media (max-width: 839px) { .top { padding-right: 50px; } }
+/* Hollyend top bar: same bar as Hollyend Health. Site switcher on the left; merits, streak and bell on the right. */
+.hbar { display: block; margin-bottom: 0; background: #0E1311; color: #C9D3CD; position: sticky; top: 0; z-index: 50; margin-top: calc(-1 * env(safe-area-inset-top, 0px)); padding-top: env(safe-area-inset-top, 0px); font: 13px/1.3 Inter, system-ui, -apple-system, "Segoe UI", sans-serif; }
+.hbar-in { max-width: 1200px; margin: 0 auto; min-height: 48px; padding: 0 max(12px, env(safe-area-inset-right, 0px)) 0 max(12px, env(safe-area-inset-left, 0px)); display: flex; align-items: center; gap: 16px; }
+.hb-brand { display: flex; align-items: center; gap: 8px; color: #fff; font-weight: 600; text-decoration: none; }
+.hb-logo { width: 20px; height: 20px; border-radius: 5px; background: #178A55; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+.hb-apps { display: none; align-items: stretch; align-self: stretch; gap: 16px; }
+.hb-apps a, .hb-menu a { color: #C9D3CD; text-decoration: none; display: flex; align-items: center; gap: 4px; }
+.hb-apps a:hover { color: #fff; }
+.hb-apps a[aria-current="page"] { color: #fff; font-weight: 600; box-shadow: inset 0 -2px 0 #8BE0B0; }
+.hb-apps svg, .hb-menu svg, .hb-appbtn svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.hb-menuwrap { position: relative; }
+.hb-appbtn { display: flex; align-items: center; gap: 5px; background: none; border: 0; color: #fff; font: inherit; font-weight: 600; cursor: pointer; min-height: 44px; padding: 0; }
+.hb-menu { position: absolute; top: 46px; left: -8px; min-width: 200px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.35); padding: 6px; display: flex; flex-direction: column; z-index: 60; }
+.hb-menu a { color: #0E1311; font-size: 15px; padding: 11px 10px; border-radius: 8px; }
+.hb-menu a[aria-current="page"] { background: #E3F4EA; font-weight: 600; }
+.hb-right { margin-left: auto; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.hb-name { display: none; }
+@media (min-width: 700px) { .hb-apps { display: flex; } .hb-phone { display: none; } .hb-name { display: inline; } }
+.hbar .streak, .hbar .merit-chip { background: #1F2924; border: 1px solid #2E3A33; border-radius: 999px; color: #fff; padding: 3px 10px 3px 6px; gap: 4px; font: 600 13px/1 Inter, system-ui, sans-serif; min-height: 30px; }
+.hbar .streak svg { width: 18px; height: 18px; }
+.hbar .streak b, body.k .hbar .streak b, body.k .hbar .merit-chip b { font: 700 15px/1 Inter, system-ui, sans-serif; font-style: normal; }
+.hbar .streak small, .hbar .merit-chip small { color: #9AA8A0; font-size: 12px; font-weight: 500; }
+.hbar .streak.on { border-color: #ff8a3d; }
+.hbar .streak .ice svg { width: 15px; height: 15px; }
+.hbar .bell { width: 34px; height: 34px; border-radius: 50%; border: 1px solid #2E3A33; background: #1F2924; color: #fff; }
+.hbar .bell svg { width: 18px; height: 18px; }
+.hbar .bell.ring { border-color: #8BE0B0; }
+@media (max-width: 420px) { .hbar .streak small, .hbar .merit-chip small { display: none; } .hbar-in { gap: 10px; } .hb-right { gap: 6px; } }
+.bell-panel { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 54px); right: max(8px, env(safe-area-inset-right, 0px)); width: min(380px, calc(100vw - 16px)); z-index: 55; }
+body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
 </style>
 </head>
 <body>
@@ -1004,12 +1023,19 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
   sc.querySelector(".art").insertAdjacentHTML("beforeend", window.hollyendFx());
 })();
 </script>
-<a class="nd-door" href="https://nightdoor.vercel.app" target="_blank" rel="noopener" aria-label="Nightdoor" title="Nightdoor"><svg viewBox="0 0 40 56" aria-hidden="true"><rect x="1" y="1" width="38" height="54" rx="2" fill="#3a2416"/><rect x="5" y="5" width="30" height="51" fill="#1a0f0a"/><rect x="8" y="9" width="20" height="16" rx="1" fill="none" stroke="#2e1b10" stroke-width="1.5"/><rect x="8" y="30" width="20" height="20" rx="1" fill="none" stroke="#2e1b10" stroke-width="1.5"/><rect class="crack" x="30" y="5" width="5" height="51" fill="#ffd68a"/><rect class="crack" x="27" y="5" width="3" height="51" fill="#ffb347" opacity=".45"/><circle cx="11" cy="30" r="1.8" fill="#d6ad4a"/></svg></a>
+<header class="hbar" id="hbar" hidden>
+  <div class="hbar-in">
+    <a class="hb-brand" href="/" aria-label="Hollyend"><span class="hb-logo" aria-hidden="true">H</span><span class="hb-name">Hollyend</span></a>
+    <nav class="hb-apps" aria-label="Hollyend sites"><a href="/" aria-current="page">Learning</a><a href="/health/" class="hb-health" hidden>Health</a><a href="https://nightdoor.vercel.app" target="_blank" rel="noopener">Nightdoor<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5H5V6h5"/></svg></a></nav>
+    <div class="hb-menuwrap hb-phone"><button class="hb-appbtn" id="hbAppBtn" type="button" aria-expanded="false" aria-label="Switch site: Learning">Learning<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="hb-menu" id="hbAppMenu" hidden><a href="/" aria-current="page">Learning</a><a href="/health/" class="hb-health" hidden>Health</a><a href="https://nightdoor.vercel.app" target="_blank" rel="noopener">Nightdoor<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5H5V6h5"/></svg></a></div></div>
+    <div class="hb-right" id="hbRight"><div class="streak off" id="streak" aria-live="polite"></div></div>
+  </div>
+</header>
 <div class="wrap">
   <header>
     <div class="top">
       <div><div class="week"><span id="week"></span> · <button class="signout" id="signout" type="button">Sign out</button></div><h1 id="title"><em id="who">Millie</em> &amp; her Monkeys</h1><div class="sub" id="sub" hidden></div></div>
-      <div class="hud"><div class="streak off" id="streak" aria-live="polite"></div><div class="wallet" id="wallet" aria-live="polite"></div></div>
+      <div class="hud"><div class="wallet" id="wallet" aria-live="polite"></div></div>
     </div>
     <div class="kids" role="group" aria-label="Choose who's playing">
       <button class="kid m" id="pick-millie" aria-pressed="true"><span class="kav" id="kav-millie"></span><span class="t">Millie<small id="krank-millie">Year 5 · 5G</small></span></button>
@@ -3125,12 +3151,12 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     document.getElementById("bellCal").addEventListener("click", function () { bellOpen = false; bellDraw(); setView("calendar"); window.scrollTo({ top: 0 }); });
   }
   function bellSetup() {
-    var hud = document.querySelector(".hud"); if (!hud) return;
+    var hud = document.getElementById("hbRight"); if (!hud) return;
     var b = document.createElement("button"); b.id = "bell"; b.className = "bell"; b.type = "button"; b.hidden = true; b.setAttribute("aria-label", "Notifications");
     b.innerHTML = BELL + '<b class="hw-badge" id="bell-n" hidden>0</b>';
-    hud.insertBefore(b, hud.firstChild);
+    hud.appendChild(b);
     var p = document.createElement("div"); p.id = "bellPanel"; p.className = "bell-panel"; p.hidden = true; p.setAttribute("role", "dialog"); p.setAttribute("aria-label", "Notifications");
-    document.querySelector("header").appendChild(p);
+    document.querySelector(".wrap > header").appendChild(p);
     b.addEventListener("click", function () {
       bellOpen = !bellOpen; if (typeof meritOpen !== "undefined" && meritOpen) { meritOpen = false; meritDraw(); }
       if (bellOpen) { bellDraw(); var latest = newsList().reduce(function (m, e) { var k = String(e.createdAt || e.date); return k > m ? k : m; }, newsSeenAt()); store("news-seen-" + ((role() || {}).role === "child" ? role().child : "parent"), latest); }
@@ -3202,11 +3228,11 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
     });
   }
   function meritSetup() {
-    var hud = document.querySelector(".hud"); if (!hud) return;
+    var hud = document.getElementById("hbRight"); if (!hud) return;
     var b = document.createElement("button"); b.id = "meritChip"; b.className = "merit-chip"; b.type = "button"; b.hidden = true; b.setAttribute("aria-label", "Kristan's merits");
     hud.insertBefore(b, hud.querySelector(".streak"));
     var p = document.createElement("div"); p.id = "meritPanel"; p.className = "bell-panel"; p.hidden = true; p.setAttribute("role", "dialog"); p.setAttribute("aria-label", "Merits");
-    document.querySelector("header").appendChild(p);
+    document.querySelector(".wrap > header").appendChild(p);
     b.addEventListener("click", function () { meritOpen = !meritOpen; bellOpen = false; bellDraw(); meritDraw(); });
   }
   meritSetup();
@@ -3361,10 +3387,20 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
       state.child = null; setChild(m.child);
     }
     var isP = m.role === "parent";
+    document.getElementById("hbar").hidden = false;
+    var isDad = isP && !/mum/i.test(m.display_name || "");
+    Array.prototype.forEach.call(document.querySelectorAll(".hb-health"), function (a) { a.hidden = !isDad; });
     document.getElementById("v-par").hidden = !isP;
     document.querySelector(".tabs").classList.toggle("p8", isP);
     maybeLandOnHomework(); bellSync();
   });
+  (function () {
+    var btn = document.getElementById("hbAppBtn"), menu = document.getElementById("hbAppMenu");
+    function close() { menu.hidden = true; btn.setAttribute("aria-expanded", "false"); }
+    btn.addEventListener("click", function (e) { e.stopPropagation(); menu.hidden = !menu.hidden; btn.setAttribute("aria-expanded", String(!menu.hidden)); });
+    document.addEventListener("click", function (e) { if (!menu.hidden && !menu.contains(e.target)) close(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+  })();
   document.getElementById("signout").addEventListener("click", function () { window.HOLLYEND.signOut(); });
   ["millie", "kristan"].forEach(function (c) { var w = document.getElementById("wav-" + c); if (w) w.innerHTML = avatarSVG(c, {}, "av"); });
   connect();
