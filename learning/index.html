@@ -968,18 +968,25 @@ body.home .sect h2, body.home .fv-top h2 { font-size: 18px; font-weight: 700; le
 .db-chips a.warn { border-color: #ffc46b; } .db-chips a.bad { border-color: #ff7f73; background: rgba(90,24,20,.6); } .db-chips a.ok { border-color: rgba(139,224,176,.55); }
 .db-chips a:hover { background: rgba(20,30,25,.85); }
 @media (max-width: 600px) { .db-chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: -16px; padding-right: 16px; } .db-chips::-webkit-scrollbar { display: none; } .db-hi h1 { margin-bottom: 10px; } .db-hero { --hh: 330px; } .db-hi { padding: 0 16px 16px; } .db-chips a { font-size: 12.5px; padding: 5px 10px; } .db-chips a b { font-size: 14px; } .db-hero .cam .wx { display: none; } }
-.db-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+.db-tabs { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 48px); z-index: 20; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; background: var(--bg); margin: -6px 0 16px; padding: 6px 0 10px; border-bottom: 1px solid var(--line); scroll-margin-top: 48px; }
+.db-tabs::-webkit-scrollbar { display: none; }
+.db-tabs button { font: 600 15px Inter, system-ui, sans-serif; color: var(--muted); background: none; border: 0; border-radius: 10px; padding: 9px 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
+.db-tabs button:hover { color: var(--ink); background: var(--card); }
+.db-tabs button[aria-selected="true"] { color: var(--on-accent); background: var(--accent); }
+.db-tabs .pill { font-size: 12px; padding: 1px 7px; } .db-tabs button[aria-selected="true"] .pill { background: rgba(0,0,0,.18); color: inherit; }
+.db-tabs .pill.soft { background: var(--card2); color: var(--muted); }
 .db-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
-.db-kids { display: flex; flex-direction: column; gap: 16px; }
-@media (min-width: 900px) { .db-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-rows: auto 1fr; grid-template-areas: "a b" "a c"; } .db-c1 { grid-area: a; } .db-c2 { grid-area: b; } .db-c3 { grid-area: c; } }
-@media (min-width: 1400px) { .db-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto; grid-template-areas: "a b c"; } }
-.db-sec { margin: 28px 0 12px; font: 700 20px/1.2 Inter, system-ui, sans-serif; letter-spacing: -.01em; scroll-margin-top: 70px; }
-.db-grid2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
-@media (min-width: 900px) { .db-grid2 { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-areas: "a b" "c c"; } .db-d1 { grid-area: a; } .db-d2 { grid-area: b; } .db-d3 { grid-area: c; } }
-@media (min-width: 1400px) { .db-grid2 { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "a b c"; } }
-.db-segs { display: flex; flex-wrap: wrap; gap: 8px; }
+.db-ov, .db-cal, .db-hl, .db-two { display: grid; gap: 16px; align-items: start; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 760px) { .db-two, .db-hl { grid-template-columns: repeat(2, minmax(0, 1fr)); } .db-ov { grid-template-columns: repeat(2, minmax(0, 1fr)); } .db-ov > .db-col:first-child { grid-column: 1 / -1; } .db-cal { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } .db-cal > .db-col:last-child { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); align-items: start; } }
+@media (min-width: 1280px) { .db-ov { grid-template-columns: minmax(0, 1.2fr) repeat(2, minmax(0, 1fr)); } .db-ov > .db-col:first-child { grid-column: auto; } .db-cal { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, .9fr); } .db-cal > .db-col:last-child { grid-column: auto; display: flex; align-items: stretch; } }
+.db-actbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.db-actbar p { margin: 0; }
+.db-push { margin-top: 16px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 12px 18px; }
+.db-push summary { cursor: pointer; font-weight: 600; color: var(--muted); }
+.db-push .push-box { margin-top: 10px; }
+.db-act.millie { border-top: 4px solid #e0688a; } .db-act.kristan { border-top: 4px solid #22a7f0; }
 .db-act details.ql-row > summary { display: grid; flex-direction: initial; }
-.db-act .qlog { max-height: 720px; overflow-y: auto; }
+.db-hero { margin-bottom: 14px; }
 .db-needs { border-top: 4px solid #ffc46b; }
 .db-h2 { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
 .db-h2 .linkbtn { text-decoration: none; font-size: 14px; }
@@ -3471,9 +3478,9 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
     return '<svg class="db-spark" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(unit) + ' over time"><polyline points="' + xy.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(" ") + '"/>' +
       xy.map(function (p, i) { return '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3.2"><title>' + esc(fmtDay(pts[i].date) + ': ' + pts[i][key] + ' ' + unit) + '</title></circle>'; }).join("") + '</svg>';
   }
-  function healthCard() {
-    if (HH.err) return "";
-    if (!HH.data) return '<section class="card sect db-health" id="db-health"><h2>Kristan’s health</h2><p class="small">Loading…</p></section>';
+  function healthParts() {
+    if (HH.err) return null;
+    if (!HH.data) return { food: '<section class="card sect db-health"><h2>Kristan’s food today</h2><p class="small">Loading…</p></section>', growth: "", med: "" };
     var d = HH.data, t = todayD(), st = d.settings, tgt = +st.kcalTarget || 0, pt = +st.proteinTarget || 0, td = hDay(t);
     var sport = (st.trainingDays || []).indexOf(dow(t)) >= 0, pct = tgt ? Math.min(100, Math.round(td.k / tgt * 100)) : 0;
     var hr = new Date().getHours() + new Date().getMinutes() / 60, pace = tgt ? Math.min(1, Math.max(0, (hr - 7) / 13)) : 0;
@@ -3481,7 +3488,7 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
     var vals = days.map(function (s) { return hDay(s).k; }), mx = Math.max.apply(null, vals.concat([tgt, 1]));
     var past = vals.slice(0, 6).filter(function (v) { return v > 0; }), avg = past.length ? past.reduce(function (a, b) { return a + b; }, 0) / past.length : 0;
     var hit = past.filter(function (v) { return tgt && v >= tgt * .95; }).length;
-    var h = '<section class="card sect db-health" id="db-health"><div class="db-h2"><h2>Kristan’s health</h2><a class="linkbtn" href="/health/">Open Health ↗</a></div>';
+    var R = {}, h = '<section class="card sect db-health"><div class="db-h2"><h2>Kristan’s food today</h2><a class="linkbtn" href="/health/">Open Health ↗</a></div>';
     h += '<div class="db-kcal"><div class="db-kcal-top"><span><b>' + n0(td.k) + '</b> / ' + (tgt ? n0(tgt) : '—') + ' kcal today</span>' + (sport ? '<span class="tag">Football day</span>' : '') + '</div>' +
       '<div class="db-meter" role="img" aria-label="' + pct + '% of today’s calories"><i style="width:' + pct + '%"></i>' + (pace && tgt ? '<em style="left:' + Math.round(pace * 100) + '%" title="Where he should be by now"></em>' : '') + '</div>' +
       '<p class="small">Protein ' + n0(td.p) + (pt ? ' / ' + pt : '') + ' g' + (td.pend ? ' · <b>' + td.pend + ' item' + (td.pend > 1 ? 's' : '') + ' waiting for calories</b> (filled in nightly)' : '') + '</p></div>';
@@ -3490,6 +3497,7 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
       return '<div class="' + cls + '" title="' + esc(fmtDay(s) + ': ' + n0(v) + ' kcal') + '"><i style="height:' + Math.round(v / mx * 100) + '%"></i><span>' + "SMTWTFS"[dow(s)] + '</span></div>'; }).join("") +
       (tgt ? '<b class="db-tline" style="bottom:calc(18px + ' + (tgt / mx * 100).toFixed(1) + '% * (100% - 18px) / 100%)"></b>' : '') + '</div>';
     h += '<p class="small">Last 6 days: ' + (past.length ? 'average <b>' + n0(avg) + ' kcal</b>' + (tgt ? ', target hit ' + hit + ' of ' + past.length + ' days' : '') : 'nothing logged') + '.</p>';
+    R.food = h + '</section>'; h = '';
     var hts = d.growth.filter(function (g) { return g.height_cm; }), wts = d.growth.filter(function (g) { return g.weight_kg; });
     var g = '';
     if (hts.length) {
@@ -3502,11 +3510,11 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
       g += '<div class="db-g"><div><span class="small">Weight</span><b>' + (+w1.weight_kg).toFixed(1) + ' kg</b><span class="small">' + esc(fmtDay(w1.date)) + '</span>' +
         (w0 ? '<span class="small">' + (dw >= 0 ? '+' : '−') + Math.abs(dw).toFixed(1) + ' kg since ' + esc(fmtDay(w0.date)) + '</span>' : '') + '</div>' + spark(wts, "weight_kg", "kg") + '</div>';
     }
-    if (g) h += '<h3 class="fv-sub">Growth</h3><div class="db-grow">' + g + '</div>';
+    R.growth = g ? '<section class="card sect db-health"><div class="db-h2"><h2>Kristan’s growth</h2><a class="linkbtn" href="/health/">All measurements ↗</a></div><div class="db-grow">' + g + '</div></section>' : '';
     var up = d.events.filter(function (e) { return e.date && e.date > t; })[0], last = d.events.filter(function (e) { return e.date && e.date <= t; }).pop();
-    if (up || last) h += '<h3 class="fv-sub">Medical</h3>' + [up ? ['Next', up] : null, last ? ['Latest', last] : null].filter(Boolean).map(function (x) {
-      return '<div class="db-med"><span class="tag' + (x[0] === 'Next' ? ' action' : '') + '">' + x[0] + '</span><div><b>' + esc(x[1].title || "") + (x[1].value ? ' · ' + esc(x[1].value) : '') + '</b><span class="small">' + esc(fmtDay(String(x[1].date).slice(0, 10))) + '</span></div></div>'; }).join("");
-    return h + '</section>';
+    R.med = (up || last) ? '<section class="card sect db-health"><div class="db-h2"><h2>Medical</h2><a class="linkbtn" href="/health/">Records ↗</a></div>' + [up ? ['Next', up] : null, last ? ['Latest', last] : null].filter(Boolean).map(function (x) {
+      return '<div class="db-med"><span class="tag' + (x[0] === 'Next' ? ' action' : '') + '">' + x[0] + '</span><div><b>' + esc(x[1].title || "") + (x[1].value ? ' · ' + esc(x[1].value) : '') + '</b><span class="small">' + esc(fmtDay(String(x[1].date).slice(0, 10))) + '</span></div></div>'; }).join("") + '</section>' : '';
+    return R;
   }
   function dashHero(chips) {
     var hc = window.hollyendClock ? window.hollyendClock() : { sky: "day", time: "", date: "" }, wx = window.HOLLYEND_WX || "clear";
@@ -3542,12 +3550,16 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
       '<p class="small">' + (dt.length ? 'Daily tasks: ' + dtOn.length + ' of ' + dt.length + ' ticked · ' : '') + esc(place) + (extra ? ' · ' + extra : '') + '</p>' + classNow(c) +
       '<div class="row"><a class="btn sm ghost" href="/learning/#' + c + '-homework">Homework</a><a class="btn sm ghost" href="/learning/#' + c + '-progress">Activity log</a><a class="btn sm ghost" href="/learning/#' + c + '-bank">Bank</a></div></section>';
   }
+  var DB_TABS = [["overview", "Overview"], ["calendar", "Calendar"], ["activity", "Activity"], ["health", "Health"]];
+  function dbTab() { var t = state.dbTab || store("db-tab") || "overview"; return DB_TABS.some(function (x) { return x[0] === t; }) ? t : "overview"; }
+  function dbSetTab(t) { state.dbTab = t; store("db-tab", t); dashboardView(); var tb = document.getElementById("dbTabs"); if (tb && tb.getBoundingClientRect().top < 0) tb.scrollIntoView({ block: "start" }); }
+  if (HOME) document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest("[data-dbtab]"); if (!a) return; e.preventDefault(); dbSetTab(a.dataset.dbtab); });
   function dashboardView() {
     document.body.classList.add("fam");
     if (!role()) { app.innerHTML = '<p class="small" style="padding:40px 0;text-align:center">Loading…</p>'; return; }
     if (!isParentNow()) { location.replace("/learning/"); return; }
     healthLoad();
-    var t = todayD(), tm = addDays(t, 1), wk = addDays(t, 7);
+    var tab = dbTab(), t = todayD(), tm = addDays(t, 1), wk = addDays(t, 7);
     var waiting = state.hw.filter(function (h) { var m = hwMark(h); return h.active !== false && m && m.status === "ticked"; });
     var todos = state.events.filter(function (e) { return e.type === "action" && !e.done && e.active !== false && String(e.date).slice(0, 10) <= wk; }).sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); });
     var owing = ["millie", "kristan"].filter(function (c) { return owedFor(c).total > 0; });
@@ -3555,42 +3567,49 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
     var late = ["millie", "kristan"].reduce(function (n, c) { return n + hwFor(c).filter(hwPending).filter(function (x) { return x.due && String(x.due).slice(0, 10) < t; }).length; }, 0);
     var tt = dueSoon().filter(function (x) { return x.kind === "event"; });
     var hols = state.events.filter(function (e) { return e.type === "holiday" && e.active !== false && String(e.date).slice(0, 10) > t; }).sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); })[0];
-    var chips = '<a href="#db-needs" class="' + (needs ? 'warn' : 'ok') + '"><b>' + needs + '</b> need' + (needs === 1 ? 's' : '') + ' you</a>' +
-      '<a href="#db-kids" class="' + (late ? 'bad' : 'ok') + '"><b>' + late + '</b> overdue homework</a>' +
-      '<a href="#db-today"><b>' + tt.length + '</b> on today &amp; tomorrow</a><a href="#db-cal">Calendar</a>';
-    if (HH.data) { var td = hDay(t), tg = +HH.data.settings.kcalTarget || 0; chips += '<a href="#db-health">K <b>' + n0(td.k) + '</b>' + (tg ? ' / ' + n0(tg) : '') + ' kcal</a>'; }
-    if (hols) chips += '<a href="#db-terms"><b>' + lgDiff(String(hols.date).slice(0, 10), t) + '</b> days to ' + esc(hols.title) + '</a>';
+    var HP = healthParts();
+    var chips = '<a href="#" data-dbtab="overview" class="' + (needs ? 'warn' : 'ok') + '"><b>' + needs + '</b> need' + (needs === 1 ? 's' : '') + ' you</a>' +
+      '<a href="#" data-dbtab="overview" class="' + (late ? 'bad' : 'ok') + '"><b>' + late + '</b> overdue homework</a>' +
+      '<a href="#" data-dbtab="calendar"><b>' + tt.length + '</b> on today &amp; tomorrow</a>';
+    if (HH.data) { var td = hDay(t), tg = +HH.data.settings.kcalTarget || 0; chips += '<a href="#" data-dbtab="health">K <b>' + n0(td.k) + '</b>' + (tg ? ' / ' + n0(tg) : '') + ' kcal</a>'; }
+    if (hols) chips += '<a href="#" data-dbtab="calendar"><b>' + lgDiff(String(hols.date).slice(0, 10), t) + '</b> days to ' + esc(hols.title) + '</a>';
     dbChips = chips; dbHeroDraw();
 
-    var N = '<section class="card sect db-needs" id="db-needs"><h2>Needs you' + (needs ? ' <span class="pill">' + needs + '</span>' : '') + '</h2>';
-    if (!needs) N += '<p class="small">Nothing waiting for you. 🎉</p>';
-    if (waiting.length) N += '<h3 class="fv-sub">Homework to check</h3><div class="hw-list">' + waiting.map(function (x) { return hwCard(x, true).replace('<b class="hw-title">', '<span class="small">' + cname(x.child) + '</span><b class="hw-title">'); }).join("") + '</div>';
-    if (todos.length) N += '<h3 class="fv-sub">To do this week</h3>' + todos.map(function (e) {
-      var d = String(e.date).slice(0, 10);
-      return evRow({ kind: "action", type: "action", id: e.id, child: e.child, date: d, time: "", title: e.title, details: (d < t ? "Was due " : "Due ") + fmtDay(d) + " · " + cname(e.child) + (e.details ? " · " + e.details : ""), formUrl: e.formUrl, linkUrl: e.linkUrl, done: false }); }).join("");
-    if (owing.length) N += '<h3 class="fv-sub">Money to pay</h3>' + owing.map(function (c) { return owedCard(c, true); }).join("");
-    N += '</section>';
-    var T = '<section class="card sect" id="db-today"><h2>Today and tomorrow</h2>' + (tt.length ? tt.map(function (x) { return '<div class="ev ' + esc(x.child) + '"><span class="ev-time w">' + esc(x.when) + '</span><div class="ev-body"><b>' + esc(x.title) + '</b><span class="small">' + esc(x.sub) + ' · ' + cname(x.child) + '</span>' + (x.bring ? '<span class="bring">Bring: ' + esc(x.bring) + '</span>' : '') + '</div></div>'; }).join("") : '<p class="small">No school events today or tomorrow.</p>') +
-      '<div class="row"><a class="btn sm ghost" href="#db-cal">See the calendar</a></div></section>';
-    var K = '<div class="db-kids" id="db-kids">' + kidCard("millie", t, tm) + kidCard("kristan", t, tm) + '</div>';
-    var nw = newsList(14).slice(0, 5);
-    var S = healthCard();
-    if (nw.length) S += '<section class="card sect"><h2>Latest school news</h2><div class="news">' + nw.map(function (e) { return '<div class="nw ' + esc(e.child) + '"><div class="ev-tags"><span class="small">' + esc(fmtDay(String(e.date).slice(0, 10))) + ' · ' + (e.child === "both" ? "Whole school" : cname(e.child)) + '</span>' + (e.audience === "parents" ? '<span class="tag action">Parents</span>' : '') + '</div><b>' + esc(e.title) + '</b>' + (e.details ? '<span class="small">' + esc(e.details) + '</span>' : '') + '</div>'; }).join("") + '</div></section>';
-    S += termCard(t).replace('<section class="card sect">', '<section class="card sect" id="db-terms">').replace(/<div class="row"><button class="btn sm ghost" id="fvTerms">All term dates<\/button><\/div>/, '<div class="row"><a class="btn sm ghost" href="/learning/#calendar">All term dates</a></div>');
-    var pb = pushBox(); if (pb) S += '<section class="card sect"><h2>Notifications on this device</h2>' + pb + '</section>';
-    var da = state.dbAct || (state.dbAct = { who: "all", days: 3 }), kids = da.who === "all" ? ["millie", "kristan"] : [da.who];
-    var seg = function (key, opts, cur) { return '<div class="seg" role="group">' + opts.map(function (o) { return '<button data-dbact="' + key + ':' + o[0] + '" aria-pressed="' + (String(cur) === String(o[0])) + '">' + o[1] + '</button>'; }).join("") + '</div>'; };
-    var A = '<section class="card sect db-act" id="db-activity"><div class="db-h2"><h2>Activity</h2><a class="linkbtn" href="/learning/#' + (da.who === "all" ? "millie" : da.who) + '-progress">Full log ↗</a></div>' +
-      '<div class="db-segs">' + seg("who", [["all", "Both"], ["millie", "Millie"], ["kristan", "Kristan"]], da.who) + seg("days", [[1, "Today"], [3, "3 days"], [7, "7 days"]], da.days) + '</div>' +
-      '<p class="small">Quizzes, homework, games and rewards on Hollyend. Tap a quiz to see the questions.</p>' + activityLog(kids, da.days) + '</section>';
-    var C = calSections();
-    var CAL = C.grid + C.sel + C.add;
-    app.innerHTML = '<div class="db-grid"><div class="db-col db-c1">' + N + T + '</div><div class="db-col db-c2">' + K + '</div><div class="db-col db-c3">' + S + '</div></div>' +
-      '<h2 class="db-sec" id="db-cal">Calendar and activity</h2><div class="db-grid2"><div class="db-col db-d1">' + CAL + '</div><div class="db-col db-d2">' + C.next4 + '</div><div class="db-col db-d3">' + A + '</div></div>';
+    var tabs = DB_TABS.filter(function (x) { return x[0] !== "health" || HP; });
+    var bar = '<nav class="db-tabs" id="dbTabs" role="tablist" aria-label="Dashboard">' + tabs.map(function (x) {
+      var badge = x[0] === "overview" && needs ? '<span class="pill">' + needs + '</span>' : x[0] === "calendar" && tt.length ? '<span class="pill soft">' + tt.length + '</span>' : '';
+      return '<button role="tab" data-dbtab="' + x[0] + '" aria-selected="' + (tab === x[0]) + '">' + x[1] + badge + '</button>'; }).join("") + '</nav>';
+    var out = '';
+    if (tab === "overview") {
+      var N = '<section class="card sect db-needs"><h2>Needs you' + (needs ? ' <span class="pill">' + needs + '</span>' : '') + '</h2>';
+      if (!needs) N += '<p class="small">Nothing waiting for you. 🎉</p>';
+      if (waiting.length) N += '<h3 class="fv-sub">Homework to check</h3><div class="hw-list">' + waiting.map(function (x) { return hwCard(x, true).replace('<b class="hw-title">', '<span class="small">' + cname(x.child) + '</span><b class="hw-title">'); }).join("") + '</div>';
+      if (todos.length) N += '<h3 class="fv-sub">To do this week</h3>' + todos.map(function (e) {
+        var d = String(e.date).slice(0, 10);
+        return evRow({ kind: "action", type: "action", id: e.id, child: e.child, date: d, time: "", title: e.title, details: (d < t ? "Was due " : "Due ") + fmtDay(d) + " · " + cname(e.child) + (e.details ? " · " + e.details : ""), formUrl: e.formUrl, linkUrl: e.linkUrl, done: false }); }).join("");
+      if (owing.length) N += '<h3 class="fv-sub">Money to pay</h3>' + owing.map(function (c) { return owedCard(c, true); }).join("");
+      N += '</section>';
+      var T = '<section class="card sect"><h2>Today and tomorrow</h2>' + (tt.length ? tt.map(function (x) { return '<div class="ev ' + esc(x.child) + '"><span class="ev-time w">' + esc(x.when) + '</span><div class="ev-body"><b>' + esc(x.title) + '</b><span class="small">' + esc(x.sub) + ' · ' + cname(x.child) + '</span>' + (x.bring ? '<span class="bring">Bring: ' + esc(x.bring) + '</span>' : '') + '</div></div>'; }).join("") : '<p class="small">No school events today or tomorrow.</p>') +
+        '<div class="row"><button class="btn sm ghost" data-dbtab="calendar">Open the calendar</button></div></section>';
+      out = '<div class="db-ov"><div class="db-col">' + N + '</div><div class="db-col">' + kidCard("millie", t, tm) + T + '</div><div class="db-col">' + kidCard("kristan", t, tm) + (HP ? HP.food.replace('</section>', '<div class="row"><button class="btn sm ghost" data-dbtab="health">Growth and medical</button></div></section>') : '') + '</div></div>';
+    } else if (tab === "calendar") {
+      var C = calSections(), nw = newsList(21).slice(0, 8);
+      var NW = nw.length ? '<section class="card sect"><h2>School news</h2><div class="news">' + nw.map(function (e) { return '<div class="nw ' + esc(e.child) + '"><div class="ev-tags"><span class="small">' + esc(fmtDay(String(e.date).slice(0, 10))) + ' · ' + (e.child === "both" ? "Whole school" : cname(e.child)) + '</span>' + (e.audience === "parents" ? '<span class="tag action">Parents</span>' : '') + '</div><b>' + esc(e.title) + '</b>' + (e.details ? '<span class="small">' + esc(e.details) + '</span>' : '') + '</div>'; }).join("") + '</div></section>' : '';
+      var TD = termCard(t).replace(/<div class="row"><button class="btn sm ghost" id="fvTerms">All term dates<\/button><\/div>/, '');
+      out = '<div class="db-cal"><div class="db-col">' + C.grid + C.sel + C.add + '</div><div class="db-col">' + C.next4 + '</div><div class="db-col">' + TD + NW + '</div></div>';
+    } else if (tab === "activity") {
+      var days = state.dbDays || 3;
+      var seg = '<div class="seg" role="group" aria-label="How far back">' + [[1, "Today"], [3, "3 days"], [7, "7 days"]].map(function (o) { return '<button data-dbdays="' + o[0] + '" aria-pressed="' + (days === o[0]) + '">' + o[1] + '</button>'; }).join("") + '</div>';
+      out = '<div class="db-actbar"><p class="small">Quizzes, homework, games and rewards on Hollyend. Tap a quiz to see the questions.</p>' + seg + '</div><div class="db-two">' + ["millie", "kristan"].map(function (c) {
+        return '<section class="card sect db-act ' + c + '"><div class="db-h2"><h2>' + cname(c) + '</h2><a class="linkbtn" href="/learning/#' + c + '-progress">Full log ↗</a></div>' + activityLog([c], days) + '</section>'; }).join("") + '</div>';
+    } else if (tab === "health" && HP) {
+      out = '<div class="db-hl"><div class="db-col">' + HP.food + HP.med + '</div><div class="db-col">' + HP.growth + '</div></div>';
+    }
+    var pb = pushBox(); if (pb && tab === "overview") out += '<details class="db-push"><summary>Notifications on this device</summary>' + pb + '</details>';
+    app.innerHTML = bar + '<div class="db-panel" role="tabpanel">' + out + '</div>';
     bindHomework(); bindCalendar(); bindOwed(dashboardView);
-    [].forEach.call(app.querySelectorAll("[data-dbact]"), function (b) { b.addEventListener("click", function () { var kv = b.dataset.dbact.split(":"); state.dbAct[kv[0]] = kv[0] === "days" ? +kv[1] : kv[1]; dashboardView(); }); });
+    [].forEach.call(app.querySelectorAll("[data-dbdays]"), function (b) { b.addEventListener("click", function () { state.dbDays = +b.dataset.dbdays; dashboardView(); }); });
   }
-
   /* ---------- Flashcards (Millie's spellings, Kristan's French list) ---------- */
   function flashCards() {
     if (state.child === "millie") return SPELLING.words.map(function (w) { return { front: w.meaning, ctx: w.sentences[0].replace("___", "_____"), speakFront: w.sentences[0].replace("___", w.word), back: w.word, extra: w.chunks + " · " + w.hook, speak: w.word, lang: "en-GB" }; });
