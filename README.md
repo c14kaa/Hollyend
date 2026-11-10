@@ -4,7 +4,11 @@ Practice quizzes, spelling tests, a revision library, characters, a shop and a p
 
 ## How it fits together
 - **Site**: plain static files, hosted on Vercel from this repo. Every push to `main` goes live.
-  - `index.html` – the app (built from `src/page.html` by `python3 src/build.py`)
+  - `src/page.html` is built by `python3 src/build.py` into two pages:
+    - `/learning/index.html` – the Learning app (children land here; old `/` links forward here)
+    - `/index.html` – the Hollyend home: the parents' dashboard (Family overview + Kristan's Health summary). Children who open `/` are sent to `/learning/`.
+  - Deep links into Learning: `/learning/#millie-homework`, `#kristan-bank`, `#kristan-progress`, `#calendar`
+  - `themes.js` also holds Millie's jungle animals (`CRITTER_SVG`, `CRITTERS`, `PEEK`)
   - `engine.js` – questions, Millie's weekly spelling list, revision library (updated weekly)
   - `words.js` – word banks (built from `src/words/*.js`): challenge words for both, Kristan's English words and French bank, with spaced-repetition picking. Add words to `src/words/`, run `python3 src/build.py`, then `node tests/words.test.js` (fails on duplicates)
   - `journey.js`, `league.js` – Millie's space journey and Kristan's league

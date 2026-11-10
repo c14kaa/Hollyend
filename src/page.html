@@ -188,7 +188,7 @@ body.k .earn { font-size: 30px; }
 @media (max-aspect-ratio: 1/1) { #login { --h: clamp(300px, 66vw, 56vh); } }
 #login .art { position: absolute; bottom: 0; left: 50%; width: var(--w); aspect-ratio: 1672 / 728; transform: translateX(-50%); }
 #login .art img { width: 100%; height: 100%; display: block; -webkit-mask: linear-gradient(#000 90%, transparent); mask: linear-gradient(#000 90%, transparent); }
-#login .lawn { position: absolute; inset: calc(var(--h) * .8) 0 0 0; background: url("hollyend-lawn.png") 50% 0 / var(--w) auto repeat-y, #5db026; }
+#login .lawn { position: absolute; inset: calc(var(--h) * .8) 0 0 0; background: url("/hollyend-lawn.png") 50% 0 / var(--w) auto repeat-y, #5db026; }
 .hscene .fx { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .6s; }
 .hscene .tint { inset: 0; }
 .hscene[data-sky="sunset"] .art img, .hscene[data-sky="sunset"] .lawn { filter: saturate(1.1) sepia(.18) brightness(.97); }
@@ -925,12 +925,81 @@ body.k .merit-chip { border-radius: 8px; border-width: 1px; border-color: var(--
 @media (max-width: 420px) { .hbar .streak small, .hbar .merit-chip small { display: none; } .hbar-in { gap: 10px; } .hb-right { gap: 6px; } }
 .bell-panel { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 54px); right: max(8px, env(safe-area-inset-right, 0px)); width: min(380px, calc(100vw - 16px)); z-index: 55; }
 body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
+/* ---------- Hollyend home: parents' dashboard ---------- */
+body.home {
+  --bg: #0c120f; --card: #151d19; --card2: #1c2621; --ink: #eef4f0; --muted: #9eafa5; --line: #283630;
+  --accent: #8be0b0; --accent2: #ffc46b; --on-accent: #08170f; --accent-soft: #183326;
+  --good: #5fd896; --good-soft: #10291c; --bad: #ff7f73; --bad-soft: #3a1a18; --tip: #ffd36b; --tip-soft: #332c18;
+  --gold: #ffd36b; --gold-soft: #33301a;
+  --display: "Inter", "Segoe UI", system-ui, sans-serif; --body: "Inter", "Segoe UI", system-ui, sans-serif;
+  font-size: 15.5px; background: var(--bg);
+}
+body.home .wrap > header, body.home .calc-fab { display: none !important; }
+body.home .wrap { max-width: 1680px; padding-top: 0; }
+body.home .card { border-radius: 16px; padding: 18px; gap: 12px; box-shadow: 0 6px 20px rgba(0,0,0,.22); scroll-margin-top: 70px; }
+body.home .sect h2, body.home .fv-top h2 { font-size: 18px; font-weight: 700; letter-spacing: -.01em; }
+#dbHero:empty { display: none; }
+.db-hero { --hh: clamp(250px, 34vw, 560px); height: var(--hh); aspect-ratio: auto; border-radius: 0; margin: 0 0 22px; box-shadow: none; background: #3d6e2a; }
+.db-hero .art { inset: auto; left: 50%; top: 50%; width: max(100%, calc(var(--hh) * 2.2967)); transform: translate(-50%, -54%); }
+.db-hero .cam .rec, .db-hero .cam i:nth-child(1) { top: 14px; } .db-hero .cam .clk { top: 12px; }
+.db-hero::after { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; background: linear-gradient(to top, rgba(6,12,9,.88), rgba(6,12,9,.45) 34%, transparent 62%); }
+.db-hi { position: absolute; z-index: 4; left: 0; right: 0; bottom: 0; margin: 0 auto; max-width: 1680px; padding: 0 max(28px, env(safe-area-inset-left, 0px)) 24px; color: #fff; }
+.db-hi h1 { margin: 2px 0 12px; font: 700 clamp(26px, 3.6vw, 46px)/1.05 Inter, system-ui, sans-serif; letter-spacing: -.02em; text-shadow: 0 2px 12px rgba(0,0,0,.5); }
+.db-date { font-size: 14px; opacity: .9; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
+.db-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.db-chips a { color: #fff; text-decoration: none; background: rgba(20,30,25,.62); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.18); border-radius: 999px; padding: 7px 14px; font-size: 14px; white-space: nowrap; }
+.db-chips a b { font-size: 16px; }
+.db-chips a.warn { border-color: #ffc46b; } .db-chips a.bad { border-color: #ff7f73; background: rgba(90,24,20,.6); } .db-chips a.ok { border-color: rgba(139,224,176,.55); }
+.db-chips a:hover { background: rgba(20,30,25,.85); }
+@media (max-width: 600px) { .db-chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: -16px; padding-right: 16px; } .db-chips::-webkit-scrollbar { display: none; } .db-hi h1 { margin-bottom: 10px; } .db-hero { --hh: 330px; } .db-hi { padding: 0 16px 16px; } .db-chips a { font-size: 12.5px; padding: 5px 10px; } .db-chips a b { font-size: 14px; } .db-hero .cam .wx { display: none; } }
+.db-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+.db-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.db-kids { display: flex; flex-direction: column; gap: 16px; }
+@media (min-width: 900px) { .db-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-rows: auto 1fr; grid-template-areas: "a b" "a c"; } .db-c1 { grid-area: a; } .db-c2 { grid-area: b; } .db-c3 { grid-area: c; } }
+@media (min-width: 1400px) { .db-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto; grid-template-areas: "a b c"; } }
+.db-act { margin-top: 16px; }
+.db-needs { border-top: 4px solid #ffc46b; }
+.db-h2 { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.db-h2 .linkbtn { text-decoration: none; font-size: 14px; }
+.db-kid .fv-top { flex-wrap: wrap; }
+.db-today { margin-left: auto; font-size: 12.5px; padding: 4px 10px; border-radius: 999px; background: var(--card2); color: var(--muted); border: 1px solid var(--line); }
+.db-today.on { color: var(--good); border-color: var(--good); }
+.db-kid .fv-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 4px 0; }
+@media (max-width: 480px) { .db-kid .fv-stats { grid-template-columns: repeat(2, 1fr); } }
+.fv-stats .warn b { color: var(--gold); } .fv-stats .ok b { color: var(--good); }
+.db-kid .row { flex-wrap: wrap; gap: 8px; }
+.db-health { border-top: 4px solid #22a7f0; }
+.db-kcal-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.db-kcal-top b { font-size: 26px; font-variant-numeric: tabular-nums; }
+.db-meter { position: relative; height: 12px; border-radius: 999px; background: var(--card2); border: 1px solid var(--line); margin: 8px 0 6px; }
+.db-meter i { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: linear-gradient(90deg, #2bb673, #8be0b0); }
+.db-meter em { position: absolute; top: -4px; bottom: -4px; width: 3px; margin-left: -1px; background: #ffb35c; border-radius: 2px; }
+.db-bars { position: relative; display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; height: 120px; align-items: end; }
+.db-bars > div { height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px; }
+.db-bars i { width: 100%; max-width: 34px; min-height: 2px; border-radius: 6px 6px 2px 2px; background: #e9a65c; flex: none; max-height: calc(100% - 18px); }
+.db-bars .hit i { background: #2bb673; } .db-bars .now i { background: #a9d8be; } .db-bars .none i { background: var(--line); }
+.db-bars span { font-size: 11.5px; color: var(--muted); height: 14px; line-height: 14px; }
+.db-tline { position: absolute; left: 0; right: 0; height: 0; border-top: 2px dashed rgba(255,196,107,.7); pointer-events: none; }
+.db-grow { display: grid; gap: 10px; }
+.db-g { display: flex; justify-content: space-between; align-items: center; gap: 12px; background: var(--card2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.db-g > div { display: flex; flex-direction: column; min-width: 0; }
+.db-g b { font-size: 22px; font-variant-numeric: tabular-nums; }
+.db-spark { width: 46%; max-width: 220px; height: 56px; flex: none; }
+.db-spark polyline { fill: none; stroke: #8be0b0; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.db-spark circle { fill: #151d19; stroke: #8be0b0; stroke-width: 2; }
+.db-med { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; }
+.db-med > div { display: flex; flex-direction: column; }
+.db-health .tag { font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: var(--card2); border: 1px solid var(--line); color: var(--muted); flex: none; }
+.db-health .db-kcal-top .tag { background: #3a2a12; color: #f2b66e; border-color: transparent; }
+body.home .hbar { margin-bottom: 0; }
+body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.db-g .small b { font-size: inherit; }
 </style>
 
 <div id="login" hidden>
   <div class="stage"><div class="scene hscene" data-sky="day">
     <div class="pic"><div class="art" role="img" aria-label="Hollyend: the house, the horses in the field, the double garage, the car port and the tree with a swing">
-      <img src="hollyend-house.webp" alt="" width="1672" height="728" decoding="async" fetchpriority="high">
+      <img src="/hollyend-house.webp" alt="" width="1672" height="728" decoding="async" fetchpriority="high">
     </div></div>
     <div class="lawn"></div>
     <div class="fx rain"></div><div class="fx rain b"></div>
@@ -1008,8 +1077,8 @@ body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
 <header class="hbar" id="hbar" hidden>
   <div class="hbar-in">
     <a class="hb-brand" href="/" aria-label="Hollyend"><span class="hb-logo" aria-hidden="true">H</span><span class="hb-name">Hollyend</span></a>
-    <nav class="hb-apps" aria-label="Hollyend sites"><a href="/" aria-current="page">Learning</a><a href="/health/" class="hb-health" hidden>Health</a><a href="https://nightdoor.vercel.app" target="_blank" rel="noopener">Nightdoor<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5H5V6h5"/></svg></a></nav>
-    <div class="hb-menuwrap hb-phone"><button class="hb-appbtn" id="hbAppBtn" type="button" aria-expanded="false" aria-label="Switch site: Learning">Learning<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="hb-menu" id="hbAppMenu" hidden><a href="/" aria-current="page">Learning</a><a href="/health/" class="hb-health" hidden>Health</a><a href="https://nightdoor.vercel.app" target="_blank" rel="noopener">Nightdoor<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5H5V6h5"/></svg></a></div></div>
+    <nav class="hb-apps" aria-label="Hollyend sites"><a href="/" class="hb-home" hidden>Home</a><a href="/learning/" class="hb-learn" aria-current="page">Learning</a><a href="/health/" class="hb-health" hidden>Health</a><a href="https://nightdoor.vercel.app" target="_blank" rel="noopener">Nightdoor<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5H5V6h5"/></svg></a></nav>
+    <div class="hb-menuwrap hb-phone"><button class="hb-appbtn" id="hbAppBtn" type="button" aria-expanded="false" aria-label="Switch site: Learning">Learning<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="hb-menu" id="hbAppMenu" hidden><a href="/" class="hb-home" hidden>Home</a><a href="/learning/" class="hb-learn" aria-current="page">Learning</a><a href="/health/" class="hb-health" hidden>Health</a><a href="https://nightdoor.vercel.app" target="_blank" rel="noopener">Nightdoor<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5H5V6h5"/></svg></a></div></div>
     <div class="hb-right" id="hbRight"><div class="streak off" id="streak" aria-live="polite"></div></div>
   </div>
 </header>
@@ -1056,9 +1125,9 @@ body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
-<script src="supa-adapter.js"></script>
-<script src="journey.js"></script>
-<script src="league.js"></script>
+<script src="/supa-adapter.js"></script>
+<script src="/journey.js"></script>
+<script src="/league.js"></script>
 <script>
 /*__ENGINE__*/
 /*__PROGRESS__*/
@@ -1066,6 +1135,7 @@ body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
 </script>
 <script>
 (function () {
+  var HOME = !!window.HOLLYEND_HOME;
   var state = { child: "millie", mode: "mix", level: 1, view: "quiz", qs: [], i: 0, answers: [], started: false, saved: null,
     shop: { cat: null, tryOn: null, confirm: null, msg: "" }, bankAmt: 50, bankConfirm: false, payConfirm: null, bankMsg: "", matches: [], postcard: null, match: null, restDays: [],
     hw: [], hwDone: [], daily: [], dailyTicks: [], hwBusy: {}, hwMsg: "", pushStatus: null, flash: null, events: [], merits: [], calWho: "all", calMonth: null, calDay: null, calMsg: "" };
@@ -1254,7 +1324,7 @@ body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
     if (g === "me" && window.hollyendFx && !app.querySelector(":scope > .home-pic")) {
       var hc = window.hollyendClock(), wxName = window.hollyendWxLabel(hc.sky, window.HOLLYEND_WX);
       app.insertAdjacentHTML("afterbegin",
-      '<div class="home-pic hscene" data-sky="' + hc.sky + '" data-wx="' + window.HOLLYEND_WX + '"><div class="art" role="img" aria-label="Live view of Hollyend: ' + hc.time.slice(0, 5) + ' UK time, ' + wxName.toLowerCase() + '"><img src="hollyend-house.webp" alt="" width="1672" height="728" decoding="async">' +
+      '<div class="home-pic hscene" data-sky="' + hc.sky + '" data-wx="' + window.HOLLYEND_WX + '"><div class="art" role="img" aria-label="Live view of Hollyend: ' + hc.time.slice(0, 5) + ' UK time, ' + wxName.toLowerCase() + '"><img src="/hollyend-house.webp" alt="" width="1672" height="728" decoding="async">' +
       window.hollyendFx() + '</div><div class="fx rain"></div><div class="fx rain b"></div>' +
       '<div class="cam" aria-hidden="true"><i></i><i></i><i></i><i></i><span class="rec">LIVE · CAM 1</span><span class="clk"><b>' + hc.time + '</b><span>' + hc.date + '</span></span><span class="wx">HOLLYEND · ' + wxName.toUpperCase() + '</span></div>' +
       '<span class="hp-cap">' + (state.child === "millie" ? "Home sweet home, Millie" : "Home ground") + '</span></div>');
@@ -1318,10 +1388,13 @@ body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
   }
   function busy() { return (state.view === "world" && !!state.game && state.game.phase !== "base") || (state.started && (state.view === "quiz" || state.mode === "match")) || (state.view === "quiz" && !!state.flash) || (state.view === "homework" && !!state.hwFeel); }
   function refresh() { autoVerify(); chrome(); hwBadge(); bellSync(); meritSync(); if (!busy()) render(); }
-  var hwLoaded = false, landed = false, landHash = (location.hash || "").replace("#", "");
+  var deep = null, hwLoaded = false, landed = false, landHash = (location.hash || "").replace("#", "");
   function maybeLandOnHomework() {
     if (landed || !hwLoaded || !role()) return; landed = true;
-    if (role().role === "parent") { if (!landHash || landHash === "family") setView("parents"); return; }
+    if (HOME) return;
+    if (deep && deep.view !== "homework") { setView(deep.view); return; }
+    if (deep) landHash = "homework";
+    if (role().role === "parent") { if (!landHash || landHash === "homework") setView("homework"); return; }
     if (landHash === "homework" || (!landHash && state.view === "quiz" && !state.started && hwOpen(state.child).length)) setView("homework");
   }
   function equipped(c) { return (profiles[c || state.child] || {}).equipped || {}; }
@@ -1369,11 +1442,11 @@ body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
   function setChild(c) {
     var m = role(); if (m && m.role === "child" && c !== m.child) return;
     state.child = c;
-    document.body.classList.toggle("k", c === "kristan");
-    document.body.classList.toggle("m", c === "millie");
+    document.body.classList.toggle("k", !HOME && c === "kristan");
+    document.body.classList.toggle("m", !HOME && c === "millie");
     document.getElementById("title").innerHTML = c === "millie" ? millieTitle() : '<em id="who">Kristan</em>';
     document.getElementById("sub").hidden = c === "millie";
-    var tc = document.querySelector('meta[name="theme-color"]'); if (tc) tc.setAttribute("content", c === "millie" ? millieTheme(millieZone(state.view)).meta : "#07090d");
+    var tc = !HOME && document.querySelector('meta[name="theme-color"]'); if (tc) tc.setAttribute("content", c === "millie" ? millieTheme(millieZone(state.view)).meta : "#07090d");
     state.shop = { cat: null, tryOn: null, confirm: null, msg: "" }; state.bankConfirm = false; state.payConfirm = null; state.bankMsg = ""; state.bankAmt = 50;
     document.getElementById("pick-millie").setAttribute("aria-pressed", c === "millie");
     document.getElementById("pick-kristan").setAttribute("aria-pressed", c === "kristan");
@@ -1420,6 +1493,7 @@ body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
     newQuiz();
   }
   function setView(v) {
+    if (HOME && v !== "parents") { location.href = "/learning/#" + (v === "calendar" ? "calendar" : state.child + "-" + v); return; }
     var leaving = state.mode === "match" && v !== "world";
     state.view = v;
     document.getElementById("v-world").setAttribute("aria-pressed", v === "world");
@@ -1448,6 +1522,7 @@ body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
     app.setAttribute("data-view", state.view === "quiz" && state.flash ? "quiz" : state.view);
     var zone = state.child === "millie" ? millieZone(state.view) : "main";
     if (document.body.getAttribute("data-zone") !== zone) { document.body.setAttribute("data-zone", zone); var mc = document.querySelector('meta[name="theme-color"]'); if (mc && state.child === "millie") mc.setAttribute("content", millieTheme(zone).meta); }
+    if (HOME) return dashboardView();
     if (state.view === "homework") return homeworkView();
     if (state.view === "calendar") return calendarView();
     if (state.view === "parents") return isParentNow() ? familyView() : (state.view = "homework", homeworkView());
@@ -2979,7 +3054,8 @@ body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
 
   /* ---------- Calculator (pops up from the corner; hidden while a quiz or match is running) ---------- */
   var calc = { open: false, expr: "", res: "", err: false, hist: [] };
-  function calcAllowed() { return !(state.started && (state.view === "quiz" || state.mode === "match")) && !(state.view === "world" && state.game); }
+  /* Kristan only, and at all times (quizzes, matches and games included). Millie never gets it. */
+  function calcAllowed() { return !HOME && state.child === "kristan"; }
   function calcEval(src) {
     var s = src.replace(/\s+/g, ""), i = 0;
     function peek() { return s[i]; }
@@ -3135,7 +3211,7 @@ body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
     b.innerHTML = BELL + '<b class="hw-badge" id="bell-n" hidden>0</b>';
     hud.appendChild(b);
     var p = document.createElement("div"); p.id = "bellPanel"; p.className = "bell-panel"; p.hidden = true; p.setAttribute("role", "dialog"); p.setAttribute("aria-label", "Notifications");
-    document.querySelector(".wrap > header").appendChild(p);
+    document.body.appendChild(p);
     b.addEventListener("click", function () {
       bellOpen = !bellOpen; if (typeof meritOpen !== "undefined" && meritOpen) { meritOpen = false; meritDraw(); }
       if (bellOpen) { bellDraw(); var latest = newsList().reduce(function (m, e) { var k = String(e.createdAt || e.date); return k > m ? k : m; }, newsSeenAt()); store("news-seen-" + ((role() || {}).role === "child" ? role().child : "parent"), latest); }
@@ -3211,7 +3287,7 @@ body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
     var b = document.createElement("button"); b.id = "meritChip"; b.className = "merit-chip"; b.type = "button"; b.hidden = true; b.setAttribute("aria-label", "Kristan's merits");
     hud.insertBefore(b, hud.querySelector(".streak"));
     var p = document.createElement("div"); p.id = "meritPanel"; p.className = "bell-panel"; p.hidden = true; p.setAttribute("role", "dialog"); p.setAttribute("aria-label", "Merits");
-    document.querySelector(".wrap > header").appendChild(p);
+    document.body.appendChild(p);
     b.addEventListener("click", function () { meritOpen = !meritOpen; bellOpen = false; bellDraw(); meritDraw(); });
   }
   meritSetup();
@@ -3288,6 +3364,155 @@ body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
     var ft = document.getElementById("fvTerms"); if (ft) ft.addEventListener("click", function () { setView("calendar"); setTimeout(function () { var x = [].filter.call(app.querySelectorAll("h2"), function (e) { return e.textContent === "Term dates"; })[0]; if (x) x.scrollIntoView({ behavior: "smooth", block: "start" }); }, 50); });
   }
 
+  /* ---------- Hollyend home (served at /): the parents' dashboard ----------
+     Same data as the old Family tab, plus a summary of Kristan's Hollyend Health record.
+     Children who open / are sent straight to /learning/. */
+  var HH = { data: null, loading: false, err: false, at: 0 };
+  function n0(x) { return Math.round(Number(x) || 0).toLocaleString("en-GB"); }
+  function dow(s) { return new Date(s + "T12:00:00Z").getUTCDay(); }
+  function healthLoad() {
+    var H = window.HOLLYEND; if (!HOME || !H || !H.sb || HH.loading || !isParentNow()) return;
+    if ((HH.data || HH.err) && Date.now() - HH.at < 120000) return;
+    HH.loading = true;
+    var from = addDays(todayD(), -13);
+    Promise.all([
+      H.sb.from("health_docs").select("coll,id,data").eq("person", "kristan").in("coll", ["growth", "settings", "events"]),
+      H.sb.from("health_docs").select("id,data").eq("person", "kristan").eq("coll", "log").gte("id", from)
+    ]).then(function (r) {
+      HH.loading = false; HH.at = Date.now();
+      if (r[0].error || r[1].error || !r[0].data.length) { HH.err = true; HH.data = null; if (!busy()) render(); return; }
+      var d = { growth: [], settings: {}, events: [], log: {} };
+      r[0].data.forEach(function (x) { if (x.coll === "growth") d.growth.push(x.data || {}); else if (x.coll === "settings" && x.id === "main") d.settings = x.data || {}; else if (x.coll === "events") d.events.push(x.data || {}); });
+      r[1].data.forEach(function (x) { d.log[x.id] = x.data || {}; });
+      var byDate = function (a, b) { return String(a.date).localeCompare(String(b.date)); };
+      d.growth.sort(byDate); d.events.sort(byDate);
+      HH.data = d; HH.err = false; if (!busy()) render();
+    }, function () { HH.loading = false; HH.at = Date.now(); HH.err = true; if (!busy()) render(); });
+  }
+  if (HOME) document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") { HH.at = 0; healthLoad(); } });
+  function hDay(s) {
+    var it = ((HH.data.log[s] || {}).items || []), ok = it.filter(function (i) { return !i.pending; });
+    return { k: ok.reduce(function (a, i) { return a + (Number(i.kcal) || 0); }, 0), p: ok.reduce(function (a, i) { return a + (Number(i.protein) || 0); }, 0), pend: it.length - ok.length, n: it.length };
+  }
+  function spark(pts, key, unit) {
+    if (pts.length < 2) return "";
+    var W = 220, H = 56, P = 6, t0 = Date.parse(pts[0].date), t1 = Date.parse(pts[pts.length - 1].date) || t0 + 1;
+    var vs = pts.map(function (g) { return +g[key]; }), lo = Math.min.apply(null, vs), hi = Math.max.apply(null, vs); if (hi - lo < 1) { lo -= .5; hi += .5; }
+    var xy = pts.map(function (g) { return [P + (Date.parse(g.date) - t0) / (t1 - t0 || 1) * (W - 2 * P), H - P - (+g[key] - lo) / (hi - lo) * (H - 2 * P - 10)]; });
+    return '<svg class="db-spark" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(unit) + ' over time"><polyline points="' + xy.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(" ") + '"/>' +
+      xy.map(function (p, i) { return '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3.2"><title>' + esc(fmtDay(pts[i].date) + ': ' + pts[i][key] + ' ' + unit) + '</title></circle>'; }).join("") + '</svg>';
+  }
+  function healthCard() {
+    if (HH.err) return "";
+    if (!HH.data) return '<section class="card sect db-health" id="db-health"><h2>Kristan’s health</h2><p class="small">Loading…</p></section>';
+    var d = HH.data, t = todayD(), st = d.settings, tgt = +st.kcalTarget || 0, pt = +st.proteinTarget || 0, td = hDay(t);
+    var sport = (st.trainingDays || []).indexOf(dow(t)) >= 0, pct = tgt ? Math.min(100, Math.round(td.k / tgt * 100)) : 0;
+    var hr = new Date().getHours() + new Date().getMinutes() / 60, pace = tgt ? Math.min(1, Math.max(0, (hr - 7) / 13)) : 0;
+    var days = []; for (var i = 6; i >= 0; i--) days.push(addDays(t, -i));
+    var vals = days.map(function (s) { return hDay(s).k; }), mx = Math.max.apply(null, vals.concat([tgt, 1]));
+    var past = vals.slice(0, 6).filter(function (v) { return v > 0; }), avg = past.length ? past.reduce(function (a, b) { return a + b; }, 0) / past.length : 0;
+    var hit = past.filter(function (v) { return tgt && v >= tgt * .95; }).length;
+    var h = '<section class="card sect db-health" id="db-health"><div class="db-h2"><h2>Kristan’s health</h2><a class="linkbtn" href="/health/">Open Health ↗</a></div>';
+    h += '<div class="db-kcal"><div class="db-kcal-top"><span><b>' + n0(td.k) + '</b> / ' + (tgt ? n0(tgt) : '—') + ' kcal today</span>' + (sport ? '<span class="tag">Football day</span>' : '') + '</div>' +
+      '<div class="db-meter" role="img" aria-label="' + pct + '% of today’s calories"><i style="width:' + pct + '%"></i>' + (pace && tgt ? '<em style="left:' + Math.round(pace * 100) + '%" title="Where he should be by now"></em>' : '') + '</div>' +
+      '<p class="small">Protein ' + n0(td.p) + (pt ? ' / ' + pt : '') + ' g' + (td.pend ? ' · <b>' + td.pend + ' item' + (td.pend > 1 ? 's' : '') + ' waiting for calories</b> (filled in nightly)' : '') + '</p></div>';
+    h += '<div class="db-bars" role="img" aria-label="Calories, last 7 days">' + days.map(function (s, i) {
+      var v = vals[i], cls = s === t ? 'now' : !v ? 'none' : tgt && v >= tgt * .95 ? 'hit' : 'short';
+      return '<div class="' + cls + '" title="' + esc(fmtDay(s) + ': ' + n0(v) + ' kcal') + '"><i style="height:' + Math.round(v / mx * 100) + '%"></i><span>' + "SMTWTFS"[dow(s)] + '</span></div>'; }).join("") +
+      (tgt ? '<b class="db-tline" style="bottom:calc(18px + ' + (tgt / mx * 100).toFixed(1) + '% * (100% - 18px) / 100%)"></b>' : '') + '</div>';
+    h += '<p class="small">Last 6 days: ' + (past.length ? 'average <b>' + n0(avg) + ' kcal</b>' + (tgt ? ', target hit ' + hit + ' of ' + past.length + ' days' : '') : 'nothing logged') + '.</p>';
+    var hts = d.growth.filter(function (g) { return g.height_cm; }), wts = d.growth.filter(function (g) { return g.weight_kg; });
+    var g = '';
+    if (hts.length) {
+      var h1 = hts[hts.length - 1], h0 = hts[0], yrs = (Date.parse(h1.date) - Date.parse(h0.date)) / 31557600000;
+      g += '<div class="db-g"><div><span class="small">Height</span><b>' + h1.height_cm + ' cm</b><span class="small">' + esc(fmtDay(h1.date)) + '</span>' +
+        (hts.length > 1 && yrs > .3 ? '<span class="small">+' + (h1.height_cm - h0.height_cm).toFixed(1) + ' cm since ' + esc(new Date(h0.date + "T12:00:00Z").toLocaleDateString("en-GB", { month: "short", year: "numeric" })) + ' · <b>' + ((h1.height_cm - h0.height_cm) / yrs).toFixed(1) + ' cm/yr</b></span>' : '') + '</div>' + spark(hts, "height_cm", "cm") + '</div>';
+    }
+    if (wts.length) {
+      var w1 = wts[wts.length - 1], w0 = wts.length > 1 ? wts[wts.length - 2] : null, dw = w0 ? w1.weight_kg - w0.weight_kg : 0;
+      g += '<div class="db-g"><div><span class="small">Weight</span><b>' + (+w1.weight_kg).toFixed(1) + ' kg</b><span class="small">' + esc(fmtDay(w1.date)) + '</span>' +
+        (w0 ? '<span class="small">' + (dw >= 0 ? '+' : '−') + Math.abs(dw).toFixed(1) + ' kg since ' + esc(fmtDay(w0.date)) + '</span>' : '') + '</div>' + spark(wts, "weight_kg", "kg") + '</div>';
+    }
+    if (g) h += '<h3 class="fv-sub">Growth</h3><div class="db-grow">' + g + '</div>';
+    var up = d.events.filter(function (e) { return e.date && e.date > t; })[0], last = d.events.filter(function (e) { return e.date && e.date <= t; }).pop();
+    if (up || last) h += '<h3 class="fv-sub">Medical</h3>' + [up ? ['Next', up] : null, last ? ['Latest', last] : null].filter(Boolean).map(function (x) {
+      return '<div class="db-med"><span class="tag' + (x[0] === 'Next' ? ' action' : '') + '">' + x[0] + '</span><div><b>' + esc(x[1].title || "") + (x[1].value ? ' · ' + esc(x[1].value) : '') + '</b><span class="small">' + esc(fmtDay(String(x[1].date).slice(0, 10))) + '</span></div></div>'; }).join("");
+    return h + '</section>';
+  }
+  function dashHero(chips) {
+    var hc = window.hollyendClock ? window.hollyendClock() : { sky: "day", time: "", date: "" }, wx = window.HOLLYEND_WX || "clear";
+    var wxName = window.hollyendWxLabel ? window.hollyendWxLabel(hc.sky, wx) : "";
+    var hr = new Date().getHours(), greet = hr < 12 ? "Good morning" : hr < 18 ? "Good afternoon" : "Good evening";
+    var nm = ((role() || {}).display_name || "").replace(/^parent$/i, "") || "Dad";
+    return '<div class="db-hero home-pic hscene" data-sky="' + hc.sky + '" data-wx="' + (hc.sky === "night" && wx !== "rain" ? "clear" : wx) + '"><div class="art" role="img" aria-label="Live view of Hollyend: ' + esc(String(hc.time).slice(0, 5)) + ' UK time, ' + esc(wxName.toLowerCase()) + '"><img src="/hollyend-house.webp" alt="" width="1672" height="728" decoding="async" fetchpriority="high">' +
+      (window.hollyendFx ? window.hollyendFx() : '') + '</div><div class="fx rain"></div><div class="fx rain b"></div>' +
+      '<div class="cam" aria-hidden="true"><i></i><i></i><i></i><i></i><span class="rec">LIVE · CAM 1</span><span class="clk"><b>' + esc(hc.time) + '</b><span>' + esc(hc.date) + ' · UK</span></span><span class="wx">HOLLYEND · ' + esc(wxName.toUpperCase()) + '</span></div>' +
+      '<div class="db-hi"><span class="db-date">' + esc(fmtDay(todayD(), true)) + ' · Abu Dhabi</span><h1>' + greet + ', ' + esc(nm) + '</h1>' + (chips ? '<div class="db-chips">' + chips + '</div>' : '') + '</div></div>';
+  }
+  var dbChips = "";
+  function dbHeroDraw() {
+    var el = document.getElementById("dbHero");
+    if (!el) { el = document.createElement("div"); el.id = "dbHero"; var w = document.querySelector(".wrap"); w.parentNode.insertBefore(el, w); }
+    el.innerHTML = dashHero(dbChips);
+  }
+  if (HOME) setInterval(function () { if (document.visibilityState === "visible" && isParentNow()) dbHeroDraw(); }, 60000);
+  function kidCard(c, t, tm) {
+    var open = hwFor(c).filter(hwPending), late = open.filter(function (x) { return x.due && String(x.due).slice(0, 10) < t; }), soon = open.filter(function (x) { var d = x.due && String(x.due).slice(0, 10); return d && d >= t && d <= tm; });
+    var aw = awards(all, c, WEEK.start), sk = streakInfo(all, c, new Date()), w = myWallet(c);
+    var mine = all.filter(function (a) { return a.child === c && lgToday(a.at) >= addDays(t, -6); });
+    var today = all.filter(function (a) { return a.child === c && lgToday(a.at) === t; }).length;
+    var avg = mine.length ? Math.round(mine.reduce(function (s, a) { return s + (a.total ? a.score / a.total : 0); }, 0) / mine.length * 100) : null;
+    var place = c === "millie" ? "Journey: " + journeyState(all, "millie").at : (function () { var L = leagueState(all, state.matches, Date.now()); return "League: " + (L.season.played ? ord(L.myRow.pos) : "not started") + " in " + L.division.name; })();
+    var dt = state.daily.filter(function (x) { return x.child === c && x.active !== false; }), dtOn = dt.filter(function (x) { return state.dailyTicks.some(function (k) { return k.child === c && k.task === x.id && String(k.day).slice(0, 10) === t; }); });
+    var extra = c === "millie" ? '💷 Star Wallet <b>' + fmtMoney(walletTotals("millie").balance) + '</b>' : (state.merits.some(function (m) { return m.child === "kristan"; }) ? '🏅 <b>' + meritTotals("kristan").count + '</b> merits this year' : '');
+    return '<section class="card fv-kid db-kid ' + c + '"><div class="fv-top"><span class="kav">' + avatarSVG(c, equipped(c), "av") + '</span><div><h2>' + cname(c) + '</h2><span class="small">' + esc(aw.rank.name) + ' · ' + n0(w.balance) + ' points</span></div>' +
+      '<span class="db-today' + (today ? ' on' : '') + '">' + (today ? '✓ ' + today + ' quiz' + (today > 1 ? 'zes' : '') + ' today' : 'No quiz yet today') + '</span></div>' +
+      '<div class="fv-stats"><div' + (open.length ? '' : ' class="ok"') + '><b>' + open.length + '</b><span>homework to do</span></div><div' + (late.length ? ' class="bad"' : '') + '><b>' + late.length + '</b><span>overdue</span></div><div' + (sk.atRisk ? ' class="warn"' : '') + '><b>' + sk.current + '</b><span>day streak' + (sk.atRisk ? ' · at risk' : '') + '</span></div><div><b>' + mine.length + '</b><span>quizzes, 7 days' + (avg != null ? ' · ' + avg + '%' : '') + '</span></div></div>' +
+      (late.length || soon.length ? '<ul class="fv-list">' + late.concat(soon).map(function (x) { var d = String(x.due).slice(0, 10); return '<li><b class="' + (d < t ? 'lt' : '') + '">' + (d < t ? 'Overdue' : d === t ? 'Today' : 'Tomorrow') + '</b> ' + esc(x.title) + '</li>'; }).join("") + '</ul>' : '<p class="small">Nothing due today or tomorrow.</p>') +
+      '<p class="small">' + (dt.length ? 'Daily tasks: ' + dtOn.length + ' of ' + dt.length + ' ticked · ' : '') + esc(place) + (extra ? ' · ' + extra : '') + '</p>' + classNow(c) +
+      '<div class="row"><a class="btn sm ghost" href="/learning/#' + c + '-homework">Homework</a><a class="btn sm ghost" href="/learning/#' + c + '-progress">Activity log</a><a class="btn sm ghost" href="/learning/#' + c + '-bank">Bank</a></div></section>';
+  }
+  function dashboardView() {
+    document.body.classList.add("fam");
+    if (!role()) { app.innerHTML = '<p class="small" style="padding:40px 0;text-align:center">Loading…</p>'; return; }
+    if (!isParentNow()) { location.replace("/learning/"); return; }
+    healthLoad();
+    var t = todayD(), tm = addDays(t, 1), wk = addDays(t, 7);
+    var waiting = state.hw.filter(function (h) { var m = hwMark(h); return h.active !== false && m && m.status === "ticked"; });
+    var todos = state.events.filter(function (e) { return e.type === "action" && !e.done && e.active !== false && String(e.date).slice(0, 10) <= wk; }).sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); });
+    var owing = ["millie", "kristan"].filter(function (c) { return owedFor(c).total > 0; });
+    var needs = waiting.length + todos.length + owing.length;
+    var late = ["millie", "kristan"].reduce(function (n, c) { return n + hwFor(c).filter(hwPending).filter(function (x) { return x.due && String(x.due).slice(0, 10) < t; }).length; }, 0);
+    var tt = dueSoon().filter(function (x) { return x.kind === "event"; });
+    var hols = state.events.filter(function (e) { return e.type === "holiday" && e.active !== false && String(e.date).slice(0, 10) > t; }).sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); })[0];
+    var chips = '<a href="#db-needs" class="' + (needs ? 'warn' : 'ok') + '"><b>' + needs + '</b> need' + (needs === 1 ? 's' : '') + ' you</a>' +
+      '<a href="#db-kids" class="' + (late ? 'bad' : 'ok') + '"><b>' + late + '</b> overdue homework</a>' +
+      '<a href="#db-today"><b>' + tt.length + '</b> on today &amp; tomorrow</a>';
+    if (HH.data) { var td = hDay(t), tg = +HH.data.settings.kcalTarget || 0; chips += '<a href="#db-health">K <b>' + n0(td.k) + '</b>' + (tg ? ' / ' + n0(tg) : '') + ' kcal</a>'; }
+    if (hols) chips += '<a href="#db-terms"><b>' + lgDiff(String(hols.date).slice(0, 10), t) + '</b> days to ' + esc(hols.title) + '</a>';
+    dbChips = chips; dbHeroDraw();
+
+    var N = '<section class="card sect db-needs" id="db-needs"><h2>Needs you' + (needs ? ' <span class="pill">' + needs + '</span>' : '') + '</h2>';
+    if (!needs) N += '<p class="small">Nothing waiting for you. 🎉</p>';
+    if (waiting.length) N += '<h3 class="fv-sub">Homework to check</h3><div class="hw-list">' + waiting.map(function (x) { return hwCard(x, true).replace('<b class="hw-title">', '<span class="small">' + cname(x.child) + '</span><b class="hw-title">'); }).join("") + '</div>';
+    if (todos.length) N += '<h3 class="fv-sub">To do this week</h3>' + todos.map(function (e) {
+      var d = String(e.date).slice(0, 10);
+      return evRow({ kind: "action", type: "action", id: e.id, child: e.child, date: d, time: "", title: e.title, details: (d < t ? "Was due " : "Due ") + fmtDay(d) + " · " + cname(e.child) + (e.details ? " · " + e.details : ""), formUrl: e.formUrl, linkUrl: e.linkUrl, done: false }); }).join("");
+    if (owing.length) N += '<h3 class="fv-sub">Money to pay</h3>' + owing.map(function (c) { return owedCard(c, true); }).join("");
+    N += '</section>';
+    var T = '<section class="card sect" id="db-today"><h2>Today and tomorrow</h2>' + (tt.length ? tt.map(function (x) { return '<div class="ev ' + esc(x.child) + '"><span class="ev-time w">' + esc(x.when) + '</span><div class="ev-body"><b>' + esc(x.title) + '</b><span class="small">' + esc(x.sub) + ' · ' + cname(x.child) + '</span>' + (x.bring ? '<span class="bring">Bring: ' + esc(x.bring) + '</span>' : '') + '</div></div>'; }).join("") : '<p class="small">No school events today or tomorrow.</p>') +
+      '<div class="row"><a class="btn sm ghost" href="/learning/#calendar">Open the calendar</a></div></section>';
+    var K = '<div class="db-kids" id="db-kids">' + kidCard("millie", t, tm) + kidCard("kristan", t, tm) + '</div>';
+    var nw = newsList(14).slice(0, 5);
+    var S = healthCard();
+    if (nw.length) S += '<section class="card sect"><h2>Latest school news</h2><div class="news">' + nw.map(function (e) { return '<div class="nw ' + esc(e.child) + '"><div class="ev-tags"><span class="small">' + esc(fmtDay(String(e.date).slice(0, 10))) + ' · ' + (e.child === "both" ? "Whole school" : cname(e.child)) + '</span>' + (e.audience === "parents" ? '<span class="tag action">Parents</span>' : '') + '</div><b>' + esc(e.title) + '</b>' + (e.details ? '<span class="small">' + esc(e.details) + '</span>' : '') + '</div>'; }).join("") + '</div></section>';
+    S += termCard(t).replace('<section class="card sect">', '<section class="card sect" id="db-terms">').replace(/<div class="row"><button class="btn sm ghost" id="fvTerms">All term dates<\/button><\/div>/, '<div class="row"><a class="btn sm ghost" href="/learning/#calendar">All term dates</a></div>');
+    var pb = pushBox(); if (pb) S += '<section class="card sect"><h2>Notifications on this device</h2>' + pb + '</section>';
+    var A = '<section class="card sect db-act"><h2>Activity: last 3 days</h2><p class="small">Everything both children have done on Hollyend. Tap a quiz to see the questions.</p>' + activityLog(["millie", "kristan"], 3) + '</section>';
+    app.innerHTML = '<div class="db-grid"><div class="db-col db-c1">' + N + T + '</div><div class="db-col db-c2">' + K + '</div><div class="db-col db-c3">' + S + '</div></div>' + A;
+    bindHomework(); bindCalendar(); bindOwed(dashboardView);
+  }
+
   /* ---------- Flashcards (Millie's spellings, Kristan's French list) ---------- */
   function flashCards() {
     if (state.child === "millie") return SPELLING.words.map(function (w) { return { front: w.meaning, ctx: w.sentences[0].replace("___", "_____"), speakFront: w.sentences[0].replace("___", w.word), back: w.word, extra: w.chunks + " · " + w.hook, speak: w.word, lang: "en-GB" }; });
@@ -3322,7 +3547,7 @@ body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
 
   /* ---------- wiring ---------- */
   document.addEventListener("keydown", function (e) {
-    if (!busy()) return;
+    if (!busy() || calc.open) return;
     if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
     var idx = "ABCD".indexOf(e.key.toUpperCase());
     if (idx < 0 && "1234".indexOf(e.key) >= 0) idx = +e.key - 1;
@@ -3353,7 +3578,10 @@ body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
   if (hash === "vocab") { state.mode = "vocab"; hash = "kristan"; }
   if (hash === "league") { state.view = "world"; hash = "kristan"; }
   if (hash === "calendar") { state.view = "calendar"; hash = ""; }
-  if (hash === "family") { state.view = "parents"; hash = ""; }
+  if (hash === "family") { if (!HOME) location.replace("/"); hash = ""; }
+  var dm = hash.match(/^(millie|kristan)-(homework|bank|shop|progress|reports|hub)$/);
+  if (dm) { deep = { child: dm[1], view: dm[2] }; hash = dm[1]; }
+  if (HOME) { state.view = "parents"; hash = ""; }
   if (hash === "millie-challenge" || hash === "kristan-challenge") { state.mode = "challenge"; hash = hash.split("-")[0]; }
   setChild(hash === "kristan" || hash === "millie" ? hash : hash === "spelling" ? "millie" : (hash === "english" || hash === "french") ? "kristan" : (store("quiz-child") || "millie"));
   if (state.view === "world" || state.view === "calendar" || state.view === "parents") setView(state.view);
@@ -3366,13 +3594,20 @@ body.fam .hbar .streak, body.fam .hud .wallet { display: none; }
       state.child = null; setChild(m.child);
     }
     var isP = m.role === "parent";
+    var lh = (location.hash || "").replace("#", "");
+    if (HOME && (!isP || (lh && lh !== "family"))) { location.replace("/learning/" + location.hash); return; }
+    if (!HOME && isP && window.__freshLogin) { location.replace("/"); return; }
     document.getElementById("hbar").hidden = false;
+    Array.prototype.forEach.call(document.querySelectorAll(".hb-home"), function (a) { a.hidden = !isP; });
     var isDad = isP && !/mum/i.test(m.display_name || "");
     Array.prototype.forEach.call(document.querySelectorAll(".hb-health"), function (a) { a.hidden = !isDad; });
-    document.getElementById("v-par").hidden = !isP;
-    document.querySelector(".tabs").classList.toggle("p8", isP);
     maybeLandOnHomework(); bellSync();
   });
+  if (HOME) {
+    Array.prototype.forEach.call(document.querySelectorAll(".hb-learn"), function (a) { a.removeAttribute("aria-current"); });
+    Array.prototype.forEach.call(document.querySelectorAll(".hb-home"), function (a) { a.setAttribute("aria-current", "page"); });
+    var ab = document.getElementById("hbAppBtn"); ab.firstChild.textContent = "Home"; ab.setAttribute("aria-label", "Switch site: Home");
+  }
   (function () {
     var btn = document.getElementById("hbAppBtn"), menu = document.getElementById("hbAppMenu");
     function close() { menu.hidden = true; btn.setAttribute("aria-expanded", "false"); }

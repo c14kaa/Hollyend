@@ -110,7 +110,7 @@
   };
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(function () {});
   window.HOLLYEND = { member: function () { return member; }, push: push,
-    signOut: function () { Promise.resolve(push.forget()).catch(function () {}).then(function () { return sb.auth.signOut(); }).then(function () { location.reload(); }); }, logins: LOGINS };
+    signOut: function () { Promise.resolve(push.forget()).catch(function () {}).then(function () { return sb.auth.signOut(); }).then(function () { location.reload(); }); }, logins: LOGINS, sb: sb };
   window.claude = { use: function (name) { return name === "db" ? gate : Promise.resolve(null); } };
 
   function loadMember() {
@@ -145,7 +145,7 @@
       sb.auth.signInWithPassword({ email: LOGINS[who].email, password: document.getElementById("pw").value }).then(function (r) {
         btn.disabled = false;
         if (r.error) { document.getElementById("loginMsg").textContent = "That password didn’t work. Try again, or ask Mum or Dad."; return; }
-        document.getElementById("pw").value = ""; start(r.data.session);
+        document.getElementById("pw").value = ""; window.__freshLogin = true; start(r.data.session);
       });
     });
     sb.auth.getSession().then(function (r) { if (r.data.session) start(r.data.session); else showLogin(""); });
