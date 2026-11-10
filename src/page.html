@@ -957,7 +957,13 @@ body.home .sect h2, body.home .fv-top h2 { font-size: 18px; font-weight: 700; le
 .db-kids { display: flex; flex-direction: column; gap: 16px; }
 @media (min-width: 900px) { .db-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-rows: auto 1fr; grid-template-areas: "a b" "a c"; } .db-c1 { grid-area: a; } .db-c2 { grid-area: b; } .db-c3 { grid-area: c; } }
 @media (min-width: 1400px) { .db-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto; grid-template-areas: "a b c"; } }
-.db-act { margin-top: 16px; }
+.db-sec { margin: 28px 0 12px; font: 700 20px/1.2 Inter, system-ui, sans-serif; letter-spacing: -.01em; scroll-margin-top: 70px; }
+.db-grid2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (min-width: 900px) { .db-grid2 { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-areas: "a b" "c c"; } .db-d1 { grid-area: a; } .db-d2 { grid-area: b; } .db-d3 { grid-area: c; } }
+@media (min-width: 1400px) { .db-grid2 { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "a b c"; } }
+.db-segs { display: flex; flex-wrap: wrap; gap: 8px; }
+.db-act details.ql-row > summary { display: grid; flex-direction: initial; }
+.db-act .qlog { max-height: 720px; overflow-y: auto; }
 .db-needs { border-top: 4px solid #ffc46b; }
 .db-h2 { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
 .db-h2 .linkbtn { text-decoration: none; font-size: 14px; }
@@ -1054,8 +1060,39 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
     return { time: tm, date: dt + " · " + zone, sky: window.hollyendTime(now) };
   };
   window.hollyendWxLabel = function (sky, wx) {
+    var R = window.HOLLYEND_WXREAL;
+    if (R) { var d = R.desc; if (/^(Clear|Mainly clear)$/.test(d)) d = { dawn: "Sunrise", day: d === "Clear" ? "Sunny" : "Mostly sunny", sunset: "Sunset", night: "Clear night" }[sky] || d; return d + (R.temp != null ? " · " + Math.round(R.temp) + "°C" : ""); }
     return wx === "rain" ? "Rain" : wx === "cloudy" ? "Cloudy" : { dawn: "Sunrise", day: "Sunny", sunset: "Sunset", night: "Clear night" }[sky] || "Clear";
   };
+  /* Real weather at Hollyend (Open-Meteo, no key). Only the conditions and temperature are shown on the camera. */
+  window.HOLLYEND_WXREAL = null;
+  (function () {
+    var WMO = { 0: ["clear", "Clear"], 1: ["clear", "Mainly clear"], 2: ["cloudy", "Partly cloudy"], 3: ["cloudy", "Overcast"], 45: ["cloudy", "Fog"], 48: ["cloudy", "Fog"],
+      51: ["rain", "Light drizzle"], 53: ["rain", "Drizzle"], 55: ["rain", "Heavy drizzle"], 56: ["rain", "Freezing drizzle"], 57: ["rain", "Freezing drizzle"],
+      61: ["rain", "Light rain"], 63: ["rain", "Rain"], 65: ["rain", "Heavy rain"], 66: ["rain", "Freezing rain"], 67: ["rain", "Freezing rain"],
+      71: ["cloudy", "Light snow"], 73: ["cloudy", "Snow"], 75: ["cloudy", "Heavy snow"], 77: ["cloudy", "Snow"], 80: ["rain", "Showers"], 81: ["rain", "Showers"], 82: ["rain", "Heavy showers"],
+      85: ["cloudy", "Snow showers"], 86: ["cloudy", "Snow showers"], 95: ["rain", "Thunderstorm"], 96: ["rain", "Thunderstorm"], 99: ["rain", "Thunderstorm"] };
+    function apply(w) {
+      var m = WMO[w.code] || ["cloudy", "Cloudy"];
+      window.HOLLYEND_WX = m[0]; window.HOLLYEND_WXREAL = { desc: m[1], temp: w.temp, hi: w.hi, lo: w.lo };
+      [].forEach.call(document.querySelectorAll(".hscene"), function (s) {
+        var sky = s.getAttribute("data-sky"); s.setAttribute("data-wx", sky === "night" && m[0] === "clear" ? "clear" : m[0]);
+        var lab = s.querySelector(".cam .wx"); if (lab && !s.classList.contains("db-hero")) lab.textContent = "HOLLYEND · " + window.hollyendWxLabel(sky, m[0]).toUpperCase();
+      });
+      document.dispatchEvent(new CustomEvent("hollyend:weather"));
+    }
+    var KEY = "hollyend-wx", c = null;
+    try { c = JSON.parse(sessionStorage.getItem(KEY) || "null"); } catch (e) {}
+    if (c && Date.now() - c.at < 20 * 60000) { apply(c.w); return; }
+    if (!window.fetch) return;
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=51.56&longitude=-0.61&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=Europe%2FLondon&forecast_days=1")
+      .then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+        if (!j || !j.current) return;
+        var w = { code: j.current.weather_code, temp: j.current.temperature_2m, hi: j.daily && j.daily.temperature_2m_max ? j.daily.temperature_2m_max[0] : null, lo: j.daily && j.daily.temperature_2m_min ? j.daily.temperature_2m_min[0] : null };
+        try { sessionStorage.setItem(KEY, JSON.stringify({ at: Date.now(), w: w })); } catch (e) {}
+        apply(w);
+      }).catch(function () {});
+  })();
   setInterval(function () {
     var pics = document.querySelectorAll(".home-pic"); if (!pics.length) return; var c = window.hollyendClock();
     [].forEach.call(pics, function (p) { var b = p.querySelector(".clk b"), sp = p.querySelector(".clk span"); if (b) b.textContent = c.time; if (sp) sp.textContent = c.date; if (p.getAttribute("data-sky") !== c.sky) { p.setAttribute("data-sky", c.sky); var w = p.querySelector(".cam .wx"); if (w) w.textContent = "HOLLYEND · " + window.hollyendWxLabel(c.sky, p.getAttribute("data-wx")).toUpperCase(); } });
@@ -2975,6 +3012,13 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
       (x.bring ? '<span class="bring">Bring: ' + esc(x.bring) + '</span>' : '') + (x.details ? '<span class="small">' + esc(x.details) + '</span>' : '') + (links ? '<span>' + links + '</span>' : '') + acts + '</div></div>';
   }
   function calendarView() {
+    if (HOME) return render();
+    var S = calSections();
+    app.innerHTML = '<div class="cols"><div class="col sticky">' + S.left + '</div><div class="col">' + S.right + '</div></div>';
+    bindCalendar();
+  }
+  function calSections() {
+    var S = {};
     var rr = role() || {}; if (rr.role === "child") state.calWho = rr.child;
     var t = todayD(), items = calItems(), parent = isParentNow();
     var m = state.calMonth || t.slice(0, 7), first = m + "-01", sel = state.calDay;
@@ -2991,11 +3035,12 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
       h += '<button class="cal-d' + (d.slice(0, 7) !== m ? ' out' : '') + (d === t ? ' today' : '') + (d === sel ? ' sel' : '') + (wd === 0 || wd === 6 ? ' we' : '') + (hol ? ' hol' : '') + '" data-calday="' + d + '" aria-label="' + fmtDay(d, true) + ', ' + its.length + ' items">' + (+d.slice(8)) + '<span class="cdots">' + dots + '</span></button>';
     }
     h += '</div><p class="small" style="margin:8px 0 0"><i class="cdot millie" style="display:inline-block"></i> Millie &nbsp; <i class="cdot kristan" style="display:inline-block"></i> Kristan &nbsp; <i class="cdot both" style="display:inline-block"></i> Both &nbsp; Square dots are homework.</p></section>';
-    var left = h; h = '';
+    var left = h; h = ''; S.grid = left;
     if (sel) {
       var si = onDay(items, sel);
       left += '<section class="card sect"><h2>' + esc(fmtDay(sel, true)) + '</h2>' + (si.length ? si.map(evRow).join("") : '<p class="small">Nothing on this day.</p>') + '</section>';
     }
+    S.sel = left.slice(S.grid.length);
     if (parent) {
       var todo = state.events.filter(function (e) { return e.type === "action" && !e.done && e.active !== false && (state.calWho === "all" || e.child === state.calWho || e.child === "both"); })
         .sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); });
@@ -3003,12 +3048,14 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
         var x = { kind: "action", type: "action", id: e.id, child: e.child, date: String(e.date).slice(0, 10), time: "", title: e.title, details: (String(e.date).slice(0, 10) < t ? "Was due " : "Due ") + fmtDay(String(e.date).slice(0, 10)) + (e.details ? " · " + e.details : ""), formUrl: e.formUrl, linkUrl: e.linkUrl, done: false };
         return evRow(x); }).join("") + '</section>';
     }
+    var n4 = h.length;
     var horizon = addDays(t, 27), up = items.filter(function (x) { return (x.end || x.date) >= t && x.date <= horizon && x.kind !== "action"; }), days = {};
     up.forEach(function (x) { var d = x.date < t ? t : x.date; (days[d] = days[d] || []).push(x); });
     var keys = Object.keys(days).sort();
     h += '<section class="card sect"><h2>Next four weeks</h2>' + (keys.length ? '<div class="cal-list">' + keys.map(function (d) {
       var lbl = d === t ? "Today" : d === addDays(t, 1) ? "Tomorrow" : fmtDay(d, true);
       return '<div class="cal-day"><h3' + (d === t ? ' class="tod"' : '') + '>' + esc(lbl) + '</h3>' + days[d].map(evRow).join("") + '</div>'; }).join("") + '</div>' : '<p class="small">Nothing in the next four weeks yet. School events and homework appear here after each school run.</p>') + '</section>';
+    S.next4 = h.slice(n4);
     var news = state.events.filter(function (e) { return e.type === "news" && e.active !== false && (e.audience !== "parents" || parent) && (state.calWho === "all" || e.child === state.calWho || e.child === "both") && String(e.date).slice(0, 10) >= addDays(t, -21); })
       .sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); }).slice(0, 10);
     if (news.length) h += '<section class="card sect"><h2>School news</h2><div class="news">' + news.map(function (e) {
@@ -3022,14 +3069,15 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
         var d1 = String(e.date).slice(0, 10), d2 = e.endDate ? String(e.endDate).slice(0, 10) : null, past = (d2 || d1) < t;
         return '<div class="tr' + (e.type === "holiday" ? ' hl' : '') + (past ? ' past' : '') + '"><span>' + esc(e.title) + '</span><b>' + esc(fmtDay(d1)) + (d2 ? ' – ' + esc(fmtDay(d2)) : '') + '</b></div>'; }).join("") + '</div></section>';
     }
+    var na = h.length;
     if (parent) h += '<section class="card"><div class="parentbox"><h3>Add to the calendar (Mum and Dad only)</h3>' +
       '<input class="rd-in" id="evTitle" maxlength="160" placeholder="What, e.g. Sports day">' +
       '<div class="row"><input class="rd-in" type="date" id="evDate" value="' + (sel || addDays(t, 1)) + '"><input class="rd-in" id="evTime" placeholder="Time (optional)" style="flex:1 1 110px"></div>' +
       '<div class="row"><select class="rd-in" id="evWho"><option value="both">Both</option><option value="millie">Millie</option><option value="kristan">Kristan</option></select><select class="rd-in" id="evType"><option value="event">Event</option><option value="deadline">Deadline</option><option value="sport">Sport</option><option value="trip">Trip</option><option value="holiday">Holiday</option><option value="news">School news</option><option value="action">To do (parents only)</option></select></div>' +
       '<input class="rd-in" id="evBring" maxlength="160" placeholder="Bring or wear (optional), e.g. PE kit">' +
       '<div class="row"><button class="btn sm" id="evAdd">Add</button></div></div></section>';
-    app.innerHTML = '<div class="cols"><div class="col sticky">' + left + '</div><div class="col">' + h + '</div></div>';
-    bindCalendar();
+    S.add = h.slice(na); S.left = left; S.right = h;
+    return S;
   }
   function bindCalendar() {
     [].forEach.call(app.querySelectorAll("[data-calwho]"), function (b) { b.addEventListener("click", function () { state.calWho = b.dataset.calwho; calendarView(); }); });
@@ -3444,10 +3492,10 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
     var wxName = window.hollyendWxLabel ? window.hollyendWxLabel(hc.sky, wx) : "";
     var hr = new Date().getHours(), greet = hr < 12 ? "Good morning" : hr < 18 ? "Good afternoon" : "Good evening";
     var nm = ((role() || {}).display_name || "").replace(/^parent$/i, "") || "Dad";
-    return '<div class="db-hero home-pic hscene" data-sky="' + hc.sky + '" data-wx="' + (hc.sky === "night" && wx !== "rain" ? "clear" : wx) + '"><div class="art" role="img" aria-label="Live view of Hollyend: ' + esc(String(hc.time).slice(0, 5)) + ' UK time, ' + esc(wxName.toLowerCase()) + '"><img src="/hollyend-house.webp" alt="" width="1672" height="728" decoding="async" fetchpriority="high">' +
+    return '<div class="db-hero home-pic hscene" data-sky="' + hc.sky + '" data-wx="' + wx + '"><div class="art" role="img" aria-label="Live view of Hollyend: ' + esc(String(hc.time).slice(0, 5)) + ' UK time, ' + esc(wxName.toLowerCase()) + '"><img src="/hollyend-house.webp" alt="" width="1672" height="728" decoding="async" fetchpriority="high">' +
       (window.hollyendFx ? window.hollyendFx() : '') + '</div><div class="fx rain"></div><div class="fx rain b"></div>' +
-      '<div class="cam" aria-hidden="true"><i></i><i></i><i></i><i></i><span class="rec">LIVE · CAM 1</span><span class="clk"><b>' + esc(hc.time) + '</b><span>' + esc(hc.date) + ' · UK</span></span><span class="wx">HOLLYEND · ' + esc(wxName.toUpperCase()) + '</span></div>' +
-      '<div class="db-hi"><span class="db-date">' + esc(fmtDay(todayD(), true)) + ' · Abu Dhabi</span><h1>' + greet + ', ' + esc(nm) + '</h1>' + (chips ? '<div class="db-chips">' + chips + '</div>' : '') + '</div></div>';
+      '<div class="cam" aria-hidden="true"><i></i><i></i><i></i><i></i><span class="rec">LIVE · CAM 1</span><span class="clk"><b>' + esc(hc.time) + '</b><span>' + esc(hc.date) + '</span></span><span class="wx">HOLLYEND · ' + esc(wxName.toUpperCase()) + (window.HOLLYEND_WXREAL && window.HOLLYEND_WXREAL.hi != null ? ' · H ' + Math.round(window.HOLLYEND_WXREAL.hi) + '° L ' + Math.round(window.HOLLYEND_WXREAL.lo) + '°' : '') + '</span></div>' +
+      '<div class="db-hi"><span class="db-date">' + esc(fmtDay(todayD(), true)) + '</span><h1>' + greet + ', ' + esc(nm) + '</h1>' + (chips ? '<div class="db-chips">' + chips + '</div>' : '') + '</div></div>';
   }
   var dbChips = "";
   function dbHeroDraw() {
@@ -3456,6 +3504,7 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
     el.innerHTML = dashHero(dbChips);
   }
   if (HOME) setInterval(function () { if (document.visibilityState === "visible" && isParentNow()) dbHeroDraw(); }, 60000);
+  if (HOME) document.addEventListener("hollyend:weather", function () { if (isParentNow()) dbHeroDraw(); });
   function kidCard(c, t, tm) {
     var open = hwFor(c).filter(hwPending), late = open.filter(function (x) { return x.due && String(x.due).slice(0, 10) < t; }), soon = open.filter(function (x) { var d = x.due && String(x.due).slice(0, 10); return d && d >= t && d <= tm; });
     var aw = awards(all, c, WEEK.start), sk = streakInfo(all, c, new Date()), w = myWallet(c);
@@ -3487,7 +3536,7 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
     var hols = state.events.filter(function (e) { return e.type === "holiday" && e.active !== false && String(e.date).slice(0, 10) > t; }).sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); })[0];
     var chips = '<a href="#db-needs" class="' + (needs ? 'warn' : 'ok') + '"><b>' + needs + '</b> need' + (needs === 1 ? 's' : '') + ' you</a>' +
       '<a href="#db-kids" class="' + (late ? 'bad' : 'ok') + '"><b>' + late + '</b> overdue homework</a>' +
-      '<a href="#db-today"><b>' + tt.length + '</b> on today &amp; tomorrow</a>';
+      '<a href="#db-today"><b>' + tt.length + '</b> on today &amp; tomorrow</a><a href="#db-cal">Calendar</a>';
     if (HH.data) { var td = hDay(t), tg = +HH.data.settings.kcalTarget || 0; chips += '<a href="#db-health">K <b>' + n0(td.k) + '</b>' + (tg ? ' / ' + n0(tg) : '') + ' kcal</a>'; }
     if (hols) chips += '<a href="#db-terms"><b>' + lgDiff(String(hols.date).slice(0, 10), t) + '</b> days to ' + esc(hols.title) + '</a>';
     dbChips = chips; dbHeroDraw();
@@ -3501,16 +3550,24 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
     if (owing.length) N += '<h3 class="fv-sub">Money to pay</h3>' + owing.map(function (c) { return owedCard(c, true); }).join("");
     N += '</section>';
     var T = '<section class="card sect" id="db-today"><h2>Today and tomorrow</h2>' + (tt.length ? tt.map(function (x) { return '<div class="ev ' + esc(x.child) + '"><span class="ev-time w">' + esc(x.when) + '</span><div class="ev-body"><b>' + esc(x.title) + '</b><span class="small">' + esc(x.sub) + ' · ' + cname(x.child) + '</span>' + (x.bring ? '<span class="bring">Bring: ' + esc(x.bring) + '</span>' : '') + '</div></div>'; }).join("") : '<p class="small">No school events today or tomorrow.</p>') +
-      '<div class="row"><a class="btn sm ghost" href="/learning/#calendar">Open the calendar</a></div></section>';
+      '<div class="row"><a class="btn sm ghost" href="#db-cal">See the calendar</a></div></section>';
     var K = '<div class="db-kids" id="db-kids">' + kidCard("millie", t, tm) + kidCard("kristan", t, tm) + '</div>';
     var nw = newsList(14).slice(0, 5);
     var S = healthCard();
     if (nw.length) S += '<section class="card sect"><h2>Latest school news</h2><div class="news">' + nw.map(function (e) { return '<div class="nw ' + esc(e.child) + '"><div class="ev-tags"><span class="small">' + esc(fmtDay(String(e.date).slice(0, 10))) + ' · ' + (e.child === "both" ? "Whole school" : cname(e.child)) + '</span>' + (e.audience === "parents" ? '<span class="tag action">Parents</span>' : '') + '</div><b>' + esc(e.title) + '</b>' + (e.details ? '<span class="small">' + esc(e.details) + '</span>' : '') + '</div>'; }).join("") + '</div></section>';
     S += termCard(t).replace('<section class="card sect">', '<section class="card sect" id="db-terms">').replace(/<div class="row"><button class="btn sm ghost" id="fvTerms">All term dates<\/button><\/div>/, '<div class="row"><a class="btn sm ghost" href="/learning/#calendar">All term dates</a></div>');
     var pb = pushBox(); if (pb) S += '<section class="card sect"><h2>Notifications on this device</h2>' + pb + '</section>';
-    var A = '<section class="card sect db-act"><h2>Activity: last 3 days</h2><p class="small">Everything both children have done on Hollyend. Tap a quiz to see the questions.</p>' + activityLog(["millie", "kristan"], 3) + '</section>';
-    app.innerHTML = '<div class="db-grid"><div class="db-col db-c1">' + N + T + '</div><div class="db-col db-c2">' + K + '</div><div class="db-col db-c3">' + S + '</div></div>' + A;
+    var da = state.dbAct || (state.dbAct = { who: "all", days: 3 }), kids = da.who === "all" ? ["millie", "kristan"] : [da.who];
+    var seg = function (key, opts, cur) { return '<div class="seg" role="group">' + opts.map(function (o) { return '<button data-dbact="' + key + ':' + o[0] + '" aria-pressed="' + (String(cur) === String(o[0])) + '">' + o[1] + '</button>'; }).join("") + '</div>'; };
+    var A = '<section class="card sect db-act" id="db-activity"><div class="db-h2"><h2>Activity</h2><a class="linkbtn" href="/learning/#' + (da.who === "all" ? "millie" : da.who) + '-progress">Full log ↗</a></div>' +
+      '<div class="db-segs">' + seg("who", [["all", "Both"], ["millie", "Millie"], ["kristan", "Kristan"]], da.who) + seg("days", [[1, "Today"], [3, "3 days"], [7, "7 days"]], da.days) + '</div>' +
+      '<p class="small">Quizzes, homework, games and rewards on Hollyend. Tap a quiz to see the questions.</p>' + activityLog(kids, da.days) + '</section>';
+    var C = calSections();
+    var CAL = C.grid + C.sel + C.add;
+    app.innerHTML = '<div class="db-grid"><div class="db-col db-c1">' + N + T + '</div><div class="db-col db-c2">' + K + '</div><div class="db-col db-c3">' + S + '</div></div>' +
+      '<h2 class="db-sec" id="db-cal">Calendar and activity</h2><div class="db-grid2"><div class="db-col db-d1">' + CAL + '</div><div class="db-col db-d2">' + C.next4 + '</div><div class="db-col db-d3">' + A + '</div></div>';
     bindHomework(); bindCalendar(); bindOwed(dashboardView);
+    [].forEach.call(app.querySelectorAll("[data-dbact]"), function (b) { b.addEventListener("click", function () { var kv = b.dataset.dbact.split(":"); state.dbAct[kv[0]] = kv[0] === "days" ? +kv[1] : kv[1]; dashboardView(); }); });
   }
 
   /* ---------- Flashcards (Millie's spellings, Kristan's French list) ---------- */
