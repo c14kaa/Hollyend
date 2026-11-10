@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22B573"/><stop offset="0.55" stop-color="#127A4C"/><stop offset="1" stop-color="#073A24"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.18" r="0.55"><stop offset="0" stop-color="#FFD36B" stop-opacity=".40"/><stop offset="1" stop-color="#FFD36B" stop-opacity="0"/></radialGradient>
+    <radialGradient id="glow2" cx="0.15" cy="0.9" r="0.6"><stop offset="0" stop-color="#C6FF3A" stop-opacity=".22"/><stop offset="1" stop-color="#C6FF3A" stop-opacity="0"/></radialGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C6FF3A"/><stop offset="1" stop-color="#FFD36B"/></linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <rect width="1024" height="1024" fill="url(#glow)"/>
+  <rect width="1024" height="1024" fill="url(#glow2)"/>
+  <path fill="#F4FFF8" d="M340 260 h48 a40 40 0 0 1 40 40 v166 h168 v-166 a40 40 0 0 1 40 -40 h48 a40 40 0 0 1 40 40 v440 a40 40 0 0 1 -40 40 h-48 a40 40 0 0 1 -40 -40 v-162 h-168 v162 a40 40 0 0 1 -40 40 h-48 a40 40 0 0 1 -40 -40 v-440 a40 40 0 0 1 40 -40 z"/>
+  <path d="M110 560 H300 L360 470 L430 660 L500 520 L540 560 H914" fill="none" stroke="#0B4A2E" stroke-width="64" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/>
+  <path d="M110 560 H300 L360 470 L430 660 L500 520 L540 560 H914" fill="none" stroke="url(#ring)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M808 180 c-30 -40 -100 -20 -96 34 c4 50 70 86 96 108 c26 -22 92 -58 96 -108 c4 -54 -66 -74 -96 -34 z" fill="#FFD36B"/>
+</svg>

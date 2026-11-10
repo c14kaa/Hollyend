@@ -1,0 +1,18 @@
+{
+  "id": "/health/",
+  "name": "Hollyend Health",
+  "short_name": "Health",
+  "description": "Food, progress and health records.",
+  "start_url": "/health/",
+  "scope": "/health/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F6F8F7",
+  "theme_color": "#0E1311",
+  "icons": [
+    { "src": "/health/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/health/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/health/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/health/icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}
