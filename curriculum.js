@@ -637,6 +637,248 @@ K.futurProche = function (L) {
     "Futur proche = present tense of aller + infinitive: " + right, "", { notes: { [subj + " " + ALLER[p] + " " + conj + " " + act.split(" ").slice(1).join(" ") + "."]: "Keep the second verb in the infinitive (" + act.split(" ")[0] + ")." }, tip: "aller (conjugated) + infinitive. Je vais jouer = I'm going to play." });
 };
 
+
+/* ===================== Year 8 maths from the 8M/MAT4 class flow (13 Nov) ===================== */
+var POLY_NAMES = { 3: "triangle", 4: "quadrilateral", 5: "pentagon", 6: "hexagon", 7: "heptagon", 8: "octagon", 9: "nonagon", 10: "decagon", 12: "dodecagon", 15: "15-sided polygon", 18: "18-sided polygon", 20: "20-sided polygon", 24: "24-sided polygon", 30: "30-sided polygon", 36: "36-sided polygon" };
+function polyName(n) { return POLY_NAMES[n] || n + "-sided polygon"; }
+function degN(o) { var n = {}; Object.keys(o).forEach(function (k) { n[k + "°"] = o[k]; }); return n; }
+
+/* --- Topic 6 · Polygons: interior angles (LI2) --- */
+K.polyInterior = function (L) {
+  var t = pick(L === 1 ? ["sum", "regular"] : L === 2 ? ["sum", "regular", "missing"] : ["missing", "sidesFromSum", "regular"]);
+  if (t === "sum") {
+    var n = pick(L === 1 ? [5, 6, 7, 8] : [5, 6, 7, 8, 9, 10, 12]), S = (n - 2) * 180, nt = {};
+    nt[n * 180] = "You did " + n + " × 180. From one corner you can only draw " + (n - 2) + " triangles, so it's (" + n + " − 2) × 180.";
+    nt[(n - 1) * 180] = "Close: it's (n − 2) × 180, not (n − 1) × 180. A " + polyName(n) + " splits into " + (n - 2) + " triangles.";
+    nt[(n - 3) * 180] = "Too few triangles: a " + polyName(n) + " splits into n − 2 = " + (n - 2) + " triangles.";
+    nt[360] = "360° is the sum of the EXTERIOR angles of any polygon, not the interior ones.";
+    return q("Polygons: interior angles", "What is the sum of the interior angles of a " + polyName(n) + " (" + n + " sides)?", S + "°", [n * 180 + "°", (n - 1) * 180 + "°", (n - 3) * 180 + "°", "360°"],
+      "Sum of interior angles = (n − 2) × 180° = (" + n + " − 2) × 180° = " + S + "°.", "",
+      { notes: degN(nt), steps: ["Count the sides: n = " + n + ".", "From one corner, the " + polyName(n) + " splits into n − 2 = " + (n - 2) + " triangles.", "Each triangle has 180°: " + (n - 2) + " × 180° = " + S + "°."], tip: "Sum of interior angles = (n − 2) × 180°." });
+  }
+  if (t === "regular") {
+    var m = pick([5, 6, 8, 9, 10, 12, 15, 18, 20]), sum = (m - 2) * 180, I = sum / m, e = 360 / m, nr = {};
+    nr[e] = "That's the EXTERIOR angle (360 ÷ " + m + "). The interior angle is 180° − " + e + "° = " + I + "°.";
+    nr[sum] = "That's the SUM of all " + m + " angles. Divide by " + m + " to get one angle.";
+    nr[fmt(180 * m / (m + 2))] = "Check the formula: interior angle = (n − 2) × 180 ÷ n.";
+    nr[I + 10] = "Recheck the division: " + sum + " ÷ " + m + " = " + I + ".";
+    return q("Polygons: interior angles", "What is the size of each interior angle of a regular " + polyName(m) + "?", I + "°", [e + "°", sum + "°", fmt(180 * m / (m + 2)) + "°", (I + 10) + "°"],
+      "Regular means all angles are equal: (" + m + " − 2) × 180° = " + sum + "°, then " + sum + "° ÷ " + m + " = " + I + "°.", "",
+      { notes: degN(nr), steps: ["Sum of interior angles: (" + m + " − 2) × 180° = " + sum + "°.", "Regular, so all " + m + " angles are equal.", sum + "° ÷ " + m + " = " + I + "°.", "Check: exterior = 180° − " + I + "° = " + e + "°, and " + m + " × " + e + "° = 360° ✓."], tip: "Quick check: interior + exterior = 180°, and the exterior angle of a regular polygon is 360° ÷ n." });
+  }
+  if (t === "sidesFromSum") {
+    var k = rnd(5, 14), S2 = (k - 2) * 180, nk = {};
+    nk[k - 2] = "That's the number of triangles. Sides = triangles + 2.";
+    nk[k + 2] = "Sides = (sum ÷ 180) + 2 = " + (k - 2) + " + 2 = " + k + ", not " + (k + 2) + ".";
+    nk[Math.round(S2 / 360)] = "Divide by 180 (a triangle), not 360.";
+    return q("Polygons: interior angles", "The interior angles of a polygon add up to " + S2 + "°. How many sides does it have?", String(k), [String(k - 2), String(k + 2), String(k - 1), String(Math.round(S2 / 360))],
+      S2 + " ÷ 180 = " + (k - 2) + " triangles, and sides = triangles + 2 = " + k + ".", "",
+      { notes: nk, steps: ["Use (n − 2) × 180 = " + S2 + ".", "Divide by 180: n − 2 = " + (k - 2) + ".", "Add 2: n = " + k + "."], tip: "Work the formula backwards: ÷ 180, then + 2." });
+  }
+  var p = pick(L === 2 ? [5, 6] : [5, 6, 7, 8]), tot = (p - 2) * 180, x = rnd(70, 170), rest = tot - x, base = Math.floor(rest / (p - 1)), ang = [];
+  for (var i = 0; i < p - 1; i++) ang.push(base);
+  ang[0] += rest - base * (p - 1);
+  for (var j = 0; j < p - 1; j++) { var d = rnd(5, 25), a = j, b = (j + 1) % (p - 1); if (ang[b] - d > 45 && ang[a] + d < 260) { ang[a] += d; ang[b] -= d; } }
+  var known = ang.reduce(function (s, v) { return s + v; }, 0), nm = {};
+  if (360 - known > 0) nm[360 - known] = "360° is for a quadrilateral. A " + polyName(p) + "'s angles add up to " + tot + "°.";
+  nm[p * 180 - known] = "The angles add up to (n − 2) × 180 = " + tot + "°, not " + p + " × 180.";
+  nm[x + 20] = "Recheck the adding: the other angles total " + known + "°.";
+  nm[Math.abs(180 - x)] = "That's 180° minus the answer. Subtract the known angles from the total, " + tot + "°.";
+  return q("Polygons: interior angles", "An irregular " + polyName(p) + " has interior angles of " + ang.map(function (v) { return v + "°"; }).join(", ") + " and x. Find x.", x + "°",
+    [(360 - known > 0 ? 360 - known : x + 30) + "°", (p * 180 - known) + "°", (x + 20) + "°", Math.abs(180 - x) + "°"],
+    "Sum = (" + p + " − 2) × 180° = " + tot + "°. Known angles add up to " + known + "°, so x = " + tot + "° − " + known + "° = " + x + "°.", "",
+    { notes: degN(nm), steps: ["Sum of interior angles: (" + p + " − 2) × 180° = " + tot + "°.", "Add the known angles: " + ang.join(" + ") + " = " + known + "°.", "x = " + tot + "° − " + known + "° = " + x + "°."], tip: "Irregular polygons still follow (n − 2) × 180°; the angles just aren't equal." });
+};
+
+/* --- Topic 6 · Polygons: exterior angles (LI3) --- */
+K.polyExterior = function (L) {
+  var t = pick(L === 1 ? ["regExt", "sumExt", "regExt"] : L === 2 ? ["regExt", "sidesFromExt", "intFromExt"] : ["sidesFromExt", "sidesFromInt", "intFromExt"]);
+  if (t === "regExt") {
+    var n = pick([5, 6, 8, 9, 10, 12, 15, 18, 20]), e = 360 / n, nt = {};
+    nt[180 - e] = "That's the INTERIOR angle. Exterior = 360° ÷ " + n + " = " + e + "°.";
+    nt[fmt(180 / n)] = "Divide 360°, not 180°: the exterior angles go all the way round (360°).";
+    nt[e * 2] = "Recheck: 360 ÷ " + n + " = " + e + ".";
+    return q("Polygons: exterior angles", "What is each exterior angle of a regular " + polyName(n) + "?", e + "°", [(180 - e) + "°", fmt(180 / n) + "°", e * 2 + "°", "360°"],
+      "The exterior angles of any polygon add up to 360°. Regular means they're equal: 360° ÷ " + n + " = " + e + "°.", "",
+      { notes: degN(nt), steps: ["Exterior angles always add up to 360°.", "A regular " + polyName(n) + " has " + n + " equal exterior angles.", "360° ÷ " + n + " = " + e + "°."], tip: "Exterior angle of a regular polygon = 360° ÷ n." });
+  }
+  if (t === "sumExt") {
+    var m = pick([5, 6, 7, 8, 9, 10, 12]), ns = {}; ns[(m - 2) * 180] = "That's the sum of the INTERIOR angles. Exterior angles always total 360°."; ns[180] = "180° is a triangle's interior angles or a straight line, not the exterior total.";
+    return q("Polygons: exterior angles", "What do the exterior angles of any " + polyName(m) + " add up to?", "360°", [(m - 2) * 180 + "°", "180°", m * 360 + "°", m * 180 + "°"],
+      "Walk round any polygon and you turn through one full turn: the exterior angles always add up to 360°.", "",
+      { notes: degN(ns), steps: ["Imagine walking round the edge of the shape.", "At each corner you turn through the exterior angle.", "By the time you're back you've made one full turn: 360°, whatever the number of sides."], tip: "Exterior angles of ANY polygon (regular or not) add up to 360°." });
+  }
+  if (t === "intFromExt") {
+    var e2 = pick([20, 24, 30, 36, 40, 45, 60, 72]), I = 180 - e2, ni = {};
+    ni[360 - e2] = "Interior and exterior sit on a straight line, so they add to 180°, not 360°."; ni[90 - e2 > 0 ? 90 - e2 : e2 + 90] = "Interior + exterior = 180° (a straight line).";
+    return q("Polygons: exterior angles", "Each exterior angle of a regular polygon is " + e2 + "°. What is each interior angle?", I + "°", [(360 - e2) + "°", (90 - e2 > 0 ? 90 - e2 : e2 + 90) + "°", e2 + "°", (I - 10) + "°"],
+      "Interior and exterior angles lie on a straight line: interior = 180° − " + e2 + "° = " + I + "°.", "",
+      { notes: degN(ni), steps: ["Interior + exterior = 180° (angles on a straight line).", "180° − " + e2 + "° = " + I + "°.", "Bonus: the polygon has 360 ÷ " + e2 + " = " + (360 / e2) + " sides."], tip: "Interior + exterior = 180°." });
+  }
+  if (t === "sidesFromExt") {
+    var e3 = pick([12, 15, 18, 20, 24, 30, 36, 40, 45, 72]), k = 360 / e3, nx = {};
+    nx[180 / e3] = "Divide 360, not 180: exterior angles add up to 360°."; nx[k + 2] = "No + 2 needed here: sides = 360 ÷ exterior angle.";
+    return q("Polygons: exterior angles", "A regular polygon has exterior angles of " + e3 + "°. How many sides does it have?", String(k), [String(180 / e3), String(k + 2), String(k - 1), String(k * 2)],
+      "Exterior angles add up to 360°, so the number of sides = 360 ÷ " + e3 + " = " + k + ".", "",
+      { notes: nx, steps: ["Exterior angles total 360°.", "Each one is " + e3 + "°, so count how many fit: 360 ÷ " + e3 + ".", "= " + k + " sides."], tip: "n = 360 ÷ exterior angle." });
+  }
+  var I2 = pick([140, 144, 150, 156, 160, 162, 165, 168, 170]), ex = 180 - I2, sides = 360 / ex, nz = {};
+  nz[ex] = "That's the exterior angle (180 − " + I2 + "). Now do 360 ÷ " + ex + " to get the sides."; nz[fmt(360 / I2)] = "Use the EXTERIOR angle, not the interior: 360 ÷ (180 − " + I2 + ").";
+  nz[sides + 2] = "No + 2 here: n = 360 ÷ exterior angle.";
+  return q("Polygons: exterior angles", "Each interior angle of a regular polygon is " + I2 + "°. How many sides does it have?", String(sides), [String(ex), fmt(360 / I2), String(sides + 2), String(sides - 2)],
+    "Exterior angle = 180° − " + I2 + "° = " + ex + "°, so sides = 360 ÷ " + ex + " = " + sides + ".", "",
+    { notes: nz, steps: ["Find the exterior angle: 180° − " + I2 + "° = " + ex + "°.", "Exterior angles add up to 360°.", "360 ÷ " + ex + " = " + sides + " sides."], tip: "From an interior angle: find the exterior first (180 − interior), then 360 ÷ exterior." });
+};
+
+/* --- Topic 6 · Polygons: properties, regular vs irregular, congruence (LI1, LI4) --- */
+var POLY_PROPS = [
+  ["What makes a polygon REGULAR?", "all its sides and all its angles are equal", ["it has an even number of sides", "all its sides are equal but its angles can differ", "it has at least one right angle"], "Regular = equal sides AND equal angles. A rhombus has equal sides but isn't regular.", { "all its sides are equal but its angles can differ": "Equal sides alone isn't enough: a rhombus has 4 equal sides but isn't regular. The angles must be equal too." }],
+  ["Which of these is an IRREGULAR polygon?", "a rhombus that isn't a square", ["a square", "an equilateral triangle", "a regular hexagon"], "A rhombus has equal sides but unequal angles, so it's irregular.", {}],
+  ["A polygon has 8 sides. What is it called?", "octagon", ["hexagon", "heptagon", "nonagon"], "Oct = 8 (like octopus). Hexagon 6, heptagon 7, nonagon 9.", { "heptagon": "Hepta = 7. Octa = 8, like an octopus's 8 legs." }],
+  ["A polygon has 7 sides. What is it called?", "heptagon", ["hexagon", "octagon", "pentagon"], "Hepta = 7. Hexa = 6, octa = 8, penta = 5.", {}],
+  ["A polygon has 9 sides. What is it called?", "nonagon", ["decagon", "octagon", "heptagon"], "Nona = 9, deca = 10.", {}],
+  ["A polygon has 10 sides. What is it called?", "decagon", ["nonagon", "dodecagon", "octagon"], "Deca = 10, like a decade. Dodecagon = 12.", {}],
+  ["What does it mean for two shapes to be CONGRUENT?", "they are exactly the same shape and size", ["they are the same shape but different sizes", "they have the same area", "they have the same number of sides"], "Congruent = identical: same shape AND same size (they may be turned or flipped).", { "they are the same shape but different sizes": "That's SIMILAR. Congruent shapes are the same size as well." }],
+  ["Two triangles are the same shape, but one is an enlargement of the other. They are…", "similar, but not congruent", ["congruent", "neither similar nor congruent", "regular"], "Same shape, different size = similar. Congruent needs the same size too.", {}],
+  ["Is a shape still congruent to the original after it has been rotated or reflected?", "yes: turning or flipping doesn't change shape or size", ["no: it must face the same way", "only if it's reflected", "only if it's rotated by 90°"], "Rotations, reflections and translations keep the shape and size, so the image is congruent.", {}],
+  ["Which condition does NOT prove two triangles are congruent?", "AAA (all three angles equal)", ["SSS (three sides equal)", "SAS (two sides and the angle between)", "ASA (two angles and the side between)"], "AAA only proves the triangles are SIMILAR: they could be different sizes.", { "SSS (three sides equal)": "SSS does prove congruence: three equal sides fix the triangle exactly." }],
+  ["Triangle ABC has sides 5 cm, 7 cm and 9 cm. Triangle PQR has sides 9 cm, 5 cm and 7 cm. Are they congruent?", "yes, by SSS", ["no, the sides are in a different order", "only if the angles are given", "no, they're only similar"], "All three sides match (in some order), so they're congruent by SSS.", {}],
+  ["Is every square similar to every other square?", "yes, but they're only congruent if the sides are equal", ["no, never", "yes, and they're always congruent", "only if they have the same area… and different sides"], "All squares have the same shape (similar); congruent only when the same size.", {}],
+  ["A regular polygon has interior angles that are all…", "equal", ["90°", "different", "less than 90°"], "Regular means every angle is the same size (and every side the same length).", {}],
+  ["How many lines of symmetry does a regular hexagon have?", "6", ["3", "4", "12"], "A regular polygon with n sides has n lines of symmetry.", { "3": "There are 3 through opposite corners AND 3 through the middles of opposite sides: 6 in all." }],
+  ["What is the order of rotational symmetry of a regular pentagon?", "5", ["1", "2", "10"], "A regular n-sided polygon has rotational symmetry of order n.", {}]
+];
+K.polyProps = function () {
+  var s = pick(POLY_PROPS);
+  return q("Polygons: properties & congruence", s[0], s[1], s[2], s[3], "", { notes: s[4] || {}, steps: ["Read the key word carefully: regular, irregular, congruent or similar.", s[3]], tip: "Regular = equal sides AND angles. Congruent = same shape AND size. Similar = same shape, any size." });
+};
+
+/* --- Topic 5 · Probability: language, the scale, P(not) and outcomes that add to 1 (LI1) --- */
+K.probScale = function (L) {
+  var t = pick(L === 1 ? ["words", "not"] : L === 2 ? ["not", "table", "words"] : ["table", "table", "expected"]);
+  if (t === "words") {
+    var w = pick([["rolling a 7 on a normal dice", "impossible"], ["the sun rising tomorrow", "certain"], ["flipping heads on a fair coin", "even chance"], ["rolling a 6 on a fair dice", "unlikely"], ["rolling a number less than 6 on a fair dice", "likely"], ["picking a red card from a normal pack", "even chance"], ["picking an ace from a normal pack", "unlikely"], ["rolling a number from 1 to 6 on a dice", "certain"]]);
+    var all = ["impossible", "unlikely", "even chance", "likely", "certain"];
+    return q("Probability: the scale", "Which word best describes the probability of " + w[0] + "?", w[1], all.filter(function (x) { return x !== w[1]; }),
+      "On the scale 0 (impossible) to 1 (certain), " + w[0] + " is " + w[1] + ".", "",
+      { steps: ["Think: how many outcomes work, out of how many?", "0 = impossible, 1/2 = even chance, 1 = certain; between are unlikely and likely.", "So it's " + w[1] + "."], tip: "Probabilities go from 0 to 1. Never bigger than 1, never negative." });
+  }
+  if (t === "not") {
+    var a = rnd(1, 19) * 5, p = a / 100, ans = fmt(1 - p), nn = {}; nn[fmt(p)] = "That's the probability it DOES happen. P(not) = 1 − " + fmt(p) + ".";
+    nn[fmt(1 + p)] = "Probabilities can't be more than 1. Subtract from 1."; nn[fmt(Math.abs(0.5 - p))] = "Use 1 − P, not 0.5 − P.";
+    var ev = pick(["Hollyend FC win their next match", "it rains on Saturday", "Kristan scores from a free kick", "the bus is late"]);
+    return q("Probability: the scale", "P(" + ev + ") = " + fmt(p) + ". What is the probability that it does NOT happen?", ans, [fmt(p), fmt(1 + p), fmt(Math.abs(0.5 - p)), fmt(1 - p + 0.1)],
+      "Something either happens or it doesn't, so P(not) = 1 − " + fmt(p) + " = " + ans + ".", "",
+      { notes: nn, steps: ["P(happens) + P(doesn't happen) = 1.", "P(not) = 1 − " + fmt(p) + ".", "= " + ans + "."], tip: "P(not A) = 1 − P(A)." });
+  }
+  if (t === "table") {
+    var labels = shuffle(["red", "blue", "green", "yellow"]), ps = [rnd(1, 4) * 5, rnd(1, 5) * 5, rnd(2, 6) * 5], miss = 100 - ps.reduce(function (s, v) { return s + v; }, 0);
+    if (miss <= 0) return K.probScale(L);
+    var spinner = labels.slice(0, 3).map(function (c, i) { return c + ": " + fmt(ps[i] / 100); }).join(", ") + ", " + labels[3] + ": ?";
+    var ans2 = fmt(miss / 100), nb = {}; nb[fmt(1 - ps[0] / 100)] = "Take away ALL the known probabilities from 1, not just one of them."; nb[fmt((ps[0] + ps[1] + ps[2]) / 100)] = "That's the total of the others. The missing one is 1 minus that.";
+    return q("Probability: the scale", "A spinner lands on these colours with probabilities " + spinner + ". What is P(" + labels[3] + ")?", ans2, [fmt(1 - ps[0] / 100), fmt((ps[0] + ps[1] + ps[2]) / 100), fmt(miss / 100 + 0.1), "0.25"],
+      "All the probabilities add up to 1: " + fmt(ps[0] / 100) + " + " + fmt(ps[1] / 100) + " + " + fmt(ps[2] / 100) + " = " + fmt((100 - miss) / 100) + ", so P(" + labels[3] + ") = 1 − " + fmt((100 - miss) / 100) + " = " + ans2 + ".", "",
+      { notes: nb, steps: ["The probabilities of all outcomes add up to 1.", "Known total: " + fmt((100 - miss) / 100) + ".", "Missing = 1 − " + fmt((100 - miss) / 100) + " = " + ans2 + "."], tip: "All the outcomes' probabilities add to exactly 1." });
+  }
+  var pr = pick([[1, 4], [1, 5], [3, 10], [2, 5], [1, 6], [3, 4]]), N = pr[1] * rnd(4, 12), exp = N * pr[0] / pr[1], ne = {}; ne[N - exp] = "That's how many times it would NOT happen. Expected = P × trials."; ne[fmt(N / pr[0])] = "Multiply the trials by the probability: " + N + " × " + pr[0] + "/" + pr[1] + ".";
+  return q("Probability: the scale", "The probability that a penalty is saved is " + pr[0] + "/" + pr[1] + ". In " + N + " penalties, how many would you expect to be saved?", String(exp), [String(N - exp), fmt(N / pr[0]), String(exp + pr[0]), String(pr[1])],
+    "Expected number = probability × number of trials = " + pr[0] + "/" + pr[1] + " × " + N + " = " + exp + ".", "",
+    { notes: ne, steps: ["Expected frequency = P × number of trials.", N + " ÷ " + pr[1] + " = " + (N / pr[1]) + ".", (N / pr[1]) + " × " + pr[0] + " = " + exp + "."], tip: "Expected outcomes = probability × number of trials." });
+};
+
+/* --- Topic 5 · Probability: tree diagrams for two events (LI2) --- */
+K.treeDiag = function (L) {
+  var ctx = pick([["Kristan scores his first penalty", "he scores his second penalty"], ["Hollyend FC win on Saturday", "they win on Tuesday"], ["it rains on Saturday", "it rains on Sunday"], ["the first bus is late", "the second bus is late"]]);
+  if (L === 3 && Math.random() < 0.5) {
+    var r = rnd(3, 7), b = rnd(2, 6), n = r + b, repl = Math.random() < 0.5, num = repl ? r * r : r * (r - 1), den = repl ? n * n : n * (n - 1), ans = frac(num, den), nf = {};
+    nf[frac(r * r, n * n)] = "The first counter isn't put back, so the second pick is out of " + (n - 1) + " with " + (r - 1) + " red left."; nf[frac(r, n)] = "That's just one pick. Multiply along the branches for two picks."; nf[frac(2 * r, n)] = "Multiply along the branches; don't add.";
+    if (!repl) delete nf[ans];
+    return q("Probability: tree diagrams", "A bag has " + r + " red and " + b + " blue counters. One is taken, " + (repl ? "put back" : "NOT put back") + ", then a second is taken. What is P(both red)? (simplest form)", ans,
+      [frac(r * r, n * n), frac(r * (r - 1), n * n), frac(r, n), frac(2 * r, n * 2 + 1), frac(r * (r - 1), n * (n - 1))].filter(function (x) { return x !== ans; }),
+      "P(red then red) = " + r + "/" + n + " × " + (repl ? r + "/" + n : (r - 1) + "/" + (n - 1)) + " = " + num + "/" + den + (ans !== num + "/" + den ? " = " + ans : "") + ".", "",
+      { notes: repl ? { [frac(r * (r - 1), n * (n - 1))]: "It's put back, so the second pick is still " + r + "/" + n + "." } : nf,
+        steps: ["First pick: P(red) = " + r + "/" + n + ".", repl ? "It's put back, so the second pick is still " + r + "/" + n + "." : "Not put back: now " + (r - 1) + " red out of " + (n - 1) + ", so " + (r - 1) + "/" + (n - 1) + ".", "Multiply along the branches: " + num + "/" + den + (ans !== num + "/" + den ? " = " + ans : "") + "."], tip: "Tree diagrams: multiply ALONG branches, add DOWN between the routes you want." });
+  }
+  var a = rnd(3, 9), c = rnd(2, 9), p1 = a / 10, p2 = c / 10, f = function (x) { return String(Math.round(x * 100) / 100); };
+  var t = pick(L === 1 ? ["both", "neither"] : L === 2 ? ["both", "neither", "one"] : ["one", "atleast", "neither"]);
+  var both = p1 * p2, neither = (1 - p1) * (1 - p2), one = p1 * (1 - p2) + (1 - p1) * p2, atl = 1 - neither, val, ask, steps;
+  if (t === "both") { val = both; ask = "both happen"; steps = ["Follow the 'yes' branch twice.", "Multiply along it: " + f(p1) + " × " + f(p2) + " = " + f(both) + "."]; }
+  if (t === "neither") { val = neither; ask = "neither happens"; steps = ["P(not first) = 1 − " + f(p1) + " = " + f(1 - p1) + "; P(not second) = 1 − " + f(p2) + " = " + f(1 - p2) + ".", "Multiply along the 'no, no' branch: " + f(1 - p1) + " × " + f(1 - p2) + " = " + f(neither) + "."]; }
+  if (t === "one") { val = one; ask = "exactly one of them happens"; steps = ["Two routes work: yes-no and no-yes.", "Yes-no: " + f(p1) + " × " + f(1 - p2) + " = " + f(p1 * (1 - p2)) + ". No-yes: " + f(1 - p1) + " × " + f(p2) + " = " + f((1 - p1) * p2) + ".", "Add the routes: " + f(one) + "."]; }
+  if (t === "atleast") { val = atl; ask = "at least one of them happens"; steps = ["The only route that fails is no-no: " + f(1 - p1) + " × " + f(1 - p2) + " = " + f(neither) + ".", "P(at least one) = 1 − " + f(neither) + " = " + f(atl) + "."]; }
+  var nt = {}; nt[f(p1 + p2)] = "Don't add the two probabilities: for 'and' you multiply along the branches."; nt[f(both)] = t === "both" ? undefined : "That's P(both happen). Follow the branches that match the question.";
+  nt[f(neither)] = t === "neither" ? undefined : "That's P(neither). Check which branches the question wants."; nt[f(p1 * (1 - p2))] = "That's only one route (yes then no). There's another: no then yes.";
+  Object.keys(nt).forEach(function (k) { if (!nt[k]) delete nt[k]; });
+  return q("Probability: tree diagrams", "P(" + ctx[0] + ") = " + f(p1) + " and, independently, P(" + ctx[1] + ") = " + f(p2) + ". Use a tree diagram to find the probability that " + ask + ".", f(val),
+    [f(p1 + p2 > 1 ? p1 + p2 - 1 : p1 + p2), f(both), f(neither), f(one), f(atl), f(p1 * (1 - p2))].filter(function (x) { return x !== f(val); }),
+    "Draw two sets of branches. " + steps.join(" "), "", { notes: nt, steps: steps, tip: "AND = multiply along a branch. OR = add the routes. At least one = 1 − P(none)." });
+};
+
+/* --- Topic 5 · Probability: two-way tables (LI3) --- */
+K.twoWay = function (L) {
+  var rows = pick([["Boys", "Girls"], ["Year 7", "Year 8"]]), cols = pick([["Football", "Basketball", "Swimming"], ["FIFA", "Fortnite", "Rocket League"], ["Walk", "Car", "Bus"]]);
+  var g = [[rnd(4, 18), rnd(3, 15), rnd(2, 12)], [rnd(3, 15), rnd(4, 18), rnd(2, 12)]], rt = g.map(function (r) { return r[0] + r[1] + r[2]; }), ct = [0, 1, 2].map(function (j) { return g[0][j] + g[1][j]; }), T = rt[0] + rt[1];
+  var hide = L >= 2 && Math.random() < 0.5, hr = rnd(0, 1), hc = rnd(0, 2);
+  var cell = function (i, j) { return hide && i === hr && j === hc ? "?" : g[i][j]; };
+  var html = '<table class="ft"><tr><th></th>' + cols.map(function (c) { return "<th>" + c + "</th>"; }).join("") + "<th>Total</th></tr>" +
+    [0, 1].map(function (i) { return "<tr><th>" + rows[i] + "</th>" + [0, 1, 2].map(function (j) { return "<td>" + cell(i, j) + "</td>"; }).join("") + "<td>" + rt[i] + "</td></tr>"; }).join("") +
+    "<tr><th>Total</th>" + ct.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "<td>" + T + "</td></tr></table>";
+  if (hide) {
+    var v = g[hr][hc], nh = {}; nh[rt[hr] - v] = "That's the rest of the row. Subtract the other two cells from the row total, " + rt[hr] + "."; nh[ct[hc]] = "That's the column total. Take away the other " + rows[1 - hr] + " value.";
+    return q("Probability: two-way tables", "The table shows " + rows.join(" and ") + " and their favourite choice. Find the missing number.", String(v), [String(rt[hr] - v), String(ct[hc]), String(v + 2), String(Math.abs(v - 3) || v + 4)],
+      "Row total " + rt[hr] + " − the other two " + rows[hr] + " cells (" + [0, 1, 2].filter(function (j) { return j !== hc; }).map(function (j) { return g[hr][j]; }).join(" + ") + ") = " + v + ".", html,
+      { notes: nh, steps: ["Look along the " + rows[hr] + " row: total " + rt[hr] + ".", "Add the known cells: " + [0, 1, 2].filter(function (j) { return j !== hc; }).map(function (j) { return g[hr][j]; }).join(" + ") + " = " + (rt[hr] - v) + ".", rt[hr] + " − " + (rt[hr] - v) + " = " + v + ". Check down the column: " + g[1 - hr][hc] + " + " + v + " = " + ct[hc] + " ✓."], tip: "Every row and column must add up to its total: use them to fill gaps." });
+  }
+  var i = rnd(0, 1), j = rnd(0, 2), cond = L === 3 && Math.random() < 0.6, num = g[i][j], den = cond ? rt[i] : T, ans = frac(num, den), nc = {};
+  nc[frac(num, cond ? T : rt[i])] = cond ? "It's GIVEN they're " + rows[i] + ", so divide by the " + rows[i] + " total (" + rt[i] + "), not everyone." : "Pick from EVERYONE (" + T + "), not just the " + rows[i] + ".";
+  nc[frac(num, ct[j])] = "Divide by " + (cond ? "the " + rows[i] + " total (" + rt[i] + ")" : "the grand total (" + T + ")") + ", not the " + cols[j] + " column total.";
+  return q("Probability: two-way tables", cond ? "A student is picked at random from the " + rows[i] + ". What is the probability their choice is " + cols[j] + "? (simplest form)" : "One student is picked at random from the whole table. What is P(" + rows[i] + " AND " + cols[j] + ")? (simplest form)", ans,
+    [frac(num, cond ? T : rt[i]), frac(num, ct[j]), frac(ct[j], T), frac(rt[i], T), frac(num + 1, den), frac(Math.max(1, num - 1), den), frac(num, den + 2)].filter(function (x) { return x !== ans; }),
+    "P = " + num + "/" + den + (ans !== num + "/" + den ? " = " + ans : "") + ": " + num + " " + rows[i] + " chose " + cols[j] + ", out of " + (cond ? rt[i] + " " + rows[i] : T + " students") + ".", html,
+    { notes: nc, steps: ["Find the cell where " + rows[i] + " meets " + cols[j] + ": " + num + ".", cond ? "Only the " + rows[i] + " count, so the bottom is their total: " + rt[i] + "." : "Anyone could be picked, so the bottom is the grand total: " + T + ".", "P = " + num + "/" + den + (ans !== num + "/" + den ? " = " + ans : "") + "."], tip: "Top = the cell you want. Bottom = whoever you're choosing from." });
+};
+
+/* --- Topic 5 · Probability: experimental probability & relative frequency (LI4) --- */
+K.relFreq = function (L) {
+  var t = pick(L === 1 ? ["rf", "rf", "fair"] : L === 2 ? ["rf", "expect", "fair"] : ["expect", "fair", "best"]);
+  if (t === "rf") {
+    var n = pick([20, 25, 40, 50, 80, 100, 200]), k = rnd(1, Math.floor(n * 0.7)), ans = frac(k, n), nr = {}; nr[frac(n - k, n)] = "That's how often it DIDN'T happen."; nr[k + "/" + (n - k)] = "Divide by ALL the trials (" + n + "), not just the others.";
+    var ctx = pick(["a drawing pin landed point up", "Kristan's free kick hit the target", "the spinner landed on red", "the toast landed butter-side down"]);
+    return q("Probability: experimental", "In " + n + " trials, " + ctx + " " + k + " times. What is the relative frequency? (simplest form)", ans, [frac(n - k, n), k + "/" + (n - k), frac(k, n + 10), frac(k + 1, n)],
+      "Relative frequency = times it happened ÷ total trials = " + k + "/" + n + (ans !== k + "/" + n ? " = " + ans : "") + ".", "",
+      { notes: nr, steps: ["Count the successes: " + k + ".", "Count all the trials: " + n + ".", "Relative frequency = " + k + "/" + n + (ans !== k + "/" + n ? " = " + ans : "") + "."], tip: "Relative frequency = successes ÷ trials. More trials = a better estimate." });
+  }
+  if (t === "expect") {
+    var tr = pick([20, 40, 50]), s = rnd(2, Math.floor(tr / 2)), fut = tr * rnd(3, 10), e = fut * s / tr, nx = {}; nx[fut - e] = "That's how many times it would NOT happen."; nx[s] = "That was in the first " + tr + " trials. Scale it up to " + fut + ".";
+    return q("Probability: experimental", "A biased dice landed on 6 in " + s + " out of " + tr + " rolls. Estimate how many 6s you'd get in " + fut + " rolls.", fmt(e), [fmt(fut - e), String(s), fmt(fut / 6), fmt(e + s)],
+      "Estimated P(6) = " + s + "/" + tr + ". Expected 6s = " + s + "/" + tr + " × " + fut + " = " + fmt(e) + ".", "",
+      { notes: nx, steps: ["Relative frequency of a 6: " + s + "/" + tr + ".", "Use it as the probability.", s + "/" + tr + " × " + fut + " = " + fmt(e) + "."], tip: "Expected = relative frequency × new number of trials. Don't use 1/6: this dice is biased!" });
+  }
+  if (t === "fair") {
+    var N = pick([60, 120, 300, 600]), six = Math.round(N / 6 * pick([1, 1.9, 2.4])), biased = six > N / 6 * 1.5;
+    return q("Probability: experimental", "A dice is rolled " + N + " times and lands on 6 " + six + " times. Does it look biased?", biased ? "Yes: you'd expect about " + N / 6 + " sixes, and " + six + " is far more" : "No: you'd expect about " + N / 6 + " sixes, and " + six + " is close",
+      [biased ? "No: " + six + " sixes is about right" : "Yes: it should be exactly " + N / 6, "You can't tell anything from " + N + " rolls", biased ? "Yes, because 6 should never come up that often in any dice" : "Yes, because it's not exactly " + N / 6],
+      "Expected for a fair dice: " + N + " × 1/6 = " + N / 6 + ". " + (biased ? six + " is much higher, so it looks biased." : six + " is close to that; small differences are normal."), "",
+      { steps: ["Expected 6s if fair: " + N + " ÷ 6 = " + N / 6 + ".", "Compare: observed " + six + ".", biased ? "Far more than expected → probably biased." : "Close to expected → no evidence of bias. Results never match exactly."], tip: "Fair doesn't mean exact: compare with the expected number and look for a BIG difference." });
+  }
+  var a = rnd(5, 15), A = 20, b = rnd(30, 70), B = 100, ra = a / A, rb = b / B;
+  if (Math.abs(ra - rb) < 0.02) { b = b > 50 ? b - 7 : b + 7; rb = b / B; }
+  return q("Probability: experimental", "Amir flipped a drawing pin " + A + " times: " + a + " landed point up. Beth flipped it " + B + " times: " + b + " landed point up. Whose estimate of P(point up) is more reliable, and what is it?", "Beth's: " + fmt(rb), ["Amir's: " + fmt(ra), "Amir's: " + fmt(rb), "Both are equally reliable: " + fmt((ra + rb) / 2), "Beth's: " + fmt(ra)],
+    "More trials give a more reliable estimate. Beth did " + B + ", so P ≈ " + b + "/" + B + " = " + fmt(rb) + ". (Combining both, " + (a + b) + "/" + (A + B) + ", is even better.)", "",
+    { notes: { ["Amir's: " + fmt(ra)]: "Amir only did " + A + " trials. More trials = more reliable." }, steps: ["Compare the number of trials: " + A + " vs " + B + ".", "More trials → more reliable relative frequency.", "Beth: " + b + " ÷ " + B + " = " + fmt(rb) + "."], tip: "The more trials, the more you can trust the relative frequency." });
+};
+
+/* --- Topic 1 · LI6: equations with algebraic fractions that lead to x² --- */
+K.algFracQuad = function (L) {
+  var a = rnd(3, 12), t = pick(L === 1 ? ["div"] : L === 2 ? ["div", "plus"] : ["plus", "cross", "cross"]), prompt, steps, nt = {};
+  if (t === "div") { var k = pick([2, 3, 4, 5]), m = a * a / k; if (m !== Math.round(m)) { k = 1; } m = a * a / k; prompt = (k === 1 ? "x²" : "x² / " + k) + " = " + m; steps = [k === 1 ? "Already x² = " + m + "." : "Multiply both sides by " + k + ": x² = " + (a * a) + ".", "Square root both sides: x = ±√" + (a * a) + ".", "x = " + a + " or x = −" + a + "."]; }
+  if (t === "plus") { var c = rnd(1, 20), k2 = pick([2, 3, 4]), r = (a * a + c); if (r % k2) { c += k2 - (r % k2); r = a * a + c; } prompt = "(x² + " + c + ") / " + k2 + " = " + (r / k2); steps = ["Multiply both sides by " + k2 + ": x² + " + c + " = " + r + ".", "Subtract " + c + ": x² = " + (a * a) + ".", "Square root: x = ±" + a + "."]; nt["x = ±" + Math.round(Math.sqrt(Math.max(1, r / k2 - c)) * 100) / 100] = "Multiply by " + k2 + " BEFORE you subtract " + c + "."; }
+  if (t === "cross") { var p = pick([1, 2, 3, 4, 6]); while ((a * a) % p) p = pick([1, 2, 3, 4]); var q2 = a * a / p; prompt = p + " / x = x / " + q2; steps = ["Cross-multiply: x × x = " + p + " × " + q2 + ".", "x² = " + (a * a) + ".", "Square root: x = ±" + a + "."]; nt["x = " + (p + q2)] = "Cross-multiply (x × x = " + p + " × " + q2 + "), don't add."; }
+  nt["x = " + a] = "Nearly! x² has TWO square roots: " + a + " and −" + a + ". Write x = ±" + a + "."; nt["x = ±" + a * a] = "You stopped at x² = " + a * a + ". Square root to get x."; nt["x = ±" + a * 2] = "Square root, don't halve: √" + a * a + " = " + a + ".";
+  return q("Equations: algebraic fractions", "Solve " + prompt, "x = ±" + a, ["x = " + a, "x = ±" + a * a, "x = ±" + a * 2, "x = ±" + (a + 1)].concat(Object.keys(nt).filter(function (z) { return z !== "x = ±" + a; })),
+    "Clear the fraction, get x² on its own, then square root: x = ±" + a + ".", "", { notes: nt, steps: steps, tip: "x² = n has two answers: +√n and −√n." });
+};
+
 /* ===================== Revision topics for the new question sets ===================== */
 REVISION.millie = REVISION.millie.concat([
   { id: "sq-cube", title: "Square & cube numbers", subject: "Maths", covered: "Multiplication & division", gens: ["squareCube"] },
@@ -670,7 +912,16 @@ REVISION.kristan = REVISION.kristan.concat([
   { id: "metals", title: "8G Metals & their uses", subject: "Science", covered: "8G Metals", gens: ["metals"] },
   { id: "gothic", title: "Gothic fiction", subject: "English", covered: "Gothic fiction unit", gens: ["gothic", "en:foreshadowing", "en:ominous", "en:desolate", "en:atmosphere", "en:melancholy"] },
   { id: "tempest", title: "The Tempest", subject: "English", covered: "Shakespeare: The Tempest", gens: ["tempest"] },
-  { id: "fr-futur", title: "French: futur proche (aller + infinitive)", subject: "French", covered: "Free time & plans", gens: ["futurProche", "fr:vais", "fr:vas", "fr:va", "fr:allons", "fr:allez", "fr:vont"] }
+  { id: "fr-futur", title: "French: futur proche (aller + infinitive)", subject: "French", covered: "Free time & plans", gens: ["futurProche", "fr:vais", "fr:vas", "fr:va", "fr:allons", "fr:allez", "fr:vont"] },
+  { id: "fr-weekend", title: "French: the weekend in the perfect tense, opinions & time phrases", subject: "French", covered: "Vocab quiz · Mon 16 Nov",
+    gens: ["fr:danse", "fr:joue", "fr:mange", "fr:regarde-pp", "fr:alle", "fr:ville", "fr:fete", "fr:etait", "fr:genial", "fr:sympa", "fr:ennuyeux", "fr:nul", "fr:desastre", "fr:hier", "fr:hier-soir", "fr:dernier", "fr:derniere", "fr:habitude", "fr:normalement", "fr:jours", "fr:soirs", "fr:demain", "fr:ce-soir", "fr:prochain", "fr:prochaine"] },
+  { id: "alg-frac", title: "Equations with algebraic fractions & x²", subject: "Maths", covered: "Topic 1 · LI6 (maths class flow, 13 Nov)", gens: ["algFracQuad"] },
+  { id: "prob-basics", title: "Probability scale, P(not) & expected outcomes", subject: "Maths", covered: "Topic 5 · LI1 (maths class flow, 13 Nov)", gens: ["probScale", "probScale", "probability"] },
+  { id: "tree-diagrams", title: "Tree diagrams: AND, OR, with & without replacement", subject: "Maths", covered: "Topic 5 · LI2 (maths class flow, 13 Nov)", gens: ["treeDiag"] },
+  { id: "two-way", title: "Two-way tables & probability", subject: "Maths", covered: "Topic 5 · LI3 (maths class flow, 13 Nov)", gens: ["twoWay"] },
+  { id: "exp-prob", title: "Experimental probability & relative frequency", subject: "Maths", covered: "Topic 5 · LI4 (maths class flow, 13 Nov)", gens: ["relFreq"] },
+  { id: "poly-angles", title: "Polygons: interior & exterior angles", subject: "Maths", covered: "Topic 6 · Polygons, LI2–3 (maths class flow, 13 Nov)", gens: ["polyInterior", "polyExterior"] },
+  { id: "poly-props", title: "Polygons: regular, irregular, symmetry & congruence", subject: "Maths", covered: "Topic 6 · Polygons, LI1 & LI4 (maths class flow, 13 Nov)", gens: ["polyProps"] }
 ]);
 
 /* ===================== The curriculum map =====================
@@ -678,38 +929,39 @@ REVISION.kristan = REVISION.kristan.concat([
    The school run updates `week`, `focus` and each unit's status from Toddle class posts and homework. */
 var CURRICULUM = {
   millie: {
-    year: "Year 5", updated: "2026-11-07", week: "Term 1 · Week 10 (from 9 Nov)",
-    focus: "Converting units and reading timetables in maths, planets and orbits in science, and the Mars rover book Curiosity in English.",
+    year: "Year 5", updated: "2026-11-13", week: "Term 1 · Week 11 (from 16 Nov)",
+    focus: "Converting km, m, cm and mm plus decimals and fractions in maths, the Solaris Seven planets in theme, the Mars rover book Curiosity in English, and modal verbs.",
     units: [
       { subject: "Maths", title: "Place value to 1,000,000", term: 1, status: "done", topics: ["place-value", "rounding", "negatives", "roman"] },
       { subject: "Maths", title: "Addition & subtraction", term: 1, status: "done", topics: ["mental-add", "column"] },
       { subject: "Maths", title: "Multiples, factors & primes", term: 1, status: "done", topics: ["factors", "multiples", "primes"] },
-      { subject: "Maths", title: "Multiplication & division", term: 1, status: "now", why: "Week 8 homework: square and cube numbers, and × and ÷ by 10, 100 and 1,000.", topics: ["sq-cube", "x10", "written-mult", "short-div", "tables"] },
-      { subject: "Maths", title: "Decimals & percentages", term: 1, status: "next", topics: ["fdp", "decimals"] },
-      { subject: "Maths", title: "Measurement: time & length", term: 1, status: "now", why: "Week 9 homework: converting length, mass and time, with a 12/24-hour day-out timetable.", topics: ["time-24h", "time", "measures"] },
-      { subject: "Maths", title: "Fractions", term: 2, status: "later", topics: ["fractions"] },
+      { subject: "Maths", title: "Multiplication & division", term: 1, status: "done", topics: ["sq-cube", "x10", "written-mult", "short-div", "tables"] },
+      { subject: "Maths", title: "Decimals & percentages", term: 1, status: "now", why: "CENTURY Maths Lesson 3 Week 10: hundredths, 2dp place value and decimal equivalents.", topics: ["fdp", "decimals"] },
+      { subject: "Maths", title: "Measurement: time & length", term: 1, status: "now", why: "Week 10 homework: two sheets converting km, m, cm and mm.", topics: ["measures", "time-24h", "time"] },
+      { subject: "Maths", title: "Fractions", term: 2, status: "next", why: "CENTURY Week 10 extras: equivalent fractions, improper fractions and mixed numbers.", topics: ["fractions"] },
       { subject: "Maths", title: "Shape: angles & polygons", term: 2, status: "later", topics: ["angles"] },
       { subject: "Maths", title: "Perimeter, area & volume", term: 3, status: "later", topics: ["perim-area"] },
-      { subject: "English", title: "Curiosity: The Story of a Mars Rover (new class book) & grammar", term: 1, status: "now", why: "New class text this week (inference, prediction, questions); Week 9 homework is a grammar sheet.", topics: ["grammar5", "figurative"] },
+      { subject: "English", title: "Curiosity: The Story of a Mars Rover (new class book) & grammar", term: 1, status: "now", why: "Week 10 homework: six questions on the cover of Curiosity; spellings are modal verbs.", topics: ["grammar5", "spell-w10", "figurative"] },
       { subject: "English", title: "Sentences: fronted adverbials, clauses & phrases", term: 1, status: "done", topics: ["grammar"] },
       { subject: "Science", title: "Properties & changes of materials", term: 1, status: "done", topics: ["materials", "states", "mixtures", "changes"] },
-      { subject: "Science", title: "Earth & Space", term: 1, status: "now", why: "Week 9 homework: design a habitat for astronauts on Mars.", topics: ["earth-moon", "space"] },
+      { subject: "Science", title: "Earth & Space", term: 1, status: "now", why: "Theme: the Solaris Seven planet groups are designing a currency and transport for their planet.", topics: ["earth-moon", "space"] },
       { subject: "Science", title: "Forces", term: 2, status: "later", topics: ["forces"] },
       { subject: "Science", title: "Living things & life cycles", term: 3, status: "later", topics: ["life-cycles"] }
     ]
   },
   kristan: {
-    year: "Year 8", updated: "2026-11-04", week: "Term 1 · from 4 Nov",
-    focus: "Probability in maths, Metals and their uses in science, and Ballads and Nabati poetry in English (group presentation on 9 Nov).",
+    year: "Year 8", updated: "2026-11-13", week: "Term 1 · Week 11 (from 9 Nov)",
+    focus: "Probability (tree diagrams, two-way tables, experimental) with Polygons next in maths, Metals in science, Ballads and PEAL paragraphs in English, and the perfect tense in French.",
     units: [
-      { subject: "Maths", title: "Topic 1 · Linear equations", term: 1, status: "done", topics: ["eq-both", "equations", "algebra"] },
+      { subject: "Maths", title: "Topic 1 · Linear equations (incl. algebraic fractions with x²)", term: 1, status: "done", topics: ["eq-both", "alg-frac", "equations", "algebra"] },
       { subject: "Maths", title: "Topic 2 · Calculators", term: 1, status: "done", topics: ["calc"] },
       { subject: "Maths", title: "Topic 3 · Percentages", term: 1, status: "done", topics: ["percent"] },
       { subject: "Maths", title: "Topic 4 · Statistics & averages", term: 1, status: "done", topics: ["averages", "freq", "grouped"] },
-      { subject: "Maths", title: "Topic 5 · Probability", term: 1, status: "now", why: "Maths class flow: sample spaces, two-way tables and experimental probability.", topics: ["sample-space", "probability"] },
-      { subject: "Maths", title: "Topic 6 · Algebraic manipulation", term: 1, status: "next", topics: ["expand-factor", "algebra"] },
+      { subject: "Maths", title: "Topic 5 · Probability", term: 1, status: "now", why: "Maths class flow: probability scale, sample spaces and tree diagrams, two-way tables and experimental probability.", topics: ["prob-basics", "sample-space", "tree-diagrams", "two-way", "exp-prob", "probability"] },
+      { subject: "Maths", title: "Topic 6 · Polygons", term: 1, status: "next", why: "Now posted in the maths class flow: interior and exterior angles, regular polygons and congruence.", topics: ["poly-angles", "poly-props", "angles"] },
+      { subject: "Maths", title: "Algebraic manipulation", term: 2, status: "later", topics: ["expand-factor", "algebra"] },
       { subject: "Maths", title: "Earlier work: ratio, sequences, indices, angles", term: 0, status: "done", topics: ["ratio", "sequences", "indices", "angles", "rounding"] },
-      { subject: "English", title: "Ballads and Nabati poetry (PEAL responses)", term: 1, status: "now", why: "Group project: present a Nabati poem on Mon 9 Nov, comparing it with the ballads.", topics: ["poetry", "eng-words"] },
+      { subject: "English", title: "Ballads and Nabati poetry (PEAL responses)", term: 1, status: "now", why: "Ballads unit and a model PEAL response in the English class flow; Nabati presentation earned a merit on 9 Nov.", topics: ["poetry", "eng-words"] },
       { subject: "English", title: "Gothic fiction", term: 1, status: "next", why: "The first unit in the Year 8 English overview, after the poetry assessment.", topics: ["gothic", "en-description"] },
       { subject: "English", title: "Shakespeare: The Tempest", term: 2, status: "later", topics: ["tempest", "en-analysing-texts", "en-character"] },
       { subject: "Science", title: "Animal reproduction (cells, organs, fertilisation, pregnancy)", term: 1, status: "done", topics: ["science"] },
@@ -719,7 +971,8 @@ var CURRICULUM = {
       { subject: "Science", title: "KS3 basics: energy, cells & particles", term: 0, status: "done", topics: ["science"] },
       { subject: "French", title: "More about me", term: 1, status: "done", topics: ["fr-describing-people", "fr-family"] },
       { subject: "French", title: "Where I live", term: 1, status: "done", topics: ["fr-home", "fr-town"] },
-      { subject: "French", title: "Free time, social media & aller + infinitive", term: 1, status: "now", why: "Vocab quiz on 2 Nov: Instagram, aller and activity verbs.", topics: ["fr-insta", "fr-futur", "fr-tech-social-media", "fr-free-time"] },
+      { subject: "French", title: "Free time, social media & aller + infinitive", term: 1, status: "done", topics: ["fr-insta", "fr-futur", "fr-tech-social-media", "fr-free-time"] },
+      { subject: "French", title: "What I did at the weekend: the perfect tense & time phrases", term: 1, status: "now", why: "Vocab quiz on Mon 16 Nov: j'ai dansé, je suis allé(e), c'était…, hier, demain.", topics: ["fr-weekend"] },
       { subject: "French", title: "TV and films", term: 2, status: "next", topics: ["fr-verbs-present"] },
       { subject: "French", title: "Clothes", term: 2, status: "later", topics: ["fr-clothes"] }
     ]

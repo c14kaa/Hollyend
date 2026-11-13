@@ -120,3 +120,19 @@ WB.add("challenge_millie", "2026-11-04", [
   ["queue", "a line of people waiting for something", "q · ueue", "'ueue': four vowels after the q", "Q then U-E-U-E: the letters wait in a line too.", "We stood in a long ___ for the rollercoaster.", "Please join the back of the ___."],
   ["occasionally", "sometimes, but not often", "oc · ca · sion · al · ly", "double c, one s, double l", "OCCASION + ALLY: two Cs, one S, two Ls.", "We ___ have pizza on a Friday.", "It ___ rains in Abu Dhabi in winter."]
 ]);
+
+WB.add("challenge_millie", "2026-11-13", [
+  ["February", "the second month of the year", "Feb · ru · ar · y", "the first r that people forget: Feb-RU-ary", "FEB-RU-ARY: 'Feb, are you a ray of sunshine?' Say every letter.", "My cousin's birthday is in ___.", "___ is the shortest month of the year."],
+  ["Wednesday", "the day after Tuesday", "Wed · nes · day", "the silent d: WED-NES-DAY", "Say it like a robot: WED-NES-DAY.", "We have swimming every ___.", "The middle of the school week is ___."],
+  ["calendar", "a chart showing the days, weeks and months of a year", "cal · en · dar", "it ends -ar, not -er", "CALENDAR: a CAL-EN-DAR has days AR-ranged on it.", "Mum wrote the trip on the kitchen ___.", "We crossed off each day on the ___."],
+  ["tomorrow", "the day after today", "to · mor · row", "one m, double r", "TOMORROW: one Mum, two Rabbits.", "We are going to the beach ___.", "Don't forget your PE kit ___."],
+  ["beginning", "the start of something", "be · gin · ning", "double n before -ing", "BEGIN + N + ING: double the n before -ing.", "The ___ of the story was exciting.", "We sat right at the ___ of the queue."],
+  ["disappear", "to go out of sight", "dis · ap · pear", "one s, double p", "DIS + APPEAR: just add dis- to appear; one s, two ps.", "The magician made the rabbit ___.", "Watch the sun ___ behind the hills."],
+  ["believe", "to think that something is true", "be · lie · ve", "'ie', and there's a LIE in it", "Never beLIEve a LIE.", "I can't ___ how fast you ran!", "Do you ___ in aliens?"],
+  ["fascinate", "to hold someone's attention because it is so interesting", "fas · cin · ate", "the silent c after s", "FASCINATE: S and C sit side by side, fascinated by each other.", "Dinosaurs ___ my little brother.", "Space and planets really ___ me."],
+  ["sincerely", "honestly and truly", "sin · cere · ly", "keep the e in sincere, then add -ly", "SINCERE + LY: don't drop the e.", "I ___ hope you feel better soon.", "We end the letter with 'Yours ___'."],
+  ["grammar", "the rules of how words are put together", "gram · mar", "it ends -ar, not -er", "GRAMMAR: there's a MA in it; MA checks your grammar!", "We learned about modal verbs in ___.", "Good ___ makes writing easier to read."],
+  ["argument", "a disagreement, or a reason for an opinion", "ar · gu · ment", "no e after the u: argue loses its e", "ARGUE loses its E in an ARGUMENT.", "My brother and I had an ___ about the TV.", "She made a strong ___ for longer playtimes."],
+  ["address", "the details of where someone lives", "ad · dress", "double d and double s", "ADDRESS: Double D, Double S: a double-decker address.", "Write your ___ on the envelope.", "What is the ___ of the new library?"],
+  ["guard", "a person who watches over and protects something", "g · uard", "the silent u after g", "GUARD: G and a quiet U standing on guard.", "A ___ stood at the palace gate.", "The dog will ___ the house at night."]
+]);

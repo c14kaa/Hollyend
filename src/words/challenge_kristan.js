@@ -120,3 +120,18 @@ WB.add("challenge_kristan", "2026-11-04", [
   ["pharaoh", "a ruler of ancient Egypt", "phar · aoh", "'aoh' at the end, not 'oah'", "PHARAOH: the A comes first, then O, then H.", "The ___ was buried with gold and jewels.", "Tutankhamun became ___ as a boy."],
   ["questionnaire", "a set of written questions to collect information", "ques · tion · naire", "double n, and -aire", "QUESTION + NAIRE: two Ns join them.", "Please fill in the ___ about school lunches.", "The club sent fans a ___ about the new kit."]
 ]);
+
+WB.add("challenge_kristan", "2026-11-13", [
+  ["pneumonia", "a serious infection that inflames the lungs", "pneu · mo · nia", "the silent p at the start", "PNEUMONIA: the P is silent, like a shallow breath.", "The striker missed a month with ___.", "Doctors treated her ___ with antibiotics."],
+  ["conscience", "the inner sense of what is right and wrong", "con · science", "it contains the word 'science'", "CON + SCIENCE: your conscience is the science of right and wrong.", "His ___ told him to own up.", "She had a guilty ___ after the lie."],
+  ["bureaucracy", "a system with lots of complicated official rules and paperwork", "bu · reau · cra · cy", "'eau' in the middle, and it ends -cy", "BUREAU (a French office) + CRACY (rule): rule by office desks.", "Moving clubs involved endless ___.", "The new form was a nightmare of ___."],
+  ["supersede", "to replace something older", "su · per · sede", "it ends -sede, not -cede", "SUPER + SEDE: the only English word ending -sede.", "Smartphones ___ old mobile phones.", "The new rules will ___ last year's."],
+  ["fuchsia", "a vivid purplish-pink colour, or the plant it comes from", "fuch · si · a", "it's 'fuch-si-a', though it sounds like 'few-sha'", "Named after a botanist called FUCHS: Fuchs + ia.", "The away kit was a bold ___ colour.", "___ flowers hung from the basket."],
+  ["haemorrhage", "heavy bleeding, or a sudden large loss", "hae · mor · rhage", "'ae' at the start, double r, and a silent h", "HAEM (blood) + O + RRHAGE: double R, then a silent H.", "The club suffered a ___ of fans after the scandal.", "A brain ___ is a medical emergency."],
+  ["guillotine", "a machine with a heavy blade, or a cutter for paper", "guil · lo · tine", "the silent u and double l", "GUILLOTINE: a G, a silent U, and two tall Ls like the frame.", "Kings lost their heads to the ___ in the French Revolution.", "The teacher trimmed the posters with a ___."],
+  ["rendezvous", "a planned meeting, or the place where it happens", "ren · dez · vous", "French: the z and s are silent", "RENDEZ-VOUS = French for 'present yourselves'.", "The squad's ___ was the coach park at 7am.", "They planned a secret ___ by the fountain."],
+  ["mnemonic", "a trick that helps you remember something", "mne · mon · ic", "the silent m at the start", "MNEMONIC: My Nan's Easy Memory Of Names Is Clever.", "BIDMAS is a ___ for the order of operations.", "I made a ___ to learn the planets."],
+  ["pseudonym", "a false name used by a writer", "pseu · do · nym", "the silent p, and the y in -nym", "PSEUDO (false) + NYM (name).", "George Orwell was a ___; his real name was Eric Blair.", "She wrote her novels under a ___."],
+  ["cappuccino", "a coffee made with frothy milk", "cap · pu · cci · no", "double p and double c", "CAPPUCCINO: two Ps, two Cs, like two cups.", "Dad ordered a ___ after the match.", "The café makes a great ___."],
+  ["Fahrenheit", "a temperature scale where water freezes at 32 degrees", "Fahr · en · heit", "the silent h after a, and -heit", "Named after Daniel FAHRENHEIT: F-A-H-R, then 'en', then 'heit'.", "It was over 100 degrees ___ in Abu Dhabi.", "American weather reports use ___."]
+]);

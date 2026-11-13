@@ -101,3 +101,13 @@ WB.fr("2026-11-04", [
   ["la télé-réalité", "reality TV", "f", "TV and films", "n"], ["émouvant", "moving (emotional)", "", "TV and films", "a"], ["nul", "rubbish", "", "TV and films", "a"],
   ["effrayant", "scary", "", "TV and films", "a"], ["passionnant", "exciting", "", "TV and films", "a"], ["je préfère", "I prefer", "", "TV and films", "p"]
 ]);
+
+/* Week of 13 Nov: what I did at the weekend (perfect tense), opinions and time phrases (vocab quiz Mon 16 Nov). */
+WB.fr("2026-11-13", [
+  ["génial", "great", "", "Last weekend", "a"], ["le désastre", "disaster", "m", "Last weekend", "n"], ["la fête", "party", "f", "Last weekend", "n"],
+  ["le bowling", "bowling", "m", "Last weekend", "n"], ["le hamburger", "hamburger", "m", "Last weekend", "n"], ["hier soir", "last night", "", "Last weekend", "p"],
+  ["le week-end dernier", "last weekend", "", "Last weekend", "p"], ["samedi dernier", "last Saturday", "", "Last weekend", "p"], ["la semaine dernière", "last week", "", "Last weekend", "p"],
+  ["normalement", "normally", "", "Last weekend", "p"], ["tous les soirs", "every evening", "", "Last weekend", "p"], ["le week-end prochain", "next weekend", "", "Last weekend", "p"],
+  ["samedi prochain", "next Saturday", "", "Last weekend", "p"], ["la semaine prochaine", "next week", "", "Last weekend", "p"], ["j'ai dansé", "I danced", "", "Last weekend", "p"],
+  ["j'ai regardé", "I watched", "", "Last weekend", "p"], ["j'ai mangé", "I ate", "", "Last weekend", "p"], ["c'était", "it was", "", "Last weekend", "p"]
+]);

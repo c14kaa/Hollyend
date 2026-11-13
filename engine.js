@@ -1,19 +1,20 @@
 /* ===== Week config: refreshed each week from the latest homework ===== */
 var WEEK = {
-  label: "Week of 4 Nov 2026",
-  start: "2026-11-04", // day 0 of the learning week
+  label: "Week of 13 Nov 2026",
+  start: "2026-11-13", // day 0 of the learning week
   millie: {
-    focus: ["12- and 24-hour times & durations", "Converting time, length & mass", "Grammar: nouns, prefixes, relative clauses & pronouns",
-            "Week 9 spellings: silent letters", "Earth & Space: life on Mars", "Multiplication & division (review)", "Rounding decimals (CENTURY)"],
-    topics: ["timeTable","timeTable","timeTable","timeConv","timeConv","unitConv","unitConv","grammar5","grammar5","grammar",
-             "earthMoon","space","space","squareCube","mulDiv10","multiply","decimals","tables"]
+    focus: ["Converting km, m, cm & mm (Week 10 homework)", "Decimals: tenths, hundredths & thousandths (CENTURY)", "Equivalent fractions (CENTURY)",
+            "Week 10 spellings: modal verbs", "Grammar: modal verbs", "Solaris Seven: Earth & Space", "× and ÷ by 10, 100, 1,000, square, cube & prime numbers (CENTURY Week 9 extras)"],
+    topics: ["unitConv","unitConv","unitConv","unitConv","decimals","decimals","fdp","fractions","fractions","grammar5","grammar5",
+             "earthMoon","space","space","mulDiv10","squareCube","multiply","shortDiv","timeTable","tables"]
   },
   kristan: {
-    focus: ["Probability & sample spaces (class)", "Metals & their uses (science)", "Ballads & Nabati poetry (English, presenting Mon 9 Nov)",
-            "Expanding & factorising (next)", "Percentage change, no calculator (Dr Frost)", "Grouped data: modal & median class (Dr Frost)", "Equations", "Physics: energy resources (CENTURY)"],
-    topics: ["sampleSpace","sampleSpace","sampleSpace","probability","probability","metals","metals","metals","poetry","poetry","poetry",
-             "expandFactor","expandFactor","pctMult","pctChangeNC","pctChangeNC","grouped","groupedClass","groupedClass","freqMean","eqBoth","solveEq","ratioShare","calcOrder",
-             "science","science","indices","nthTerm"]
+    focus: ["Probability: scale, tree diagrams, two-way tables & experimental (class)", "Polygons: interior & exterior angles, congruence (next in class)",
+            "French vocab quiz Mon 16 Nov: the weekend in the perfect tense", "Metals & their uses (science)", "Ballads & PEAL paragraphs (English)",
+            "Win back: equations with x on both sides", "Win back: grouped data & percentage multipliers"],
+    topics: ["probScale","probScale","sampleSpace","sampleSpace","treeDiag","treeDiag","treeDiag","twoWay","twoWay","relFreq","relFreq",
+             "polyInterior","polyExterior","polyProps","metals","metals","poetry","poetry","eqBoth","eqBoth","algFracQuad",
+             "groupedClass","freqMean","pctMult","pctChangeNC","science","indices"]
   }
 };
 /* Kristan's Sunday test: one test each Sunday (Abu Dhabi day) on what he's learnt that week.
@@ -22,12 +23,13 @@ var SUNDAY_TEST = {
   kristan: {
     count: 15, level: 2,
     topics: [
-      { id: "grouped", n: 3, hint: "Grouped data: estimate the mean, find the modal and median class, estimate the range (Dr Frost, 29 Oct)" },
-      { id: "percent", n: 3, hint: "Percentage change without a calculator, plus multipliers (Dr Frost: work on next)" },
-      { id: "sample-space", n: 3, hint: "Probability: sample spaces and two events (maths class)" },
+      { id: "tree-diagrams", n: 3, hint: "Probability tree diagrams: AND, OR, with and without replacement (maths class, Topic 5)" },
+      { id: "two-way", n: 2, hint: "Two-way tables and probability (maths class, Topic 5)" },
+      { id: "prob-basics", n: 2, hint: "Probability scale, P(not) and expected outcomes (maths class, Topic 5)" },
+      { id: "eq-both", n: 2, hint: "Equations with x on both sides: win these back (Hollyend results)" },
       { id: "metals", n: 2, hint: "8G Metals and their uses (science)" },
-      { id: "poetry", n: 2, hint: "Ballads and poetry terms (English, Nabati project)" },
-      { id: "fr-futur", n: 2, hint: "French: aller + infinitive" }
+      { id: "poetry", n: 2, hint: "Ballads and poetry terms (English)" },
+      { id: "fr-weekend", n: 2, hint: "French: what I did at the weekend (vocab quiz Mon 16 Nov)" }
     ]
   }
 };
@@ -743,7 +745,7 @@ var SPELL_W8 = {
   ]
 };
 /* Week 9 (due Mon 9 Nov 2026): more words with silent letters. */
-var SPELLING = {
+var SPELL_W9 = {
   label: "Week 9 spellings: silent letters",
   words: [
     { word: "wrestle", partner: null, meaning: "to fight by holding and pushing someone, as a sport or game", chunks: "w · res · tle", tricky: "the silent w at the start, and the silent t", hook: "WRESTLE: W and T are both wrestled into silence.",
@@ -766,6 +768,32 @@ var SPELLING = {
       sentences: ["My parents pay the ___ on our house every month.", "The bank gave them a ___ to buy a home.", "They finally paid off their ___."], wrongs: ["morgage", "mortgege", "morgadge"] }
   ]
 };
+var SPELLING = {
+  label: "Week 10 spellings: modal verbs",
+  words: [
+    { word: "can", partner: null, meaning: "a modal verb showing you are able to do something", chunks: "c · a · n", tricky: "just three letters: c-a-n, no k", hook: "CAN: a Cat And a Nut.",
+      sentences: ["I ___ swim two lengths of the pool.", "Ooh Ooh ___ climb to the top of the tree.", "___ you hear the birds singing?"], wrongs: ["kan", "cann", "caan"] },
+    { word: "could", partner: null, meaning: "the past of can, or a polite or possible 'can'", chunks: "c · ou · l · d", tricky: "the silent l, and 'ou'", hook: "COULD: Oh U Lucky Duck (o-u-l-d).",
+      sentences: ["When I was four, I ___ already read.", "___ you pass me the water, please?", "It ___ rain later this afternoon."], wrongs: ["cood", "culd", "coud"] },
+    { word: "may", partner: null, meaning: "a modal verb for permission or something that is possible", chunks: "m · ay", tricky: "it ends 'ay', not 'ai' or 'ey'", hook: "MAY rhymes with day and play: all end in -ay.",
+      sentences: ["___ I go to the toilet, please?", "It ___ be sunny at the weekend.", "You ___ take one sweet each."], wrongs: ["mai", "mey", "maye"] },
+    { word: "might", partner: null, meaning: "a modal verb showing something is possible but not certain", chunks: "m · igh · t", tricky: "the silent 'gh' in the middle", hook: "MIGHT: I Go Home Today (i-g-h-t).",
+      sentences: ["Take a coat because it ___ get cold.", "We ___ visit the zoo on Saturday.", "Uuh Uuh ___ be hiding under the bed."], wrongs: ["mite", "mihgt", "mighte"] },
+    { word: "must", partner: null, meaning: "a modal verb showing something is necessary or very important", chunks: "m · u · s · t", tricky: "u-s-t at the end, no double s", hook: "You MUST: My Uniform Stays Tidy.",
+      sentences: ["You ___ wear a helmet when you ride a bike.", "We ___ be quiet in the library.", "I ___ remember to feed the cat."], wrongs: ["musst", "mussed", "mst"] },
+    { word: "shall", partner: null, meaning: "a modal verb used to offer, suggest or talk about the future", chunks: "sh · a · ll", tricky: "double l at the end", hook: "SHALL: two tall Ls standing at the end, like two shelves.",
+      sentences: ["___ we play a game after lunch?", "I ___ never forget this holiday.", "___ I help you carry that bag?"], wrongs: ["shal", "shel", "shalle"] },
+    { word: "should", partner: null, meaning: "a modal verb for what is right, sensible or expected", chunks: "sh · ou · l · d", tricky: "the silent l, like could and would", hook: "SHOULD: SH + Oh U Lucky Duck.",
+      sentences: ["You ___ brush your teeth twice a day.", "We ___ leave now or we'll be late.", "The parcel ___ arrive tomorrow."], wrongs: ["shud", "shoud", "shuold"] },
+    { word: "will", partner: null, meaning: "a modal verb showing what is going to happen in the future", chunks: "w · i · ll", tricky: "double l at the end", hook: "WILL: one I and two tall Ls, like a tree with two trunks.",
+      sentences: ["I ___ be ten next year.", "It ___ be dark by seven o'clock.", "Don't worry, I ___ help you."], wrongs: ["wil", "wll", "wiil"] },
+    { word: "would", partner: null, meaning: "a modal verb used for wishes, polite requests and what could happen", chunks: "w · ou · l · d", tricky: "the silent l, and 'ou' (not 'wood')", hook: "WOULD: W + Oh U Lucky Duck. 'Wood' is from a tree!",
+      sentences: ["___ you like some more cake?", "I ___ love to visit the Moon one day.", "If it snowed, we ___ build a snowman."], wrongs: ["wood", "wud", "woud"] },
+    { word: "ought", partner: null, meaning: "a modal verb meaning 'should': what is right or sensible", chunks: "ou · gh · t", tricky: "'ough' with a silent gh, then t", hook: "OUGHT: Oh U Go Home Today.",
+      sentences: ["You ___ to say thank you for the present.", "We ___ to tidy up before Mum gets home.", "He ___ to drink more water when it's hot."], wrongs: ["ort", "aught", "oght"] }
+  ]
+};
+
 function spellEntry(w) {
   for (var i = 0; i < SPELLING.words.length; i++) if (SPELLING.words[i].word === w) return SPELLING.words[i];
   if (typeof SPELL_ARCHIVE !== "undefined") for (var j = 0; j < SPELL_ARCHIVE.length; j++) if (SPELL_ARCHIVE[j].word === w) return SPELL_ARCHIVE[j];
@@ -898,8 +926,36 @@ var KLISTS = {
     ]
   },
   french: {
-    prefix: "fr:", label: "French vocab quiz, Monday 2 Nov", lang: "fr-FR",
+    prefix: "fr:", label: "French vocab quiz, Monday 16 Nov", lang: "fr-FR",
+    mix: { "Saturday": 4, "Opinions": 3, "Time phrases": 3 },
     words: [
+      { id: "danse", word: "dansé", group: "Saturday", say: "J'ai dansé avec mes copains.", gap: "J'ai _____ avec mes copains.", meaning: "I danced with my friends", hook: "Danser → dansé: the past participle swaps -er for -é (acute accent)." },
+      { id: "joue", word: "joué", group: "Saturday", say: "J'ai joué au bowling avec ma sœur.", gap: "J'ai _____ au bowling avec ma sœur.", meaning: "I went bowling with my sister", hook: "Jouer → joué. French says 'I PLAYED at bowling'." },
+      { id: "mange", word: "mangé", group: "Saturday", say: "J'ai mangé un hamburger avec mon père.", gap: "J'ai _____ un hamburger avec mon père.", meaning: "I ate a hamburger with my dad", hook: "Manger → mangé: -er becomes -é." },
+      { id: "regarde-pp", word: "regardé", group: "Saturday", say: "J'ai regardé un film avec mes amis.", gap: "J'ai _____ un film avec mes amis.", meaning: "I watched a film with my friends", hook: "Regarder → regardé: with j'ai, the verb ends in -é." },
+      { id: "alle", word: "allé", group: "Saturday", say: "Je suis allé au cinéma avec Max.", gap: "Je suis _____ au cinéma avec Max. (a boy speaking)", meaning: "I went to the cinema with Max", hook: "Aller uses ÊTRE: je SUIS allé. A girl writes allée (extra e)." },
+      { id: "ville", word: "ville", group: "Saturday", say: "Je suis allé en ville avec ma mère.", gap: "Je suis allé en _____ avec ma mère.", meaning: "I went into town with my mum", hook: "Ville = town: double l, like a VILLage." },
+      { id: "fete", word: "fête", group: "Saturday", say: "Je suis allé à une fête avec mes copains.", gap: "Je suis allé à une _____ avec mes copains.", meaning: "I went to a party with my friends", hook: "Fête = party (like an English fête). The ^ on the e replaces an old s (feste)." },
+      { id: "etait", word: "était", group: "Opinions", say: "C'était génial.", gap: "C'_____ génial.", meaning: "It was great", hook: "C'était = it was: ét-ait, with an acute é and -ait at the end." },
+      { id: "genial", word: "génial", group: "Opinions", say: "C'était génial.", gap: "C'était _____. (great)", meaning: "great", hook: "Génial = brilliant; like a genius idea. Accent on the first e." },
+      { id: "sympa", word: "sympa", group: "Opinions", say: "C'était sympa.", gap: "C'était _____. (nice)", meaning: "nice", hook: "Short for sympathique: friendly, nice." },
+      { id: "ennuyeux", word: "ennuyeux", group: "Opinions", say: "C'était ennuyeux.", gap: "C'était _____. (boring)", meaning: "boring", hook: "Ennui = boredom: double n, then -uyeux." },
+      { id: "nul", word: "nul", group: "Opinions", say: "C'était nul.", gap: "C'était _____. (rubbish)", meaning: "rubbish", hook: "Nul = zero, nothing good: like 'null'." },
+      { id: "desastre", word: "désastre", group: "Opinions", say: "C'était un désastre.", gap: "C'était un _____. (a disaster)", meaning: "a disaster", hook: "Like 'disaster', but dé- with an accent and -astre at the end." },
+      { id: "hier", word: "hier", group: "Time phrases", say: "hier", gap: "_____ = yesterday", meaning: "yesterday", hook: "HIER: 'here' was yesterday. The h is silent: 'ee-air'." },
+      { id: "hier-soir", word: "soir", group: "Time phrases", say: "hier soir", gap: "hier _____ = last night", meaning: "last night (yesterday evening)", hook: "Soir = evening: bonSOIR = good evening." },
+      { id: "dernier", word: "dernier", group: "Time phrases", say: "le week-end dernier", gap: "le week-end _____ = last weekend", meaning: "last weekend", hook: "Dernier = last: comes AFTER the noun (samedi dernier)." },
+      { id: "derniere", word: "dernière", group: "Time phrases", say: "la semaine dernière", gap: "la semaine _____ = last week", meaning: "last week", hook: "Semaine is feminine, so dernier becomes dernière (è + e)." },
+      { id: "habitude", word: "habitude", group: "Time phrases", say: "d'habitude", gap: "d'_____ = usually", meaning: "usually", hook: "Habit → habitude: what you usually do." },
+      { id: "normalement", word: "normalement", group: "Time phrases", say: "normalement", gap: "_____ = normally", meaning: "normally", hook: "Normal + ement: -ement is the French -ly." },
+      { id: "jours", word: "jours", group: "Time phrases", say: "tous les jours", gap: "tous les _____ = every day", meaning: "every day", hook: "Jour = day (BONJOUR = good day); plural with s." },
+      { id: "soirs", word: "soirs", group: "Time phrases", say: "tous les soirs", gap: "tous les _____ = every evening", meaning: "every evening", hook: "Soir + s: plural after 'tous les'." },
+      { id: "demain", word: "demain", group: "Time phrases", say: "demain", gap: "_____ = tomorrow", meaning: "tomorrow", hook: "DE-MAIN: 'the morning after'." },
+      { id: "ce-soir", word: "soir", group: "Time phrases", say: "ce soir", gap: "ce _____ = tonight", meaning: "tonight (this evening)", hook: "Ce = this, soir = evening." },
+      { id: "prochain", word: "prochain", group: "Time phrases", say: "samedi prochain", gap: "samedi _____ = next Saturday", meaning: "next Saturday", hook: "Prochain = next: proche means near." },
+      { id: "prochaine", word: "prochaine", group: "Time phrases", say: "la semaine prochaine", gap: "la semaine _____ = next week", meaning: "next week", hook: "Semaine is feminine, so prochain gets an extra e." }
+    ],
+    archive: [
       { id: "manger", word: "manger", group: "Verbs", say: "manger", gap: "To eat = _____", meaning: "to eat", hook: "Animals eat from a manger: man-ger." },
       { id: "faire", word: "faire", group: "Verbs", say: "faire", gap: "To do / to make = _____", meaning: "to do, to make", hook: "Fai-re: 'ai' then an 'e' on the end." },
       { id: "danser", word: "danser", group: "Verbs", say: "danser", gap: "To dance = _____", meaning: "to dance", hook: "French uses an S: dan-S-er, not 'dancer' (that's a person who dances)." },
@@ -1036,8 +1092,8 @@ function buildKList(mode, level, count, seenPrompts) {
   if (mode === "french") {
     /* a balanced mix: verbs, aller, and the Instagram phrases */
     var by = {}; L.words.forEach(function (w) { (by[w.group] = by[w.group] || []).push(w.id); });
-    var want = { "Verbs": 4, "aller": 3, "Instagram": 3 };
-    out = []; Object.keys(want).forEach(function (g) { shuffle(by[g]).slice(0, want[g]).forEach(function (id) { out.push(id); }); });
+    var want = L.mix || { "Verbs": 4, "aller": 3, "Instagram": 3 };
+    out = []; Object.keys(want).forEach(function (g) { shuffle(by[g] || []).slice(0, want[g]).forEach(function (id) { out.push(id); }); });
     ids = shuffle(out);
   } else ids = shuffle(ids);
   return ids.slice(0, count).map(function (id) { return klistQ(mode, id, level); });
@@ -1055,7 +1111,7 @@ function typedNote(attempt, word) {
 
 /* ===== Revision library: every topic covered so far. Topics are only ever ADDED, never removed. ===== */
 var SPELL_ARCHIVE = []; /* past weeks' spelling entries, so old spell:<word> questions keep working */
-SPELL_ARCHIVE = SPELL_ARCHIVE.concat(SPELL_W7.words, SPELL_W8.words);
+SPELL_ARCHIVE = SPELL_ARCHIVE.concat(SPELL_W7.words, SPELL_W8.words, SPELL_W9.words);
 var REVISION = {
   millie: [
     { id: "factors", title: "Factors & factor pairs", subject: "Maths", covered: "Week 7 homework · 26 Oct", gens: ["factorOf", "countFactors", "factorPair", "commonFactor"] },
@@ -1067,6 +1123,8 @@ var REVISION = {
     { id: "space", title: "Our Solar System", subject: "Science & theme", covered: "Week 7 homework · 26 Oct", gens: ["space"] },
     { id: "spell-w9", title: "Week 9 spellings: more silent letters", subject: "Spelling", covered: "Week 9 homework · 9 Nov",
       gens: ["spell:wrestle", "spell:wrapper", "spell:castle", "spell:aisle", "spell:debris", "spell:yacht", "spell:guilty", "spell:guarantee", "spell:mortgage"] },
+    { id: "spell-w10", title: "Week 10 spellings: modal verbs", subject: "Spelling", covered: "Week 10 homework · 16 Nov",
+      gens: ["spell:can", "spell:could", "spell:may", "spell:might", "spell:must", "spell:shall", "spell:should", "spell:will", "spell:would", "spell:ought"] },
     { id: "spell-w8", title: "Week 8 spellings: silent letters", subject: "Spelling", covered: "Week 8 homework · 2 Nov",
       gens: ["spell:doubt", "spell:lamb", "spell:debt", "spell:thumb", "spell:solemn", "spell:autumn", "spell:column", "spell:knight", "spell:knuckle"] },
     { id: "spell-w7", title: "Week 7 spellings: trickier homophones", subject: "Spelling", covered: "Week 7 homework · 26 Oct",

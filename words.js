@@ -148,6 +148,22 @@ WB.add("challenge_millie", "2026-11-04", [
   ["occasionally", "sometimes, but not often", "oc · ca · sion · al · ly", "double c, one s, double l", "OCCASION + ALLY: two Cs, one S, two Ls.", "We ___ have pizza on a Friday.", "It ___ rains in Abu Dhabi in winter."]
 ]);
 
+WB.add("challenge_millie", "2026-11-13", [
+  ["February", "the second month of the year", "Feb · ru · ar · y", "the first r that people forget: Feb-RU-ary", "FEB-RU-ARY: 'Feb, are you a ray of sunshine?' Say every letter.", "My cousin's birthday is in ___.", "___ is the shortest month of the year."],
+  ["Wednesday", "the day after Tuesday", "Wed · nes · day", "the silent d: WED-NES-DAY", "Say it like a robot: WED-NES-DAY.", "We have swimming every ___.", "The middle of the school week is ___."],
+  ["calendar", "a chart showing the days, weeks and months of a year", "cal · en · dar", "it ends -ar, not -er", "CALENDAR: a CAL-EN-DAR has days AR-ranged on it.", "Mum wrote the trip on the kitchen ___.", "We crossed off each day on the ___."],
+  ["tomorrow", "the day after today", "to · mor · row", "one m, double r", "TOMORROW: one Mum, two Rabbits.", "We are going to the beach ___.", "Don't forget your PE kit ___."],
+  ["beginning", "the start of something", "be · gin · ning", "double n before -ing", "BEGIN + N + ING: double the n before -ing.", "The ___ of the story was exciting.", "We sat right at the ___ of the queue."],
+  ["disappear", "to go out of sight", "dis · ap · pear", "one s, double p", "DIS + APPEAR: just add dis- to appear; one s, two ps.", "The magician made the rabbit ___.", "Watch the sun ___ behind the hills."],
+  ["believe", "to think that something is true", "be · lie · ve", "'ie', and there's a LIE in it", "Never beLIEve a LIE.", "I can't ___ how fast you ran!", "Do you ___ in aliens?"],
+  ["fascinate", "to hold someone's attention because it is so interesting", "fas · cin · ate", "the silent c after s", "FASCINATE: S and C sit side by side, fascinated by each other.", "Dinosaurs ___ my little brother.", "Space and planets really ___ me."],
+  ["sincerely", "honestly and truly", "sin · cere · ly", "keep the e in sincere, then add -ly", "SINCERE + LY: don't drop the e.", "I ___ hope you feel better soon.", "We end the letter with 'Yours ___'."],
+  ["grammar", "the rules of how words are put together", "gram · mar", "it ends -ar, not -er", "GRAMMAR: there's a MA in it; MA checks your grammar!", "We learned about modal verbs in ___.", "Good ___ makes writing easier to read."],
+  ["argument", "a disagreement, or a reason for an opinion", "ar · gu · ment", "no e after the u: argue loses its e", "ARGUE loses its E in an ARGUMENT.", "My brother and I had an ___ about the TV.", "She made a strong ___ for longer playtimes."],
+  ["address", "the details of where someone lives", "ad · dress", "double d and double s", "ADDRESS: Double D, Double S: a double-decker address.", "Write your ___ on the envelope.", "What is the ___ of the new library?"],
+  ["guard", "a person who watches over and protects something", "g · uard", "the silent u after g", "GUARD: G and a quiet U standing on guard.", "A ___ stood at the palace gate.", "The dog will ___ the house at night."]
+]);
+
 /* Kristan's challenge words: extremely hard spellings that adults often get wrong. British spelling.
    Each entry: [word, meaning, chunks, tricky bit, memory hook, sentence 1, sentence 2]. */
 WB.add("challenge_kristan", "2026-10-27", [
@@ -269,6 +285,21 @@ WB.add("challenge_kristan", "2026-11-04", [
   ["onomatopoeia", "a word that sounds like what it describes", "on · o · mat · o · poe · ia", "'poeia' at the end", "ONO + MATO + POEIA: say it slowly, six parts.", "'Bang' and 'whoosh' are examples of ___.", "The poet used ___ to bring the storm to life."],
   ["pharaoh", "a ruler of ancient Egypt", "phar · aoh", "'aoh' at the end, not 'oah'", "PHARAOH: the A comes first, then O, then H.", "The ___ was buried with gold and jewels.", "Tutankhamun became ___ as a boy."],
   ["questionnaire", "a set of written questions to collect information", "ques · tion · naire", "double n, and -aire", "QUESTION + NAIRE: two Ns join them.", "Please fill in the ___ about school lunches.", "The club sent fans a ___ about the new kit."]
+]);
+
+WB.add("challenge_kristan", "2026-11-13", [
+  ["pneumonia", "a serious infection that inflames the lungs", "pneu · mo · nia", "the silent p at the start", "PNEUMONIA: the P is silent, like a shallow breath.", "The striker missed a month with ___.", "Doctors treated her ___ with antibiotics."],
+  ["conscience", "the inner sense of what is right and wrong", "con · science", "it contains the word 'science'", "CON + SCIENCE: your conscience is the science of right and wrong.", "His ___ told him to own up.", "She had a guilty ___ after the lie."],
+  ["bureaucracy", "a system with lots of complicated official rules and paperwork", "bu · reau · cra · cy", "'eau' in the middle, and it ends -cy", "BUREAU (a French office) + CRACY (rule): rule by office desks.", "Moving clubs involved endless ___.", "The new form was a nightmare of ___."],
+  ["supersede", "to replace something older", "su · per · sede", "it ends -sede, not -cede", "SUPER + SEDE: the only English word ending -sede.", "Smartphones ___ old mobile phones.", "The new rules will ___ last year's."],
+  ["fuchsia", "a vivid purplish-pink colour, or the plant it comes from", "fuch · si · a", "it's 'fuch-si-a', though it sounds like 'few-sha'", "Named after a botanist called FUCHS: Fuchs + ia.", "The away kit was a bold ___ colour.", "___ flowers hung from the basket."],
+  ["haemorrhage", "heavy bleeding, or a sudden large loss", "hae · mor · rhage", "'ae' at the start, double r, and a silent h", "HAEM (blood) + O + RRHAGE: double R, then a silent H.", "The club suffered a ___ of fans after the scandal.", "A brain ___ is a medical emergency."],
+  ["guillotine", "a machine with a heavy blade, or a cutter for paper", "guil · lo · tine", "the silent u and double l", "GUILLOTINE: a G, a silent U, and two tall Ls like the frame.", "Kings lost their heads to the ___ in the French Revolution.", "The teacher trimmed the posters with a ___."],
+  ["rendezvous", "a planned meeting, or the place where it happens", "ren · dez · vous", "French: the z and s are silent", "RENDEZ-VOUS = French for 'present yourselves'.", "The squad's ___ was the coach park at 7am.", "They planned a secret ___ by the fountain."],
+  ["mnemonic", "a trick that helps you remember something", "mne · mon · ic", "the silent m at the start", "MNEMONIC: My Nan's Easy Memory Of Names Is Clever.", "BIDMAS is a ___ for the order of operations.", "I made a ___ to learn the planets."],
+  ["pseudonym", "a false name used by a writer", "pseu · do · nym", "the silent p, and the y in -nym", "PSEUDO (false) + NYM (name).", "George Orwell was a ___; his real name was Eric Blair.", "She wrote her novels under a ___."],
+  ["cappuccino", "a coffee made with frothy milk", "cap · pu · cci · no", "double p and double c", "CAPPUCCINO: two Ps, two Cs, like two cups.", "Dad ordered a ___ after the match.", "The café makes a great ___."],
+  ["Fahrenheit", "a temperature scale where water freezes at 32 degrees", "Fahr · en · heit", "the silent h after a, and -heit", "Named after Daniel FAHRENHEIT: F-A-H-R, then 'en', then 'heit'.", "It was over 100 degrees ___ in Abu Dhabi.", "American weather reports use ___."]
 ]);
 
 /* Kristan's English words: ambitious vocabulary to USE in writing and speaking (Year 8). British spelling.
@@ -405,6 +436,21 @@ WB.add("english", "2026-11-04", [
   ["elegy", "Analysing texts", "a sad poem written about someone who has died", "el · e · gy", "e-l-e-g-y: no 'i'", "ELEGY: E, L, E, G, Y: say each letter like a slow drumbeat.", "The poet wrote an ___ for his lost friend.", "An ___ is often slow and mournful in tone."]
 ]);
 
+WB.add("english", "2026-11-13", [
+  ["ballad", "Analysing texts", "a poem or song that tells a story, often with short verses and a refrain", "bal · lad", "double l, single d", "BALLAD: a BALL of a story with two Ls.", "The ___ tells the tragic story of the highwayman and Bess.", "Each verse of the ___ moves the story on."],
+  ["imagery", "Analysing texts", "language that creates pictures in the reader's mind", "im · age · ry", "image + ry: keep the e", "IMAGE + RY: pictures made from words.", "The poet's ___ of the moonlit road makes it vivid.", "Look for sensory ___ when you annotate the poem."],
+  ["narrator", "Analysing texts", "the voice that tells the story", "nar · ra · tor", "double r, and it ends -or", "NARRATE + OR: the one who narrates.", "The ___ of the ballad seems to know how it will end.", "A first-person ___ uses 'I'."],
+  ["lament", "Analysing texts", "a poem or song expressing deep sadness or grief", "la · ment", "it ends -ent", "LAMENT: a mournful LAMENT for a lost friend.", "The final verse is a ___ for the dead lovers.", "The Nabati poem reads like a ___ for the old desert life."],
+  ["haunting", "Description", "so beautiful or sad that it stays in your mind", "haun · ting", "'au' like in haunt", "HAUNT + ING: it haunts you like a ghost.", "The ___ refrain keeps returning to the reader's mind.", "She sang a ___ melody about the sea."],
+  ["tragic", "Description", "causing great sadness, often through death or suffering", "tra · gic", "it ends -ic, not -ick", "TRAGEDY → TRAGIC: drop the -edy, add -ic.", "The ballad has a ___ ending when Bess dies.", "It was a ___ accident that nobody saw coming."],
+  ["treacherous", "Character", "likely to betray people; not to be trusted", "treach · er · ous", "'ea' and the -ous ending", "TREACHERY → TREACHEROUS: full of betrayal.", "The ___ ostler betrays the lovers to the soldiers.", "He proved ___ when he told the other team our tactics."],
+  ["valiant", "Character", "showing great courage and determination", "val · i · ant", "-iant, not -ent", "VALIANT: VALue courage, she's VALIANT.", "The ___ knight rode into battle alone.", "Despite the defeat, the team made a ___ effort."],
+  ["steadfast", "Character", "loyal and firm; refusing to give up or change", "stead · fast", "'ea' in stead", "STEAD + FAST: holding fast, never moving.", "Bess remains ___ in her love, even in danger.", "Her ___ friend stood by her through everything."],
+  ["furthermore", "Argument", "in addition; used to add another point", "fur · ther · more", "one word: further + more", "FURTHER + MORE: going further with more points.", "The poem is tragic. ___, the refrain makes the loss feel endless.", "Homework helps learning. ___, it builds good habits."],
+  ["conversely", "Argument", "on the other hand; introducing an opposite idea", "con · verse · ly", "keep the e: converse + ly", "CONVERSE + LY: the reverse side of the argument.", "The highwayman is daring; ___, Bess is quietly brave.", "Some fans loved the new kit; ___, others hated it."],
+  ["implies", "Analysing texts", "suggests something without saying it directly", "im · plies", "y changes to i: imply → implies", "IMPLY → IMPLIES: change y to i, add es.", "The word 'blood-red' ___ that violence is coming.", "His silence ___ that he knows the truth."]
+]);
+
 /* Kristan's French bank (KS3). Each entry: [French (with le/la/l'/les for nouns), English, gender m/f/pl or "" , topic, kind n/v/a/p].
    Kinds: n = noun, v = verb (infinitive), a = adjective, p = phrase. */
 WB.fr("2026-10-27", [
@@ -507,6 +553,16 @@ WB.fr("2026-11-04", [
   ["le film d'horreur", "horror film", "m", "TV and films", "n"], ["le film d'action", "action film", "m", "TV and films", "n"], ["le documentaire", "documentary", "m", "TV and films", "n"],
   ["la télé-réalité", "reality TV", "f", "TV and films", "n"], ["émouvant", "moving (emotional)", "", "TV and films", "a"], ["nul", "rubbish", "", "TV and films", "a"],
   ["effrayant", "scary", "", "TV and films", "a"], ["passionnant", "exciting", "", "TV and films", "a"], ["je préfère", "I prefer", "", "TV and films", "p"]
+]);
+
+/* Week of 13 Nov: what I did at the weekend (perfect tense), opinions and time phrases (vocab quiz Mon 16 Nov). */
+WB.fr("2026-11-13", [
+  ["génial", "great", "", "Last weekend", "a"], ["le désastre", "disaster", "m", "Last weekend", "n"], ["la fête", "party", "f", "Last weekend", "n"],
+  ["le bowling", "bowling", "m", "Last weekend", "n"], ["le hamburger", "hamburger", "m", "Last weekend", "n"], ["hier soir", "last night", "", "Last weekend", "p"],
+  ["le week-end dernier", "last weekend", "", "Last weekend", "p"], ["samedi dernier", "last Saturday", "", "Last weekend", "p"], ["la semaine dernière", "last week", "", "Last weekend", "p"],
+  ["normalement", "normally", "", "Last weekend", "p"], ["tous les soirs", "every evening", "", "Last weekend", "p"], ["le week-end prochain", "next weekend", "", "Last weekend", "p"],
+  ["samedi prochain", "next Saturday", "", "Last weekend", "p"], ["la semaine prochaine", "next week", "", "Last weekend", "p"], ["j'ai dansé", "I danced", "", "Last weekend", "p"],
+  ["j'ai regardé", "I watched", "", "Last weekend", "p"], ["j'ai mangé", "I ate", "", "Last weekend", "p"], ["c'était", "it was", "", "Last weekend", "p"]
 ]);
 
 
