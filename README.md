@@ -23,3 +23,5 @@ The Supabase key in `supa-adapter.js` is the public "publishable" key and is saf
 ## Hollyend Health (`/health/`)
 - `health/app.js` – the Health app (data in `health_docs`, row-level security: Dad sees all, K's login only his own food side).
 - `health/training.js` – Dad-only **Training** tab: interval timer (up to 15 rounds, beeps + voice, screen stays on), workout log (`workouts` coll, person `harps`; dictate or tap), charts that line the log up with the weekly Whoop rows (`whoop` coll, keyed by `week_start` Monday), and coaching for a V-shape.
+  - Claude writes the plan for each day to `plans` (id = date: title, kind, cfg {work, rest, rounds}, circuit [{ex, kg, note, alts}], options [whole-session alternatives], why, warmup, target_rpe) and its review to `coach` (id `c-<date>`: headline, text, points, next). A scheduled task does this each evening. Swaps made during rest are saved on the workout (`swaps`, `plan`).
+- Kristan's login sees only Today and Progress; Meals, Shopping, Health and Training are Dad-only.

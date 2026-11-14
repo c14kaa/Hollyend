@@ -147,7 +147,7 @@ async function boot() {
   ME.scope = acc.scope;
   P = 'kristan';
   try { const t = localStorage.getItem('hh_tab'); if (t) TAB = t; const p = localStorage.getItem('hh_person'); if (p && ME.scope === 'all') P = p; } catch (e) {}
-  if (ME.scope !== 'all' && !['today', 'meals', 'shop', 'progress'].includes(TAB)) TAB = 'today';
+  if (ME.scope !== 'all' && !['today', 'progress'].includes(TAB)) TAB = 'today';
   await loadAll();
   SIG = await signature();
   render();
@@ -176,7 +176,7 @@ const ICONS = {
   shop: '<svg viewBox="0 0 24 24"><path d="M5 8h14l-1.5 11h-11z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
   training: '<svg viewBox="0 0 24 24"><path d="M9 4h6M12 4v3"/><circle cx="12" cy="14" r="7"/><path d="M12 14l3-3"/></svg>'
 };
-function tabsFor() { const t = [['today', 'Today'], ['progress', 'Progress'], ['meals', 'Meals']]; if (ME.scope === 'all') t.push(['health', 'Health']); t.push(['shop', 'Shopping']); if (ME.scope === 'all' && window.HT) t.push(['training', 'Training']); return t; }
+function tabsFor() { const t = [['today', 'Today'], ['progress', 'Progress']]; if (ME.scope === 'all') t.push(['meals', 'Meals'], ['health', 'Health'], ['shop', 'Shopping']); if (ME.scope === 'all' && window.HT) t.push(['training', 'Training']); return t; }
 function render() {
   if (!ME.user) return;
   const tabs = tabsFor();
@@ -185,6 +185,7 @@ function render() {
   $('tabs').innerHTML = tabs.map(([k, n]) => '<button role="tab" data-act="tab" data-tab="' + k + '" aria-selected="' + (TAB === k) + '">' + ICONS[k] + '<span>' + n + '</span></button>').join('');
   $('who').innerHTML = barRight();
   const y = window.scrollY;
+  if (ME.scope !== 'all' && !['today', 'progress'].includes(TAB)) TAB = 'today';
   const fn = { today: vToday, progress: vProgress, meals: vMeals, health: vHealth, shop: vShop, training: vTraining }[TAB] || vToday;
   $('view').innerHTML = fn();
   window.scrollTo(0, y);
@@ -237,7 +238,7 @@ function nudges(s) {
   }
   if (isKid() && st.nutFreeSchool && schoolDay(s)) { const m = mealById(planFor(s).lunch); if (m && m.nutFree === false) out.push({ c: 'red', b: 'Lunchbox contains nuts', t: m.name + ' is planned for school.' }); }
   const miss = new Set(); for (let i = 0; i < 3; i++) { const p = planFor(addDays(s, i)); for (const k in p) { const m = mealById(p[k]); if (m) missingFor(m).forEach(x => miss.add(x)); } }
-  if (miss.size) out.push({ c: 'amber', b: 'Missing for the next 3 days', t: [...miss].slice(0, 5).join(', ') + (miss.size > 5 ? ' and ' + (miss.size - 5) + ' more' : ''), a: { act: 'tab', tab: 'shop', label: 'List' } });
+  if (miss.size && ME.scope === 'all') out.push({ c: 'amber', b: 'Missing for the next 3 days', t: [...miss].slice(0, 5).join(', ') + (miss.size > 5 ? ' and ' + (miss.size - 5) + ' more' : ''), a: { act: 'tab', tab: 'shop', label: 'List' } });
   const yt = totals(addDays(s, -1)); if (yt.kcal > 0 && target) out.push({ c: yt.kcal >= target * 0.95 ? 'green' : 'amber', b: 'Yesterday: ' + n0(yt.kcal) + ' of ' + n0(target) + ' kcal', t: n0(yt.protein) + ' g protein.' });
   return out;
 }
@@ -265,7 +266,7 @@ function vToday() {
   return '<div class="between"><div class="row"><button class="btn sm ghost" data-act="day" data-d="-1" aria-label="Previous day">‹</button><h1 class="h1">' + (isT ? 'Today' : esc(fmtD(s))) + '</h1><button class="btn sm ghost" data-act="day" data-d="1" aria-label="Next day">›</button>' + (isT ? '' : '<button class="linkbtn" data-act="day" data-d="0">Back to today</button>') + '</div>' +
     '<div class="row"><span class="muted small">' + esc(fmtD(s, { weekday: 'long', day: 'numeric', month: 'long' })) + '</span>' + (isKid() && isSport(s) ? '<span class="chip amber">Football day</span>' : '') + (isKid() ? '' : '<span class="chip">Me</span>') + '</div></div>' +
     '<div class="grid3">' +
-    '<section class="card" aria-label="Food today"><div class="between"><h2 class="h">' + (isT ? 'Today so far' : 'Eaten') + '</h2><span class="small muted">' + (target ? 'Target ' + n0(target) + ' kcal' : '<button class="linkbtn" data-act="tab" data-tab="health">Set a target</button>') + '</span></div>' +
+    '<section class="card" aria-label="Food today"><div class="between"><h2 class="h">' + (isT ? 'Today so far' : 'Eaten') + '</h2><span class="small muted">' + (target ? 'Target ' + n0(target) + ' kcal' : (ME.scope === 'all' ? '<button class="linkbtn" data-act="tab" data-tab="health">Set a target</button>' : '')) + '</span></div>' +
     '<div class="big"><span class="n">' + n0(t.kcal) + '</span><span class="muted">kcal</span>' + status + '</div>' +
     '<div class="bar"><div class="fill" style="width:' + pct + '%"></div>' + (pace && target ? '<div class="pace" style="left:calc(' + pace * 100 + '% - 1px)" title="Where ' + heWord() + ' should be by now"></div>' : '') + '</div>' +
     '<div class="stats"><div class="stat"><div class="k">To go</div><div class="v">' + (target ? n0(Math.max(0, target - t.kcal)) : '—') + '</div></div><div class="stat"><div class="k">Protein</div><div class="v">' + n0(t.protein) + (pt ? '<small> / ' + pt + ' g</small>' : '<small> g</small>') + '</div></div><div class="stat"><div class="k">Planned</div><div class="v">' + n0(sum(Object.values(plan), id => (mealById(id) || {}).kcal)) + '</div></div></div>' +
@@ -278,8 +279,8 @@ function vToday() {
     '<section class="card" aria-label="Heads-up" style="gap:8px"><h2 class="h">' + (isT ? 'Heads-up' : 'This week') + '</h2>' + (isT ? (ns.length ? ns.map(n => '<div class="alert ' + n.c + '"><span class="dot"></span><div><b>' + esc(n.b) + '</b><span class="t">' + esc(n.t) + '</span></div>' + (n.a ? '<button class="btn sm ghost act" data-act="' + n.a.act + '" data-id="' + esc(n.a.id || '') + '" data-tab="' + esc(n.a.tab || '') + '">' + esc(n.a.label) + '</button>' : '') + '</div>').join('') : '<div class="empty">Nothing needs attention.</div>') : '') +
     '<div class="week" style="margin-top:6px">' + week.join('') + '</div><p class="note">Green: target hit. Orange: short. Pale: today.</p></section>' +
     '</div>' +
-    '<div class="grid2"><section class="card meals" aria-label="Meals"><div class="between"><h2 class="h">' + (isT ? "Today's meals" : 'Meals') + '</h2><button class="linkbtn" data-act="tab" data-tab="meals">Plan and ideas</button></div>' + meals6 + (isKid() && isT ? '<p class="note">Lights out ' + esc(st.lightsOut || '21:15') + '.</p>' : '') + '</section>' +
-    genCard(true) + '</div>';
+    '<div class="grid2"><section class="card meals" aria-label="Meals"><div class="between"><h2 class="h">' + (isT ? "Today's meals" : 'Meals') + '</h2>' + (ME.scope === 'all' ? '<button class="linkbtn" data-act="tab" data-tab="meals">Plan and ideas</button>' : '') + '</div>' + meals6 + (isKid() && isT ? '<p class="note">Lights out ' + esc(st.lightsOut || '21:15') + '.</p>' : '') + '</section>' +
+    (ME.scope === 'all' ? genCard(true) : '') + '</div>';
 }
 function quickButtons(s) {
   const out = []; const slot = bestSlotNow(); const pm = mealById(planFor(s)[slot]);
@@ -523,7 +524,7 @@ document.addEventListener('click', async e => {
   if (!e.target.closest('.hb-menuwrap')) closeMenus();
   if (!b || ['INPUT', 'SELECT', 'TEXTAREA', 'FORM', 'LABEL'].includes(b.tagName)) return;
   const a = b.dataset.act;
-  if (a.startsWith('tm-') || a.startsWith('tr-')) { if (window.HT) window.HT.click(a, b); return; }
+  if (a.startsWith('tm-') || a.startsWith('tr-') || a.startsWith('tp-')) { if (window.HT) window.HT.click(a, b); return; }
   if (a === 'appmenu') return toggleMenu('appMenu', b);
   if (a === 'acctmenu') return toggleMenu('acctMenu', b);
   if (a === 'tab') { TAB = b.dataset.tab; try { localStorage.setItem('hh_tab', TAB); } catch (_) {} window.scrollTo(0, 0); render(); }

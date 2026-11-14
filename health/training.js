@@ -20,14 +20,24 @@ const CATS = [['strength', 'Strength', '#178A55'], ['cardio', 'Cardio', '#2F6FB0
 const CATCOL = Object.fromEntries(CATS.map(c => [c[0], c[2]]));
 const DIST_TYPES = ['run', 'jog', 'rower', 'bike', 'walk'];
 const BELLS = [8, 12, 16, 20, 24, 28, 32];
-/* exercise, pull/push/legs/core for the V-shape balance */
-const EXS = [
-  ['Swings', 'hinge'], ['Goblet squat', 'legs'], ['Clean & press', 'push'], ['Push press', 'push'], ['Snatch', 'hinge'],
-  ['Gorilla row', 'pull'], ['Single-arm row', 'pull'], ['Pull-ups', 'pull'], ['Lat pulldown', 'pull'], ['Face pulls', 'pull'],
-  ['Lateral raise', 'push'], ['Overhead press', 'push'], ['Incline press', 'push'], ['Push-ups', 'push'], ['Halo', 'core'],
-  ['Turkish get-up', 'core'], ['Farmer carry', 'core'], ['Lunges', 'legs'], ['Deadlift', 'hinge'], ['Windmill', 'core']
-];
+/* Exercise library by movement pattern. Swaps offer others from the same
+   pattern, so a swap keeps the session's purpose (e.g. a pull stays a pull). */
+const EXLIB = {
+  hinge: ['Swings', 'KB deadlift', 'Single-leg deadlift', 'Snatch', 'Deadlift'],
+  legs: ['Goblet squat', 'Lunges', 'Split squat', 'Step-ups'],
+  pull: ['Gorilla row', 'Single-arm row', 'Pull-ups', 'Lat pulldown', 'Renegade row', 'Face pulls'],
+  vpush: ['Clean & press', 'Push press', 'Overhead press', 'Pike push-ups'],
+  delts: ['Lateral raise', 'Upright row', 'Halo'],
+  hpush: ['Push-ups', 'Floor press', 'Incline press'],
+  core: ['Turkish get-up', 'Farmer carry', 'Plank', 'Windmill', 'Dead bug'],
+  cardio: ['Run', 'Rower', 'Bike', 'Burpees', 'Mountain climbers', 'Skipping']
+};
+const EXPAT = {}; Object.keys(EXLIB).forEach(p => EXLIB[p].forEach(e => { if (!EXPAT[e]) EXPAT[e] = p; }));
+const PATKIND = { hinge: 'hinge', legs: 'legs', pull: 'pull', vpush: 'push', delts: 'push', hpush: 'push', core: 'core', cardio: 'cardio' };
+const EXS = Object.keys(EXLIB).filter(p => p !== 'cardio').flatMap(p => EXLIB[p].map(e => [e, PATKIND[p]])).filter((e, i, a) => a.findIndex(x => x[0] === e[0]) === i);
 const EXKIND = Object.fromEntries(EXS.map(e => [e[0], e[1]]));
+EXKIND.Deadlift = 'hinge';
+function altsFor(ex, given) { const out = (given || []).slice(); const p = EXPAT[ex]; if (p) EXLIB[p].forEach(e => { if (e !== ex && !out.includes(e)) out.push(e); }); return out.filter(e => e !== ex).slice(0, 4); }
 const WORK_OPTS = [10, 15, 20, 30, 40, 45, 50, 60, 75, 90, 120, 150, 180, 240, 300, 360, 420, 480, 600, 720, 900, 1200, 1500, 1800, 2400, 2700, 3600];
 const REST_OPTS = [0, 5, 10, 15, 20, 30, 40, 45, 60, 75, 90, 120, 150, 180, 240, 300];
 const PRESETS = [
@@ -41,12 +51,12 @@ const PRESETS = [
 
 /* ---------- state ---------- */
 const TR = {
-  cfg: { kind: 'kettlebell', work: 40, rest: 20, rounds: 10, ready: 10, voice: true },
-  run: null, form: blankForm(), say: '', listening: false
+  cfg: { kind: 'kettlebell', work: 40, rest: 20, rounds: 10, ready: 10, voice: true, circuit: [] },
+  run: null, form: blankForm(), say: '', listening: false, planId: null, planAlts: {}, pickEx: false
 };
 try { const c = JSON.parse(localStorage.getItem('ht_cfg') || 'null'); if (c) Object.assign(TR.cfg, c); } catch (e) {}
 function saveCfg() { try { localStorage.setItem('ht_cfg', JSON.stringify(TR.cfg)); } catch (e) {} }
-function blankForm() { return { date: null, type: 'kettlebell', duration: '', rounds: '', work_s: null, rest_s: null, km: '', kg: '', ex: [], rpe: null, strain: '', hr: '', notes: '', source: 'manual' }; }
+function blankForm() { return { date: null, type: 'kettlebell', duration: '', rounds: '', work_s: null, rest_s: null, km: '', kg: '', ex: [], rpe: null, strain: '', hr: '', notes: '', source: 'manual', plan: null, swaps: [] }; }
 
 /* ---------- small helpers ---------- */
 function mmss(s) { s = Math.max(0, Math.round(s)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(x).padStart(2, '0'); }
@@ -106,7 +116,9 @@ function phasesFor(c) {
 function start() {
   audio(); // unlock audio on the tap
   const c = TR.cfg, ph = phasesFor(c);
-  TR.run = { cfg: Object.assign({}, c), ph, i: 0, end: Date.now() + ph[0].d * 1000, paused: false, left: null, done: false, beeped: {}, startedAt: new Date().toISOString(), workDone: 0, stopped: false };
+  const circ = (c.circuit || []).filter(Boolean);
+  const seq = []; for (let r = 0; r < c.rounds; r++) seq.push(circ.length ? circ[r % circ.length] : null);
+  TR.run = { cfg: Object.assign({}, c), ph, i: 0, end: Date.now() + ph[0].d * 1000, paused: false, left: null, done: false, beeped: {}, startedAt: new Date().toISOString(), workDone: 0, stopped: false, seq, swaps: [], plan: TR.planId };
   enterPhase(true);
   wake(true);
   loop();
@@ -117,9 +129,10 @@ function loop() { clearInterval(TIMER); TIMER = setInterval(tick, 100); }
 function enterPhase(first) {
   const R = TR.run, p = R.ph[R.i];
   R.beeped = {};
-  if (p.k === 'ready') { SND.tick(); say('Get ready'); }
-  else if (p.k === 'work') { SND.go(); buzz([300]); say(R.cfg.rounds > 1 ? (p.r === R.cfg.rounds ? 'Last round. Go' : 'Round ' + p.r + '. Go') : 'Go'); }
-  else if (p.k === 'rest') { SND.rest(); buzz([150, 100, 150]); say('Rest'); }
+  const exNow = R.seq[p.r - 1], exNext = R.seq[p.r];
+  if (p.k === 'ready') { SND.tick(); say('Get ready' + (exNow ? '. First up, ' + exNow : '')); }
+  else if (p.k === 'work') { SND.go(); buzz([300]); say((R.cfg.rounds > 1 ? (p.r === R.cfg.rounds ? 'Last round. ' : 'Round ' + p.r + '. ') : '') + (exNow ? exNow + '. ' : '') + 'Go'); }
+  else if (p.k === 'rest') { SND.rest(); buzz([150, 100, 150]); say('Rest' + (exNext ? '. Next, ' + exNext : '')); }
   if (!first) paintTimer(true);
 }
 function tick() {
@@ -148,6 +161,12 @@ function finish(stopped) {
     const f = blankForm();
     Object.assign(f, { date: A().todayStr(), type: R.cfg.kind, rounds: String(R.workDone), work_s: R.cfg.work, rest_s: R.cfg.rest, duration: String(Math.max(1, Math.round(secs / 60))), source: 'timer' });
     const prev = workouts().find(w => w.type === R.cfg.kind); if (prev) { if (prev.kg) f.kg = String(prev.kg); if (prev.ex) f.ex = prev.ex.slice(); }
+    const done = [...new Set(R.seq.slice(0, R.workDone).filter(Boolean))];
+    if (done.length) f.ex = done;
+    const pl = R.plan ? A().get('plans', R.plan, ME) : null;
+    if (pl && pl.kg) f.kg = String(pl.kg);
+    f.plan = R.plan || null; f.swaps = R.swaps.slice();
+    if (R.swaps.length) f.notes = 'Swapped ' + R.swaps.map(x => x.from + ' → ' + x.to).join(', ') + '.';
     TR.form = f;
   }
   A().render();
@@ -182,10 +201,12 @@ function timerCard() {
   const c = TR.cfg, R = TR.run, n = timerNumbers(), esc = A().esc;
   const face = '<div class="tm-face ph-' + n.k + (R && R.paused ? ' paused' : '') + '" id="tmFace">' +
     '<div class="tm-top"><span class="tm-ph">' + (R && R.paused ? 'Paused' : PHNAME[n.k]) + '</span><span class="tm-rd">' + (n.k === 'idle' ? c.rounds + ' round' + (c.rounds > 1 ? 's' : '') : n.k === 'done' ? (R.workDone + ' of ' + n.rounds + ' rounds') : n.round ? 'Round ' + n.round + ' / ' + n.rounds : 'Starting') + '</span></div>' +
+    exLine(R, n) +
     '<div class="tm-clock num" id="tmClock">' + (n.k === 'done' ? '✓' : mmss(Math.ceil(n.left - 0.001))) + '</div>' +
     '<div class="tm-bar"><div id="tmBar" style="width:' + (n.frac * 100).toFixed(1) + '%"></div></div>' +
     '<div class="tm-top"><span id="tmNext">' + esc(n.k === 'idle' ? TNAME[c.kind] + ' · ' + durName(c.work) + ' on' + (c.rounds > 1 ? ' / ' + durName(c.rest) + ' rest' : '') : n.next) + '</span><span id="tmLeft" class="num">' + mmss(n.total) + (n.k === 'done' ? '' : ' left') + '</span></div></div>';
   let ctrls;
+  const sw = swapPanel(R, n);
   if (!R) ctrls = '<button class="btn big" data-act="tm-start">Start</button>';
   else if (R.done) ctrls = '<div class="row tm-ctrls"><button class="btn" data-act="tm-again">Again</button><button class="btn ghost" data-act="tm-reset">New timer</button>' + (R.workDone ? '<a class="btn ghost" href="#trLog" data-act="tm-tolog">Log it ↓</a>' : '') + '</div>';
   else ctrls = '<div class="row tm-ctrls"><button class="btn" data-act="tm-pause">' + (R.paused ? 'Resume' : 'Pause') + '</button><button class="btn ghost" data-act="tm-skip">Skip ›</button><button class="btn danger" data-act="tm-stop">Stop</button></div>';
@@ -197,11 +218,81 @@ function timerCard() {
     '<label>Rest<select data-act="tm-cfg" data-k="rest">' + opt(REST_OPTS, c.rest, durName) + '</select></label>' +
     '<div class="tm-rounds"><span>Rounds</span><div class="stepper"><button data-act="tm-rounds" data-d="-1" aria-label="Fewer rounds">−</button><b class="num">' + c.rounds + '</b><button data-act="tm-rounds" data-d="1" aria-label="More rounds">+</button></div></div>' +
     '</div>' +
+    circuitSetup() +
     '<div class="row between"><label class="checkrow" style="width:auto"><input type="checkbox" data-act="tm-voice"' + (c.voice ? ' checked' : '') + '>Voice cues</label>' +
     '<label class="row" style="display:flex;gap:6px;align-items:center">Get ready<select data-act="tm-cfg" data-k="ready" style="width:auto;padding:6px 8px">' + opt([0, 5, 10, 15, 20, 30], c.ready, v => v ? v + ' s' : 'Off') + '</select></label>' +
     '<button class="linkbtn" data-act="tm-test">Test sound</button></div>' +
     '<p class="note">Total ' + mmss(totalSecs(c)) + '. A high beep means go, two low beeps mean rest, three beeps count you into each change. The screen stays on while it runs. On iPhone, turn the volume up; it plays even on silent.</p>';
-  return '<section class="card tm-card" id="timerCard" aria-label="Workout timer"><div class="between"><h2 class="h">Interval timer</h2>' + (R && !R.done ? '<span class="chip green">Running</span>' : '') + '</div>' + face + ctrls + setup + '</section>';
+  return '<section class="card tm-card" id="timerCard" aria-label="Workout timer"><div class="between"><h2 class="h">Interval timer</h2>' + (TR.planId && (!R || !R.done) ? '<span class="chip">Today\'s plan</span>' : '') + (R && !R.done ? '<span class="chip green">Running</span>' : '') + '</div>' + face + sw + ctrls + setup + '</section>';
+}
+
+/* which round the swap buttons change: the next work round */
+function swapIdx(R) { if (!R || R.done) return -1; const p = R.ph[R.i]; if (p.k === 'ready') return 0; if (p.k === 'rest') return p.r; if (p.k === 'work' && R.paused) return p.r - 1; return -1; }
+function exLine(R, n) {
+  const esc = A().esc;
+  if (!R) { const c = TR.cfg.circuit || []; return c.length ? '<div class="tm-ex">' + esc(c[0]) + (c.length > 1 ? '<span> then ' + esc(c.slice(1, 3).join(', ')) + (c.length > 3 ? '…' : '') + '</span>' : '') + '</div>' : ''; }
+  if (R.done || !R.seq.some(Boolean)) return '';
+  const p = R.ph[R.i];
+  if (p.k === 'work') return '<div class="tm-ex">' + esc(R.seq[p.r - 1] || '') + '</div>';
+  const nx = R.seq[swapIdx(R)];
+  return nx ? '<div class="tm-ex"><span>Next</span> ' + esc(nx) + '</div>' : '';
+}
+function swapPanel(R) {
+  const i = swapIdx(R); if (i < 0 || !R.seq[i]) return '';
+  const cur = R.seq[i], alts = altsFor(cur, TR.planAlts[cur] || (R.swaps.find(x => x.to === cur) ? TR.planAlts[R.swaps.find(x => x.to === cur).from] : null));
+  if (!alts.length) return '';
+  return '<div class="swap"><div class="tiny muted">Don\'t fancy ' + A().esc(cur) + '? Swap it for the rest of the session:</div><div class="row">' + alts.map(a => '<button class="pill sm" data-act="tm-swap" data-v="' + A().esc(a) + '">' + A().esc(a) + '</button>').join('') + '</div></div>';
+}
+function doSwap(to) {
+  const R = TR.run, i = swapIdx(R); if (i < 0) return; const from = R.seq[i]; if (!from || from === to) return;
+  for (let j = i; j < R.seq.length; j++) if (R.seq[j] === from) R.seq[j] = to;
+  if (!TR.planAlts[to]) TR.planAlts[to] = altsFor(from, TR.planAlts[from]).filter(x => x !== to).concat([from]);
+  R.swaps.push({ round: i + 1, from, to });
+  say('Next, ' + to); paintTimer(true);
+}
+function circuitSetup() {
+  const c = TR.cfg.circuit || [], esc = A().esc;
+  const list = c.length ? '<div class="circ">' + c.map((e, i) => '<span>' + (i + 1) + '. ' + esc(e) + '</span>').join('') + '</div>' : '<span class="tiny muted">None: just work and rest.</span>';
+  return '<div class="circwrap"><div class="between"><span class="small" style="font-weight:600">Exercises, in order</span><span class="row">' + (c.length ? '<button class="linkbtn" data-act="tm-circclear">Clear</button>' : '') + '<button class="linkbtn" data-act="tm-pick">' + (TR.pickEx ? 'Done' : c.length ? 'Change' : 'Choose') + '</button></span></div>' + list +
+    (TR.pickEx ? '<div class="row exs" style="margin-top:6px">' + Object.keys(EXLIB).flatMap(p => EXLIB[p]).filter((e, i, a) => a.indexOf(e) === i).map(e => '<button class="pill xs" data-act="tm-circ" data-v="' + esc(e) + '" aria-pressed="' + c.includes(e) + '">' + esc(e) + '</button>').join('') + '</div><p class="note">Tap in the order you want them. They repeat round after round.</p>' : '') + '</div>';
+}
+
+/* ---------- Claude's plan for today ---------- */
+function plans() { return A().col('plans', ME).filter(p => p.date).sort((a, b) => a.date.localeCompare(b.date)); }
+function todaysPlan() { const t = A().todayStr(); return plans().find(p => p.date === t) || null; }
+function loadPlan(p, opt) {
+  const src = opt != null && p.options && p.options[opt] ? p.options[opt] : p;
+  const c = src.cfg || {};
+  Object.assign(TR.cfg, { kind: src.kind || p.kind || 'kettlebell', work: Number(c.work) || 40, rest: c.rest != null ? Number(c.rest) : 20, rounds: Math.min(15, Math.max(1, Number(c.rounds) || 1)), circuit: (src.circuit || []).map(x => x.ex) });
+  TR.planAlts = {}; (src.circuit || []).forEach(x => { TR.planAlts[x.ex] = x.alts || []; });
+  TR.planId = p.date; TR.pickEx = false; saveCfg();
+  if (TR.run && TR.run.done) TR.run = null;
+  A().render();
+  const el = document.getElementById('timerCard'); if (el) el.scrollIntoView({ behavior: 'smooth' });
+  A().toast('Loaded: ' + (src.title || p.title));
+}
+function planCardToday() {
+  const A_ = A(), esc = A_.esc, p = todaysPlan(), t = A_.todayStr();
+  const next = plans().find(x => x.date > t);
+  if (!p) return '<section class="card plan-today"><div class="between"><h2 class="h">Today\'s session</h2><span class="chip">From Claude</span></div><div class="empty">No session planned for today.' + (next ? ' Next: <b>' + esc(next.title) + '</b> on ' + esc(A_.fmtD(next.date)) + '.' : '') + ' Claude reviews your training each evening and sets the next one.</div></section>';
+  const done = workouts().some(w => w.plan === p.date);
+  const c = p.cfg || {};
+  const circ = (p.circuit || []).map((x, i) => '<li><b>' + esc(x.ex) + '</b>' + (x.kg ? ' <span class="chip">' + esc(x.kg) + ' kg</span>' : '') + (x.note ? '<span class="sub">' + esc(x.note) + '</span>' : '') + ((x.alts || []).length ? '<span class="sub">or ' + esc(x.alts.join(', ')) + '</span>' : '') + '</li>').join('');
+  return '<section class="card plan-today"><div class="between"><h2 class="h">Today\'s session</h2>' + (done ? '<span class="chip green">Done ✓</span>' : '<span class="chip">From Claude</span>') + '</div>' +
+    '<div><div class="pt-title">' + esc(p.title) + '</div><div class="small muted">' + esc(TNAME[p.kind] || '') + (c.work ? ' · ' + durName(Number(c.work)) + ' on' + (Number(c.rest) ? ' / ' + durName(Number(c.rest)) + ' rest' : '') + ' × ' + c.rounds : '') + (p.target_rpe ? ' · aim for effort ' + esc(p.target_rpe) : '') + '</div></div>' +
+    (p.why ? '<p class="why">' + esc(p.why) + '</p>' : '') +
+    (p.warmup ? '<div class="small"><b>Warm-up:</b> ' + esc(p.warmup) + '</div>' : '') +
+    (circ ? '<ol class="circ-list">' + circ + '</ol>' : '') +
+    (p.notes ? '<p class="note">' + esc(p.notes) + '</p>' : '') +
+    '<button class="btn big" data-act="tp-load">' + (done ? 'Do it again' : 'Load into timer') + '</button>' +
+    ((p.options || []).length ? '<div><div class="tiny muted" style="margin-bottom:6px">Not feeling it? Do this instead:</div><div class="row">' + p.options.map((o, i) => '<button class="pill sm" data-act="tp-opt" data-i="' + i + '" title="' + esc(o.why || '') + '">' + esc(o.title) + '</button>').join('') + '</div></div>' : '') +
+    '</section>';
+}
+function reviewHtml() {
+  const A_ = A(), esc = A_.esc;
+  const r = A_.col('coach', ME).filter(x => x.date).sort((a, b) => b.date.localeCompare(a.date))[0];
+  if (!r) return '';
+  return '<div class="review"><div class="between"><b>Claude\'s review</b><span class="tiny muted">' + esc(A_.fmtD(r.date)) + '</span></div>' + (r.headline ? '<div class="rv-h">' + esc(r.headline) + '</div>' : '') + (r.text ? '<p>' + esc(r.text) + '</p>' : '') + ((r.points || []).length ? '<ul>' + r.points.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : '') + (r.next ? '<div class="small"><b>Next:</b> ' + esc(r.next) + '</div>' : '') + '</div>';
 }
 
 function logCard() {
@@ -468,12 +559,12 @@ function view() {
   const rows = wm.slice().reverse().map(w => '<tr' + (w.current ? ' class="cur"' : '') + '><td>' + A_.esc(wkLabel(w.ws)) + (w.current ? ' <span class="chip">now</span>' : '') + '</td><td class="n">' + w.logs.length + '</td><td class="n">' + w.ses.strength + '</td><td class="n">' + Math.round(w.min.cardio + w.min.sport) + '</td><td class="n">' + (w.rpe ? r1(w.rpe) : '—') + '</td><td class="n">' + (w.whoop ? r1(w.whoop.strain) : '—') + '</td><td class="n">' + (w.whoop ? Math.round(w.whoop.recovery) + '%' : '—') + '</td><td class="n">' + (w.whoop ? r1(w.whoop.sleep_h) : '—') + '</td><td class="n">' + (w.whoop ? r1(w.whoop.hrv) : '—') + '</td></tr>').join('');
 
   const coachHtml = '<section class="card coach" aria-label="How you\'re doing"><div class="between"><h2 class="h">How you\'re doing</h2><span class="tiny muted">Last 4 full weeks, log + Whoop</span></div>' +
-    '<div class="verdict"><b>Should you push harder?</b><span>' + A_.esc(co.verdict) + '</span>' + (co.today ? '<span class="tiny muted">' + A_.esc(co.today) + '</span>' : '') + '</div>' +
+    reviewHtml() + '<div class="verdict"><b>Should you push harder?</b><span>' + A_.esc(co.verdict) + '</span>' + (co.today ? '<span class="tiny muted">' + A_.esc(co.today) + '</span>' : '') + '</div>' +
     co.out.map(n => '<div class="alert ' + n.c + '"><span class="dot"></span><div><b>' + A_.esc(n.b) + '</b><span class="t">' + A_.esc(n.t) + '</span></div>' + (n.a ? '<button class="btn sm ghost act" data-act="' + n.a.act + '" data-id="' + A_.esc(n.a.id) + '">' + A_.esc(n.a.label) + '</button>' : '') + '</div>').join('') +
     (co.goods.length ? '<div class="alert green"><span class="dot"></span><div><b>Going well</b><span class="t">' + A_.esc(co.goods.join('; ')) + '.</span></div></div>' : '') + '</section>';
 
   return '<div class="between"><h1 class="h1">Training</h1><span class="small muted">Send your weekly Whoop export to Claude and it lines up here.</span></div>' +
-    '<div class="grid2">' + timerCard() + logCard() + '</div>' +
+    '<div class="grid3 trtop">' + planCardToday() + timerCard() + logCard() + '</div>' +
     tiles +
     '<div class="grid2">' + coachHtml + planCard() + '</div>' +
     '<div class="grid3">' +
@@ -538,7 +629,13 @@ function click(a, b) {
   else if (a === 'tm-reset') reset();
   else if (a === 'tm-tolog') { const el = document.getElementById('trLog'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }
   else if (a === 'tm-test') { audio(); SND.go(); setTimeout(SND.rest, 800); setTimeout(() => say('Round 1. Go'), 1600); }
-  else if (a === 'tm-preset') { const p = PRESETS.find(x => x.id === b.dataset.id); if (p) { Object.assign(c, { kind: p.kind, work: p.work, rest: p.rest, rounds: p.rounds }); saveCfg(); if (TR.run && TR.run.done) TR.run = null; A().render(); const el = document.getElementById('timerCard'); if (el && b.closest('.coach')) el.scrollIntoView({ behavior: 'smooth' }); } }
+  else if (a === 'tm-preset') { const p = PRESETS.find(x => x.id === b.dataset.id); if (p) { Object.assign(c, { kind: p.kind, work: p.work, rest: p.rest, rounds: p.rounds }); TR.planId = null; saveCfg(); if (TR.run && TR.run.done) TR.run = null; A().render(); const el = document.getElementById('timerCard'); if (el && b.closest('.coach')) el.scrollIntoView({ behavior: 'smooth' }); } }
+  else if (a === 'tm-swap') doSwap(b.dataset.v);
+  else if (a === 'tm-pick') { TR.pickEx = !TR.pickEx; A().render(); }
+  else if (a === 'tm-circ') { const v = b.dataset.v, cc = TR.cfg.circuit = TR.cfg.circuit || []; const i = cc.indexOf(v); if (i >= 0) cc.splice(i, 1); else cc.push(v); TR.planId = null; saveCfg(); A().render(); }
+  else if (a === 'tm-circclear') { TR.cfg.circuit = []; TR.planId = null; saveCfg(); A().render(); }
+  else if (a === 'tp-load') { const p = todaysPlan(); if (p) loadPlan(p); }
+  else if (a === 'tp-opt') { const p = todaysPlan(); if (p) loadPlan(p, Number(b.dataset.i)); }
   else if (a === 'tm-rounds') { c.rounds = Math.min(15, Math.max(1, c.rounds + Number(b.dataset.d))); saveCfg(); A().render(); }
   else if (a === 'tr-type') { TR.form.type = b.dataset.v; A().render(); }
   else if (a === 'tr-ex') { const v = b.dataset.v, ex = TR.form.ex; const i = ex.indexOf(v); if (i >= 0) ex.splice(i, 1); else ex.push(v); A().render(); }
@@ -574,10 +671,12 @@ function save() {
   for (const k in nums) { const v = parseFloat(nums[k]); if (isFinite(v) && v > 0) d[k] = v; }
   if (f.work_s) d.work_s = f.work_s; if (f.rest_s != null && f.work_s) d.rest_s = f.rest_s;
   if (f.rpe) d.rpe = f.rpe; if (f.ex.length) d.ex = f.ex.slice(); if (f.notes.trim()) d.notes = f.notes.trim();
+  if (f.plan) d.plan = f.plan; if (f.swaps && f.swaps.length) d.swaps = f.swaps.slice();
   A_.put('workouts', 'wo-' + date + '-' + A_.uid().slice(0, 5), d, ME);
   TR.form = blankForm(); TR.say = '';
   if (TR.run && TR.run.done) TR.run = null;
-  A_.toast('Workout saved');
+  TR.planId = null;
+  A_.toast('Workout saved. Claude reviews it tonight.');
 }
 function change(t) {
   if (t.dataset.act === 'tm-cfg') { const k = t.dataset.k; TR.cfg[k] = k === 'kind' ? t.value : Number(t.value); saveCfg(); A().render(); return true; }

@@ -256,3 +256,17 @@ table.t tr.cur td{background:var(--green-soft)}
 .alert .act{white-space:nowrap}
 table.t td:first-child{white-space:nowrap}
 @media (max-width:520px){.coach .alert{flex-wrap:wrap}.coach .alert>div{flex:1 1 calc(100% - 20px)}.coach .alert .act{margin-left:18px}}
+.tm-ex{font-size:24px;font-weight:700;text-align:center;line-height:1.15;margin-top:2px}
+.tm-ex span{font-size:15px;font-weight:600;opacity:.8}
+.swap{background:var(--amber-soft);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.circwrap{background:var(--bg);border-radius:12px;padding:10px}
+.circ{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.circ span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:13px}
+.plan-today .pt-title{font-size:20px;font-weight:700;letter-spacing:-.01em}
+.plan-today .why{margin:0;font-size:14px;color:var(--ink2);background:var(--green-soft);border-radius:10px;padding:10px 12px}
+.circ-list{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px;font-size:14.5px}
+.circ-list .sub{display:block;font-size:12.5px;color:var(--muted)}
+.review{border:1px solid var(--green-pale);background:var(--green-soft);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.review .rv-h{font-weight:700;font-size:15.5px}
+.review p{margin:0;color:var(--ink2)}
+.review ul{margin:0;padding-left:18px;color:var(--ink2)}
