@@ -19,3 +19,7 @@ Practice quizzes, spelling tests, a revision library, characters, a shop and a p
 - **Logins**: `millie@hollyend.com`, `kristan@hollyend.com`, `dad@hollyend.com` (parent; `mum@hollyend.com` also works as a parent login if created) (created in Supabase → Authentication; they're linked to the right role automatically).
 
 The Supabase key in `supa-adapter.js` is the public "publishable" key and is safe to be here. Never commit the secret/service-role key.
+
+## Hollyend Health (`/health/`)
+- `health/app.js` – the Health app (data in `health_docs`, row-level security: Dad sees all, K's login only his own food side).
+- `health/training.js` – Dad-only **Training** tab: interval timer (up to 15 rounds, beeps + voice, screen stays on), workout log (`workouts` coll, person `harps`; dictate or tap), charts that line the log up with the weekly Whoop rows (`whoop` coll, keyed by `week_start` Monday), and coaching for a V-shape.

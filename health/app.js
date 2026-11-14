@@ -151,7 +151,7 @@ async function boot() {
   await loadAll();
   SIG = await signature();
   render();
-  setInterval(() => { if (document.visibilityState === 'visible' && !document.activeElement.matches('input,textarea,select')) refresh(); }, 60000);
+  setInterval(() => { if (document.visibilityState === 'visible' && !document.activeElement.matches('input,textarea,select') && !(window.HT && window.HT.busy())) refresh(); }, 60000);
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') refresh(); });
 }
 function showLogin(msg) {
@@ -173,9 +173,10 @@ const ICONS = {
   progress: '<svg viewBox="0 0 24 24"><path d="M4 19h16M6 16l4-5 3 3 5-7"/></svg>',
   meals: '<svg viewBox="0 0 24 24"><path d="M7 3v8a2 2 0 0 0 4 0V3M9 11v10M16 21V3c2 1 3 3 3 6s-1 4-3 4"/></svg>',
   health: '<svg viewBox="0 0 24 24"><path d="M3 12h4l2-5 4 10 2-5h6"/></svg>',
-  shop: '<svg viewBox="0 0 24 24"><path d="M5 8h14l-1.5 11h-11z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>'
+  shop: '<svg viewBox="0 0 24 24"><path d="M5 8h14l-1.5 11h-11z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
+  training: '<svg viewBox="0 0 24 24"><path d="M9 4h6M12 4v3"/><circle cx="12" cy="14" r="7"/><path d="M12 14l3-3"/></svg>'
 };
-function tabsFor() { const t = [['today', 'Today'], ['progress', 'Progress'], ['meals', 'Meals']]; if (ME.scope === 'all') t.push(['health', 'Health']); t.push(['shop', 'Shopping']); return t; }
+function tabsFor() { const t = [['today', 'Today'], ['progress', 'Progress'], ['meals', 'Meals']]; if (ME.scope === 'all') t.push(['health', 'Health']); t.push(['shop', 'Shopping']); if (ME.scope === 'all' && window.HT) t.push(['training', 'Training']); return t; }
 function render() {
   if (!ME.user) return;
   const tabs = tabsFor();
@@ -184,7 +185,7 @@ function render() {
   $('tabs').innerHTML = tabs.map(([k, n]) => '<button role="tab" data-act="tab" data-tab="' + k + '" aria-selected="' + (TAB === k) + '">' + ICONS[k] + '<span>' + n + '</span></button>').join('');
   $('who').innerHTML = barRight();
   const y = window.scrollY;
-  const fn = { today: vToday, progress: vProgress, meals: vMeals, health: vHealth, shop: vShop }[TAB] || vToday;
+  const fn = { today: vToday, progress: vProgress, meals: vMeals, health: vHealth, shop: vShop, training: vTraining }[TAB] || vToday;
   $('view').innerHTML = fn();
   window.scrollTo(0, y);
 }
@@ -388,6 +389,7 @@ function vProgress() {
     (canGrowth ? '<form class="card" data-act="addgrowth"><h2 class="h">Add a measurement</h2><div class="fields"><label>Date<input id="g_date" type="date" value="' + todayStr() + '" required></label><label>Weight (kg)<input id="g_w" type="number" step="0.1" inputmode="decimal"></label><label>Height (cm)<input id="g_h" type="number" step="0.1" inputmode="decimal"></label><label>Where<input id="g_src" placeholder="Home, clinic…"></label></div><button class="btn" type="submit">Save</button><p class="note">Weekly: same scales, before breakfast, light clothes.</p></form>' : '') + '</div>' +
     (canGrowth && rows ? '<section class="card"><h2 class="h">All measurements</h2><div class="scroll"><table class="t"><thead><tr><th>Date</th><th class="n">kg</th>' + (isKid() ? '<th class="n">Centile</th>' : '') + '<th class="n">cm</th>' + (isKid() ? '<th class="n">Centile</th>' : '') + '<th>Source</th><th></th></tr></thead><tbody>' + rows + '</tbody></table></div>' + (isKid() ? '<p class="note">Centiles use the UK-WHO boys\' reference that GOSH uses. His doctors\' charts are the record.</p>' : '') + '</section>' : '');
 }
+function vTraining() { return ME.scope === 'all' && window.HT ? window.HT.view() : '<div class="empty">Not available.</div>'; }
 function tile(k, v, d, cls) { return '<div class="tile"><div class="k">' + k + '</div><div class="v">' + v + '</div><div class="d ' + (cls || '') + '">' + d + '</div></div>'; }
 
 /* ---------- Meals ---------- */
@@ -521,6 +523,7 @@ document.addEventListener('click', async e => {
   if (!e.target.closest('.hb-menuwrap')) closeMenus();
   if (!b || ['INPUT', 'SELECT', 'TEXTAREA', 'FORM', 'LABEL'].includes(b.tagName)) return;
   const a = b.dataset.act;
+  if (a.startsWith('tm-') || a.startsWith('tr-')) { if (window.HT) window.HT.click(a, b); return; }
   if (a === 'appmenu') return toggleMenu('appMenu', b);
   if (a === 'acctmenu') return toggleMenu('acctMenu', b);
   if (a === 'tab') { TAB = b.dataset.tab; try { localStorage.setItem('hh_tab', TAB); } catch (_) {} window.scrollTo(0, 0); render(); }
@@ -541,6 +544,7 @@ document.addEventListener('click', async e => {
   else if (a === 'delgrowth') { if (b.dataset.armed !== '1') { b.dataset.armed = '1'; b.textContent = 'Remove?'; setTimeout(() => { if (b.isConnected) { b.dataset.armed = ''; b.textContent = '✕'; } }, 3500); return; } del('growth', b.dataset.id); }
 });
 document.addEventListener('change', e => {
+  if (window.HT && e.target.dataset && window.HT.change(e.target)) return;
   const t = e.target, a = t.dataset && t.dataset.act; if (!a) return;
   if (a === 'plansel') { const d = t.dataset.d, cur = JSON.parse(JSON.stringify(get('plan', d) || { date: d, slots: {} })); cur.date = d; cur.slots = cur.slots || {}; if (t.value) cur.slots[t.dataset.slot] = t.value; else delete cur.slots[t.dataset.slot]; put('plan', d, cur); }
   else if (a === 'qtoggle') { const q = get('questions', t.dataset.id); if (q) put('questions', t.dataset.id, Object.assign({}, q, { answered: t.checked, answered_on: todayStr() })); }
@@ -549,7 +553,7 @@ document.addEventListener('change', e => {
     else put('pantry', slug(n), { name: n.toLowerCase(), category: 'Other', status: 'plenty', updated: todayStr() });
     if (mid) put('shopping', mid, Object.assign({}, get('shopping', mid), { done: true })); }
 });
-document.addEventListener('input', e => { const t = e.target; if (t.dataset && t.dataset.act === 'typedtext') UI.typed = t.value; if (t.id === 'typedSlot') UI.typedSlot = t.value; });
+document.addEventListener('input', e => { const t = e.target; if (window.HT && t.dataset && window.HT.input(t)) return; if (t.dataset && t.dataset.act === 'typedtext') UI.typed = t.value; if (t.id === 'typedSlot') UI.typedSlot = t.value; });
 document.addEventListener('submit', async e => {
   const f = e.target, a = f.dataset.act; if (f.id === 'loginForm') { e.preventDefault(); const em = $('em').value.trim(), pw = $('pw').value; const { error } = await sb.auth.signInWithPassword({ email: em, password: pw }); if (error) { $('loginErr').textContent = 'That email and password didn\'t work.'; return; } return boot(); }
   if (!a) return; e.preventDefault();
@@ -561,5 +565,6 @@ document.addEventListener('submit', async e => {
   else if (a === 'savesettings') { const cur = Object.assign({}, get('settings', 'main') || {}); const k = $('s_k').value, p = $('s_p').value; cur.kcalTarget = k ? Number(k) : null; cur.proteinTarget = p ? Number(p) : null; if (isKid()) { cur.lightsOut = $('s_l').value; cur.trainingDays = [...f.querySelectorAll('input[name="s_td"]:checked')].map(x => Number(x.value)); cur.nutFreeSchool = $('s_nf').checked; } put('settings', 'main', cur); toast('Saved'); }
 });
 
+window.HHAPI = { col, get, put, del, esc, todayStr, addDays, mondayOf, pd, fmtD, fmtLong, n0, uid, toast, render, tile };
 boot().catch(err => { $('view').innerHTML = '<div class="card login"><h1 class="h1">Something went wrong</h1><p class="note">' + esc(err && err.message || err) + '</p></div>'; });
 })();
