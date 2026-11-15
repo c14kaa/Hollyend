@@ -156,6 +156,40 @@ function leagueState(attempts, matches, now) {
   return { today: today, seasonNo: cur + 1, season: S, division: S.division, matchday: r + 1, round: round, home: home, opponent: S.clubs[home ? myFx.away : myFx.home],
     status: round.mine.status, answered: round.mine.answered || 0, pattern: myFx.pattern, defs: myFx.defs, liveOks: round.mine.oks || [], myRow: S.table.filter(function (x) { return x.me; })[0], mine: mine, honours: honours, level: S.division.level };
 }
+/* Kristan's career: every finished season in full (division, final table, his results), plus trophies and records. */
+function lgCareer(attempts, matches, now) {
+  var today = lgToday(now), since = Math.max(0, lgDiff(today, LEAGUE.start)), cur = Math.floor(since / LEAGUE.length), div = 0, seasons = [];
+  for (var s = 0; s < cur; s++) {
+    var S = lgSeason(s, div, today, attempts, matches), me = S.table.filter(function (x) { return x.me; })[0], D = LEAGUE.divisions[div];
+    var res = S.rounds.map(function (rd) { var f = rd.fixtures.filter(function (x) { return x.mine; })[0], h = f.home === 0;
+      return { matchday: rd.r + 1, day: rd.day, home: h, opp: S.clubs[h ? f.away : f.home], gf: h ? f.hg : f.ag, ga: h ? f.ag : f.hg, s: f.s, missed: !!f.missed, unfinished: !!f.unfinished }; });
+    var outcome = "Stayed up", nextDiv = div;
+    if (me.pos === 1) outcome = D.up ? "Champions · promoted" : "Champions";
+    else if (D.up && me.pos <= D.up) outcome = "Promoted";
+    else if (D.down && me.pos > 20 - D.down) outcome = "Relegated";
+    else if (!D.down) outcome = "Mid-table";
+    if (D.up && me.pos <= D.up) nextDiv = div + 1; else if (D.down && me.pos > 20 - D.down) nextDiv = div - 1;
+    var run = 0, bestRun = 0, big = null;
+    res.forEach(function (m) { if (!m.missed && m.gf >= m.ga) { run++; bestRun = Math.max(bestRun, run); } else run = 0;
+      if (m.gf > m.ga && (!big || m.gf - m.ga > big.gf - big.ga || (m.gf - m.ga === big.gf - big.ga && m.gf > big.gf))) big = m; });
+    seasons.push({ season: s + 1, div: div, division: D, startDay: S.startDay, endDay: S.endDay, table: S.table, me: me, results: res, outcome: outcome,
+      missed: res.filter(function (m) { return m.missed; }).length, unbeatenRun: bestRun, biggestWin: big });
+    div = nextDiv;
+  }
+  var trophies = [];
+  seasons.forEach(function (x) {
+    if (x.me.pos === 1) trophies.push({ kind: "title", name: x.division.name + " title", season: x.season, icon: "gold" });
+    if (x.division.up && x.me.pos <= x.division.up) trophies.push({ kind: "promotion", name: "Promotion from " + x.division.name, season: x.season, icon: "silver" });
+    if (x.me.pos <= 3 && !x.division.up) trophies.push({ kind: "podium", name: ord3(x.me.pos) + " in the " + x.division.name, season: x.season, icon: "bronze" });
+    if (x.unbeatenRun >= 8) trophies.push({ kind: "run", name: x.unbeatenRun + "-match unbeaten run", season: x.season, icon: "medal" });
+    if (x.missed === 0) trophies.push({ kind: "ever", name: "Ever-present: played every matchday", season: x.season, icon: "medal" });
+  });
+  var tot = { p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0 };
+  seasons.forEach(function (x) { ["p", "w", "d", "l", "gf", "ga", "pts"].forEach(function (k) { tot[k] += x.me[k]; }); });
+  var best = seasons.slice().sort(function (a, b) { return b.div - a.div || a.me.pos - b.me.pos; })[0] || null;
+  return { seasons: seasons, trophies: trophies, totals: tot, best: best, currentDiv: div, currentSeason: cur + 1 };
+}
+function ord3(n) { return n + (n === 1 ? "st" : n === 2 ? "nd" : n === 3 ? "rd" : "th"); }
 function lgResultLetter(gf, ga) { return gf > ga ? "W" : gf < ga ? "L" : "D"; }
 
-if (typeof module !== "undefined" && module.exports) module.exports = { LEAGUE: LEAGUE, leagueState: leagueState, lgSeason: lgSeason, lgSchedule: lgSchedule, lgPattern: lgPattern, lgMyResult: lgMyResult, lgMinute: lgMinute, lgDefs: lgDefs, lgClubs: lgClubs, lgToday: lgToday, lgDay: lgDay, lgResultLetter: lgResultLetter };
+if (typeof module !== "undefined" && module.exports) module.exports = { LEAGUE: LEAGUE, leagueState: leagueState, lgCareer: lgCareer, lgSeason: lgSeason, lgSchedule: lgSchedule, lgPattern: lgPattern, lgMyResult: lgMyResult, lgMinute: lgMinute, lgDefs: lgDefs, lgClubs: lgClubs, lgToday: lgToday, lgDay: lgDay, lgResultLetter: lgResultLetter };
