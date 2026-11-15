@@ -23,6 +23,10 @@ const { KLISTS, WB } = ctx;
 });
 const fseen = {}; WB.french.forEach(x => { if (fseen[x.id]) bad('french duplicate ' + x.fr); fseen[x.id] = 1; if (x.kind === 'n' && !/^(m|f|pl)$/.test(x.g)) bad('french noun without gender ' + x.fr); });
 console.log('french', WB.french.length, 'items,', Object.keys(WB.verbList).length, 'verbs');
+// French pronunciation help: every bank item, verb and school-list entry needs a "sounds like" guide (and verbs their English)
+WB.french.forEach(x => { if (!x.sounds) bad('french: no sounds for ' + x.fr + ' (add it to src/words/french_sounds.js)'); });
+Object.keys(WB.verbList).forEach(v => { const V = WB.verbList[v]; if (!V.sounds || V.sounds.length !== 6 || !V.enB || !V.en3 || !V.endEn || !V.endSounds) bad('french verb ' + v + ' missing sounds/English (french_sounds.js)'); });
+KLISTS.french.words.concat(KLISTS.french.archive || []).forEach(w => { if (!w.sounds) bad('school French list: no sounds for ' + (w.id || w.word)); });
 // 2. quizzes
 function checkQuiz(qs, label, n) {
   if (qs.length !== n) bad(label + ': ' + qs.length + ' questions, expected ' + n);

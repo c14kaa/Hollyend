@@ -160,6 +160,24 @@ table.ft th { text-align: left; background: var(--accent-soft); font-weight: 700
 .typer input.right { border-color: var(--good); background: var(--good-soft); }
 .typer input.wrong { border-color: var(--bad); background: var(--bad-soft); }
 .btn.hear { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
+.frbox { border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; display: grid; gap: 6px; margin: 10px 0; background: var(--card); }
+.frbox .fr-l { display: grid; grid-template-columns: 96px 1fr; gap: 8px; align-items: baseline; }
+.frbox .fr-l > span:first-child { font-size: 12.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.frbox .fr-fr { font-weight: 700; font-size: 18px; }
+.frbox .fr-snd { font-style: italic; }
+.frbox .row { margin-top: 2px; }
+.frpairs { width: 100%; border-collapse: collapse; font-size: 15px; margin-top: 4px; }
+.frpairs td { padding: 5px 6px; border-top: 1px solid var(--line); vertical-align: top; }
+.frpairs td:first-child { font-weight: 700; }
+.frlist { display: grid; gap: 0; margin-top: 10px; }
+.frrow { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 9px 0; border-top: 1px solid var(--line); align-items: center; }
+.frrow .fr-fr { font-weight: 700; font-size: 17px; }
+.frrow .fr-en { font-size: 15px; }
+.frrow .fr-snd { font-size: 14px; font-style: italic; color: var(--muted); }
+.sayb { font: 700 14px var(--body); border: 2px solid var(--accent); color: var(--accent); background: transparent; border-radius: 10px; padding: 7px 10px; cursor: pointer; min-width: 44px; min-height: 40px; }
+.sayb:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.frkey { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+.frhide { margin: 0; }
 .compare { display: flex; flex-direction: column; gap: 4px; font-size: 16px; }
 .compare .w { font: 700 22px var(--body); letter-spacing: .12em; }
 .compare .w i { font-style: normal; background: var(--bad); color: #fff; border-radius: 4px; padding: 0 2px; }
@@ -1186,6 +1204,7 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
   var purchases = [], bankRows = [], profiles = {};
   var LV = { 1: "Warm-up", 2: "Core", 3: "Challenge" };
   var app = document.getElementById("app");
+  app.addEventListener("click", function (e) { var b = e.target && e.target.closest ? e.target.closest("[data-say]") : null; if (b) { e.preventDefault(); e.stopPropagation(); speakAloud(b.dataset.say, b.dataset.lang || "fr-FR", b.dataset.slow === "1"); } });
   /* ---------- Millie's monkey buddies: Ooh Ooh and Uuh Uuh appear on every page of her side ----------
      BRAND keeps the name in one place: the theme (space) can change later, the monkeys always stay. */
   var BRAND = { millie: { get title() { return millieTheme("main").title; } } };
@@ -1608,11 +1627,12 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
         '<p class="small">These are tough on purpose' + (state.child === "millie" ? ', so even grown-ups get them wrong' : ': many adults misspell them') + '. Read the meaning, type the missing word, and tap \u201CHear it\u201D to have the sentence read out. Every correct answer earns double points.</p>' +
         '<details class="list-box"><summary>Practise this quiz\u2019s words first</summary><div class="wordgrid">' + quizWords().map(function (w) { return '<span><b>' + esc(w.word) + '</b><br>' + esc(w.meaning) + '</span>'; }).join("") + '</div></details>'
       : state.mode === "english" || state.mode === "french" ? '<p class="prompt">' + (state.mode === "english" ? 'English words, ' + esc(name()) + '! 10 words to use in your writing: spell them, use them, know what they mean.' : 'French, ' + esc(name()) + '! 10 questions: this week\u2019s school list plus vocab, verbs, le/la and listening.') + '</p>' +
-        '<p class="small">' + (state.mode === "english" ? 'Mostly new words each time, plus any you missed recently. Words you get right three times in a row are mastered.' : 'Accents count, so use the accent buttons. Tap \u201CHear it\u201D to hear the French. Words you get right three times in a row are mastered.') + '</p>' +
-        '<details class="list-box"><summary>' + (state.mode === "english" ? 'Practise this quiz\u2019s words first' : 'Practise this week\u2019s school list first') + '</summary><div class="wordgrid">' + (state.mode === "english" ? quizWords() : KLISTS.french.words).map(function (w) { return '<span><b>' + esc(state.mode === "french" && w.group !== "Verbs" ? w.gap.replace("_____", w.word) : w.word) + '</b><br>' + esc(w.meaning) + '</span>'; }).join("") + '</div></details>'
+        '<p class="small">' + (state.mode === "english" ? 'Mostly new words each time, plus any you missed recently. Words you get right three times in a row are mastered.' : 'Accents count, so use the accent buttons. Tap \u201CHear it\u201D to hear the French, or \uD83D\uDC22 Slowly to hear it slowly. After each answer you\u2019ll see the English and how to say it. Words you get right three times in a row are mastered.') + '</p>' +
+        (state.mode === "english" ? '<details class="list-box"><summary>Practise this quiz\u2019s words first</summary><div class="wordgrid">' + quizWords().map(function (w) { return '<span><b>' + esc(w.word) + '</b><br>' + esc(w.meaning) + '</span>'; }).join("") + '</div></details>'
+          : frVoiceNote() + '<details class="list-box"><summary>This week\u2019s school list: French, English and how to say it</summary>' + frListHtml(KLISTS.french.words) + '</details>')
       : state.mode === "vocab" ? '<p class="prompt">French vocab test prep, ' + esc(name()) + '! All ' + KLISTS.french.words.length + ' words from ' + esc(KLISTS.french.label) + '.</p>' +
-        '<p class="small">Start with flashcards until you know every card, then take the practice test: every word once, typed in French with accents. Score 80% or more to tick off your vocab homework.</p>' +
-        '<details class="list-box"><summary>See the whole list</summary><div class="wordgrid">' + KLISTS.french.words.map(function (w) { return '<span><b>' + esc(w.group !== "Verbs" ? w.gap.replace("_____", w.word) : w.word) + '</b><br>' + esc(w.meaning) + '</span>'; }).join("") + '</div></details>'
+        '<p class="small">Listen to each line (tap \uD83D\uDC22 Slow to hear it slowly), then do the flashcards until you know every card, then take the practice test: every word once, typed in French with accents. Score 80% or more to tick off your vocab homework.</p>' +
+        frVoiceNote() + '<details class="list-box" open><summary>The whole list: French, English and how to say it</summary>' + frListHtml(KLISTS.french.words) + '</details>'
       : state.mode === "spelling" ? '<p class="prompt">Spelling test, ' + esc(name()) + '! Spell all ' + SPELLING.words.length + ' of this week\u2019s words.</p>' +
         '<p class="small">Type each word into the gap. Tap \u201CHear it\u201D to have the sentence read out.</p>' +
         '<details class="list-box"><summary>Practise the word list first</summary><div class="wordgrid">' + SPELLING.words.map(function (w) { return '<span><b>' + esc(w.word) + '</b><br>' + esc(w.meaning) + '</span>'; }).join("") + '</div></details>'
@@ -1662,7 +1682,7 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
       (state.mode === "match" ? matchBar() : dots()) +
       (q.comeback && !a ? '<p class="cbnote">You missed this ' + (q.type === "type" ? 'word' : 'skill') + ' earlier this week. Let’s see if it’s stuck now!</p>' : '') +
       (q.type === "type" ? typeBlock(q, a) : '<p class="prompt">' + esc(q.prompt).replace(/\n/g, "<br>") + '</p>' +
-      (q.listen ? (canSpeak() && !a ? '<div class="row"><button class="btn hear" type="button" id="hear">Hear it in French</button></div>' : '<p class="sentence">' + esc(q.fallback) + '</p>') : '') +
+      (q.listen ? (canSpeak() && !a ? '<div class="row"><button class="btn hear" type="button" id="hear">Hear it in French</button><button class="btn hear" type="button" id="hearSlow">\uD83D\uDC22 Slowly</button><button class="linkbtn" type="button" id="showFr">Can\u2019t make it out? Show the French</button></div><p class="sentence frhide" id="frWords" hidden>' + esc(q.fallback) + '</p>' : '<p class="sentence">' + esc(q.fallback) + '</p>') : '') +
       (q.html ? '<div class="ftwrap">' + q.html + '</div>' : "") +
       '<div class="opts">' + q.options.map(function (o, n) {
         var cls = "";
@@ -1680,6 +1700,8 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
     }
     var hb = document.getElementById("hear");
     if (hb) hb.addEventListener("click", function () { speakAloud(q.speak, q.lang); });
+    var hs = document.getElementById("hearSlow"); if (hs) hs.addEventListener("click", function () { speakAloud(q.speak, q.lang, true); });
+    var sf = document.getElementById("showFr"); if (sf) sf.addEventListener("click", function () { document.getElementById("frWords").hidden = false; sf.hidden = true; });
     [].forEach.call(app.querySelectorAll(".acc"), function (b) {
       b.addEventListener("click", function () {
         var inp = document.getElementById("typed"), st = inp.selectionStart == null ? inp.value.length : inp.selectionStart, en = inp.selectionEnd == null ? st : inp.selectionEnd;
@@ -1690,11 +1712,41 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
     if (nx) { nx.addEventListener("click", function () { state.i++; render(); window.scrollTo({ top: 0 }); }); nx.focus({ preventScroll: true }); }
   }
   function canSpeak() { try { return !!(window.speechSynthesis && window.SpeechSynthesisUtterance); } catch (e) { return false; } }
-  function speakAloud(text, lang) {
+  /* French help for Kristan: hear it at normal speed or slowly, the English, and a "sounds like" guide */
+  function sayBtns(text, lang) {
+    if (!canSpeak() || !text) return "";
+    lang = lang || "fr-FR";
+    return '<button class="sayb" type="button" data-say="' + esc(text) + '" data-lang="' + lang + '" aria-label="Hear it">\uD83D\uDD0A Hear</button>' +
+      '<button class="sayb" type="button" data-say="' + esc(text) + '" data-lang="' + lang + '" data-slow="1" aria-label="Hear it slowly">\uD83D\uDC22 Slow</button>';
+  }
+  function frVoiceNote() {
+    try {
+      var vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+      if (!vs.length || vs.some(function (v) { return /^fr/i.test(v.lang || ""); })) return "";
+      return '<p class="small">This device has no French voice, so \u201CHear it\u201D may sound English. On an iPad: Settings \u2192 Accessibility \u2192 Spoken Content \u2192 Voices \u2192 French, then download one.</p>';
+    } catch (e) { return ""; }
+  }
+  function frBox(q) {
+    if (!q.fr) return "";
+    var h = '<div class="frbox"><div class="fr-l"><span>French</span><span class="fr-fr">' + esc(q.fr) + '</span></div>' +
+      (q.en ? '<div class="fr-l"><span>English</span><span>' + esc(q.en) + '</span></div>' : '') +
+      (q.sounds ? '<div class="fr-l"><span>Sounds like</span><span class="fr-snd">' + esc(q.sounds) + '</span></div>' : '') +
+      '<div class="row">' + sayBtns(q.fr) + '</div>';
+    if (q.pairs && q.pairs.length > 1) h += '<table class="frpairs"><caption class="small" style="text-align:left">All the words in this question</caption>' + q.pairs.map(function (p) { return '<tr><td>' + esc(p[0]) + '</td><td>' + esc(p[1]) + '</td></tr>'; }).join("") + '</table>';
+    if (q.sounds) h += '<p class="frkey">' + esc(FR_SOUNDS_KEY) + '</p>';
+    return h + '</div>';
+  }
+  function frListHtml(words) {
+    return '<p class="frkey">' + esc(FR_SOUNDS_KEY) + '</p><div class="frlist">' + words.map(function (w) {
+      var fr = w.group === "Verbs" ? w.word : w.say;
+      return '<div class="frrow"><div><div class="fr-fr">' + esc(fr) + '</div><div class="fr-en">' + esc(w.meaning) + '</div>' + (w.sounds ? '<div class="fr-snd">sounds like: ' + esc(w.sounds) + '</div>' : '') + '</div><div class="row" style="flex-wrap:nowrap">' + sayBtns(fr) + '</div></div>';
+    }).join("") + '</div>';
+  }
+  function speakAloud(text, lang, slow) {
     try {
       lang = lang || "en-GB";
       window.speechSynthesis.cancel();
-      var u = new SpeechSynthesisUtterance(text); u.lang = lang; u.rate = 0.85;
+      var u = new SpeechSynthesisUtterance(text); u.lang = lang; u.rate = slow ? 0.55 : 0.85;
       var v = window.speechSynthesis.getVoices().filter(function (x) { return x.lang && x.lang.replace("_", "-").toLowerCase().indexOf(lang.toLowerCase().slice(0, 2)) === 0 && (lang.length < 3 || x.lang.replace("_", "-").toLowerCase() === lang.toLowerCase()); })[0]; if (v) u.voice = v;
       window.speechSynthesis.speak(u);
     } catch (e) {}
@@ -1705,7 +1757,7 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
     h += '<form class="typer" id="typeform" autocomplete="off"><input id="typed" type="text" inputmode="text" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Type the missing word"' +
       (a ? ' disabled value="' + esc(a.chosen) + '" class="' + (a.ok ? "right" : "wrong") + '"' : '') + '>' +
       (a ? '' : '<button class="btn" type="submit">Check</button>') +
-      (canSpeak() ? '<button class="btn hear" type="button" id="hear">' + (q.lang === "fr-FR" ? 'Hear it in French' : 'Hear it') + '</button>' : '') + '</form>';
+      (canSpeak() ? '<button class="btn hear" type="button" id="hear">' + (q.lang === "fr-FR" ? 'Hear it in French' : 'Hear it') + '</button>' + (q.lang === "fr-FR" ? '<button class="btn hear" type="button" id="hearSlow">\uD83D\uDC22 Slowly</button>' : '') : '') + '</form>';
     if (q.lang === "fr-FR" && !a) h += '<div class="accents" aria-label="Accent letters">' + ["é", "è", "ê", "à", "â", "ç", "î", "ô", "û", "ù", "ë", "œ"].map(function (c) { return '<button type="button" class="acc" data-c="' + c + '">' + c + '</button>'; }).join("") + '</div>';
     return h;
   }
@@ -1728,18 +1780,18 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
   }
   function feedback(q, a) {
     if (a.ok) {
-      return '<div class="fb good"><h3>' + (q.comeback ? "Comeback complete! +5 bonus" : pick(["Spot on!", "Correct!", "Nailed it!", "Yes, that's right!", "Great work!"])) + '</h3><p>' + esc(q.explain) + '</p>' + quizBuddy(true) + '</div>';
+      return '<div class="fb good"><h3>' + (q.comeback ? "Comeback complete! +5 bonus" : pick(["Spot on!", "Correct!", "Nailed it!", "Yes, that's right!", "Great work!"])) + '</h3><p>' + esc(q.explain) + '</p>' + frBox(q) + quizBuddy(true) + '</div>';
     }
     var note = whyWrong(q, a.chosen);
     if (q.type === "type") {
       note = q.notes[norm(a.chosen)] || typedNote(a.chosen, q.answer);
       return '<div class="fb bad"><h3>Not quite. It\u2019s spelled \u201C' + esc(q.answer) + '\u201D</h3>' + markWord(a.chosen, q.answer) +
-        '<p class="why">' + esc(note) + '</p><p>' + esc(q.explain) + '</p>' + steps(q).replace("How to work it out", "How to learn it") +
+        '<p class="why">' + esc(note) + '</p><p>' + esc(q.explain) + '</p>' + frBox(q) + steps(q).replace("How to work it out", "How to learn it") +
         '<p class="small">This word will come back in a later quiz so you can win it back.</p>' + quizBuddy(false) + '</div>';
     }
     return '<div class="fb bad"><h3>Not quite. The answer is ' + esc(q.answer) + '</h3>' +
       '<p class="why"><b>You chose ' + esc(a.chosen) + '.</b> ' + esc(note || "That's not the one. Look at the working below to see where it goes differently.") + '</p>' +
-      '<p>' + esc(q.explain) + '</p>' + steps(q) +
+      '<p>' + esc(q.explain) + '</p>' + frBox(q) + steps(q) +
       (q.tip ? '<div class="tip"><b>Remember:</b> ' + esc(q.tip) + '</div>' : "") +
       '<p class="small">This skill will come back in a later quiz so you can win it back.</p>' + quizBuddy(false) + '</div>';
   }
@@ -3592,7 +3644,7 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
   /* ---------- Flashcards (Millie's spellings, Kristan's French list) ---------- */
   function flashCards() {
     if (state.child === "millie") return SPELLING.words.map(function (w) { return { front: w.meaning, ctx: w.sentences[0].replace("___", "_____"), speakFront: w.sentences[0].replace("___", w.word), back: w.word, extra: w.chunks + " · " + w.hook, speak: w.word, lang: "en-GB" }; });
-    return KLISTS.french.words.map(function (w) { return { front: w.meaning, ctx: w.group === "Verbs" ? "(the ‘to…’ form)" : w.gap, back: w.group === "Verbs" ? w.word : w.gap.replace("_____", w.word), extra: w.hook, speak: w.say, lang: "fr-FR" }; });
+    return KLISTS.french.words.map(function (w) { return { front: w.meaning, ctx: w.group === "Verbs" ? "(the ‘to…’ form)" : w.gap, back: w.group === "Verbs" ? w.word : w.gap.replace("_____", w.word), en: w.meaning, sounds: w.sounds, extra: w.hook, speak: w.say, lang: "fr-FR" }; });
   }
   function startFlash() { var cards = flashCards(); state.flash = { cards: cards, queue: shuffle(cards.map(function (_, i) { return i; })), known: 0, flipped: false, rounds: 0 }; render(); window.scrollTo({ top: 0 }); }
   function flashView() {
@@ -3607,15 +3659,15 @@ body.home .hbar-in { max-width: 1680px; padding-left: max(16px, env(safe-area-in
     app.innerHTML = '<section class="card"><div class="meta"><span class="pill">Flashcards</span><span>' + F.known + ' of ' + total + ' known</span></div>' +
       '<div class="bar"><i style="width:' + Math.round(F.known / total * 100) + '%"></i></div>' +
       '<button class="flash' + (F.flipped ? ' flipped' : '') + '" id="flCard" aria-live="polite">' +
-      (F.flipped ? '<span class="fl-k">' + (state.child === "millie" ? "Spelling" : "In French") + '</span><span class="fl-big">' + esc(c.back) + '</span><span class="small">' + esc(c.extra) + '</span>'
+      (F.flipped ? '<span class="fl-k">' + (state.child === "millie" ? "Spelling" : "In French") + '</span><span class="fl-big">' + esc(c.back) + '</span>' + (c.en && c.back.indexOf(c.en) < 0 ? '<span class="small">= ' + esc(c.en) + '</span>' : '') + (c.sounds ? '<span class="small"><i>sounds like: ' + esc(c.sounds) + '</i></span>' : '') + '<span class="small">' + esc(c.extra) + '</span>'
         : '<span class="fl-k">' + (state.child === "millie" ? "It means" : "In English") + '</span><span class="fl-big sm">' + esc(c.front) + '</span><span class="small">' + esc(c.ctx) + '</span><span class="fl-tap">Tap to flip</span>') + '</button>' +
-      '<div class="row">' + (canSpeak() ? '<button class="btn hear" id="flHear">Hear it</button>' : '') +
+      '<div class="row">' + (canSpeak() ? '<button class="btn hear" id="flHear">Hear it</button>' + (F.flipped && c.lang === "fr-FR" ? '<button class="btn hear" type="button" data-say="' + esc(c.speak) + '" data-lang="fr-FR" data-slow="1">\uD83D\uDC22 Slowly</button>' : '') : '') +
       (F.flipped ? '<button class="btn ghost" id="flAgainCard">Again</button><button class="btn" id="flGot">Got it</button>' : '<button class="btn" id="flFlip">Flip</button>') +
       '<button class="linkbtn" id="flStop">Stop</button></div><p class="small">Say the answer in your head (or out loud) before you flip. “Again” cards come back until you know them all.</p></section>';
     var flip = function () { F.flipped = true; flashView(); };
     document.getElementById("flCard").addEventListener("click", function () { if (!F.flipped) flip(); });
     var fb = document.getElementById("flFlip"); if (fb) fb.addEventListener("click", flip);
-    var hr = document.getElementById("flHear"); if (hr) hr.addEventListener("click", function () { speakAloud(F.flipped ? c.speak : (c.speakFront || c.front), F.flipped ? c.lang : (state.child === "millie" ? "en-GB" : "en-GB")); });
+    var hr = document.getElementById("flHear"); if (hr) hr.addEventListener("click", function () { if (c.lang === "fr-FR") speakAloud(c.speak, "fr-FR"); else speakAloud(F.flipped ? c.speak : (c.speakFront || c.front), F.flipped ? c.lang : "en-GB"); });
     var g = document.getElementById("flGot"); if (g) g.addEventListener("click", function () { F.queue.shift(); F.known++; F.flipped = false; flashView(); });
     var a = document.getElementById("flAgainCard"); if (a) a.addEventListener("click", function () { var x = F.queue.shift(); F.queue.splice(Math.min(F.queue.length, 3), 0, x); F.flipped = false; flashView(); });
     document.getElementById("flStop").addEventListener("click", function () { state.flash = null; render(); });

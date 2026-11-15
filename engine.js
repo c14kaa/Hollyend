@@ -59,7 +59,7 @@ function q(topic, prompt, correct, distract, explain, html, extra) {
   var notes = {};
   Object.keys(extra.notes || {}).forEach(function (k) { notes[String(k)] = extra.notes[k]; });
   return { topic: topic, prompt: prompt, html: html || "", answer: c, options: shuffle(opts), explain: explain,
-           steps: extra.steps || null, tip: extra.tip || TIPS[topic] || null, notes: notes };
+           steps: extra.steps || null, tip: extra.tip || TIPS[topic] || null, notes: notes, pairs: extra.pairs || undefined };
 }
 /* Why a wrong answer is wrong: specific note if we have one, otherwise a gentle generic line */
 function whyWrong(item, chosen) {
@@ -983,6 +983,25 @@ var KLISTS = {
   }
 };
 
+/* "Sounds like" for the school French list (how the whole `say` line sounds to an English speaker).
+   New weekly lists: give each entry a `sounds` field directly, or add its id here. tests/words.test.js checks every entry has one. */
+var FR_LIST_SOUNDS = {
+  danse: "zhay do(n)-say a-vek may ko-pa(n)", joue: "zhay zhoo-ay oh boo-leeng a-vek ma sur", mange: "zhay mo(n)-zhay a(n) o(n)-bur-gur a-vek mo(n) pair",
+  "regarde-pp": "zhay ruh-gar-day a(n) feelm a-vek may-za-mee", alle: "zhuh swee-za-lay oh see-nay-ma a-vek maks",
+  ville: "zhuh swee-za-lay o(n) veel a-vek ma mair", fete: "zhuh swee-za-lay a ewn fet a-vek may ko-pa(n)",
+  etait: "say-teh zhay-nyal", genial: "say-teh zhay-nyal", sympa: "say-teh sa(n)-pa", ennuyeux: "say-teh o(n)-nwee-yur", nul: "say-teh newl",
+  desastre: "say-teh a(n) day-zas-truh", hier: "ee-air", "hier-soir": "ee-air swar", dernier: "luh week-end dair-nyay", derniere: "la suh-men dair-nyair",
+  habitude: "da-bee-tewd", normalement: "nor-mal-mo(n)", jours: "too lay zhoor", soirs: "too lay swar", demain: "duh-ma(n)", "ce-soir": "suh swar",
+  prochain: "sam-dee pro-sha(n)", prochaine: "la suh-men pro-shen",
+  manger: "mo(n)-zhay", faire: "fair", danser: "do(n)-say", regarder: "ruh-gar-day", sortir: "sor-teer", jouer: "zhoo-ay", rester: "res-tay",
+  avoir: "a-vwar", aller: "a-lay", vais: "zhuh veh", vas: "tew va", va: "eel va", allons: "noo-za-lo(n)", allez: "voo-za-lay", vont: "eel vo(n)",
+  poste: "zhuh post day meh-sazh a may ko-pa(n)", modifie: "zhuh mo-dee-fee may pray-fay-ro(n)ss", regarde: "zhuh ruh-gard lay fo-toh duh may ko-pa(n)",
+  commente: "zhuh ko-mo(n)t day fo-toh", invite: "zha(n)-veet may ko-pa(n) a sor-teer", fais: "zhuh feh day kweez",
+  copains: "zhuh post day meh-sazh a may ko-pa(n)", preferences: "zhuh mo-dee-fee may pray-fay-ro(n)ss"
+};
+KLISTS.french.words.concat(KLISTS.french.archive || []).forEach(function (w) { if (!w.sounds && FR_LIST_SOUNDS[w.id || w.word]) w.sounds = FR_LIST_SOUNDS[w.id || w.word]; });
+var FR_SOUNDS_KEY = "How to read “sounds like”: (n) = say it through your nose, without the n · zh = the s in “treasure” · ew = “ee” with rounded lips · ur = as in “fur”, no r · uh = a short “uh”.";
+
 /* ===== Challenge words: extremely hard spellings, one list per child ===== */
 KLISTS.challenge_millie = {
   prefix: "ch:", label: "Challenge words: extremely hard spellings", lang: "en-GB",
@@ -1078,14 +1097,15 @@ function klistQ(mode, id, level) {
   } else {
     sentence = e.gap; clue = e.group === "Verbs" ? "Write the infinitive (the \u2018to\u2026\u2019 form) in French." : "In English: " + e.meaning; speak = e.say;
     explain = "“" + e.word + "”: " + e.gap.replace("_____", e.word) + " (" + e.meaning + ").";
-    steps = ["Say it out loud in French (tap Hear it).", "Memory trick: " + e.hook,
+    steps = [e.sounds ? "Say it out loud: « " + e.say + " » sounds like “" + e.sounds + "”. Tap Hear it, then Slow." : "Say it out loud in French (tap Hear it).", "Memory trick: " + e.hook,
       e.group === "aller" ? "Learn aller as a chant: je vais, tu vas, il va, nous allons, vous allez, ils vont." : e.group === "Verbs" ? "Cover the French side of the list, say the English, and write the French from memory." : "Cover the French, read the English sentence, and write the whole French sentence from memory.",
       "Look, say, cover, write, check: write “" + e.word + "” three times without looking."];
   }
   var ch = mode.indexOf("challenge") === 0;
   return { type: "type", lang: L.lang, topic: ch ? "Challenge spelling" : mode === "english" ? "English vocabulary" : "French vocab", label: (ch ? "Challenge: " : mode === "english" ? "English: " : "French: ") + e.word,
     gen: L.prefix + (e.id || e.word), prompt: L.lang !== "fr-FR" ? "Type the missing word." : "Write it in French.", sentence: sentence, clue: clue, speak: speak,
-    answer: e.word, options: [], notes: {}, explain: explain, steps: steps, tip: tip, html: "", level: level };
+    answer: e.word, options: [], notes: {}, explain: explain, steps: steps, tip: tip, html: "", level: level,
+    fr: L.lang === "fr-FR" ? (e.group === "Verbs" ? e.word : e.say) : undefined, en: L.lang === "fr-FR" ? e.meaning : undefined, sounds: L.lang === "fr-FR" ? e.sounds : undefined };
 }
 function buildKList(mode, level, count, seenPrompts) {
   var L = KLISTS[mode], ids = L.words.map(function (w) { return w.id || w.word; }), out;

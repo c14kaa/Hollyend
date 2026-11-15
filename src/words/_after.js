@@ -102,6 +102,7 @@ function wbFrenchQ(type, id, level) {
       "« " + e.fr + " » means " + e.en + ".", "", { notes: notes, tip: "Say it out loud: « " + e.fr + " ».",
         steps: ["Topic: " + e.topic + ".", "« " + e.fr + " » = " + e.en + ".", "Learn it with look, say, cover, write, check."] });
     if (type === "listen") { item.listen = true; item.speak = e.fr; item.lang = "fr-FR"; item.fallback = "« " + e.fr + " »"; }
+    item.pairs = [[e.fr, e.en]].concat(opts.map(function (en) { var x = same.filter(function (y) { return y.en === en; })[0]; return [x.fr, en]; }));
   } else if (type === "en2fr") {
     var clue = e.kind === "n" ? "Include le, la, l' or les." : e.kind === "a" ? "Write the masculine form." : "Accents count.";
     item = { type: "type", lang: "fr-FR", topic: "French vocab", prompt: "Write it in French.", sentence: "In French: " + e.en + " = _____", clue: clue, speak: e.fr,
@@ -120,9 +121,10 @@ function wbFrenchQ(type, id, level) {
     var note = {}; three.forEach(function (x) { note[x.fr] = "« " + x.fr + " » means " + x.en + ": it's a " + topicB.toLowerCase() + " word, like the others."; });
     item = q("French vocab", "Which is the odd one out?", e.fr, three.map(function (x) { return x.fr; }),
       three.map(function (x) { return "« " + x.fr + " » (" + x.en + ")"; }).join(", ") + " are all " + topicB.toLowerCase() + " words. « " + e.fr + " » means " + e.en + ".", "",
-      { notes: note, tip: "Group new words by topic to learn them faster.", steps: ["Translate each option into English.", "Find the topic three of them share: " + topicB + ".", "The one that doesn't fit is « " + e.fr + " » (" + e.en + ")."] });
+      { notes: note, pairs: [[e.fr, e.en]].concat(three.map(function (x) { return [x.fr, x.en]; })), tip: "Group new words by topic to learn them faster.", steps: ["Translate each option into English.", "Find the topic three of them share: " + topicB + ".", "The one that doesn't fit is « " + e.fr + " » (" + e.en + ")."] });
   }
   item.gen = "fq:" + type + ":" + e.id; item.label = "French: " + e.fr; item.level = level;
+  item.fr = e.fr; item.en = e.en; item.sounds = e.sounds; item.lang = "fr-FR"; if (!item.speak) item.speak = e.fr;
   return item;
 }
 function wbConjQ(verb, level) {
@@ -133,17 +135,29 @@ function wbConjQ(verb, level) {
   var gapS = (p === 0 && subj === "J'" ? "J'_____ " : subj + " _____ ") + V.end + ".";
   var full = (p === 0 && subj === "J'" ? "J'" + form : subj + " " + form) + " " + V.end + ".";
   var base = { topic: "French verbs", label: "French: " + verb };
+  var enSubj = { "J'": "I", Je: "I", Tu: "you", Il: "he", Elle: "she", On: "we", Nous: "we", Vous: "you", Ils: "they", Elles: "they" }[subj];
+  var enVerb = p === 0 && V.enI ? V.enI : p === 2 && subj !== "On" ? V.en3 : V.enB;
+  var english = V.enB ? enSubj.charAt(0).toUpperCase() + enSubj.slice(1) + " " + enVerb + " " + V.endEn + "." : "";
+  if (english && subj === "Tu") english += " (one person you know well)"; else if (english && subj === "Vous") english += " (more than one person, or polite)";
+  var sounds = "";
+  if (V.sounds) {
+    sounds = V.sounds[p];
+    if (subj === "Elle" || subj === "Elles") sounds = sounds.replace(/^eel/, "el");
+    else if (subj === "On") sounds = /^[aeiouéèêh]/i.test(form) ? sounds.replace(/^eel /, "o(n)-n ") : sounds.replace(/^eel/, "o(n)");
+    sounds += " " + V.endSounds;
+  }
   var item;
   if (level >= 3) {
-    item = { type: "type", lang: "fr-FR", topic: "French verbs", prompt: "Complete the verb.", sentence: gapS, clue: verb + " = " + V.en, speak: full, answer: form, options: [], notes: {},
+    item = { type: "type", lang: "fr-FR", topic: "French verbs", prompt: "Complete the verb.", sentence: gapS, clue: (english ? "In English: " + english + " · " : "") + verb + " = " + V.en, speak: full, answer: form, options: [], notes: {},
       explain: full + " " + V.note, html: "", steps: ["Find the subject: " + subj + ".", "Remember the pattern for " + verb + ": " + V.forms.join(", ") + ".", "So: " + full], tip: V.note };
   } else {
     var opts = V.forms.filter(function (f, i) { return f !== form; }).filter(function (f, i, a) { return a.indexOf(f) === i; }), n = {};
     V.forms.forEach(function (f, i) { if (f !== form && !n[f]) n[f] = "« " + f + " » goes with " + FR_SUBJ[i][0] + (i === 2 ? "/elle/on" : i === 5 ? "/elles" : "") + "."; });
-    item = q("French verbs", "Complete the verb (" + verb + " = " + V.en + "):\n" + gapS, form, opts, full + " " + V.note, "",
+    item = q("French verbs", "Complete the verb (" + verb + " = " + V.en + "):\n" + gapS + (english ? "\nIn English: " + english : ""), form, opts, full + " " + V.note, "",
       { notes: n, tip: V.note, steps: ["Find the subject: " + subj + ".", "Pattern: " + V.forms.join(", ") + ".", "So: " + full] });
   }
   item.gen = "fq:conj:" + verb; item.label = base.label; item.level = level;
+  item.fr = full; item.en = english; item.sounds = sounds; item.lang = "fr-FR"; item.speak = full;
   return item;
 }
 function wbBuildFrench(level, count, seenPrompts) {

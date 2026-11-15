@@ -20,6 +20,10 @@ var WB = {
       WB.french.push({ id: wbSlug(fr), fr: fr, bare: bare, en: r[1], g: r[2], topic: r[3], kind: r[4], added: added });
     });
   },
-  verbs: function (v) { Object.keys(v).forEach(function (k) { WB.verbList[k] = v[k]; }); }
+  verbs: function (v) { Object.keys(v).forEach(function (k) { WB.verbList[k] = v[k]; }); },
+  /* "sounds like" guides (french_sounds.js), matched on the French as written in the bank */
+  soundMap: {},
+  sounds: function (m) { Object.keys(m).forEach(function (k) { WB.soundMap[k] = m[k]; }); WB.french.forEach(function (x) { if (WB.soundMap[x.fr]) x.sounds = WB.soundMap[x.fr]; }); },
+  verbExtra: function (m) { Object.keys(m).forEach(function (k) { var V = WB.verbList[k]; if (V) Object.keys(m[k]).forEach(function (f) { V[f] = m[k][f]; }); }); }
 };
 function wbSlug(s) { return String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/œ/g, "oe").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
