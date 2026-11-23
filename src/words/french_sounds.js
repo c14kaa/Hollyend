@@ -87,3 +87,14 @@ WB.verbExtra({
   finir: { sounds: ["zhuh fee-nee", "tew fee-nee", "eel fee-nee", "noo fee-nee-so(n)", "voo fee-nee-say", "eel fee-neess"], enB: "finish", en3: "finishes", endEn: "the homework", endSounds: "lay duh-vwar" },
   sortir: { sounds: ["zhuh sor", "tew sor", "eel sor", "noo sor-to(n)", "voo sor-tay", "eel sort"], enB: "go out", en3: "goes out", endEn: "on Saturdays", endSounds: "luh sam-dee" }
 });
+
+/* Week of 23 Nov: a day out. */
+WB.sounds({
+  "la sortie": "la sor-tee", "le copain": "luh ko-pa(n)", "la copine": "la ko-peen", "la pizza": "la peed-za", "le restaurant": "luh res-toh-ro(n)",
+  "le tee-shirt": "luh tee-shurt", "faire du shopping": "fair dew sho-peeng", "j'ai acheté": "zhay ash-tay", "je suis allé": "zhuh swee-za-lay",
+  "je suis allée": "zhuh swee-za-lay", "nous avons mangé": "noo-za-vo(n) mo(n)-zhay", "je vais jouer": "zhuh veh zhoo-ay", "d'abord": "da-bor",
+  "ensuite": "o(n)-sweet", "puis": "pwee", "enfin": "o(n)-fa(n)", "mais": "meh", "c'est sympa": "say sa(n)-pa", "salut": "sa-lew", "à bientôt": "a bya(n)-toh"
+});
+WB.verbExtra({
+  acheter: { sounds: ["zha-shet", "tew a-shet", "eel a-shet", "noo-za-shuh-to(n)", "voo-za-shuh-tay", "eel-za-shet"], enB: "buy", en3: "buys", endEn: "a T-shirt", endSounds: "a(n) tee-shurt" }
+});

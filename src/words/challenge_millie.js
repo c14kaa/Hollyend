@@ -136,3 +136,19 @@ WB.add("challenge_millie", "2026-11-13", [
   ["address", "the details of where someone lives", "ad · dress", "double d and double s", "ADDRESS: Double D, Double S: a double-decker address.", "Write your ___ on the envelope.", "What is the ___ of the new library?"],
   ["guard", "a person who watches over and protects something", "g · uard", "the silent u after g", "GUARD: G and a quiet U standing on guard.", "A ___ stood at the palace gate.", "The dog will ___ the house at night."]
 ]);
+
+/* Week of 23 Nov: more Year 5/6 traps, plus space words for the Solaris Seven theme. */
+WB.add("challenge_millie", "2026-11-23", [
+  ["accidentally", "by mistake; not on purpose", "ac · ci · den · tal · ly", "it's accidental + ly, so double l at the end", "ACCIDENTAL + LY: never 'accidently'.", "I ___ knocked my drink over.", "Uuh Uuh ___ dropped his banana in the pond."],
+  ["achievement", "something good you have done after trying hard", "a · chieve · ment", "'ie' after ch, and keep the e before -ment", "ACHIEVE + MENT: a CHIEF's achievement.", "Getting my swimming badge was a big ___.", "Landing a rover on Mars was an amazing ___."],
+  ["possession", "something you own", "pos · ses · sion", "two pairs of double s", "POSSESSION: four s's, like four snakes guarding your things.", "My most treasured ___ is my teddy.", "The ball is in the other team's ___."],
+  ["occurred", "happened", "oc · curred", "double c AND double r", "OCCUR + RED: double the r before -ed.", "The accident ___ on the way to school.", "It never ___ to me to ask for help."],
+  ["satellite", "an object that travels round a planet", "sat · el · lite", "one t, double l, then one t", "SAT + ELL + ITE: one t, two l's, one t.", "The Moon is Earth's natural ___.", "A ___ sends TV pictures from space."],
+  ["atmosphere", "the layer of gases around a planet, or the mood of a place", "at · mo · sphere", "'ph' makes the f sound; ends -sphere", "ATMO + SPHERE: a ball (sphere) of air around the planet.", "Mars has a very thin ___.", "The disco had an exciting ___."],
+  ["surprise", "something you didn't expect", "sur · prise", "the first r that people forget", "SUR + PRISE: a SURprise is SURely a PRIZE.", "The party was a big ___!", "What a lovely ___ to see you!"],
+  ["fluorescent", "very bright, glowing colour", "flu · o · res · cent", "'uo' (not 'ou'), then 'sc'", "FLU + OR + ESCENT: the FLU makes you glow?", "The cyclist wore a ___ yellow vest.", "Highlighter pens come in ___ colours."],
+  ["handkerchief", "a small square of cloth for wiping your nose", "hand · ker · chief", "a silent d, and 'chief' at the end", "HAND + KER + CHIEF: the chief's hand cloth.", "Grandad always carries a ___ in his pocket.", "She waved a white ___ from the window."],
+  ["mischief", "naughty behaviour that is usually not very harmful", "mis · chief", "it ends -chief, not -cheif or -cheaf", "MIS + CHIEF: the chief of mischief.", "The monkeys got up to all kinds of ___.", "Keep out of ___ while I'm out!"],
+  ["Mediterranean", "the sea between southern Europe and North Africa", "Med · i · ter · ran · e · an", "one d, one t, double r", "MEDI + TERRA (land) + NEAN: the sea in the middle of the land.", "We swam in the warm ___ Sea.", "Olives grow well in a ___ climate."],
+  ["pharaoh", "a king of ancient Egypt", "pha · raoh", "'ph' for f, and 'aoh' at the end", "PHARAOH: Pharaohs Have A Royal And Old History.", "The ___ was buried in a pyramid.", "Tutankhamun was a young ___."]
+]);

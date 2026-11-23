@@ -168,6 +168,22 @@ WB.add("challenge_millie", "2026-11-13", [
   ["guard", "a person who watches over and protects something", "g · uard", "the silent u after g", "GUARD: G and a quiet U standing on guard.", "A ___ stood at the palace gate.", "The dog will ___ the house at night."]
 ]);
 
+/* Week of 23 Nov: more Year 5/6 traps, plus space words for the Solaris Seven theme. */
+WB.add("challenge_millie", "2026-11-23", [
+  ["accidentally", "by mistake; not on purpose", "ac · ci · den · tal · ly", "it's accidental + ly, so double l at the end", "ACCIDENTAL + LY: never 'accidently'.", "I ___ knocked my drink over.", "Uuh Uuh ___ dropped his banana in the pond."],
+  ["achievement", "something good you have done after trying hard", "a · chieve · ment", "'ie' after ch, and keep the e before -ment", "ACHIEVE + MENT: a CHIEF's achievement.", "Getting my swimming badge was a big ___.", "Landing a rover on Mars was an amazing ___."],
+  ["possession", "something you own", "pos · ses · sion", "two pairs of double s", "POSSESSION: four s's, like four snakes guarding your things.", "My most treasured ___ is my teddy.", "The ball is in the other team's ___."],
+  ["occurred", "happened", "oc · curred", "double c AND double r", "OCCUR + RED: double the r before -ed.", "The accident ___ on the way to school.", "It never ___ to me to ask for help."],
+  ["satellite", "an object that travels round a planet", "sat · el · lite", "one t, double l, then one t", "SAT + ELL + ITE: one t, two l's, one t.", "The Moon is Earth's natural ___.", "A ___ sends TV pictures from space."],
+  ["atmosphere", "the layer of gases around a planet, or the mood of a place", "at · mo · sphere", "'ph' makes the f sound; ends -sphere", "ATMO + SPHERE: a ball (sphere) of air around the planet.", "Mars has a very thin ___.", "The disco had an exciting ___."],
+  ["surprise", "something you didn't expect", "sur · prise", "the first r that people forget", "SUR + PRISE: a SURprise is SURely a PRIZE.", "The party was a big ___!", "What a lovely ___ to see you!"],
+  ["fluorescent", "very bright, glowing colour", "flu · o · res · cent", "'uo' (not 'ou'), then 'sc'", "FLU + OR + ESCENT: the FLU makes you glow?", "The cyclist wore a ___ yellow vest.", "Highlighter pens come in ___ colours."],
+  ["handkerchief", "a small square of cloth for wiping your nose", "hand · ker · chief", "a silent d, and 'chief' at the end", "HAND + KER + CHIEF: the chief's hand cloth.", "Grandad always carries a ___ in his pocket.", "She waved a white ___ from the window."],
+  ["mischief", "naughty behaviour that is usually not very harmful", "mis · chief", "it ends -chief, not -cheif or -cheaf", "MIS + CHIEF: the chief of mischief.", "The monkeys got up to all kinds of ___.", "Keep out of ___ while I'm out!"],
+  ["Mediterranean", "the sea between southern Europe and North Africa", "Med · i · ter · ran · e · an", "one d, one t, double r", "MEDI + TERRA (land) + NEAN: the sea in the middle of the land.", "We swam in the warm ___ Sea.", "Olives grow well in a ___ climate."],
+  ["pharaoh", "a king of ancient Egypt", "pha · raoh", "'ph' for f, and 'aoh' at the end", "PHARAOH: Pharaohs Have A Royal And Old History.", "The ___ was buried in a pyramid.", "Tutankhamun was a young ___."]
+]);
+
 /* Kristan's challenge words: extremely hard spellings that adults often get wrong. British spelling.
    Each entry: [word, meaning, chunks, tricky bit, memory hook, sentence 1, sentence 2]. */
 WB.add("challenge_kristan", "2026-10-27", [
@@ -304,6 +320,22 @@ WB.add("challenge_kristan", "2026-11-13", [
   ["pseudonym", "a false name used by a writer", "pseu · do · nym", "the silent p, and the y in -nym", "PSEUDO (false) + NYM (name).", "George Orwell was a ___; his real name was Eric Blair.", "She wrote her novels under a ___."],
   ["cappuccino", "a coffee made with frothy milk", "cap · pu · cci · no", "double p and double c", "CAPPUCCINO: two Ps, two Cs, like two cups.", "Dad ordered a ___ after the match.", "The café makes a great ___."],
   ["Fahrenheit", "a temperature scale where water freezes at 32 degrees", "Fahr · en · heit", "the silent h after a, and -heit", "Named after Daniel FAHRENHEIT: F-A-H-R, then 'en', then 'heit'.", "It was over 100 degrees ___ in Abu Dhabi.", "American weather reports use ___."]
+]);
+
+/* Week of 23 Nov: the classic adult traps everyone gets wrong. */
+WB.add("challenge_kristan", "2026-11-23", [
+  ["accommodate", "to provide room for someone, or to adapt to fit something", "ac · com · mo · date", "double c AND double m", "ACCOMMODATE: it's big enough to fit two c's and two m's.", "The new stadium can ___ 60,000 fans.", "The hotel will ___ the whole squad."],
+  ["embarrassment", "the feeling of being awkward or ashamed", "em · bar · rass · ment", "double r AND double s", "Really Red, Simply Shy: two r's, two s's.", "Missing an open goal caused him real ___.", "To my ___, my phone rang during the test."],
+  ["privilege", "a special right or advantage", "priv · i · lege", "no d, and 'lege' not 'ledge'", "PRIVI + LEGE: there's no LEDGE in privilege.", "It was a ___ to lead the team out.", "Wearing the captain's armband is a ___."],
+  ["harass", "to keep annoying or pressuring someone", "har · ass", "one r, double s", "HARASS: one R, two S's: one Rude person, Several Sighs.", "Defenders kept trying to ___ the striker.", "Don't ___ your sister while she's revising."],
+  ["mischievous", "playful in a naughty way", "mis · chie · vous", "three syllables: there's no 'i' before -ous", "MISCHIEF → MISCHIEVOUS: f becomes v, and no extra i.", "The ___ fans sang about the referee all game.", "He gave a ___ grin before the trick play."],
+  ["exaggerate", "to make something sound bigger or better than it is", "ex · ag · ger · ate", "double g, single r", "EXAGGERATE: a Greedy Goose makes things sound bigger: double g.", "Don't ___; it wasn't a 40-yard screamer.", "Pundits ___ every small mistake."],
+  ["definitely", "certainly; without any doubt", "def · i · nite · ly", "'finite' in the middle: no a", "DE + FINITE + LY: definitely has FINITE in it.", "We are ___ winning the league this year.", "I will ___ finish my Dr Frost task tonight."],
+  ["separate", "apart; not joined together", "sep · a · rate", "'par' in the middle: there's A RAT in separate", "SEPARATE: there's A RAT in sep-A-RAT-e.", "Keep the kit in a ___ bag.", "The two teams warmed up at ___ ends."],
+  ["occasionally", "sometimes, but not often", "oc · ca · sion · al · ly", "double c, single s, double l", "Two Cs, one S, two Ls: oCCaSionaLLy.", "I ___ play FIFA before school.", "The coach ___ lets us choose the drill."],
+  ["pronunciation", "the way a word is said", "pro · nun · ci · a · tion", "'nun' not 'noun' (even though it's from pronounce)", "PRO + NUN + CIATION: a NUN tells you the pronunciation.", "French ___ takes a lot of practice.", "Tap Hear it to check the ___."],
+  ["conscious", "awake and aware", "con · scious", "'sc' then 'ious'", "CON + SCI + OUS: you need SCIence to stay conscious.", "The player was ___ when he left the pitch.", "I'm ___ that I need to revise more."],
+  ["recommend", "to suggest something as good", "rec · om · mend", "one c, double m", "RE + COMMEND: one c, two m's.", "I ___ the new FIFA tactics guide.", "Would you ___ this book to a friend?"]
 ]);
 
 /* Kristan's English words: ambitious vocabulary to USE in writing and speaking (Year 8). British spelling.
@@ -455,6 +487,23 @@ WB.add("english", "2026-11-13", [
   ["implies", "Analysing texts", "suggests something without saying it directly", "im · plies", "y changes to i: imply → implies", "IMPLY → IMPLIES: change y to i, add es.", "The word 'blood-red' ___ that violence is coming.", "His silence ___ that he knows the truth."]
 ]);
 
+/* Week of 23 Nov: words for researching and reviewing children's books (English research task due 25 Nov). */
+WB.add("english", "2026-11-23", [
+  ["didactic", "Analysing texts", "intended to teach a lesson or moral", "di · dac · tic", "one d after i, then -actic", "DID + ACT + IC: a story that DID ACT as a teacher.", "Many fables are ___: each one ends with a clear lesson.", "Some readers find the story too ___, as if it is lecturing them."],
+  ["anthropomorphism", "Analysing texts", "giving animals or objects human qualities, such as talking or wearing clothes", "an · thro · po · mor · phism", "'thro' then 'po', then -morphism", "ANTHROPO (human) + MORPH (shape): giving things a human shape.", "The talking rabbit in the picture book is an example of ___.", "Writers use ___ so young readers can relate to animal characters."],
+  ["moral", "Analysing texts", "the lesson a story teaches", "mor · al", "one r: moral, not morral", "MORAL: the lesson is MORe than the story.", "The ___ of the tortoise and the hare is that slow and steady wins.", "Many children's books end with a clear ___ about kindness."],
+  ["repetition", "Analysing texts", "repeating a word or phrase for effect", "rep · e · ti · tion", "'pe' then 'ti': repeat changes to repet-", "REPEAT → REPETITION: the ea becomes an e.", "The ___ of ‘we're going on a bear hunt’ makes it fun to read aloud.", "The poet uses ___ to make the chorus stick in your head."],
+  ["illustration", "Analysing texts", "a picture that goes with a piece of writing", "il · lus · tra · tion", "double l at the start", "ILL + USTRATION: two l's, like two pencils drawing.", "Each page has a colourful ___ of the dragon.", "The ___ shows what the words don't say."],
+  ["whimsical", "Description", "playful and fanciful in an unusual, charming way", "whim · si · cal", "the silent h after w", "WHIM + SICAL: a sudden WHIM, full of fun.", "The book has a ___ style, with flying teapots and talking clouds.", "Her ___ drawings make the story feel magical."],
+  ["enchanting", "Description", "delightful and charming, as if by magic", "en · chant · ing", "'chant' in the middle", "EN + CHANT + ING: a magic CHANT casts the spell.", "The forest setting is ___, full of glowing lights.", "The ___ ending made the whole class smile."],
+  ["captivating", "Description", "so interesting that you can't stop paying attention", "cap · ti · vat · ing", "drop the e of captivate before -ing", "CAPTIVE + ATING: it holds you captive.", "The story is so ___ that I read it in one go.", "Her ___ performance kept the audience silent."],
+  ["inquisitive", "Character", "curious and eager to find things out", "in · quis · i · tive", "'qu' then 'isitive'", "INQUISITIVE asks QUestions: there's a QUIZ in it.", "The ___ fox wants to know what is inside every box.", "An ___ main character keeps asking questions, which drives the story."],
+  ["endearing", "Character", "making people feel fond of someone", "en · dear · ing", "'dear' in the middle", "EN + DEAR + ING: someone becomes DEAR to you.", "The clumsy dragon is ___ because he tries so hard.", "Her ___ habit of talking to her plants made everyone smile."],
+  ["mischievous", "Character", "playful in a naughty way", "mis · chie · vous", "three syllables: no 'i' before -ous", "MISCHIEF → MISCHIEVOUS: f becomes v, and no extra i.", "The ___ cat hides everyone's socks.", "A ___ character causes trouble that the others must fix."],
+  ["moreover", "Argument", "also, and more importantly; used to add a stronger point", "more · o · ver", "one word: more + over", "MORE + OVER: piling MORE on top, OVER the last point.", "The pictures are bright. ___, the rhymes make it easy to remember.", "The book is funny; ___, it teaches children about friendship."],
+  ["admittedly", "Argument", "it must be accepted that; used before a point against your view", "ad · mit · ted · ly", "double t before -edly", "ADMIT + TED + LY: I ADMIT it, Ted.", "___, the ending is quite sudden, but the story is still brilliant.", "___, the book is very short; however, every page counts."]
+]);
+
 /* Kristan's French bank (KS3). Each entry: [French (with le/la/l'/les for nouns), English, gender m/f/pl or "" , topic, kind n/v/a/p].
    Kinds: n = noun, v = verb (infinitive), a = adjective, p = phrase. */
 WB.fr("2026-10-27", [
@@ -569,6 +618,20 @@ WB.fr("2026-11-13", [
   ["j'ai regardé", "I watched", "", "Last weekend", "p"], ["j'ai mangé", "I ate", "", "Last weekend", "p"], ["c'était", "it was", "", "Last weekend", "p"]
 ]);
 
+/* Week of 23 Nov: a day out (end-of-term writing assessment, Wed 25 Nov). */
+WB.fr("2026-11-23", [
+  ["la sortie", "day out, outing", "f", "A day out", "n"], ["le copain", "friend (boy)", "m", "A day out", "n"], ["la copine", "friend (girl)", "f", "A day out", "n"],
+  ["la pizza", "pizza", "f", "A day out", "n"], ["le restaurant", "restaurant", "m", "A day out", "n"], ["le tee-shirt", "T-shirt", "m", "A day out", "n"],
+  ["faire du shopping", "to go shopping", "", "A day out", "p"], ["j'ai acheté", "I bought", "", "A day out", "p"], ["je suis allé", "I went (boy)", "", "A day out", "p"],
+  ["je suis allée", "I went (girl)", "", "A day out", "p"], ["nous avons mangé", "we ate", "", "A day out", "p"], ["je vais jouer", "I'm going to play", "", "A day out", "p"],
+  ["d'abord", "first of all", "", "A day out", "p"], ["ensuite", "then, next", "", "A day out", "p"], ["puis", "then", "", "A day out", "p"],
+  ["enfin", "finally", "", "A day out", "p"], ["mais", "but", "", "A day out", "p"], ["c'est sympa", "it's nice", "", "A day out", "p"],
+  ["salut", "hi", "", "A day out", "p"], ["à bientôt", "see you soon", "", "A day out", "p"]
+]);
+WB.verbs({
+  acheter: { en: "to buy", forms: ["achète", "achètes", "achète", "achetons", "achetez", "achètent"], end: "un tee-shirt", note: "Acheter adds a grave accent in the je, tu, il and ils forms: j'achète, but nous achetons." }
+});
+
 /* "Sounds like" guides for Kristan's French, written for an English speaker.
    How to read them: syllables are split with hyphens; (n) = say the vowel through your nose and don't say the n;
    zh = the s in "treasure"; ew = say "ee" with rounded lips; ur = as in "fur" (no r sound); uh = a short "uh".
@@ -657,6 +720,17 @@ WB.verbExtra({
   pouvoir: { sounds: ["zhuh pur", "tew pur", "eel pur", "noo poo-vo(n)", "voo poo-vay", "eel purv"], enB: "can", en3: "can", endEn: "come", endSounds: "vuh-neer" },
   finir: { sounds: ["zhuh fee-nee", "tew fee-nee", "eel fee-nee", "noo fee-nee-so(n)", "voo fee-nee-say", "eel fee-neess"], enB: "finish", en3: "finishes", endEn: "the homework", endSounds: "lay duh-vwar" },
   sortir: { sounds: ["zhuh sor", "tew sor", "eel sor", "noo sor-to(n)", "voo sor-tay", "eel sort"], enB: "go out", en3: "goes out", endEn: "on Saturdays", endSounds: "luh sam-dee" }
+});
+
+/* Week of 23 Nov: a day out. */
+WB.sounds({
+  "la sortie": "la sor-tee", "le copain": "luh ko-pa(n)", "la copine": "la ko-peen", "la pizza": "la peed-za", "le restaurant": "luh res-toh-ro(n)",
+  "le tee-shirt": "luh tee-shurt", "faire du shopping": "fair dew sho-peeng", "j'ai acheté": "zhay ash-tay", "je suis allé": "zhuh swee-za-lay",
+  "je suis allée": "zhuh swee-za-lay", "nous avons mangé": "noo-za-vo(n) mo(n)-zhay", "je vais jouer": "zhuh veh zhoo-ay", "d'abord": "da-bor",
+  "ensuite": "o(n)-sweet", "puis": "pwee", "enfin": "o(n)-fa(n)", "mais": "meh", "c'est sympa": "say sa(n)-pa", "salut": "sa-lew", "à bientôt": "a bya(n)-toh"
+});
+WB.verbExtra({
+  acheter: { sounds: ["zha-shet", "tew a-shet", "eel a-shet", "noo-za-shuh-to(n)", "voo-za-shuh-tay", "eel-za-shet"], enB: "buy", en3: "buys", endEn: "a T-shirt", endSounds: "a(n) tee-shurt" }
 });
 
 

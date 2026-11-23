@@ -135,3 +135,19 @@ WB.add("challenge_kristan", "2026-11-13", [
   ["cappuccino", "a coffee made with frothy milk", "cap · pu · cci · no", "double p and double c", "CAPPUCCINO: two Ps, two Cs, like two cups.", "Dad ordered a ___ after the match.", "The café makes a great ___."],
   ["Fahrenheit", "a temperature scale where water freezes at 32 degrees", "Fahr · en · heit", "the silent h after a, and -heit", "Named after Daniel FAHRENHEIT: F-A-H-R, then 'en', then 'heit'.", "It was over 100 degrees ___ in Abu Dhabi.", "American weather reports use ___."]
 ]);
+
+/* Week of 23 Nov: the classic adult traps everyone gets wrong. */
+WB.add("challenge_kristan", "2026-11-23", [
+  ["accommodate", "to provide room for someone, or to adapt to fit something", "ac · com · mo · date", "double c AND double m", "ACCOMMODATE: it's big enough to fit two c's and two m's.", "The new stadium can ___ 60,000 fans.", "The hotel will ___ the whole squad."],
+  ["embarrassment", "the feeling of being awkward or ashamed", "em · bar · rass · ment", "double r AND double s", "Really Red, Simply Shy: two r's, two s's.", "Missing an open goal caused him real ___.", "To my ___, my phone rang during the test."],
+  ["privilege", "a special right or advantage", "priv · i · lege", "no d, and 'lege' not 'ledge'", "PRIVI + LEGE: there's no LEDGE in privilege.", "It was a ___ to lead the team out.", "Wearing the captain's armband is a ___."],
+  ["harass", "to keep annoying or pressuring someone", "har · ass", "one r, double s", "HARASS: one R, two S's: one Rude person, Several Sighs.", "Defenders kept trying to ___ the striker.", "Don't ___ your sister while she's revising."],
+  ["mischievous", "playful in a naughty way", "mis · chie · vous", "three syllables: there's no 'i' before -ous", "MISCHIEF → MISCHIEVOUS: f becomes v, and no extra i.", "The ___ fans sang about the referee all game.", "He gave a ___ grin before the trick play."],
+  ["exaggerate", "to make something sound bigger or better than it is", "ex · ag · ger · ate", "double g, single r", "EXAGGERATE: a Greedy Goose makes things sound bigger: double g.", "Don't ___; it wasn't a 40-yard screamer.", "Pundits ___ every small mistake."],
+  ["definitely", "certainly; without any doubt", "def · i · nite · ly", "'finite' in the middle: no a", "DE + FINITE + LY: definitely has FINITE in it.", "We are ___ winning the league this year.", "I will ___ finish my Dr Frost task tonight."],
+  ["separate", "apart; not joined together", "sep · a · rate", "'par' in the middle: there's A RAT in separate", "SEPARATE: there's A RAT in sep-A-RAT-e.", "Keep the kit in a ___ bag.", "The two teams warmed up at ___ ends."],
+  ["occasionally", "sometimes, but not often", "oc · ca · sion · al · ly", "double c, single s, double l", "Two Cs, one S, two Ls: oCCaSionaLLy.", "I ___ play FIFA before school.", "The coach ___ lets us choose the drill."],
+  ["pronunciation", "the way a word is said", "pro · nun · ci · a · tion", "'nun' not 'noun' (even though it's from pronounce)", "PRO + NUN + CIATION: a NUN tells you the pronunciation.", "French ___ takes a lot of practice.", "Tap Hear it to check the ___."],
+  ["conscious", "awake and aware", "con · scious", "'sc' then 'ious'", "CON + SCI + OUS: you need SCIence to stay conscious.", "The player was ___ when he left the pitch.", "I'm ___ that I need to revise more."],
+  ["recommend", "to suggest something as good", "rec · om · mend", "one c, double m", "RE + COMMEND: one c, two m's.", "I ___ the new FIFA tactics guide.", "Would you ___ this book to a friend?"]
+]);

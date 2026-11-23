@@ -904,8 +904,8 @@ REVISION.kristan = REVISION.kristan.concat([
   { id: "eq-both", title: "Equations: brackets, fractions & x on both sides", subject: "Maths", covered: "Topic 1 · Linear equations", gens: ["eqBoth", "solveEq"] },
   { id: "calc", title: "Calculator skills & BIDMAS", subject: "Maths", covered: "Topic 2 · Calculators", gens: ["calcOrder"] },
   { id: "percent", title: "Percentage change, multipliers & reverse %", subject: "Maths", covered: "Topic 3 · Percentages · Dr Frost", gens: ["pctMult", "pctChangeNC"] },
-  { id: "grouped", title: "Grouped data: mean, modal & median class, range", subject: "Maths", covered: "Topic 4 · Statistics · Dr Frost 29 Oct", gens: ["grouped", "groupedClass", "groupedClass", "freqMean"] },
-  { id: "sample-space", title: "Sample spaces & two events", subject: "Maths", covered: "Topic 5 · Probability", gens: ["sampleSpace", "probability"] },
+  { id: "grouped", title: "Grouped data: mean, modal & median class, range", subject: "Maths", covered: "Topic 4 · Statistics · Dr Frost revision 16 Nov", gens: ["grouped", "groupedClass", "groupedClass", "freqMean", "grouped"] },
+  { id: "sample-space", title: "Sample spaces & two events", subject: "Maths", covered: "Topic 5 · Probability · Dr Frost revision 16 Nov", gens: ["sampleSpace", "probability", "sampleProduct", "sampleProduct"] },
   { id: "expand-factor", title: "Expanding, factorising & quadratics", subject: "Maths", covered: "Topic 6 · Algebraic manipulation", gens: ["expandFactor", "simplify"] },
   { id: "acids", title: "7F Acids & alkalis", subject: "Science", covered: "7F Acids and alkalis", gens: ["acids"] },
   { id: "fluids", title: "8I Fluids: density, pressure & floating", subject: "Science", covered: "8I Fluids", gens: ["fluids"] },
@@ -924,44 +924,219 @@ REVISION.kristan = REVISION.kristan.concat([
   { id: "poly-props", title: "Polygons: regular, irregular, symmetry & congruence", subject: "Maths", covered: "Topic 6 · Polygons, LI1 & LI4 (maths class flow, 13 Nov)", gens: ["polyProps"] }
 ]);
 
+/* ===================== Week of 23 Nov 2026 ===================== */
+/* Bank question with worked steps: a "how to think about it" line, then the explanation for this item. */
+function bqs(topic, bank, tip, how) { var s = pick(bank); return q(topic, s[0], s[1], s[2], s[3], "", { notes: s[4] || {}, tip: tip, steps: [how, s[3]] }); }
+/* --- Millie · Maths: mixed numbers with tenths and hundredths as decimals (Week 11 homework) --- */
+M.mixedDec = function (L) {
+  var w = rnd(1, 9), kind = pick(L === 1 ? ["t", "t", "h"] : L === 2 ? ["t", "h", "h", "h0"] : ["h", "h0", "h0", "back"]);
+  if (kind === "t") {
+    var n = rnd(1, 9), ans = w + "." + n, nt = {};
+    nt[w + ".0" + n] = n + "/10 is " + n + " TENTHS, so the " + n + " goes straight after the point: " + ans + ".";
+    nt["0." + w + n] = "The whole number " + w + " stays in front of the point.";
+    return q("Mixed numbers & decimals", "Write " + w + " " + n + "/10 as a decimal.", ans, [w + ".0" + n, "0." + w + n, n + "." + w, String(w + n)].concat(Object.keys(nt)),
+      w + " " + n + "/10 = " + w + " ones and " + n + " tenths = " + ans + ".", "",
+      { notes: nt, steps: ["The whole number " + w + " goes before the decimal point.", n + "/10 means " + n + " tenths, and tenths go in the first place after the point.", "So " + w + " " + n + "/10 = " + ans + "."], tip: "Tenths: 1 place after the point. Hundredths: 2 places." });
+  }
+  if (kind === "h") {
+    var h = rnd(11, 99); while (h % 10 === 0) h = rnd(11, 99);
+    var a2 = w + "." + h, n2 = {}, wrongAdd = fmt(w + h / 10);
+    n2[wrongAdd] = h + "/100 is " + h + " HUNDREDTHS (0." + h + "), not " + h + " tenths.";
+    n2[w + ".0" + h] = "Hundredths fill TWO places after the point: " + a2 + ".";
+    return q("Mixed numbers & decimals", "Write " + w + " " + h + "/100 as a decimal.", a2, [wrongAdd, w + ".0" + h, w + h + "." + "0", "0." + w + h].concat(Object.keys(n2)),
+      w + " " + h + "/100 = " + w + " + 0." + h + " = " + a2 + ".", "",
+      { notes: n2, steps: ["The whole number " + w + " goes before the point.", h + "/100 = " + Math.floor(h / 10) + " tenths and " + (h % 10) + " hundredths = 0." + h + ".", "Put them together: " + a2 + "."], tip: "Out of 100 → two digits after the point." });
+  }
+  if (kind === "h0") {
+    var u = rnd(1, 9), a3 = w + ".0" + u, n3 = {};
+    n3[w + "." + u] = "Careful! " + u + "/100 is " + u + " HUNDREDTHS, so it needs a 0 in the tenths place: " + a3 + ". (" + w + "." + u + " would be " + u + "/10.)";
+    n3[w + ".00" + u] = "That's " + u + " thousandths. Hundredths need just two places: " + a3 + ".";
+    return q("Mixed numbers & decimals", "Write " + w + " " + u + "/100 as a decimal.", a3, [w + "." + u, w + ".00" + u, (w * 10 + u) + "." + "0", u + "." + w].concat(Object.keys(n3)),
+      u + "/100 is " + u + " hundredths and 0 tenths, so " + w + " " + u + "/100 = " + a3 + ".", "",
+      { notes: n3, steps: [u + "/100 has no tenths, so write a 0 in the tenths place.", "The " + u + " goes in the hundredths place (2nd after the point).", w + " " + u + "/100 = " + a3 + "."], tip: "Check: 1 9/100 = 1.09, not 1.9. A single-digit hundredth needs a 0 placeholder." });
+  }
+  var t = rnd(0, 9), hh = rnd(1, 9), dec = w + "." + t + hh, num = t * 10 + hh, a4 = w + " " + num + "/100", n4 = {};
+  n4[w + " " + num + "/10"] = "Two digits after the point means hundredths, so the bottom number is 100.";
+  n4[(w * 100 + num) + "/10"] = "Keep the whole number " + w + " separate; the decimal part is " + num + "/100.";
+  return q("Mixed numbers & decimals", "Write " + dec + " as a mixed number.", a4, [w + " " + num + "/10", (w + 1) + " " + num + "/100", (w * 100 + num) + "/10", w + " " + hh + "/100"].filter(function (x) { return x !== a4; }),
+    dec + " = " + w + " ones and " + num + " hundredths = " + a4 + ".", "",
+    { notes: n4, steps: ["The whole number is " + w + ".", "There are two digits after the point: " + t + "" + hh + " hundredths.", dec + " = " + a4 + "."], tip: "Count the decimal places: 1 → tenths, 2 → hundredths." });
+};
+
+/* --- Millie · Maths: introduction to percentages (CENTURY Maths – Fractions) --- */
+M.percentIntro = function (L) {
+  var kind = pick(L === 1 ? ["grid", "over100", "rest"] : ["grid", "over100", "rest", "of", "of"]);
+  if (kind === "grid") {
+    var n = rnd(3, 97), nt = {}; nt[(100 - n) + "%"] = "That's the part NOT shaded. Count the shaded squares."; nt[(n / 10) + "%"] = "Per cent means out of 100, and the grid has 100 squares, so " + n + " squares = " + n + "%.";
+    return q("Percentages", "A 10 × 10 grid has " + n + " squares shaded. What percentage is shaded?", n + "%", [(100 - n) + "%", (n / 10) + "%", (n + 10) + "%"],
+      "The grid has 100 squares. " + n + " out of 100 = " + n + "%.", "", { notes: nt, steps: ["Per cent means 'out of 100'.", "The grid has 10 × 10 = 100 squares.", n + " out of 100 shaded = " + n + "%."], tip: "Per cent = out of 100. 100% is the whole thing." });
+  }
+  if (kind === "over100") {
+    var m = rnd(1, 99), n2 = {}; n2["0." + m + "%"] = "Write the top number with a % sign: " + m + "/100 = " + m + "%.";
+    return q("Percentages", "Write " + m + "/100 as a percentage.", m + "%", ["0." + m + "%", (100 - m) + "%", (m * 10) + "%"],
+      m + "/100 means " + m + " out of 100, which is " + m + "%.", "", { notes: n2, steps: ["A fraction out of 100 is already a percentage.", m + "/100 = " + m + "%."], tip: "Out of 100? Just write the top number and add %." });
+  }
+  if (kind === "rest") {
+    var p = pick([10, 15, 20, 25, 30, 35, 40, 45, 55, 60, 65, 70, 75, 80, 85, 90]), ctx = pick(["of the class walk to school", "of the cake has been eaten", "of the planet is covered in water", "of the tickets are sold"]);
+    return q("Percentages", p + "% " + ctx + ". What percentage is left over?", (100 - p) + "%", [p + "%", (100 - p + 10) + "%", (50 - p / 2) + "%"].filter(function (x) { return x !== (100 - p) + "%"; }),
+      "The whole is 100%. 100% − " + p + "% = " + (100 - p) + "%.", "", { notes: { [p + "%"]: "That's the part that IS taken. The rest is 100% − " + p + "%." }, steps: ["The whole thing is 100%.", "Take away " + p + "%: 100 − " + p + " = " + (100 - p) + ".", "So " + (100 - p) + "% is left."], tip: "The parts always add up to 100%." });
+  }
+  var pc = pick([50, 25, 10, 75, 20]), base = pc === 75 || pc === 25 ? pick([40, 80, 100, 200, 120]) : pick([30, 50, 60, 80, 120, 200, 300]), val = base * pc / 100, n5 = {};
+  n5[String(base - val)] = "That's what's LEFT after taking " + pc + "%. The question asks for " + pc + "% of " + base + ".";
+  n5[String(base / pc)] = "Don't divide by " + pc + ". " + pc + "% means " + pc + " out of 100.";
+  var how = { 50: "half: ÷ 2", 25: "a quarter: ÷ 4", 10: "a tenth: ÷ 10", 75: "three quarters: ÷ 4, then × 3", 20: "a fifth: ÷ 5" }[pc];
+  return q("Percentages", "What is " + pc + "% of " + base + "?", val, [base - val, base / pc, val * 2, val + 10].filter(function (x) { return x !== val; }),
+    pc + "% is " + how + ". " + pc + "% of " + base + " = " + val + ".", "", { notes: n5, steps: [pc + "% = " + how + ".", "Work it out: " + pc + "% of " + base + " = " + val + "."], tip: "50% = half, 25% = quarter, 10% = ÷ 10, 75% = three quarters." });
+};
+
+/* --- Millie · English: modal verbs (Week 11 homework) --- */
+var MODALGAP = [
+  ["Which modal verb shows it is CERTAIN?\n“The sun ___ rise tomorrow morning.”", "will", ["might", "could", "may"], "‘Will’ shows something is certain to happen. ‘Might’, ‘could’ and ‘may’ only show it's possible.", { might: "‘Might’ means it's only possible. The sun is certain to rise!" }],
+  ["Which modal verb shows something is only POSSIBLE?\n“Take an umbrella, it ___ rain later.”", "might", ["must", "will", "shall"], "‘Might’ shows it's possible but not certain, which is why you take an umbrella just in case.", { will: "‘Will’ would mean it's certain to rain." }],
+  ["Which modal verb tells someone NOT to do something?\n“You ___ cross the road without looking.”", "shouldn't", ["should", "will", "can"], "‘Shouldn't’ (should not) tells you something isn't a sensible or right thing to do.", { should: "That would mean you OUGHT to cross without looking!" }],
+  ["Which modal verb shows ABILITY?\n“Penguins ___ swim, but they can't fly.”", "can", ["mustn't", "shouldn't", "won't"], "‘Can’ shows someone or something is able to do it.", {}],
+  ["Which modal verb shows someone is NOT ABLE to do something?\n“The baby is too young; she ___ walk yet.”", "can't", ["can", "will", "should"], "‘Can't’ (cannot) shows she isn't able to walk yet.", { can: "‘Can’ would mean she IS able to walk." }],
+  ["Which modal verb gives ADVICE?\n“You look tired. You ___ go to bed early.”", "should", ["mightn't", "can't", "won't"], "‘Should’ gives advice: it's the sensible thing to do.", {}],
+  ["Which sentence shows the speaker is LEAST certain?", "It might snow tonight.", ["It will snow tonight.", "It is going to snow tonight.", "It must be snowing."], "‘Might’ shows the lowest certainty here. ‘Will’ and ‘must’ sound sure.", {}],
+  ["Which word is NOT a modal verb?", "jumped", ["could", "must", "shall"], "Modal verbs (can, could, may, might, must, shall, should, will, would) go before another verb. ‘Jumped’ is an ordinary past-tense verb.", {}],
+  ["Which modal verb best REASSURES someone?\n“Don't worry, the dog ___ bite you; he's very friendly.”", "won't", ["might", "will", "must"], "‘Won't’ (will not) says it is certain NOT to happen, so it reassures.", { might: "‘Might’ would mean the dog could bite you: not very reassuring!" }],
+  ["Which modal verb shows a RULE you have to follow?\n“All visitors ___ sign in at reception.”", "must", ["might", "could", "may"], "‘Must’ shows something is necessary: a rule.", {}],
+  ["Which modal verb makes a POLITE request?\n“___ I borrow your pencil, please?”", "May", ["Must", "Will", "Should"], "‘May I…?’ is a polite way to ask permission.", {}],
+  ["What does the modal verb show?\n“You must wear your seat belt.”", "it is necessary", ["it is only possible", "it happened in the past", "it is a question"], "‘Must’ shows that something is necessary: you have no choice.", {}]
+];
+M.modalGap = function () { return bqs("Modal verbs", MODALGAP, "Certain: will, must. Possible: might, may, could. Able: can. Advice: should. Not allowed: mustn't, shouldn't.", "First decide what the sentence needs: certainty, possibility, ability, advice, a rule or permission. Then pick the modal verb that shows it."); };
+
+/* --- Millie · English: direct and indirect (reported) speech (Week 11 homework) --- */
+var SPEECH = [
+  ["Which sentence is direct speech?", "“I'm hungry,” said Tom.", ["Tom said that he was hungry.", "Tom was very hungry.", "Tom asked if there was any food."], "Direct speech shows the exact words someone said, inside inverted commas.", { "Tom said that he was hungry.": "That's indirect (reported) speech: it reports what Tom said without his exact words." }],
+  ["Which sentence is indirect (reported) speech?", "Mia said that she loved Mars.", ["“I love Mars,” said Mia.", "“Do you love Mars?” asked Mia.", "“Mars is amazing!” shouted Mia."], "Reported speech tells us what someone said without their exact words, and has no inverted commas.", {}],
+  ["Change it to reported speech:\n“I am tired,” said Sam.", "Sam said that he was tired.", ["Sam said that I am tired.", "“Sam was tired,” said Sam.", "Sam said, “he is tired.”"], "In reported speech, ‘I’ becomes ‘he’ or ‘she’ and ‘am’ moves back to ‘was’.", { "Sam said that I am tired.": "‘I’ would mean YOU are tired. Change it to ‘he’." }],
+  ["Which sentence is punctuated correctly?", "“We landed on Mars!” shouted the astronaut.", ["“We landed on Mars! shouted the astronaut.”", "We landed “on Mars!” shouted the astronaut.", "“We landed on Mars!” “shouted the astronaut.”"], "Only the spoken words go inside the inverted commas, with the ! inside too.", {}],
+  ["What goes in the gap?\n“Pass me the map___” said Dad.", "a comma", ["a full stop", "nothing", "a colon"], "When the sentence carries on with ‘said Dad’, the spoken words end with a comma inside the inverted commas.", { "a full stop": "A full stop would end the sentence, but it carries on: ‘said Dad’." }],
+  ["In reported speech, which word often comes after ‘said’?", "that", ["but", "because", "then"], "We often write ‘said that…’: Mia said that she was cold.", {}],
+  ["Change it to reported speech:\n“I will finish it tomorrow,” said Ella.", "Ella said that she would finish it the next day.", ["Ella said that I will finish it tomorrow.", "Ella said that she will finished it.", "Ella said, “she would finish it.”"], "‘I’ becomes ‘she’, ‘will’ becomes ‘would’, and ‘tomorrow’ becomes ‘the next day’.", {}],
+  ["Which sentence is punctuated correctly?", "“Where is the rover?” asked Leo.", ["“Where is the rover,” asked Leo?", "“Where is the rover?” Asked Leo.", "Where is the rover? “asked Leo.”"], "The question mark goes inside the inverted commas, and ‘asked’ needs no capital letter.", {}],
+  ["When a new person starts speaking in a story, you should…", "start a new line", ["use a semicolon", "carry on the same line", "write it in capitals"], "New speaker, new line. It makes conversations easy to follow.", {}],
+  ["Which sentence does NOT need inverted commas?", "The captain told us that the ship was ready.", ["Hurry up! yelled the captain.", "The ship is ready, said the captain.", "Can we go now? asked Ali."], "Reported speech doesn't use the speaker's exact words, so it needs no inverted commas. The others are direct speech with the inverted commas missing.", {}],
+  ["Turn it into direct speech:\nJo asked if she could come.", "“Can I come?” asked Jo.", ["“Can she come?” asked Jo.", "Jo asked “if she could come.”", "“Can I come.” asked Jo."], "Use Jo's own words: she'd say ‘Can I come?’, and it's a question, so it needs a question mark.", {}],
+  ["Which words are the reporting clause?\n“Look at the stars,” whispered Gran.", "whispered Gran", ["Look at the stars", "Look", "the stars"], "The reporting clause tells us who spoke and how: ‘whispered Gran’.", { "Look at the stars": "Those are the spoken words." }]
+];
+M.speech = function () { return bqs("Direct & reported speech", SPEECH, "Direct speech: exact words in “inverted commas”. Reported speech: ‘said that…’, no inverted commas.", "Ask: are these the speaker's EXACT words (direct, inside inverted commas) or a report of what they said (reported, often with ‘that’)?"); };
+
+/* --- Millie · Science: phases of the Moon (class, 13 Nov newsletter) --- */
+var MOONPHASES = [
+  ["Why does the Moon seem to change shape?", "We see different amounts of its sunlit half as it orbits Earth.", ["Earth's shadow covers part of it every night.", "The Moon really changes shape.", "Clouds cover part of it."], "The Sun always lights half of the Moon. As the Moon orbits Earth, we see more or less of that lit half.", { "Earth's shadow covers part of it every night.": "Earth's shadow only falls on the Moon during an eclipse, which is rare." }],
+  ["How long does a full cycle of Moon phases take?", "about 29½ days", ["about 7 days", "about 24 hours", "about 365 days"], "From one new moon to the next takes about 29½ days, roughly a month.", {}],
+  ["What is it called when we can't see the Moon at all?", "new moon", ["full moon", "half moon", "gibbous moon"], "At new moon, the lit half faces away from us.", {}],
+  ["What is it called when we see the whole bright face of the Moon?", "full moon", ["new moon", "crescent moon", "first quarter"], "At full moon, we see all of the Moon's sunlit half.", {}],
+  ["What does ‘waxing’ mean?", "the lit part is getting bigger", ["the lit part is getting smaller", "the Moon is getting closer", "the Moon is spinning faster"], "Waxing = growing. Between new moon and full moon, the Moon is waxing.", {}],
+  ["What does ‘waning’ mean?", "the lit part is getting smaller", ["the lit part is getting bigger", "the Moon is moving away", "the Moon has stopped"], "Waning = shrinking. Between full moon and new moon, the Moon is waning.", {}],
+  ["What does ‘gibbous’ mean?", "more than half lit, but not full", ["less than half lit", "exactly half lit", "completely dark"], "A gibbous moon is bulging: more than half, less than full.", {}],
+  ["What is a crescent moon?", "a thin, curved sliver of light", ["a completely round, bright moon", "exactly half a circle", "a moon we can't see"], "A crescent is the thin curved shape just after a new moon, or just before one.", {}],
+  ["Which phase comes straight after a new moon?", "waxing crescent", ["waning crescent", "full moon", "waning gibbous"], "After new moon, a thin sliver appears and grows: waxing crescent.", {}],
+  ["Which phase comes straight after a full moon?", "waning gibbous", ["waxing gibbous", "new moon", "waxing crescent"], "After full moon, the lit part starts to shrink: waning gibbous.", {}],
+  ["How much of the Moon is lit by the Sun at any one time?", "half of it", ["all of it", "none of it", "a quarter of it"], "The Sun always lights the half of the Moon facing it, just like day on Earth.", {}],
+  ["About how long after a new moon is the full moon?", "about 2 weeks", ["about 1 day", "about 2 months", "about 6 months"], "Half of the 29½-day cycle is about 15 days: roughly 2 weeks.", {}]
+];
+M.moonPhases = function () { return bqs("Phases of the Moon", MOONPHASES, "New → waxing crescent → first quarter → waxing gibbous → full → waning gibbous → last quarter → waning crescent → new.", "Picture the Sun lighting half of the Moon as it travels round the Earth: how much of that lit half can we see?"); };
+
+/* --- Kristan · Maths: sample space of products, including negatives (Dr Frost 249c–d) --- */
+K.sampleProduct = function (L) {
+  var sets = [[-3, -1, 2, 4], [-2, 1, 3, 5], [-4, -2, 1, 3], [-5, -1, 2, 3]], sp = pick(sets), die = [1, 2, 3, 4], prods = [];
+  sp.forEach(function (a) { die.forEach(function (b) { prods.push(a * b); }); });
+  var N = prods.length, kind = pick(L === 1 ? ["neg", "pos"] : ["neg", "atleast", "atleast", "exact"]), cond, count, label;
+  if (kind === "neg" || kind === "pos") { var neg = kind === "neg"; count = prods.filter(function (x) { return neg ? x < 0 : x > 0; }).length; label = "the product is " + (neg ? "negative" : "positive"); }
+  else if (kind === "atleast") { var k = pick(prods.filter(function (x) { return x < 0; })); count = prods.filter(function (x) { return x >= k; }).length; label = "the product is " + k + " or higher"; }
+  else { var e = pick(prods.filter(function (x) { return x > 0; })); count = prods.filter(function (x) { return x === e; }).length; label = "the product is exactly " + e; }
+  var ans = frac(count, N), nt = {};
+  nt[String(count)] = "That's how many outcomes work, but a probability is a fraction: " + count + " out of " + N + ".";
+  nt[frac(count, 8)] = "The spinner has 4 sections and the dice 4 faces: 4 × 4 = 16 outcomes, not 4 + 4 = 8.";
+  nt[frac(N - count, N)] = "That's the probability it does NOT happen. Count the outcomes where " + label + ".";
+  var rows = sp.map(function (a) { return a + ": " + die.map(function (b) { return a * b; }).join(", "); });
+  return q("Probability: two events", "A spinner has sections " + sp.join(", ") + ". A four-sided dice has faces 1 to 4. Both are used and the two numbers MULTIPLIED. What is P(" + label + ")?",
+    ans, [String(count), frac(count, 8), frac(N - count, N), frac(Math.max(1, count - 1), N), frac(count + 1, N)].filter(function (x) { return x !== ans; }),
+    "Draw the 4 × 4 sample space of products: " + count + " of the " + N + " outcomes have " + label.replace("the product is ", "a product ") + ", so P = " + count + "/" + N + (ans !== count + "/" + N ? " = " + ans : "") + ".", "",
+    { notes: nt, steps: ["Outcomes: 4 spinner sections × 4 faces = " + N + ".", "Products by spinner number → " + rows.join("; ") + ".", "Count where " + label + ": " + count + ".", "P = " + count + "/" + N + (ans !== count + "/" + N ? " = " + ans : "") + "."],
+      tip: "Negative × positive = negative. And a probability is always a fraction (or decimal) of ALL the outcomes." });
+};
+
+/* --- Kristan · French: grammar for the end-of-term writing assessment (Wed 25 Nov) --- */
+var FRGRAMMAR = [
+  ["Change ‘aller’ to fit (a boy is writing):\n« Hier, je ___ au centre commercial. »", "suis allé", ["ai allé", "vais allé", "suis aller"], "Aller is an être verb in the perfect tense: je suis allé (a girl writes allée).", { "ai allé": "Aller takes ÊTRE, not avoir: je SUIS allé.", "suis aller": "After suis you need the past participle allé, not the infinitive." }],
+  ["Change ‘manger’ to fit:\n« Hier, nous ___ une pizza. »", "avons mangé", ["sommes mangé", "avons manger", "mangeons"], "Perfect tense with avoir: nous avons + mangé (manger → mangé).", { mangeons: "That's the present tense. ‘Hier’ (yesterday) needs the perfect tense.", "sommes mangé": "Manger takes AVOIR: nous avons mangé." }],
+  ["Make ‘gentil’ agree:\n« Ma copine est ___. »", "gentille", ["gentil", "gentile", "gentils"], "Copine is feminine, and gentil doubles the l before the e: gentille.", { gentile: "Gentil doubles the l in the feminine: gentiLLE." }],
+  ["Make ‘bavard’ agree:\n« Mes sœurs sont ___. »", "bavardes", ["bavard", "bavards", "bavarde"], "Sœurs is feminine plural, so add -e AND -s: bavardes.", { bavards: "That's masculine plural. Sœurs are girls, so add -es." }],
+  ["Use ‘se disputer’:\n« Je ___ avec mon frère. »", "me dispute", ["dispute", "se dispute", "me disputer"], "Reflexive verbs keep the pronoun: je me dispute.", { "se dispute": "Se goes with il/elle. With je it's me." }],
+  ["Use ‘poster’:\n« Elles ___ des photos sur Instagram. »", "postent", ["poste", "postons", "postez"], "Ils / elles take the -ent ending: elles postent.", { postons: "That's the nous form." }],
+  ["Use ‘être’:\n« Nous ___ au collège. »", "sommes", ["êtes", "sont", "suis"], "Être: je suis, tu es, il est, nous sommes, vous êtes, ils sont.", {}],
+  ["Which sentence is in the near future?", "Demain, je vais jouer au foot.", ["Hier, j'ai joué au foot.", "D'habitude, je joue au foot.", "Je suis allé au foot."], "Near future = aller + infinitive: je vais jouer.", {}],
+  ["Which sentence is in the perfect tense?", "Samedi dernier, j'ai acheté un jean.", ["Je vais acheter un jean.", "J'achète un jean.", "Je voudrais acheter un jean."], "Perfect tense = avoir/être + past participle: j'ai acheté.", {}],
+  ["Which time phrase goes with the perfect tense?", "hier", ["demain", "d'habitude", "la semaine prochaine"], "Hier (yesterday) is in the past, so it needs the perfect tense.", {}],
+  ["Which time phrase goes with the near future?", "demain", ["hier", "le week-end dernier", "hier soir"], "Demain (tomorrow) is in the future: je vais + infinitive.", {}],
+  ["A girl is writing:\n« Hier, je suis ___ en ville. »", "allée", ["allé", "allés", "aller"], "With être, the past participle agrees: a girl adds -e: allée.", {}],
+  ["What does « C'était sympa ! » mean?", "It was nice!", ["It is nice!", "It will be nice!", "It wasn't nice!"], "C'était = it was. Use it to give your opinion in the past.", {}],
+  ["Make it negative:\n« Je joue au tennis. »", "Je ne joue pas au tennis.", ["Je joue ne pas au tennis.", "Je ne pas joue au tennis.", "Ne je joue pas au tennis."], "Ne … pas goes around the verb: je ne joue pas.", {}],
+  ["Which connective means ‘then’?", "ensuite", ["d'abord", "enfin", "mais"], "D'abord = first, ensuite = then, enfin = finally, mais = but.", {}],
+  ["« Mon frère est ___ sérieux que moi. » (more)", "plus", ["que", "très", "moins"], "Plus … que = more … than.", { moins: "Moins means LESS." }]
+];
+K.frGrammar = function () { return bqs("French grammar", FRGRAMMAR, "Perfect: j'ai mangé / je suis allé(e). Near future: je vais + infinitive. Adjectives agree: -e feminine, -s plural.", "Check three things: WHEN is it (time phrase → tense), WHO is doing it (verb ending), and is the noun feminine or plural (agreement)?"); };
+
+/* Revision topics for the week of 23 Nov. */
+REVISION.millie = REVISION.millie.concat([
+  { id: "spell-w11", title: "Week 11 spellings: words ending in -ment", subject: "Spelling", covered: "Week 11 homework · 23 Nov",
+    gens: ["spell:equipment", "spell:environment", "spell:government", "spell:parliament", "spell:enjoyment", "spell:document", "spell:management", "spell:movement", "spell:replacement", "spell:statement"] },
+  { id: "mixed-dec", title: "Mixed numbers & decimals: tenths & hundredths", subject: "Maths", covered: "Week 11 homework · 23 Nov", gens: ["mixedDec", "mixedDec", "decimals"] },
+  { id: "percentages", title: "Introduction to percentages", subject: "Maths", covered: "CENTURY Maths – Fractions · 20 Nov", gens: ["percentIntro", "fdp"] },
+  { id: "modal-speech", title: "Modal verbs & direct and reported speech", subject: "English", covered: "Week 11 homework · 23 Nov", gens: ["modalGap", "speech"] },
+  { id: "moon-phases", title: "Phases of the Moon", subject: "Science", covered: "Class learning · 13 Nov newsletter", gens: ["moonPhases", "earthMoon"] }
+]);
+REVISION.kristan = REVISION.kristan.concat([
+  { id: "fr-assess", title: "French writing assessment: a day out (perfect, present & near future)", subject: "French", covered: "End-of-term assessment · Wed 25 Nov",
+    gens: ["frGrammar", "frGrammar", "fr:fa-sortie", "fr:fa-copain", "fr:fa-copine", "fr:fa-commercial", "fr:fa-magasin", "fr:fa-acheter", "fr:fa-dabord", "fr:fa-ensuite", "fr:fa-enfin",
+      "fr:fa-suis-alle", "fr:fa-avons-mange", "fr:fa-ai-achete", "fr:fa-cetait", "fr:fa-vais-jouer", "fr:fa-dhabitude", "fr:fa-gentille", "fr:fa-bavardes", "fr:fa-dispute", "fr:fa-postent", "fr:fa-sommes", "fr:fa-pas", "fr:fa-plus"] },
+  { id: "eng-children", title: "Children's books: words for reviewing them", subject: "English", covered: "English research task · due 25 Nov",
+    gens: ["em:didactic", "eu:anthropomorphism", "em:moral", "eu:repetition", "em:illustration", "eu:whimsical", "em:enchanting", "eu:captivating", "em:inquisitive", "eu:endearing", "em:mischievous", "eu:moreover", "em:admittedly"] }
+]);
+
 /* ===================== The curriculum map =====================
    status: "done" (taught already), "now" (in class this week), "next" (coming up soon), "later" (later this year).
    The school run updates `week`, `focus` and each unit's status from Toddle class posts and homework. */
 var CURRICULUM = {
   millie: {
-    year: "Year 5", updated: "2026-11-13", week: "Term 1 · Week 11 (from 16 Nov)",
-    focus: "Converting km, m, cm and mm plus decimals and fractions in maths, the Solaris Seven planets in theme, the Mars rover book Curiosity in English, and modal verbs.",
+    year: "Year 5", updated: "2026-11-23", week: "Term 1 · Week 12 (from 23 Nov)",
+    focus: "Tenths and hundredths (mixed numbers to decimals) and the start of percentages in maths, modal verbs and direct and reported speech in English, phases of the Moon in science, and Life & Culture for the Solaris Seven planets.",
     units: [
       { subject: "Maths", title: "Place value to 1,000,000", term: 1, status: "done", topics: ["place-value", "rounding", "negatives", "roman"] },
       { subject: "Maths", title: "Addition & subtraction", term: 1, status: "done", topics: ["mental-add", "column"] },
       { subject: "Maths", title: "Multiples, factors & primes", term: 1, status: "done", topics: ["factors", "multiples", "primes"] },
       { subject: "Maths", title: "Multiplication & division", term: 1, status: "done", topics: ["sq-cube", "x10", "written-mult", "short-div", "tables"] },
-      { subject: "Maths", title: "Decimals & percentages", term: 1, status: "now", why: "CENTURY Maths Lesson 3 Week 10: hundredths, 2dp place value and decimal equivalents.", topics: ["fdp", "decimals"] },
-      { subject: "Maths", title: "Measurement: time & length", term: 1, status: "now", why: "Week 10 homework: two sheets converting km, m, cm and mm.", topics: ["measures", "time-24h", "time"] },
+      { subject: "Maths", title: "Decimals & percentages", term: 1, status: "now", why: "Week 11 homework: 21 mixed numbers to decimals; CENTURY Maths – Fractions starts percentages.", topics: ["mixed-dec", "percentages", "fdp", "decimals"] },
+      { subject: "Maths", title: "Measurement: time & length", term: 1, status: "done", why: "Week 10 homework: two sheets converting km, m, cm and mm.", topics: ["measures", "time-24h", "time"] },
       { subject: "Maths", title: "Fractions", term: 2, status: "next", why: "CENTURY Week 10 extras: equivalent fractions, improper fractions and mixed numbers.", topics: ["fractions"] },
       { subject: "Maths", title: "Shape: angles & polygons", term: 2, status: "later", topics: ["angles"] },
       { subject: "Maths", title: "Perimeter, area & volume", term: 3, status: "later", topics: ["perim-area"] },
-      { subject: "English", title: "Curiosity: The Story of a Mars Rover (new class book) & grammar", term: 1, status: "now", why: "Week 10 homework: six questions on the cover of Curiosity; spellings are modal verbs.", topics: ["grammar5", "spell-w10", "figurative"] },
+      { subject: "English", title: "Curiosity: The Story of a Mars Rover (class book) & grammar", term: 1, status: "now", why: "Week 11 homework: modal verb gap-fill and direct and reported speech; spellings are -ment words.", topics: ["modal-speech", "spell-w11", "grammar5", "spell-w10", "figurative"] },
       { subject: "English", title: "Sentences: fronted adverbials, clauses & phrases", term: 1, status: "done", topics: ["grammar"] },
       { subject: "Science", title: "Properties & changes of materials", term: 1, status: "done", topics: ["materials", "states", "mixtures", "changes"] },
-      { subject: "Science", title: "Earth & Space", term: 1, status: "now", why: "Theme: the Solaris Seven planet groups are designing a currency and transport for their planet.", topics: ["earth-moon", "space"] },
+      { subject: "Science", title: "Earth & Space", term: 1, status: "now", why: "Class learnt the phases of the Moon (Oreo activity); theme groups now plan Life & Culture for their planet.", topics: ["moon-phases", "earth-moon", "space"] },
       { subject: "Science", title: "Forces", term: 2, status: "later", topics: ["forces"] },
       { subject: "Science", title: "Living things & life cycles", term: 3, status: "later", topics: ["life-cycles"] }
     ]
   },
   kristan: {
-    year: "Year 8", updated: "2026-11-13", week: "Term 1 · Week 11 (from 9 Nov)",
-    focus: "Probability (tree diagrams, two-way tables, experimental) with Polygons next in maths, Metals in science, Ballads and PEAL paragraphs in English, and the perfect tense in French.",
+    year: "Year 8", updated: "2026-11-23", week: "Term 1 · Week 13 (from 23 Nov)",
+    focus: "French end-of-term writing assessment on Wed 25 Nov, averages and probability revision in maths (Dr Frost), Metals in science, and children's book research in English.",
     units: [
       { subject: "Maths", title: "Topic 1 · Linear equations (incl. algebraic fractions with x²)", term: 1, status: "done", topics: ["eq-both", "alg-frac", "equations", "algebra"] },
       { subject: "Maths", title: "Topic 2 · Calculators", term: 1, status: "done", topics: ["calc"] },
       { subject: "Maths", title: "Topic 3 · Percentages", term: 1, status: "done", topics: ["percent"] },
-      { subject: "Maths", title: "Topic 4 · Statistics & averages", term: 1, status: "done", topics: ["averages", "freq", "grouped"] },
-      { subject: "Maths", title: "Topic 5 · Probability", term: 1, status: "now", why: "Maths class flow: probability scale, sample spaces and tree diagrams, two-way tables and experimental probability.", topics: ["prob-basics", "sample-space", "tree-diagrams", "two-way", "exp-prob", "probability"] },
+      { subject: "Maths", title: "Topic 4 · Statistics & averages", term: 1, status: "now", why: "Dr Frost revision (16 Nov): he missed the mean from a frequency table and the estimated mean from grouped data.", topics: ["freq", "grouped", "averages"] },
+      { subject: "Maths", title: "Topic 5 · Probability", term: 1, status: "now", why: "Dr Frost 'Averages and Probability Revision' (16 Nov): sample spaces of products still to finish; maths class flow has tree diagrams, two-way tables and experimental probability.", topics: ["prob-basics", "sample-space", "tree-diagrams", "two-way", "exp-prob", "probability"] },
       { subject: "Maths", title: "Topic 6 · Polygons", term: 1, status: "next", why: "Now posted in the maths class flow: interior and exterior angles, regular polygons and congruence.", topics: ["poly-angles", "poly-props", "angles"] },
       { subject: "Maths", title: "Algebraic manipulation", term: 2, status: "later", topics: ["expand-factor", "algebra"] },
       { subject: "Maths", title: "Earlier work: ratio, sequences, indices, angles", term: 0, status: "done", topics: ["ratio", "sequences", "indices", "angles", "rounding"] },
-      { subject: "English", title: "Ballads and Nabati poetry (PEAL responses)", term: 1, status: "now", why: "Ballads unit and a model PEAL response in the English class flow; Nabati presentation earned a merit on 9 Nov.", topics: ["poetry", "eng-words"] },
+      { subject: "English", title: "Children's books: research and review", term: 1, status: "now", why: "English homework due 25 Nov: research two more children's books for the inquiry grid.", topics: ["eng-children", "en-analysing-texts"] },
+      { subject: "English", title: "Ballads and Nabati poetry (PEAL responses)", term: 1, status: "done", why: "Ballads unit and a model PEAL response in the English class flow; Nabati presentation earned a merit on 9 Nov.", topics: ["poetry", "eng-words"] },
       { subject: "English", title: "Gothic fiction", term: 1, status: "next", why: "The first unit in the Year 8 English overview, after the poetry assessment.", topics: ["gothic", "en-description"] },
       { subject: "English", title: "Shakespeare: The Tempest", term: 2, status: "later", topics: ["tempest", "en-analysing-texts", "en-character"] },
       { subject: "Science", title: "Animal reproduction (cells, organs, fertilisation, pregnancy)", term: 1, status: "done", topics: ["science"] },
@@ -972,7 +1147,8 @@ var CURRICULUM = {
       { subject: "French", title: "More about me", term: 1, status: "done", topics: ["fr-describing-people", "fr-family"] },
       { subject: "French", title: "Where I live", term: 1, status: "done", topics: ["fr-home", "fr-town"] },
       { subject: "French", title: "Free time, social media & aller + infinitive", term: 1, status: "done", topics: ["fr-insta", "fr-futur", "fr-tech-social-media", "fr-free-time"] },
-      { subject: "French", title: "What I did at the weekend: the perfect tense & time phrases", term: 1, status: "now", why: "Vocab quiz on Mon 16 Nov: j'ai dansé, je suis allé(e), c'était…, hier, demain.", topics: ["fr-weekend"] },
+      { subject: "French", title: "What I did at the weekend: the perfect tense & time phrases", term: 1, status: "done", why: "Vocab quiz on Mon 16 Nov: j'ai dansé, je suis allé(e), c'était…, hier, demain.", topics: ["fr-weekend"] },
+      { subject: "French", title: "End-of-term writing assessment: a day out in three tenses", term: 1, status: "now", why: "Assessment Wed 25 Nov: a 60–75 word email using manger, hier, centre commercial and copain, plus a grammar task.", topics: ["fr-assess", "fr-weekend", "fr-futur"] },
       { subject: "French", title: "TV and films", term: 2, status: "next", topics: ["fr-verbs-present"] },
       { subject: "French", title: "Clothes", term: 2, status: "later", topics: ["fr-clothes"] }
     ]

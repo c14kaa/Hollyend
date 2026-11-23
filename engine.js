@@ -1,20 +1,21 @@
 /* ===== Week config: refreshed each week from the latest homework ===== */
 var WEEK = {
-  label: "Week of 13 Nov 2026",
-  start: "2026-11-13", // day 0 of the learning week
+  label: "Week of 23 Nov 2026",
+  start: "2026-11-23", // day 0 of the learning week
   millie: {
-    focus: ["Converting km, m, cm & mm (Week 10 homework)", "Decimals: tenths, hundredths & thousandths (CENTURY)", "Equivalent fractions (CENTURY)",
-            "Week 10 spellings: modal verbs", "Grammar: modal verbs", "Solaris Seven: Earth & Space", "× and ÷ by 10, 100, 1,000, square, cube & prime numbers (CENTURY Week 9 extras)"],
-    topics: ["unitConv","unitConv","unitConv","unitConv","decimals","decimals","fdp","fractions","fractions","grammar5","grammar5",
-             "earthMoon","space","space","mulDiv10","squareCube","multiply","shortDiv","timeTable","tables"]
+    focus: ["Mixed numbers to decimals: tenths & hundredths (Week 11 homework)", "Introduction to percentages (CENTURY Maths – Fractions)",
+            "Modal verbs & direct and indirect speech (Week 11 homework)", "Week 11 spellings: words ending in -ment", "Phases of the Moon (science)",
+            "Rounding decimals to the nearest whole number (CENTURY: focus on)"],
+    topics: ["mixedDec","mixedDec","mixedDec","decimals","decimals","percentIntro","percentIntro","fdp","modalGap","modalGap","speech","speech",
+             "moonPhases","moonPhases","fractions","unitConv"]
   },
   kristan: {
-    focus: ["Probability: scale, tree diagrams, two-way tables & experimental (class)", "Polygons: interior & exterior angles, congruence (next in class)",
-            "French vocab quiz Mon 16 Nov: the weekend in the perfect tense", "Metals & their uses (science)", "Ballads & PEAL paragraphs (English)",
-            "Win back: equations with x on both sides", "Win back: grouped data & percentage multipliers"],
-    topics: ["probScale","probScale","sampleSpace","sampleSpace","treeDiag","treeDiag","treeDiag","twoWay","twoWay","relFreq","relFreq",
-             "polyInterior","polyExterior","polyProps","metals","metals","poetry","poetry","eqBoth","eqBoth","algFracQuad",
-             "groupedClass","freqMean","pctMult","pctChangeNC","science","indices"]
+    focus: ["French end-of-term writing assessment, Wed 25 Nov: perfect, present & near future, agreement", "Dr Frost win-backs: mean from frequency tables & grouped data",
+            "Probability: sample spaces (products, negatives) & writing P as a fraction", "Metals & their uses (science)",
+            "Children's books: words for reviewing them (English research task)", "Keep fresh: tree diagrams, two-way tables, equations, polygons"],
+    topics: ["freqMean","freqMean","freqMean","grouped","grouped","grouped","sampleProduct","sampleProduct","sampleSpace","probability","probability",
+             "twoWay","treeDiag","relFreq","frGrammar","frGrammar","frGrammar","fr:fa-suis-alle","fr:fa-avons-mange","fr:fa-gentille",
+             "metals","metals","eu:didactic","em:anthropomorphism","eqBoth","pctMult","polyInterior"]
   }
 };
 /* Kristan's Sunday test: one test each Sunday (Abu Dhabi day) on what he's learnt that week.
@@ -23,13 +24,12 @@ var SUNDAY_TEST = {
   kristan: {
     count: 15, level: 2,
     topics: [
-      { id: "tree-diagrams", n: 3, hint: "Probability tree diagrams: AND, OR, with and without replacement (maths class, Topic 5)" },
-      { id: "two-way", n: 2, hint: "Two-way tables and probability (maths class, Topic 5)" },
-      { id: "prob-basics", n: 2, hint: "Probability scale, P(not) and expected outcomes (maths class, Topic 5)" },
-      { id: "eq-both", n: 2, hint: "Equations with x on both sides: win these back (Hollyend results)" },
-      { id: "metals", n: 2, hint: "8G Metals and their uses (science)" },
-      { id: "poetry", n: 2, hint: "Ballads and poetry terms (English)" },
-      { id: "fr-weekend", n: 2, hint: "French: what I did at the weekend (vocab quiz Mon 16 Nov)" }
+      { id: "freq", n: 3, hint: "Mean from a frequency table: value × frequency, then ÷ TOTAL frequency (Dr Frost 236, which you missed on 16 Nov)" },
+      { id: "grouped", n: 3, hint: "Estimating the mean from grouped data: use the MIDPOINTS (Dr Frost 312)" },
+      { id: "sample-space", n: 3, hint: "Sample spaces for two events, including products with negatives (Dr Frost 249)" },
+      { id: "prob-basics", n: 2, hint: "Probability is always a fraction out of the total (Dr Frost 248: 11/20, not 11)" },
+      { id: "fr-assess", n: 2, hint: "French: perfect tense with avoir/être, agreement and aller + infinitive (end-of-term assessment)" },
+      { id: "metals", n: 2, hint: "8G Metals and their uses (science)" }
     ]
   }
 };
@@ -768,7 +768,8 @@ var SPELL_W9 = {
       sentences: ["My parents pay the ___ on our house every month.", "The bank gave them a ___ to buy a home.", "They finally paid off their ___."], wrongs: ["morgage", "mortgege", "morgadge"] }
   ]
 };
-var SPELLING = {
+/* Week 10 (due Mon 16 Nov 2026): modal verbs. */
+var SPELL_W10 = {
   label: "Week 10 spellings: modal verbs",
   words: [
     { word: "can", partner: null, meaning: "a modal verb showing you are able to do something", chunks: "c · a · n", tricky: "just three letters: c-a-n, no k", hook: "CAN: a Cat And a Nut.",
@@ -791,6 +792,32 @@ var SPELLING = {
       sentences: ["___ you like some more cake?", "I ___ love to visit the Moon one day.", "If it snowed, we ___ build a snowman."], wrongs: ["wood", "wud", "woud"] },
     { word: "ought", partner: null, meaning: "a modal verb meaning 'should': what is right or sensible", chunks: "ou · gh · t", tricky: "'ough' with a silent gh, then t", hook: "OUGHT: Oh U Go Home Today.",
       sentences: ["You ___ to say thank you for the present.", "We ___ to tidy up before Mum gets home.", "He ___ to drink more water when it's hot."], wrongs: ["ort", "aught", "oght"] }
+  ]
+};
+/* Week 11 (due Mon 23 Nov 2026): words that end in -ment. The suffix -ment turns a verb into a noun; the root word usually stays the same. */
+var SPELLING = {
+  label: "Week 11 spellings: words ending in -ment",
+  words: [
+    { word: "equipment", partner: null, meaning: "the tools, clothes or machines you need for a job or activity", chunks: "e · quip · ment", tricky: "'qu' after the e, and no e before -ment (not 'equiptment')", hook: "EQUIP + MENT: you equip yourself with equipment. Don't add a t: it's equip, not equipt.",
+      sentences: ["Please put the PE ___ back in the cupboard.", "Astronauts check every piece of ___ before take-off.", "The rover carries special ___ to test the soil on Mars."], wrongs: ["equiptment", "equipmant", "eqipment"] },
+    { word: "environment", partner: null, meaning: "the natural world around us, or the place where something lives", chunks: "en · vi · ron · ment", tricky: "the silent-sounding n before -ment: environ + ment", hook: "There's IRON in the envIRONment: en + v + IRON + ment.",
+      sentences: ["We must protect the ___ by recycling.", "A polar bear's ___ is cold and icy.", "Our planet group designed a clean ___ for the new colony."], wrongs: ["enviroment", "envirnment", "environmant"] },
+    { word: "government", partner: null, meaning: "the group of people who run a country", chunks: "gov · ern · ment", tricky: "the n before -ment, which people often miss: govern + ment", hook: "The government GOVERNs the country: GOVERN + MENT.",
+      sentences: ["The ___ decides how money is spent on schools.", "Our planet needs a fair ___ so everyone is treated equally.", "The ___ made a new law about seat belts."], wrongs: ["goverment", "govermant", "guvernment"] },
+    { word: "parliament", partner: null, meaning: "the group of people elected to make a country's laws", chunks: "par · li · a · ment", tricky: "the 'ia' in the middle that you hardly hear", hook: "PARLIAMENT: I Am in parliament: par + LI + A + ment.",
+      sentences: ["The UK ___ meets in London.", "Members of ___ vote on new laws.", "Our class set up its own ___ to make the planet's rules."], wrongs: ["parlament", "parliment", "parliamint"] },
+    { word: "enjoyment", partner: null, meaning: "the feeling of having fun and liking something", chunks: "en · joy · ment", tricky: "keep the y: enjoy + ment", hook: "ENJOY + MENT: just add -ment, the y stays put.",
+      sentences: ["Reading for ___ is the best kind of reading.", "The crowd cheered with ___.", "Ooh Ooh swung through the trees with pure ___."], wrongs: ["enjoiment", "enjoymant", "injoyment"] },
+    { word: "document", partner: null, meaning: "a piece of writing or a file that gives information", chunks: "doc · u · ment", tricky: "'u' in the middle, not 'documant'", hook: "DOC + U + MENT: the DOCtor gave U a document.",
+      sentences: ["Save the ___ before you close the laptop.", "A passport is an important ___.", "Mum signed the ___ for the school trip."], wrongs: ["documant", "docyment", "dokument"] },
+    { word: "management", partner: null, meaning: "being in charge of and organising people or things", chunks: "man · age · ment", tricky: "keep the e: manage + ment", hook: "MANAGE + MENT: the e in manage stays because -ment starts with a consonant.",
+      sentences: ["The shop is under new ___.", "Good time ___ helps you finish your homework.", "The football club changed its ___ this summer."], wrongs: ["managment", "manigement", "managemant"] },
+    { word: "movement", partner: null, meaning: "the act of moving, or a change of position", chunks: "move · ment", tricky: "keep the e: move + ment", hook: "MOVE + MENT: the e stays in move.",
+      sentences: ["The cat watched every ___ of the mouse.", "In PE we practised dance ___ to music.", "The ___ of the Earth around the Sun takes a year."], wrongs: ["movment", "moovement", "movemant"] },
+    { word: "replacement", partner: null, meaning: "a new thing or person that takes the place of another", chunks: "re · place · ment", tricky: "keep the e: replace + ment", hook: "RE + PLACE + MENT: put something back in its PLACE.",
+      sentences: ["My pencil broke, so I asked for a ___.", "The goalkeeper was hurt, so a ___ came on.", "The shop sent a ___ for the broken toy."], wrongs: ["replacment", "repleacement", "replasement"] },
+    { word: "statement", partner: null, meaning: "a sentence that gives information, or something said in public", chunks: "state · ment", tricky: "keep the e: state + ment", hook: "STATE + MENT: you state a statement.",
+      sentences: ["A ___ ends with a full stop.", "The head teacher made a ___ about the book fair.", "Turn the question into a ___."], wrongs: ["statment", "stayment", "statemant"] }
   ]
 };
 
@@ -926,9 +953,34 @@ var KLISTS = {
     ]
   },
   french: {
-    prefix: "fr:", label: "French vocab quiz, Monday 16 Nov", lang: "fr-FR",
-    mix: { "Saturday": 4, "Opinions": 3, "Time phrases": 3 },
+    prefix: "fr:", label: "French writing assessment, Wednesday 25 Nov", lang: "fr-FR",
+    mix: { "Key words": 4, "Sentences": 3, "Grammar": 3 },
     words: [
+      { id: "fa-sortie", word: "sortie", group: "Key words", say: "une sortie", gap: "une _____ = a day out", meaning: "a day out", hook: "SORTIE: you SORT out a day out with your mates.", sounds: "ewn sor-tee" },
+      { id: "fa-copain", word: "copain", group: "Key words", say: "mon copain", gap: "mon _____ = my friend (a boy)", meaning: "my friend (boy)", hook: "COPAIN: a CO-PAl you hang out with (the -ain says 'a(n)' through your nose).", sounds: "mo(n) ko-pa(n)" },
+      { id: "fa-copine", word: "copine", group: "Key words", say: "ma copine", gap: "ma _____ = my friend (a girl)", meaning: "my friend (girl)", hook: "Copain → copine for a girl, and it goes with ma, not mon.", sounds: "ma ko-peen" },
+      { id: "fa-commercial", word: "commercial", group: "Key words", say: "le centre commercial", gap: "le centre _____ = the shopping centre", meaning: "the shopping centre", hook: "Like a TV COMMERCIAL (an advert), with double m: a shopping centre is full of adverts.", sounds: "luh so(n)-truh ko-mair-syal" },
+      { id: "fa-magasin", word: "magasin", group: "Key words", say: "un magasin", gap: "un _____ = a shop", meaning: "a shop", hook: "You buy a MAGAZINE in a MAGASIN (with an s, not a z).", sounds: "a(n) ma-ga-za(n)" },
+      { id: "fa-acheter", word: "acheter", group: "Key words", say: "acheter", gap: "To buy = _____", meaning: "to buy", hook: "ACHETER: 'Ash, tay!' — Ash wants to buy everything.", sounds: "ash-tay" },
+      { id: "fa-dabord", word: "abord", group: "Key words", say: "D'abord, j'ai fait du shopping.", gap: "D'_____, j'ai fait du shopping. (First of all)", meaning: "First of all, I went shopping.", hook: "D'ABORD: you get ABOARD first.", sounds: "da-bor, zhay feh dew sho-peeng" },
+      { id: "fa-ensuite", word: "ensuite", group: "Key words", say: "Ensuite, nous avons mangé une pizza.", gap: "_____, nous avons mangé une pizza. (Then)", meaning: "Then we ate a pizza.", hook: "ENSUITE: a hotel room comes with a bathroom en suite — it comes NEXT to it.", sounds: "o(n)-sweet, noo-za-vo(n) mo(n)-zhay ewn peed-za" },
+      { id: "fa-enfin", word: "enfin", group: "Key words", say: "Enfin, je suis rentré à la maison.", gap: "_____, je suis rentré à la maison. (Finally)", meaning: "Finally, I went back home.", hook: "ENFIN: the END (fin) of the story.", sounds: "o(n)-fa(n), zhuh swee ro(n)-tray a la meh-zo(n)" },
+      { id: "fa-suis-alle", word: "allé", group: "Sentences", say: "Hier, je suis allé au centre commercial avec mon copain.", gap: "Hier, je suis _____ au centre commercial avec mon copain.", meaning: "Yesterday I went to the shopping centre with my friend.", hook: "Aller takes ÊTRE in the perfect tense: je SUIS allé. A girl writes allée.", sounds: "ee-air, zhuh swee-za-lay oh so(n)-truh ko-mair-syal a-vek mo(n) ko-pa(n)" },
+      { id: "fa-avons-mange", word: "mangé", group: "Sentences", say: "Nous avons mangé une pizza.", gap: "Nous avons _____ une pizza.", meaning: "We ate a pizza.", hook: "Manger → mangé: swap -er for -é. Nous goes with AVONS.", sounds: "noo-za-vo(n) mo(n)-zhay ewn peed-za" },
+      { id: "fa-ai-achete", word: "acheté", group: "Sentences", say: "J'ai acheté un t-shirt.", gap: "J'ai _____ un t-shirt.", meaning: "I bought a T-shirt.", hook: "Acheter → acheté: -er becomes -é, with avoir (j'ai).", sounds: "zhay ash-tay a(n) tee-shurt" },
+      { id: "fa-cetait", word: "était", group: "Sentences", say: "C'était sympa !", gap: "C'_____ sympa ! (It was nice!)", meaning: "It was nice!", hook: "C'ÉTAIT = it WAS: use it for your opinion of the day out.", sounds: "say-teh sa(n)-pa" },
+      { id: "fa-vais-jouer", word: "jouer", group: "Sentences", say: "Demain, je vais jouer au foot.", gap: "Demain, je vais _____ au foot.", meaning: "Tomorrow I'm going to play football.", hook: "Near future = aller + the INFINITIVE: je vais JOUER (keep the -er).", sounds: "duh-ma(n), zhuh veh zhoo-ay oh foot" },
+      { id: "fa-dhabitude", word: "habitude", group: "Sentences", say: "D'habitude, je joue au foot.", gap: "D'_____, je joue au foot.", meaning: "Usually I play football.", hook: "Your HABIT is what you USUALLY do: d'habitude.", sounds: "da-bee-tewd, zhuh zhoo oh foot" },
+      { id: "fa-gentille", word: "gentille", group: "Grammar", say: "Ma copine est gentille.", gap: "Ma copine est _____. (gentil, made feminine)", meaning: "My friend is kind.", hook: "Gentil ends in l, so the feminine doubles it: gentiLLE.", sounds: "ma ko-peen eh zho(n)-tee-yuh" },
+      { id: "fa-bavardes", word: "bavardes", group: "Grammar", say: "Mes sœurs sont bavardes.", gap: "Mes sœurs sont _____. (bavard, feminine plural)", meaning: "My sisters are chatty.", hook: "Feminine plural: add -e AND -s: bavard → bavardes.", sounds: "may sur so(n) ba-vard" },
+      { id: "fa-dispute", word: "dispute", group: "Grammar", say: "Je me dispute avec mon frère.", gap: "Je me _____ avec mon frère. (se disputer)", meaning: "I argue with my brother.", hook: "Reflexive verbs keep their little 'me': je ME dispute.", sounds: "zhuh muh dees-pewt a-vek mo(n) frair" },
+      { id: "fa-postent", word: "postent", group: "Grammar", say: "Elles postent des photos.", gap: "Elles _____ des photos. (poster)", meaning: "They post photos.", hook: "Ils / elles → -ent, but you don't say the -ent: it sounds just like poste.", sounds: "el post day fo-toh" },
+      { id: "fa-sommes", word: "sommes", group: "Grammar", say: "Nous sommes au collège.", gap: "Nous _____ au collège. (être)", meaning: "We are at school.", hook: "Être: nous SOMMES. SOME of us are at school.", sounds: "noo som oh ko-lezh" },
+      { id: "fa-pas", word: "pas", group: "Grammar", say: "Je ne joue pas au tennis.", gap: "Je ne joue _____ au tennis.", meaning: "I don't play tennis.", hook: "Ne … pas is a sandwich: ne and pas go either side of the verb.", sounds: "zhuh nuh zhoo pa oh tay-neess" },
+      { id: "fa-plus", word: "plus", group: "Grammar", say: "Mon frère est plus sérieux que moi.", gap: "Mon frère est _____ sérieux que moi.", meaning: "My brother is more serious than me.", hook: "PLUS = more (like a plus sign). plus … que = more … than.", sounds: "mo(n) frair eh plew say-ryur kuh mwa" }
+    ],
+    archive: [
+      /* French vocab quiz, Monday 16 Nov: the weekend in the perfect tense */
       { id: "danse", word: "dansé", group: "Saturday", say: "J'ai dansé avec mes copains.", gap: "J'ai _____ avec mes copains.", meaning: "I danced with my friends", hook: "Danser → dansé: the past participle swaps -er for -é (acute accent)." },
       { id: "joue", word: "joué", group: "Saturday", say: "J'ai joué au bowling avec ma sœur.", gap: "J'ai _____ au bowling avec ma sœur.", meaning: "I went bowling with my sister", hook: "Jouer → joué. French says 'I PLAYED at bowling'." },
       { id: "mange", word: "mangé", group: "Saturday", say: "J'ai mangé un hamburger avec mon père.", gap: "J'ai _____ un hamburger avec mon père.", meaning: "I ate a hamburger with my dad", hook: "Manger → mangé: -er becomes -é." },
@@ -953,9 +1005,7 @@ var KLISTS = {
       { id: "demain", word: "demain", group: "Time phrases", say: "demain", gap: "_____ = tomorrow", meaning: "tomorrow", hook: "DE-MAIN: 'the morning after'." },
       { id: "ce-soir", word: "soir", group: "Time phrases", say: "ce soir", gap: "ce _____ = tonight", meaning: "tonight (this evening)", hook: "Ce = this, soir = evening." },
       { id: "prochain", word: "prochain", group: "Time phrases", say: "samedi prochain", gap: "samedi _____ = next Saturday", meaning: "next Saturday", hook: "Prochain = next: proche means near." },
-      { id: "prochaine", word: "prochaine", group: "Time phrases", say: "la semaine prochaine", gap: "la semaine _____ = next week", meaning: "next week", hook: "Semaine is feminine, so prochain gets an extra e." }
-    ],
-    archive: [
+      { id: "prochaine", word: "prochaine", group: "Time phrases", say: "la semaine prochaine", gap: "la semaine _____ = next week", meaning: "next week", hook: "Semaine is feminine, so prochain gets an extra e." },
       { id: "manger", word: "manger", group: "Verbs", say: "manger", gap: "To eat = _____", meaning: "to eat", hook: "Animals eat from a manger: man-ger." },
       { id: "faire", word: "faire", group: "Verbs", say: "faire", gap: "To do / to make = _____", meaning: "to do, to make", hook: "Fai-re: 'ai' then an 'e' on the end." },
       { id: "danser", word: "danser", group: "Verbs", say: "danser", gap: "To dance = _____", meaning: "to dance", hook: "French uses an S: dan-S-er, not 'dancer' (that's a person who dances)." },
@@ -1131,7 +1181,7 @@ function typedNote(attempt, word) {
 
 /* ===== Revision library: every topic covered so far. Topics are only ever ADDED, never removed. ===== */
 var SPELL_ARCHIVE = []; /* past weeks' spelling entries, so old spell:<word> questions keep working */
-SPELL_ARCHIVE = SPELL_ARCHIVE.concat(SPELL_W7.words, SPELL_W8.words, SPELL_W9.words);
+SPELL_ARCHIVE = SPELL_ARCHIVE.concat(SPELL_W7.words, SPELL_W8.words, SPELL_W9.words, SPELL_W10.words);
 var REVISION = {
   millie: [
     { id: "factors", title: "Factors & factor pairs", subject: "Maths", covered: "Week 7 homework · 26 Oct", gens: ["factorOf", "countFactors", "factorPair", "commonFactor"] },
@@ -1153,7 +1203,7 @@ var REVISION = {
   ],
   kristan: [
     { id: "averages", title: "Mean, median, mode & range", subject: "Maths", covered: "Dr Frost homework · due 28 Oct", gens: ["meanList", "medianList", "modeRange", "missingMean", "bestAverage"] },
-    { id: "freq", title: "Averages from frequency tables", subject: "Maths", covered: "Dr Frost homework · due 28 Oct", gens: ["freqMode", "freqMean", "freqMedian"] },
+    { id: "freq", title: "Averages from frequency tables", subject: "Maths", covered: "Dr Frost revision · 16 Nov (and homework due 28 Oct)", gens: ["freqMode", "freqMean", "freqMedian"] },
     { id: "equations", title: "Solving equations", subject: "Maths", covered: "CENTURY · school learning", gens: ["solveEq"] },
     { id: "algebra", title: "Simplifying expressions", subject: "Maths", covered: "CENTURY · school learning", gens: ["simplify", "commutative"] },
     { id: "sequences", title: "Sequences & the nth term", subject: "Maths", covered: "CENTURY · school learning", gens: ["nthTerm"] },

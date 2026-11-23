@@ -111,3 +111,17 @@ WB.fr("2026-11-13", [
   ["samedi prochain", "next Saturday", "", "Last weekend", "p"], ["la semaine prochaine", "next week", "", "Last weekend", "p"], ["j'ai dansé", "I danced", "", "Last weekend", "p"],
   ["j'ai regardé", "I watched", "", "Last weekend", "p"], ["j'ai mangé", "I ate", "", "Last weekend", "p"], ["c'était", "it was", "", "Last weekend", "p"]
 ]);
+
+/* Week of 23 Nov: a day out (end-of-term writing assessment, Wed 25 Nov). */
+WB.fr("2026-11-23", [
+  ["la sortie", "day out, outing", "f", "A day out", "n"], ["le copain", "friend (boy)", "m", "A day out", "n"], ["la copine", "friend (girl)", "f", "A day out", "n"],
+  ["la pizza", "pizza", "f", "A day out", "n"], ["le restaurant", "restaurant", "m", "A day out", "n"], ["le tee-shirt", "T-shirt", "m", "A day out", "n"],
+  ["faire du shopping", "to go shopping", "", "A day out", "p"], ["j'ai acheté", "I bought", "", "A day out", "p"], ["je suis allé", "I went (boy)", "", "A day out", "p"],
+  ["je suis allée", "I went (girl)", "", "A day out", "p"], ["nous avons mangé", "we ate", "", "A day out", "p"], ["je vais jouer", "I'm going to play", "", "A day out", "p"],
+  ["d'abord", "first of all", "", "A day out", "p"], ["ensuite", "then, next", "", "A day out", "p"], ["puis", "then", "", "A day out", "p"],
+  ["enfin", "finally", "", "A day out", "p"], ["mais", "but", "", "A day out", "p"], ["c'est sympa", "it's nice", "", "A day out", "p"],
+  ["salut", "hi", "", "A day out", "p"], ["à bientôt", "see you soon", "", "A day out", "p"]
+]);
+WB.verbs({
+  acheter: { en: "to buy", forms: ["achète", "achètes", "achète", "achetons", "achetez", "achètent"], end: "un tee-shirt", note: "Acheter adds a grave accent in the je, tu, il and ils forms: j'achète, but nous achetons." }
+});
